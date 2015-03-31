@@ -8,14 +8,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ulflander/NextNlpJs.git"
+    "url": "https://github.com/Ulflander/next-nlp-js.git"
   },
   "author": "Ulflander <xlaumonier@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Ulflander/NextNlpJs/issues"
+    "url": "https://github.com/Ulflander/next-nlp-js/issues"
   },
-  "homepage": "https://github.com/Ulflander/NextNlpJs",
+  "homepage": "https://github.com/Ulflander/next-nlp-js",
   "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",
