@@ -11,7 +11,6 @@ Features:
 
 Features to come:
 - Acronyms detection
-- Acronyms detection
 - Profiling (sentiment, politeness, type of sentence)
 - Dependency parsing (experimental)
 - Example/demo page
@@ -112,6 +111,14 @@ Return an array of sentences, each sentences.
     next.analyse('Please create some new tasks');
 
 ## Development
+
+#### Setup env
+
+    npm install
+
+then, in order to initialize the build process:
+
+    mkdir build && gulp lexicon
 
 #### Build
 
