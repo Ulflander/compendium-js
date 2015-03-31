@@ -1,0 +1,22 @@
+{
+  "name": "next-nlp",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Ulflander/NextNlpJs",
+  "authors": [
+    "Ulflander <xlaumonier@gmail.com>"
+  ],
+  "description": "Natural Language Processing in Node and the browser: Tokenization, Part-of-Speech tagging and more",
+  "main": "dist/next-nlp.minimal.js",
+  "keywords": [
+    "nlp",
+    "natural"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

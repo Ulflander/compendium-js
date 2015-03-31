@@ -1,0 +1,3 @@
+(function(next){
+
+    'use strict';

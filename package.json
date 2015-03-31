@@ -1,0 +1,26 @@
+{
+  "name": "NextNlpJs",
+  "version": "0.0.1",
+  "description": "Natural Language Processing in the browser: Tokenization, Part-of-Speech tagging and more.",
+  "main": "dist/next-nlp.full.js",
+  "scripts": {
+    "test": "nodeunit test/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Ulflander/NextNlpJs.git"
+  },
+  "author": "Ulflander <xlaumonier@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Ulflander/NextNlpJs/issues"
+  },
+  "homepage": "https://github.com/Ulflander/NextNlpJs",
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-concat": "^2.5.2",
+    "gulp-insert": "^0.4.0",
+    "gulp-replace": "^0.5.3",
+    "gulp-uglify": "^1.1.0"
+  }
+}
