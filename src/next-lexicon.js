@@ -1,4 +1,6 @@
 
+
+// Parses the lexicon
 (function() {
     var raw = "@@lexicon",
         parser = {};

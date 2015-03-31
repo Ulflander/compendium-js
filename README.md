@@ -1,6 +1,6 @@
 # NextNlpJs
 
-English-speaking Natural Language Processing for Node.js and the browser. Focused on providing a usefull representation of a text.
+English-speaking Natural Language Processing for Node.js and the browser. Focused on providing a usefull and accurate representation of a text.
 
 Minimal version targeted size for a stable version is ~90k.
 
@@ -9,9 +9,7 @@ Features:
 - Part-of-Speech tagging
 - Inflector (singularization, pluralization)
 
-This library is still in alpha version but is rather well tested. Please open some issues for cases that you would like covered by NextNlpJs and that are currently failing.
-
-Improvements to come:
+Features to come:
 - Profiling (sentiment, politeness, type of sentence)
 - Dependency parsing (experimental)
 - Example/demo page
@@ -20,6 +18,9 @@ Improvements to come:
 - Use from a Web Worker (threaded processing)
 - Date extraction
 - Entities extraction (unsure)
+
+This library is still in alpha version but is rather well tested. Please open some issues for cases that you would like covered by NextNlpJs and that are currently failing.
+
 
 ### About the Part-of-Speech tagging
 
@@ -30,7 +31,7 @@ The lexicons are based on the original lexicon from [Eric Brill](http://en.wikip
 In node, the full lexicon is used, with the addition of sentiment scores.
 For the browser, three lexicons are available:
 
-- Minimal (7000 terms, targeted size for v1: <100ko minified)
+- Minimal (~6000 terms, targeted size for v1: <100ko minified)
 - Common (36800 terms, targeted size for v1: <400ko minified)
 - Full (90k+ terms, targeted size for v1: ~1300ko minified - seriously)
 

@@ -10,14 +10,14 @@
             time: 0,
             confidence: 1,
             raw: str,
-            type: 'unknown',
-            profiling: {
-                label: 'neutral',
-                sentiment: 0,
-                politeness: 0,
-                confidence: 0
-            },
-            dependencies: null,
+            // type: 'unknown',
+            // profiling: {
+            //     label: 'neutral',
+            //     sentiment: 0,
+            //     politeness: 0,
+            //     confidence: 0
+            // },
+            //dependencies: null,
             tokens: [],
             tags: []
         };
@@ -27,11 +27,11 @@
         return {
             raw: str,
             pos: pos || '',
-            is_negated: false,
-            is_plural: false,
-            is_verb: false,
-            qualified_by: [],
-            applies_to: []
+            // is_negated: false,
+            // is_plural: false,
+            // is_verb: false,
+            // qualified_by: [],
+            // applies_to: []
         };
     };
 
@@ -68,10 +68,9 @@
             tag = next.lexicon[token];
 
             // If none, try with lower cased
-            if (!tag) {
+            if (!tag && token.match(/[A-Z]/g)) {
                 tag = next.lexicon[token.toLowerCase()];
             }
-
 
             if (!!tag) {
                 tags.push(tag.pos);
@@ -101,6 +100,7 @@
             // rule 3: convert a noun to a past participle if words.get(i) ends with 'ed'
             if (tag.indexOf('N') === 0 && token.indexOf('ed') === token.length - 2) {
                 tags[i] = 'VBN';
+                confidence += 1;
             }
 
             // rule 4: convert any type to adverb if it ends in 'ly';
