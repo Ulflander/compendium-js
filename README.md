@@ -1,6 +1,8 @@
-# NextNlpJs
+# Next NLP
 
 Natural Language Processing for Node.js and the browser. Focused on providing a useful and accurate analysis of English text.
+
+Currently in alpha version. Please open some issues for cases that you would like covered by Next NLP and that are currently failing.
 
 Minimal version targeted size for a stable version is ~100k (minified, it's about 70k as of March 31, 2015).
 
@@ -19,9 +21,6 @@ Features to come:
 - Use from a Web Worker (threaded processing)
 - Date extraction
 - Entities extraction (unsure)
-
-This library is still in alpha version but is rather well tested. Please open some issues for cases that you would like covered by NextNlpJs and that are currently failing.
-
 
 ### About the Part-of-Speech tagging
 
@@ -122,13 +121,13 @@ then, in order to initialize the build process:
 
 #### Build
 
-NextNlpJs requires `gulp` for the build process. Install it globally using `npm install -g gulp`.
+Next NLP requires `gulp` for the build process. Install it globally using `npm install -g gulp`.
 
 Use `gulp` command to build and watch the source files for changes for live rebuild. Use `gulp -p` 
 
 #### Test
 
-NextNlpJs uses `nodeunit` for running the tests. Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
+Next NLP uses `nodeunit` for running the tests. Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
 
 
 ## Tags definition
