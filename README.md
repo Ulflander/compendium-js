@@ -1,6 +1,6 @@
 # NextNlpJs
 
-English Natural Language Processing for Node.js and the browser. Focused on providing a usefull and accurate representation of text.
+Natural Language Processing for Node.js and the browser. Focused on providing a useful and accurate analysis of English text.
 
 Minimal version targeted size for a stable version is ~100k (minified, it's about 70k as of March 31, 2015).
 
