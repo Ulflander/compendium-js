@@ -1,5 +1,5 @@
 {
-  "name": "NextNlpJs",
+  "name": "next-nlp",
   "version": "0.0.1",
   "description": "Natural Language Processing in the browser: Tokenization, Part-of-Speech tagging and more.",
   "main": "dist/next-nlp.full.js",

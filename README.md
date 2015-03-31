@@ -2,7 +2,7 @@
 
 English-speaking Natural Language Processing for Node.js and the browser. Focused on providing a usefull and accurate representation of a text.
 
-Minimal version targeted size for a stable version is ~90k.
+Minimal version targeted size for a stable version is ~100k (minified, it's about 70k as of March 31, 2015).
 
 Features:
 - Tokenization
@@ -10,6 +10,8 @@ Features:
 - Inflector (singularization, pluralization)
 
 Features to come:
+- Acronyms detection
+- Acronyms detection
 - Profiling (sentiment, politeness, type of sentence)
 - Dependency parsing (experimental)
 - Example/demo page
@@ -35,7 +37,7 @@ For the browser, three lexicons are available:
 - Common (36800 terms, targeted size for v1: <400ko minified)
 - Full (90k+ terms, targeted size for v1: ~1300ko minified - seriously)
 
-The minimal one is a cross between Eric Brill's one and the list of the 10000 most common English words (+ the list of sentiments score). This list is [an extract](https://github.com/first20hours/google-10000-english) from the [Google's Trillion Word Corpus](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html).
+The minimal one is a cross between Eric Brill's one and the list of the 10000 most common English words (+ the list of scored sentiments words). This list is [an extract](https://github.com/first20hours/google-10000-english) from the [Google's Trillion Word Corpus](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html).
 
 The common is the Eric Brill's one expunge of:
 - tokens containing some uppercase letters
@@ -45,7 +47,7 @@ Comparative PoS tagging result for testing has been generated using the Stanford
 
 ## How to use
 
-#### Node.js:
+#### Node.js
 
     npm install --save next-nlp.js
 
@@ -55,7 +57,7 @@ and then:
         
     console.log(next.analyse('Hello world'));
 
-#### In the browser:
+#### In the browser
 
 With `bower`:
 
@@ -76,7 +78,7 @@ Then:
 
 ## API
 
-#### lex : tokenize a string
+##### lex : tokenize a string
 
 Returns a matrix of tokens per sentences.
 
@@ -111,20 +113,18 @@ Return an array of sentences, each sentences.
 
 ## Development
 
-## Build
+#### Build
 
 NextNlpJs requires `gulp` for the build process. Install it globally using `npm install -g gulp`.
 
 Use `gulp` command to build and watch the source files for changes for live rebuild. Use `gulp -p` 
 
-### Test
+#### Test
 
 NextNlpJs uses `nodeunit` for running the tests. Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
 
 
 ## Tags definition
-
-This model is 
 
     , Comma                     ,
     : Mid-sent punct.           : ; Ñ
