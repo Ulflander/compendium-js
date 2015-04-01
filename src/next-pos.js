@@ -1,58 +1,11 @@
 
 (function() {
 
-    var analyser = {},
+    var pos = {},
         // Shortcuts
         isPlural = next.inflector.isPlural;
 
-    analyser.createSentence = function(str) {
-        return {
-            time: 0,
-            confidence: 1,
-            raw: str,
-            // type: 'unknown',
-            // profiling: {
-            //     label: 'neutral',
-            //     sentiment: 0,
-            //     politeness: 0,
-            //     confidence: 0
-            // },
-            //dependencies: null,
-            tokens: [],
-            tags: []
-        };
-    };
-
-    analyser.createToken = function(str, pos) {
-        return {
-            raw: str,
-            pos: pos || '',
-            // is_negated: false,
-            // is_plural: false,
-            // is_verb: false,
-            // qualified_by: [],
-            // applies_to: []
-        };
-    };
-
-    analyser.inLexicon = function(str) {
-        return next.lexicon.hasOwnProperty(str);
-    };
-
-    analyser.toObject = function(sentence, pos) {
-        var s = this.createSentence(sentence.join(' ')),
-            i,
-            l = sentence.length;
-
-        s.tags = pos[0];
-        s.confidence = pos[1];
-        for (i = 0; i < l; i += 1) {
-            s.tokens.push(analyser.createToken(sentence[i], pos[0][i]));
-        }
-        return s;
-    };
-
-    analyser.pos = function(sentence) {
+    pos.tag = function(sentence) {
         var tags = [],
             token,
             tag,
@@ -87,13 +40,11 @@
             tag = tags[i];
 
             // rule 1: DT, {VBD | VBP} --> DT, NN
-            if (i > 0 && tags[i - 1] === 'DT') {
-                if (tag === 'VBD' || tag === 'VBP' || tag === 'VB') {
-                    tags[i] = 'NN';
-                }
+            if (i > 0 && tags[i - 1] === 'DT' && (tag === 'VBD' || tag === 'VBP' || tag === 'VB')) {
+                tags[i] = 'NN';
             }
             // rule 2: convert anything to a number (CD) if token matches a number
-            if (token !== '.' && token.match(/[0-9\.]+/g)) {
+            if (token !== '.' && token.match(/^[0-9\.]+$/g)) {
                 tags[i] = 'CD';
                 sentence[i] = parseFloat(token);
             }
@@ -133,20 +84,6 @@
         return [tags, confidence / l];
     };
 
-    analyser.analyse = function(sentences) {
-        var res = [], i, l = sentences.length, d, s;
-        for (i = 0; i < l; i += 1) {
-            d = Date.now();
-            s = analyser.toObject(sentences[i], analyser.pos(sentences[i]));
-            s.time = Date.now() - d;
-            res.push(s);
-        }
-        return res;
-    };
-
-    next.analyser = analyser;
-    next.analyse = function(str) {
-        return analyser.analyse(next.lex(str));
-    };
+    next.pos = pos;
 
 }());

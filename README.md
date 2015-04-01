@@ -13,6 +13,8 @@ Features:
 
 Features to come:
 - Acronyms detection
+- Negation detection
+- Tense detection
 - Profiling (sentiment, politeness, type of sentence)
 - Dependency parsing (experimental)
 - Example/demo page
@@ -24,22 +26,22 @@ Features to come:
 
 ### About the Part-of-Speech tagging
 
-The Part-of-Speech tagging process is a port of [Mark Watson's FastTag Java library](https://github.com/mark-watson/fasttag_v2).
+The Part-of-Speech tagging process is a port of [Mark Watson's FastTag Java library](https://github.com/mark-watson/fasttag_v2). The lexicons are based on the original lexicon from [Eric Brill](http://en.wikipedia.org/wiki/Eric_Brill).
 
-The lexicons are based on the original lexicon from [Eric Brill](http://en.wikipedia.org/wiki/Eric_Brill).
-
-In node, the full lexicon is used, with the addition of sentiment scores.
-For the browser, three lexicons are available:
-
+Three lexicons are available:
 - Minimal (~6000 terms, targeted size for v1: <100ko minified)
-- Common (36800 terms, targeted size for v1: <400ko minified)
+- Balanced (36800 terms, targeted size for v1: <400ko minified)
 - Full (90k+ terms, targeted size for v1: ~1300ko minified - seriously)
 
-The minimal one is a cross between Eric Brill's one and the list of the 10000 most common English words (+ the list of scored sentiments words). This list is [an extract](https://github.com/first20hours/google-10000-english) from the [Google's Trillion Word Corpus](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html).
+##### Balanced lexicon
 
-The common is the Eric Brill's one expunge of:
+The common is the Eric Brill's one expunged of:
 - tokens containing some uppercase letters
 - hyphenated tokens.
+
+##### Minimal lexicon
+
+The minimal one is a cross between Eric Brill's one and the list of the 10000 most common English words (+ the list of scored sentiments words). This list is [an extract](https://github.com/first20hours/google-10000-english) from the [Google's Trillion Word Corpus](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html).
 
 Comparative PoS tagging result for testing has been generated using the Stanford PoS tagger via NLTK ([here is an online API](http://textanalysisonline.com/nltk-stanford-postagger)).
 

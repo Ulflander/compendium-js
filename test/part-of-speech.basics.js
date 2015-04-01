@@ -1,5 +1,5 @@
 
-var next = require('../dist/next-nlp.minimal.js');
+var next = require('../build/next-nlp.minimal.js');
 
 // Comparative PoS result have been generated using the Stanford PoS tagger,
 // via http://textanalysisonline.com/nltk-stanford-postagger
