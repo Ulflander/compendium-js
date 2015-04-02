@@ -81,9 +81,13 @@
             }
         }
 
-        return [tags, confidence / l];
+        return {
+            tags: tags,
+            confidence: confidence / l
+        };
     };
 
     next.pos = pos;
+    next.tag = pos.tag;
 
 }());

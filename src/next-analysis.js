@@ -25,8 +25,8 @@
             raw: str,
             pos: pos || '',
             is_acronym: false,
+            is_plural: pos === 'NNS',
             // is_negated: false,
-            // is_plural: false,
             // is_verb: false,
             // qualified_by: [],
             // applies_to: []
@@ -40,10 +40,10 @@
             l = sentence.length,
             token;
 
-        s.tags = pos[0];
-        s.confidence = pos[1];
+        s.tags = pos.tags;
+        s.confidence = pos.confidence;
         for (i = 0; i < l; i += 1) {
-            s.tokens.push(analyser.createToken(sentence[i], pos[0][i]));
+            s.tokens.push(analyser.createToken(sentence[i], pos.tags[i]));
         }
         return s;
     };
@@ -61,9 +61,9 @@
         // For each sentence
         for (i = 0; i < l; i += 1) {
             d = Date.now();
-            
+
             // Get part of speech
-            pos = next.pos.tag(sentences[i]);
+            pos = next.tag(sentences[i]);
 
             // Convert to object
             s = analyser.toObject(sentences[i], pos);

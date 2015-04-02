@@ -11,18 +11,21 @@ Features:
 - Part-of-Speech tagging
 - Inflector (singularization, pluralization)
 
-Features to come:
+Milestones for v1:
 - Acronyms detection
 - Negation detection
 - Tense detection
 - Profiling (sentiment, politeness, type of sentence)
 - Dependency parsing (experimental)
 - Example/demo page
-- Dynamic loading of lexicon, w/ versioning and cache using Application Cache
-- Use a trie for lexicon querying on runtime
-- Use from a Web Worker (threaded processing)
 - Date extraction
 - Entities extraction (unsure)
+- Use a trie for lexicon querying on runtime
+
+
+Milestones for v2:
+- Dynamic loading of lexicon, w/ versioning and cache using Application Cache
+- Use from a Web Worker (threaded processing)
 
 ### About the Part-of-Speech tagging
 
@@ -87,29 +90,57 @@ Returns a matrix of tokens per sentences.
 Example:
 
     next.lex('My name is Dr. Jekyll. My cat\'s name is Mr. Hyde.');
-    // [
-    //    ['My', 'name', 'is', 'Dr.', 'Jekyll', '.'],
-    //    ['My', 'cat', '\'', 's', 'name', 'is', 'Mr.', 'Hyde', '.']
-    // ]
+    //  [
+    //      ['My', 'name', 'is', 'Dr.', 'Jekyll', '.'],
+    //      ['My', 'cat', '\'', 's', 'name', 'is', 'Mr.', 'Hyde', '.']
+    //  ]
 
-##### pos : tags an array of tokens
+##### tag : return Part-of-Speech tags from an array of tokens
 
-Returns an array of tags
+Returns an array of tags and a confidence into the tagging.
 
-    next.pos (text)
+    next.tag (tokens)
 
-    next.pos('My name is Dr. Jekyll. My cat\'s name is Mr. Hyde.');
-    // [
-    //      {
-    //          raw: 'My name is Dr. Jekyll',
-    //      }
-    // ]
+    next.tag(['My', 'name', 'is', 'Dr.', 'Jekyll', '.']);
+    //  {
+    //      tags: [ 'PRP$', 'NN', 'VBZ', 'NNP', 'NNP', '.' ],
+    //      confidence: 1
+    //  }
 
 ##### analyse : perform a full analysis
 
-Return an array of sentences, each sentences.
-
-    next.analyse('Please create some new tasks');
+    next.analyse('My name is Dr. Jekyll.');
+    // [{ 
+    //     time: 0,
+    //     confidence: 1,
+    //     raw: 'My name is Dr. Jekyll .',
+    //     tokens:[{ 
+    //         raw: 'My',
+    //         pos: 'PRP$',
+    //         is_acronym: false
+    //     }, {
+    //         raw: 'name',
+    //         pos: 'NN',
+    //         is_acronym: false
+    //     }, {
+    //         raw: 'is',
+    //         pos: 'VBZ',
+    //         is_acronym: false
+    //     }, {
+    //         raw: 'Dr.',
+    //         pos: 'NNP',
+    //         is_acronym: true
+    //     }, {
+    //         raw: 'Jekyll',
+    //         pos: 'NNP',
+    //         is_acronym: false
+    //     }, {
+    //         raw: '.',
+    //         pos: '.',
+    //         is_acronym: false 
+    //     }],
+    //     tags: [ 'PRP$', 'NN', 'VBZ', 'NNP', 'NNP', '.']
+    // }]
 
 ## Development
 
