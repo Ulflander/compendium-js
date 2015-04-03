@@ -6,13 +6,11 @@ Currently in alpha version. Please open some issues for cases that you would lik
 
 Minimal version targeted size for a stable version is ~100k (minified, it's about 70k as of March 31, 2015).
 
-Features:
-- Tokenization
-- Part-of-Speech tagging
-- Inflector (singularization, pluralization)
-
 Milestones for v1:
-- Acronyms detection
+✔ Tokenization
+✔ Part-of-Speech tagging
+✔ Inflector (singularization, pluralization)
+✔ Acronyms detection
 - Negation detection
 - Tense detection
 - Profiling (sentiment, politeness, type of sentence)

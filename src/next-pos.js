@@ -7,6 +7,7 @@
 
     pos.tag = function(sentence) {
         var tags = [],
+            sentiment = [],
             token,
             tag,
             i,
@@ -27,9 +28,11 @@
 
             if (!!tag) {
                 tags.push(tag.pos);
+                sentiment[i] = tag.sentiment;
             } else {
                 tags.push('NN');
                 confidence -= 1;
+                sentiment[i] = 0;
             }
         }
 
@@ -46,7 +49,6 @@
             // rule 2: convert anything to a number (CD) if token matches a number
             if (token !== '.' && token.match(/^[0-9\.]+$/g)) {
                 tags[i] = 'CD';
-                sentence[i] = parseFloat(token);
             }
             // rule 3: convert a noun to a past participle if words.get(i) ends with 'ed'
             if (tag.indexOf('N') === 0 && token.indexOf('ed') === token.length - 2) {
@@ -65,6 +67,7 @@
             }
 
             // rule 6: convert a noun to a verb if the preceeding word is 'would'
+            console.log(token, sentence[i - 1]);
             if (i > 0 && tag.indexOf('NN') === 0 && sentence[i - 1].toLowerCase() === 'would') {
                 tags[i] = 'VB';
             }
@@ -83,6 +86,7 @@
 
         return {
             tags: tags,
+            sentiment: sentiment,
             confidence: confidence / l
         };
     };

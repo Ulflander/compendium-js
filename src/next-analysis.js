@@ -8,22 +8,22 @@
             confidence: 1,
             raw: str,
             // type: 'unknown',
-            // profiling: {
-            //     label: 'neutral',
-            //     sentiment: 0,
-            //     politeness: 0,
-            //     confidence: 0
-            // },
+            profiling: {
+                label: 'neutral',
+                sentiment: 0,
+                politeness: 0
+            },
             //dependencies: null,
             tokens: [],
             tags: []
         };
     };
 
-    analyser.createToken = function(str, pos) {
+    analyser.createToken = function(str, pos, sentiment) {
         return {
             raw: str,
             pos: pos || '',
+            sentiment: sentiment,
             is_acronym: false,
             is_plural: pos === 'NNS',
             // is_negated: false,
@@ -43,7 +43,7 @@
         s.tags = pos.tags;
         s.confidence = pos.confidence;
         for (i = 0; i < l; i += 1) {
-            s.tokens.push(analyser.createToken(sentence[i], pos.tags[i]));
+            s.tokens.push(analyser.createToken(sentence[i], pos.tags[i], pos.sentiment[i]));
         }
         return s;
     };
