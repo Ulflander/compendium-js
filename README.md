@@ -6,24 +6,24 @@ Currently in alpha version. Please open some issues for cases that you would lik
 
 Minimal version targeted size for a stable version is ~100k (minified, it's about 70k as of March 31, 2015).
 
-Milestones for v1:
-✔ Tokenization
-✔ Part-of-Speech tagging
-✔ Inflector (singularization, pluralization)
-✔ Acronyms detection
-- Negation detection
-- Tense detection
-- Profiling (sentiment, politeness, type of sentence)
-- Dependency parsing (experimental)
-- Example/demo page
-- Date extraction
-- Entities extraction (unsure)
-- Use a trie for lexicon querying on runtime
+Version 1 milestones:
+- ✔ Tokenization
+- ✔ Part-of-Speech tagging
+- ✔ Inflector (singularization, pluralization)
+- ✔ Acronyms detection
+- o Negation detection
+- o Tense detection
+- o Profiling (sentiment, politeness, type of sentence)
+- o Dependency parsing (experimental)
+- o Example/demo page
+- o Date extraction
+- o Entities extraction (unsure)
+- o Use a trie for lexicon querying on runtime
 
 
-Milestones for v2:
-- Dynamic loading of lexicon, w/ versioning and cache using Application Cache
-- Use from a Web Worker (threaded processing)
+Version 2 milestones:
+- o Dynamic loading of lexicon, w/ versioning and cache using Application Cache
+- o Use from a Web Worker (threaded processing)
 
 ### About the Part-of-Speech tagging
 
@@ -191,7 +191,7 @@ Next NLP uses `nodeunit` for running the tests. Install it with `npm install nod
     POS Possessive ending       Õs
     PP Personal pronoun         I,you,she
     PP$ Possessive pronoun      my,oneÕs
-    RB Adverb                   quickly
+    RB Adverb                   quickly, not
     RBR Adverb, comparative     faster
     RBS Adverb, superlative     fastest
     RP Particle                 up,off
