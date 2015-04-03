@@ -50,7 +50,7 @@ Comparative PoS tagging result for testing has been generated using the Stanford
 
 #### Node.js
 
-    npm install --save next-nlp.js
+    npm install --save next-nlp
 
 and then:
 
@@ -62,7 +62,7 @@ and then:
 
 With `bower`:
 
-    bower install --save next-nlp.js
+    bower install --save next-nlp
 
 Otherwise clone this repo and copy the `dist/next-nlp.minimal.js` file into your project.
 
