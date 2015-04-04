@@ -39,6 +39,11 @@
             'exclusively': 'RB'
         },
 
+        pps: {
+            'i': 'PRP',
+            'you': 'PRP'
+        },
+
         // Abbreviations
         abbrs: {
 

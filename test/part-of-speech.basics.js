@@ -26,6 +26,39 @@ exports.testNumeric = function(test) {
         analysis = next.analyse('two hundred and fifty five'),
         actual = [analysis[0].tags];
 
-    //test.deepEqual(actual, expected);
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports.testWouldLack = function(test) {
+    var expected = [
+            ('PRP MD VB DT NNS').split(' ')
+        ],
+        analysis = next.analyse('I would lack some skills'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports.testYourLack = function(test) {
+    var expected = [
+            ('PRP$ NN IN NNS').split(' ')
+        ],
+        analysis = next.analyse('Your lack of skills'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports.testYouLack = function(test) {
+    var expected = [
+            ('PRP VBP NNS').split(' ')
+        ],
+        analysis = next.analyse('You lack skills'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
     test.done();
 };

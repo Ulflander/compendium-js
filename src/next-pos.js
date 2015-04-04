@@ -12,6 +12,7 @@
             tag,
             i,
             l = sentence.length,
+            tl,
             previous,
             suffix,
             confidence = l;
@@ -43,7 +44,8 @@
                 previous = sentence[i - 1].toLowerCase();
             }
             token = sentence[i];
-            suffix = token.length > 3 ? token.slice(token.length - 2) : '';
+            tl = token.length;
+            suffix = tl > 3 ? token.slice(tl - 2) : '';
             tag = tags[i];
 
             // rule 1: DT, {VBD | VBP} --> DT, NN
@@ -55,7 +57,7 @@
                 tags[i] = 'CD';
             }
             // rule 3: convert a noun to a past participle if words.get(i) ends with 'ed'
-            if (tag.indexOf('N') === 0 && token.indexOf('ed') === token.length - 2) {
+            if (tag.indexOf('N') === 0 && tl > 3 && token.indexOf('ed') === tl - 2) {
                 tags[i] = 'VBN';
                 confidence += 1;
             }
@@ -82,7 +84,7 @@
             }
 
             // rule 8: convert a common noun to a present participle verb (i.e., a gerand)
-            if (tag.indexOf('NN') === 0 && token.length > 3 && token.indexOf('ing') === token.length - 3) {
+            if (tag.indexOf('NN') === 0 && tl > 3 && token.indexOf('ing') === tl - 3) {
                 tags[i] = 'VBG';
             }
         }
