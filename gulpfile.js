@@ -76,11 +76,15 @@ function lexicon(level) {
             continue;
         }
 
+        if (line[1] === 'NN' || line[1] === 'NNS') {
+            skipped += 1;
+            continue;   
+        }
+
         // Minimal mode: we crosscheck with the 10000 most commons english words
         // and all the nouns
         if (level === 2 && idx === -1 && 
-            (token.match(/[a-z]/g) && crosscheck.indexOf(token) === -1) || 
-            line[1] === 'NN') {
+            (token.match(/[a-z]/g) && crosscheck.indexOf(token) === -1)) {
             skipped += 1;
             continue;
         }
