@@ -11,6 +11,8 @@ function lexicon(level) {
 
     var lex = fs.readFileSync('src/data/lexicon.txt').toString(),
         sentiments = fs.readFileSync('src/data/sentiments.txt').toString(),
+        // Use next compendium to filter lexicon
+        next = require('./'),
         i,
         l,
         j,
@@ -21,10 +23,21 @@ function lexicon(level) {
         token,
         skipped = 0,
         crosscheck,
+        compendium = [],
         m;
 
     if (level === 2) {
         crosscheck = fs.readFileSync('src/data/google-10000.txt').toString().split('\n');
+    }
+
+    for (i in next.compendium) {
+        if (next.compendium.hasOwnProperty(i)) {
+            for (j in next.compendium[i]) {
+                if (next.compendium[i].hasOwnProperty(j)) {
+                    compendium.push(j);
+                }
+            }
+        }
     }
 
 
@@ -40,6 +53,11 @@ function lexicon(level) {
         line = lex[i].split(' ');
         token = line[0];
         idx = sts.indexOf(token);
+
+        if (compendium.indexOf(token) > -1) {
+            continue;
+        }
+
 
         lex[i] = line[0] + ' ' + line[1];
         if (idx > -1) {
@@ -59,10 +77,10 @@ function lexicon(level) {
         }
 
         // Minimal mode: we crosscheck with the 10000 most commons english words
-        // or the plural nouns (unless it has a sentiment score)
+        // and all the nouns
         if (level === 2 && idx === -1 && 
             (token.match(/[a-z]/g) && crosscheck.indexOf(token) === -1) || 
-            line[1] === 'NNS') {
+            line[1] === 'NN') {
             skipped += 1;
             continue;
         }

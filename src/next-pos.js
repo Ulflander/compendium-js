@@ -12,6 +12,7 @@
             tag,
             i,
             l = sentence.length,
+            previous,
             suffix,
             confidence = l;
 
@@ -38,6 +39,9 @@
 
         // Transformational rules
         for (i = 0; i < l; i += 1) {
+            if (i > 0) {
+                previous = sentence[i - 1].toLowerCase();
+            }
             token = sentence[i];
             suffix = token.length > 3 ? token.slice(token.length - 2) : '';
             tag = tags[i];
@@ -67,8 +71,7 @@
             }
 
             // rule 6: convert a noun to a verb if the preceeding word is 'would'
-            console.log(token, sentence[i - 1]);
-            if (i > 0 && tag.indexOf('NN') === 0 && sentence[i - 1].toLowerCase() === 'would') {
+            if (tag.indexOf('NN') === 0 && (previous === 'would' || previous === 'could')) {
                 tags[i] = 'VB';
             }
 
