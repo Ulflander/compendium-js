@@ -1,0 +1,3 @@
+#!/bin/bash
+
+grep "$1 " src/data/lexicon.txt

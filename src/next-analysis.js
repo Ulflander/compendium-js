@@ -6,6 +6,7 @@
         return {
             time: 0,
             confidence: 1,
+            length: 0,
             raw: str,
             // type: 'unknown',
             profiling: {
@@ -45,6 +46,7 @@
         for (i = 0; i < l; i += 1) {
             s.tokens.push(analyser.createToken(sentence[i], pos.tags[i], pos.sentiment[i]));
         }
+        s.length = l;
         return s;
     };
 
