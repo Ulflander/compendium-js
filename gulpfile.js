@@ -76,7 +76,7 @@ function lexicon(level) {
             continue;
         }
 
-        if (line[1] === 'NN' || line[1] === 'NNS') {
+        if (line[1].indexOf('NN') === 0) {
             skipped += 1;
             continue;   
         }

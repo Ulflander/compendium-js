@@ -35,6 +35,8 @@
 
         split_token_regexp = /([\W])/g,
 
+        contractions = ['s', 't', 'll', 've', 'd'],
+
         // namespace
         lexer = {};
 
@@ -114,6 +116,7 @@
                 result[count - 1] += tok;
                 continue;
             }
+
             // If float
             if (tok.match(/^[0-9]+$/i) && previous.match(/^[0-9]+\.$/i)) {
                 result[count - 1] += tok;
@@ -146,9 +149,34 @@
                 in_acronym = true;
             }
 
-            // Default case: add token
-            result.push(tok);
-            count += 1;
+            // If token is ' check for contraction.
+            // If is contraction, merge forward
+            if (tok === '\'' && contractions.indexOf(next) > -1) {
+                
+                // If t, check for 'n' in previous
+                if (next === 't' && previous.lastIndexOf('n') === previous.length - 1) {
+                    arr[i + 1] = 'n' + tok + next;
+                    result[result.length - 1] = previous.slice(0, -1);
+                } else {
+                    arr[i + 1] = tok + next;
+                }
+
+                continue;
+            }
+
+            // Special tokens
+            if (tok === 'cannot') {
+                // Default case: add token
+                result.push('can', 'not');
+                count += 2;
+            } else if (tok === 'gonna') {
+                // Default case: add token
+                result.push('gon', 'na');
+                count += 2;
+            } else {
+                result.push(tok);
+                count += 1;
+            }
         }
         
         return result;

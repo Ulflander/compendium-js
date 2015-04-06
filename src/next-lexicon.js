@@ -14,6 +14,7 @@
             l = arr.length,
             m,
             result = {},
+            compendium = next.compendium,
             item;
 
         for (i = 0; i < l; i += 1) {
@@ -26,13 +27,13 @@
             };
         }
 
-        for (i in next.compendium) {
-            if (next.compendium.hasOwnProperty(i)) {
-                item = next.compendium[i];
+        for (i in compendium) {
+            if (compendium.hasOwnProperty(i)) {
+                item = compendium[i];
                 for (l in item) {
                     if (item.hasOwnProperty(l)) {
                         result[l] = {
-                            pos: Array.isArray(item[l]) ? item[l][0] : item[l],
+                            pos: item[l],
                             sentiment: 0
                         };
                     }

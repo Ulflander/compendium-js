@@ -87,6 +87,7 @@
             if (tag.indexOf('NN') === 0 && tl > 3 && token.indexOf('ing') === tl - 3) {
                 tags[i] = 'VBG';
             }
+            console.log(token, tags[i]);
         }
 
         return {

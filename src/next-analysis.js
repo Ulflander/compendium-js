@@ -1,3 +1,11 @@
+
+
+/**
+ * Analyser - High level utility that goes through the full analysis steps 
+ * (lexer, PoS, detectors)
+ */
+
+
 (function() {
 
     var analyser = {};

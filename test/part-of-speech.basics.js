@@ -62,3 +62,36 @@ exports.testYouLack = function(test) {
     test.deepEqual(actual, expected);
     test.done();
 };
+
+exports.testGonna = function(test) {
+    var expected = [
+            ('PRP VBG TO VB RP').split(' ')
+        ],
+        analysis = next.analyse('I gonna give up'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports.testWont = function(test) {
+    var expected = [
+            ('PRP VBG TO VB RP').split(' ')
+        ],
+        analysis = next.analyse('I won\'t give up'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports.testIsContraction = function(test) {
+    var expected = [
+            ('PRP VBZ JJ').split(' ')
+        ],
+        analysis = next.analyse('It\'s good'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};

@@ -10,30 +10,30 @@
             'not': 'RB',
             'n\'t': 'RB',
             '\'t': 'VB',
-            'no': ['RB', 'DT'],
-            'neither': ['DT', 'CC'],
-            'nor': ['DT', 'CC'],
+            'no': 'RB',
+            'neither': 'DT',
+            'nor': 'DT',
             'never': 'RB',
             'without': 'IN',
             'except': 'IN',
-            'absent': ['JJ', 'VB'],
-            'unlike': ['IN', 'JJ'],
+            'absent': 'JJ',
+            'unlike': 'IN',
             'unable': 'JJ',
             'unremarkable': 'JJ',
             'unlikely': 'JJ',
             'negative': 'JJ',
             'hardly': 'RB',
-            'deny': ['VB', 'VBP'],
-            'fail': ['VB', 'VBP', 'NN'],
-            'exclude': ['VB', 'VBP'],
-            'lack': ['NN', 'VB', 'VBP'],
+            'deny': 'VB',
+            'fail': 'VB',
+            'exclude': 'VB',
+            'lack': 'NN',
             'absence': '',
             'none': ''
         },
 
         neg_neg: {
-            'only': ['RB', 'IN', 'JJ'],
-            'just': ['RB', 'JJ', 'RP'],
+            'only': 'RB',
+            'just': 'RB',
             'solely': 'RB',
             'uniquely': 'RB',
             'exclusively': 'RB'
@@ -53,5 +53,4 @@
 
 
     next.compendium = compendium;
-    
 }());
