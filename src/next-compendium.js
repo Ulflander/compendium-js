@@ -1,11 +1,15 @@
 
 
-// Parses the lexicon and uses the compendium
-// to build the in memory lexicon
+/**
+ * Compendium (NLP knowledge base)
+ */
 
 (function() {
     var compendium = {
 
+        rules: '@@rules',
+
+        // Negation marks
         neg: {
             'not': 'RB',
             'n\'t': 'RB',
@@ -31,6 +35,7 @@
             'none': ''
         },
 
+        // Counter negation marks
         neg_neg: {
             'only': 'RB',
             'just': 'RB',
@@ -39,6 +44,7 @@
             'exclusively': 'RB'
         },
 
+        // Personal pronouns
         pps: {
             'i': 'PRP',
             'you': 'PRP'

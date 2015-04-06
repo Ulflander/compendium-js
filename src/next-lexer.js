@@ -37,6 +37,8 @@
 
         contractions = ['s', 't', 'll', 've', 'd'],
 
+
+
         // namespace
         lexer = {};
 
@@ -164,6 +166,7 @@
                 continue;
             }
 
+            // TODO: refactor
             // Special tokens
             if (tok === 'cannot') {
                 // Default case: add token

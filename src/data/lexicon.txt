@@ -26,6 +26,7 @@ axis NN
 ; ;
 < SYM
 = SYM
+'s VBZ
 > SYM NN
 ? .
 @ IN SYM

@@ -102,9 +102,6 @@ function lexicon(level) {
     if (level === 0) {
         console.log('Full lexicon contains ' + lex.length + ' terms.');
         fs.writeFileSync('build/lexicon-full.txt', lex.join('\t'));
-    } else if (level === 1) {
-        console.log('Common lexicon contains ' + mini.length + ' terms, skipped ' + skipped + ' tokens.');
-        fs.writeFileSync('build/lexicon-common.txt', mini.join('\t'));
     } else {
         console.log('Mini lexicon contains ' + mini.length + ' terms, skipped ' + skipped + ' tokens.');
         fs.writeFileSync('build/lexicon-minimal.txt', mini.join('\t'));
@@ -115,51 +112,39 @@ function lexicon(level) {
 gulp.task('build_full', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
-        l = fs.readFileSync('build/lexicon-full.txt');
+        l = fs.readFileSync('build/lexicon-full.txt'),
+        r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
             .pipe(concat('next-nlp.full.js'))
             .pipe(insert.prepend(h))
             .pipe(insert.append(f))
             .pipe(replace('@@lexicon', l))
+            .pipe(replace('@@rules', r))
             .pipe(gulp.dest('build/'))
             .pipe(uglify())
             .pipe(gulp.dest('dist/'));
 });
-
-gulp.task('build_common', function() {
-    var h = fs.readFileSync('src/build/header.js'),
-        f = fs.readFileSync('src/build/footer.js'),
-        l = fs.readFileSync('build/lexicon-common.txt');
-
-    return gulp.src('src/*.js')
-            .pipe(concat('next-nlp.common.js'))
-            .pipe(insert.prepend(h))
-            .pipe(insert.append(f))
-            .pipe(replace('@@lexicon', l))
-            .pipe(gulp.dest('build/'))
-            .pipe(uglify())
-            .pipe(gulp.dest('dist/'));
-});
-
 
 gulp.task('build_minimal', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
-        l = fs.readFileSync('build/lexicon-minimal.txt');
+        l = fs.readFileSync('build/lexicon-minimal.txt'),
+        r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
             .pipe(concat('next-nlp.minimal.js'))
             .pipe(insert.prepend(h))
             .pipe(insert.append(f))
             .pipe(replace('@@lexicon', l))
+            .pipe(replace('@@rules', r))
             .pipe(gulp.dest('build/'))
             .pipe(uglify())
             .pipe(gulp.dest('dist/'));
 });
 
-gulp.task('build', ['build_minimal', 'build_common', 'build_full']);
-gulp.task('lexicon', ['minimal_lexicon', 'common_lexicon', 'full_lexicon']);
+gulp.task('build', ['build_minimal', 'build_full']);
+gulp.task('lexicon', ['minimal_lexicon', 'full_lexicon']);
 
 gulp.task('full_lexicon', function(cb) {
     lexicon(0);
@@ -171,12 +156,7 @@ gulp.task('minimal_lexicon', function(cb) {
     cb();
 });
 
-gulp.task('common_lexicon', function(cb) {
-    lexicon(1);
-    cb();
-});
-
 gulp.task('default', ['build'], function() {
-    gulp.watch('src/*.js', ['build']);
-    gulp.watch('src/data/*.txt', ['full_lexicon', 'common_lexicon', 'minimal_lexicon']);
+    gulp.watch(['src/*.js', 'src/*.txt'], ['build']);
+    gulp.watch('src/data/*.txt', ['full_lexicon', 'minimal_lexicon']);
 });

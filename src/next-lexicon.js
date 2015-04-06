@@ -44,7 +44,29 @@
         return result;
     };
 
+    // Parses Brill's condition
+    parser.brills = function(raw) {
+        raw = raw.split('\t');
+        var line,
+            result = [],
+            i,
+            l = raw.length;
+
+        for (i = 0; i < l; i += 1) {
+            line = raw[i].split(' ');
+            result.push({
+                from: line[0],
+                to: line[1],
+                type: parseInt(line[2], 10),
+                c1: line[3],
+                c2: line[4],
+            });
+        }
+        return result;
+    };
+
     next.parser = parser;
+    next.compendium.rules = parser.brills(next.compendium.rules);
     next.lexicon = parser.parse(raw);
     
 }());
