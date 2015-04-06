@@ -13,7 +13,7 @@
         neg: {
             'not': 'RB',
             'n\'t': 'RB',
-            '\'t': 'VB',
+            '\'t': 'RB',
             'no': 'RB',
             'neither': 'DT',
             'nor': 'DT',

@@ -84,7 +84,7 @@ function lexicon(level) {
         // Minimal mode: we crosscheck with the 10000 most commons english words
         // and all the nouns
         if (level === 2 && idx === -1 && 
-            (token.match(/[a-z]/g) && crosscheck.indexOf(token) === -1)) {
+            ((token.match(/[a-z]/g) && crosscheck.indexOf(token) === -1)) && token.indexOf('\'') === -1) {
             skipped += 1;
             continue;
         }

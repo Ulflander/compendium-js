@@ -154,36 +154,24 @@
     };
 
     // Apply all rules on given token/tag combo
-    // Returns true if a rule has been applied
     pos.applyRules = function(token, tag, index, tokens, tags) {
-        // Loop over all rules, attempt to apply them, 
-        // return number of changes
-        var i, changed = 0;
+        var i;
         for (i = 0; i < rulesLength; i += 1) {
             if (pos.applyRule(rules[i], token, tag, index, tokens, tags)) {
-                changed += 1;
+                return;
             }
         }
-        return changed;
     };
 
     // Apply all rules on given arrays of tokens and tags
     pos.apply = function(tokens, tags) {
-        var i, l = tokens.length, changes = 1, threshold = 5;
-        while (changes > 0 && threshold > 0) {
-            changes = 0;
-            threshold -= 1;
-            for (i = 0; i < l; i += 1) {
-                if (this.applyRules(tokens[i], 
-                                        tags[i], 
-                                        i, 
-                                        tokens, 
-                                        tags)) {
-                    changes = 1;
-                    i = l;
-                }
-
-            }
+        var i, l = tokens.length;
+        for (i = 0; i < l; i += 1) {
+            this.applyRules(tokens[i], 
+                                    tags[i], 
+                                    i, 
+                                    tokens, 
+                                    tags);
         }
         return tags;
     };

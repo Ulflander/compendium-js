@@ -65,7 +65,7 @@ exports.testYouLack = function(test) {
 
 exports.testGonna = function(test) {
     var expected = [
-            ('PRP VBG TO VB RP').split(' ')
+            ('PRP MD TO VB RP').split(' ')
         ],
         analysis = next.analyse('I gonna give up'),
         actual = [analysis[0].tags];
@@ -76,9 +76,31 @@ exports.testGonna = function(test) {
 
 exports.testWont = function(test) {
     var expected = [
-            ('PRP VBG TO VB RP').split(' ')
+            ('PRP MD RB VB RP').split(' ')
         ],
         analysis = next.analyse('I won\'t give up'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports.testWillContraction = function(test) {
+    var expected = [
+            ('PRP MD VB RP').split(' ')
+        ],
+        analysis = next.analyse('I\'ll give up'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports.testWill = function(test) {
+    var expected = [
+            ('PRP MD VB RP').split(' ')
+        ],
+        analysis = next.analyse('I will give up'),
         actual = [analysis[0].tags];
 
     test.deepEqual(actual, expected);
