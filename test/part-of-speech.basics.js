@@ -117,3 +117,25 @@ exports.testIsContraction = function(test) {
     test.deepEqual(actual, expected);
     test.done();
 };
+
+exports.happyTest = function(test) {
+    var expected = [
+            ('DT VBZ DT JJ NN , PRP MD VB CD NNS IN NN').split(' ')
+        ],
+        analysis = next.analyse('This is a great day, I\'ll buy two bottles of beer'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports.ProperNounInference = function(test) {
+    var expected = [
+            ('DT VBZ WRB NNP VBZ DT JJ NN').split(' ')
+        ],
+        analysis = next.analyse('This is why Mike is an awesome guy'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};

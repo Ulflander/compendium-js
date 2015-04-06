@@ -41,88 +41,88 @@
         
         if (type === PREVTAG) {
             if (index > 0 && tags[index - 1] === rule.c1) {
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 tags[index] = rule.to;
                 return 1;
             }
         } else if (type === NEXTTAG) {
             if (tags[index + 1] === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === PREV1OR2TAG) {
             if (tags[index - 1] === rule.c1 || tags[index - 2] === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === PREVWORD) {
             tmp = tokens[index - 1] || '';
             if (tmp.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === CURRENTWD) {
             if (token.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === WDPREVTAG) {
             if (token.toLowerCase() === rule.c2 && tags[index - 1] === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === NEXT1OR2OR3TAG) {
             if (tags[index + 1] === rule.c1 || tags[index + 2] === rule.c1 || tags[index + 3] === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === NEXT2WD) {
             if (tokens[index + 2] === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === WDNEXTTAG) {
             if (token === rule.c1 && tags[index + 1] === rule.c2) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === PREV1OR2OR3TAG) {
             if (tags[index - 1] === rule.c1 || tags[index - 2] === rule.c1 || tags[index - 3] === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === SURROUNDTAG) {
             if (tags[index - 1] === rule.c1 && tags[index + 1] === rule.c2) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === NEXTWD) {
             tmp = tokens[index + 1] || '';
             if (tmp.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === NEXT1OR2TAG) {
             if (tags[index + 1] === rule.c1 || tags[index + 2] === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === PREV2TAG) {
             if (tags[index - 2] === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === NEXT1OR2WD) {
@@ -130,14 +130,14 @@
             tmp2 = tokens[index + 2] || '';
             if (tmp.toLowerCase() === rule.c1 || tmp2.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === PREV2WD) {
             tmp2 = tokens[index - 2] || '';
             if (tmp2.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         } else if (type === PREV1OR2WD) {
@@ -145,7 +145,7 @@
             tmp2 = tokens[index - 2] || '';
             if (tmp.toLowerCase() === rule.c1 || tmp2.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                console.log(token, rule.from, ' > ', rule.to, type)
+                
                 return 1;
             }
         }
@@ -263,17 +263,17 @@
             if (tag.indexOf('NN') === 0 && i > 0 && tags[i - 1] === 'PRP') {
                 tag = 'VBG';
             }
+            
+            // rule 10, infer a proper noun if noun and capitalized
+            if (tag === 'NN' && token.match(/^[A-Z][a-z]+$/g)) {
+                tag = 'NNP';
+            }
 
             tags[i] = tag;
-            console.log(token, tags[i]);
         }
 
-        // Apply Brill's rules
         pos.apply(sentence, tags);
 
-        for (i = 0; i < l; i += 1) {
-            console.log(sentence[i], tags[i]);
-        }
         return {
             tags: tags,
             sentiment: sentiment,

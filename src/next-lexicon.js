@@ -28,14 +28,22 @@
         }
 
         for (i in compendium) {
-            if (compendium.hasOwnProperty(i)) {
+            if (compendium.hasOwnProperty(i) && typeof compendium[i] === 'object') {
                 item = compendium[i];
                 for (l in item) {
                     if (item.hasOwnProperty(l)) {
-                        result[l] = {
-                            pos: item[l],
-                            sentiment: 0
-                        };
+                        if (typeof item[l] === 'string') {
+                            result[l] = {
+                                pos: item[l],
+                                sentiment: 0
+                            };
+                        } else if (typeof item[l] === 'number') {
+                            result[l] = {
+                                pos: 'CD',
+                                sentiment: 0,
+                                value: item[l]
+                            };
+                        }
                     }
                 }
             }
