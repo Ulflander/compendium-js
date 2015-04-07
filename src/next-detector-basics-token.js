@@ -1,6 +1,6 @@
 (function() {
 
-    next.detect.addDetector('token', function(token, index, sentence) {
+    next.detect.addDetector('t', function(token, index, sentence) {
         var raw = token.raw;
 
         // If acronym

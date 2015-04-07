@@ -64974,7 +64974,7 @@ lightweight JJ NN
 lightyears NNS
 lignite JJ NN
 likable JJ
-like IN JJ NN VB VBP
+like VBP
 like-minded JJ
 liked VBD VBN
 likee VB

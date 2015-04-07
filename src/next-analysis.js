@@ -22,6 +22,7 @@
                 sentiment: 0,
                 politeness: 0
             },
+            entities: [],
             //dependencies: null,
             tokens: [],
             tags: []
@@ -80,7 +81,7 @@
             
             // Apply token level detection
             for (j = 0, m = s.tokens.length; j < m; j += 1) {
-                next.detect.apply('token', s.tokens[j], j, s);
+                next.detect.apply('t', s.tokens[j], j, s);
             }
             
             s.time = Date.now() - d;
@@ -88,7 +89,7 @@
         }
         // For each sentence
         for (i = 0; i < l; i += 1) {
-            next.detect.apply('sentence', res[i], i, res);
+            next.detect.apply('s', res[i], i, res);
         }
         return res;
     };
@@ -99,7 +100,7 @@
         }
 
         var result = analyser.analyse(o);
-        next.detect.apply('text', result);
+        next.detect.apply('p', result);
         return result;
     };
 }());

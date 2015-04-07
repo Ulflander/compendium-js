@@ -7,7 +7,10 @@
 (function() {
     var compendium = {
 
+        // 
         rules: '@@rules',
+
+        suffixes: '@@suffixes',
 
         numbers: {
             'zero': 0,

@@ -1,6 +1,6 @@
 (function() {
     
-    next.detect.addDetector('sentence', function(sentence, index, sentences) {
+    next.detect.addDetector('s', function(sentence, index, sentences) {
         var i, l = sentence.length;
     });
 }());

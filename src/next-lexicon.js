@@ -1,7 +1,6 @@
 
 
-// Parses the lexicon, using raw one and 
-// dictionnaries
+// Parses the lexicon and augment it using compendium
 (function() {
     var raw = "@@lexicon",
         parser = {};
@@ -73,8 +72,24 @@
         return result;
     };
 
+    // Parse suffixes
+    parser.suffixes = function(raw) {
+        raw = raw.split('\t');
+        var i, l = raw.length, result = [], line;
+
+        for (i = 0; i < l; i += 1) {
+            line = raw[i].split(' ');
+            result.push({
+                regexp: new RegExp('^.+' + line[0] + '$', 'gi'),
+                pos: line[1]
+            });
+        }
+        return result;
+    };
+
     next.parser = parser;
-    next.compendium.rules = parser.brills(next.compendium.rules);
     next.lexicon = parser.parse(raw);
     
+    next.compendium.rules = parser.brills(next.compendium.rules);
+    next.compendium.suffixes = parser.suffixes(next.compendium.suffixes);
 }());

@@ -16,7 +16,7 @@
     var uncountable_words = [
             'tuna', 'trout', 'spacecraft', 'salmon', 'halibut', 'aircraft',
             'equipment', 'information', 'rice', 'money', 'species', 'series',
-            'fish', 'sheep', 'moose', 'deer', 'news'
+            'fish', 'sheep', 'moose', 'deer', 'news', 'asbestos'
         ],
 
         /*

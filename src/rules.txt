@@ -1,3 +1,6 @@
+NN VB 5 would
+NN VB 5 could
+NN VBG 2 PRP
 IN RP 8 VB up
 VBG MD 6 \'ll
 VBG MD 3 RB

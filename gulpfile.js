@@ -31,7 +31,7 @@ function lexicon(level) {
     }
 
     for (i in next.compendium) {
-        if (next.compendium.hasOwnProperty(i)) {
+        if (next.compendium.hasOwnProperty(i) && typeof next.compendium === 'object') {
             for (j in next.compendium[i]) {
                 if (next.compendium[i].hasOwnProperty(j)) {
                     compendium.push(j);
@@ -51,9 +51,9 @@ function lexicon(level) {
 
     for (i = 0, l = lex.length; i < l; i += 1) {
         line = lex[i].split(' ');
-        token = line[0];
+        token = line[0].trim();
         idx = sts.indexOf(token);
-
+        token === 'lazy' ? console.log(idx) : null;
         if (compendium.indexOf(token) > -1) {
             continue;
         }
@@ -62,35 +62,36 @@ function lexicon(level) {
         lex[i] = line[0] + ' ' + line[1];
         if (idx > -1) {
             lex[i] += ' ' + sentiments[idx][1];
-        }
+        } else {
 
-        // Taken in account by a rule
-        if (level > 0 && token.length > 3 && token.slice(token.length - 2) === 'ed' && line[1] === 'VBN') {
-            skipped += 1;
-            continue;
-        }
+            // Taken in account by a rule
+            if (level > 0 && token.length > 3 && token.slice(token.length - 2) === 'ed' && line[1] === 'VBN') {
+                skipped += 1;
+                continue;
+            }
 
-        // Taken in account by a rule
-        if (level > 0 && token.length > 3 && token.slice(token.length - 3) === 'ing' && line[1] === 'VBG') {
-            skipped += 1;
-            continue;
-        }
+            // Taken in account by a rule
+            if (level > 0 && token.length > 3 && token.slice(token.length - 3) === 'ing' && line[1] === 'VBG') {
+                skipped += 1;
+                continue;
+            }
 
-        if (line[1].indexOf('NN') === 0) {
-            skipped += 1;
-            continue;   
-        }
+            if (line[1].indexOf('NN') === 0) {
+                skipped += 1;
+                continue;   
+            }
 
-        // Minimal mode: we crosscheck with the 10000 most commons english words
-        // and all the nouns
-        if (level === 2 && idx === -1 && 
-            ((token.match(/[a-z]/g) && crosscheck.indexOf(token) === -1)) && token.indexOf('\'') === -1) {
-            skipped += 1;
-            continue;
+            // Minimal mode: we crosscheck with the 10000 most commons english words
+            // and all the nouns
+            if (level === 2 && idx === -1 && 
+                ((token.match(/[a-z]/g) && crosscheck.indexOf(token) === -1)) && token.indexOf('\'') === -1) {
+                skipped += 1;
+                continue;
+            }
         }
 
         // Common mode: we expunge tokens with uppercase letters
-        if (level > 0 && lex[i][0].toLowerCase() === lex[i][0] && lex[i].indexOf('-') === -1) {
+        if (level > 0 && token.toLowerCase() === token && token.indexOf('-') === -1) {
             mini.push(lex[i]);
         } else if (level > 0) {
             skipped += 1;
@@ -113,6 +114,7 @@ gulp.task('build_full', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
         l = fs.readFileSync('build/lexicon-full.txt'),
+        s = fs.readFileSync('src/suffixes.txt').toString().split('\n').join('\t'),
         r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
@@ -121,6 +123,7 @@ gulp.task('build_full', function() {
             .pipe(insert.append(f))
             .pipe(replace('@@lexicon', l))
             .pipe(replace('@@rules', r))
+            .pipe(replace('@@rules', s))
             .pipe(gulp.dest('build/'))
             .pipe(uglify())
             .pipe(gulp.dest('dist/'));
@@ -130,6 +133,7 @@ gulp.task('build_minimal', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
         l = fs.readFileSync('build/lexicon-minimal.txt'),
+        s = fs.readFileSync('src/suffixes.txt').toString().split('\n').join('\t'),
         r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
@@ -137,6 +141,7 @@ gulp.task('build_minimal', function() {
             .pipe(insert.prepend(h))
             .pipe(insert.append(f))
             .pipe(replace('@@lexicon', l))
+            .pipe(replace('@@suffixes', s))
             .pipe(replace('@@rules', r))
             .pipe(gulp.dest('build/'))
             .pipe(uglify())

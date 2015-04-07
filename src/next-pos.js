@@ -29,7 +29,9 @@
         PREV1OR2WD = 21,
 
         rules = next.compendium.rules,
-        rulesLength = rules.length
+        rulesLength = rules.length,
+        suffixes = next.compendium.suffixes,
+        suffixesLength = suffixes.length;
 
     pos.applyRule = function(rule, token, tag, index, tokens, tags) {
         if (rule.from !== tag) {
@@ -41,112 +43,95 @@
         
         if (type === PREVTAG) {
             if (index > 0 && tags[index - 1] === rule.c1) {
-                
                 tags[index] = rule.to;
-                return 1;
+                return;
             }
         } else if (type === NEXTTAG) {
             if (tags[index + 1] === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === PREV1OR2TAG) {
             if (tags[index - 1] === rule.c1 || tags[index - 2] === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === PREVWORD) {
             tmp = tokens[index - 1] || '';
             if (tmp.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === CURRENTWD) {
             if (token.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === WDPREVTAG) {
             if (token.toLowerCase() === rule.c2 && tags[index - 1] === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === NEXT1OR2OR3TAG) {
             if (tags[index + 1] === rule.c1 || tags[index + 2] === rule.c1 || tags[index + 3] === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === NEXT2WD) {
             if (tokens[index + 2] === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === WDNEXTTAG) {
             if (token === rule.c1 && tags[index + 1] === rule.c2) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === PREV1OR2OR3TAG) {
             if (tags[index - 1] === rule.c1 || tags[index - 2] === rule.c1 || tags[index - 3] === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === SURROUNDTAG) {
             if (tags[index - 1] === rule.c1 && tags[index + 1] === rule.c2) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === NEXTWD) {
             tmp = tokens[index + 1] || '';
             if (tmp.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === NEXT1OR2TAG) {
             if (tags[index + 1] === rule.c1 || tags[index + 2] === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === PREV2TAG) {
             if (tags[index - 2] === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === NEXT1OR2WD) {
             tmp = tokens[index + 1] || '';
             tmp2 = tokens[index + 2] || '';
             if (tmp.toLowerCase() === rule.c1 || tmp2.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === PREV2WD) {
             tmp2 = tokens[index - 2] || '';
             if (tmp2.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         } else if (type === PREV1OR2WD) {
             tmp = tokens[index - 1] || '';
             tmp2 = tokens[index - 2] || '';
             if (tmp.toLowerCase() === rule.c1 || tmp2.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
-                
-                return 1;
+                return;
             }
         }
 
@@ -154,11 +139,10 @@
     };
 
     // Apply all rules on given token/tag combo
-    pos.applyRules = function(token, tag, index, tokens, tags) {
+    pos.applyRules = function(token, index, tokens, tags) {
         var i;
         for (i = 0; i < rulesLength; i += 1) {
-            if (pos.applyRule(rules[i], token, tag, index, tokens, tags)) {
-                return;
+            if (pos.applyRule(rules[i], token, tags[index], index, tokens, tags)) {
             }
         }
     };
@@ -167,13 +151,20 @@
     pos.apply = function(tokens, tags) {
         var i, l = tokens.length;
         for (i = 0; i < l; i += 1) {
-            this.applyRules(tokens[i], 
-                                    tags[i], 
-                                    i, 
-                                    tokens, 
-                                    tags);
+            this.applyRules(tokens[i], i, tokens, tags);
         }
         return tags;
+    };
+
+    pos.testSuffixes = function(token) {
+        var i;
+        for (i = 0; i < suffixesLength; i += 1) {
+            if (suffixes[i].regexp.test(token)) {
+                return suffixes[i].pos;
+            }
+        }
+
+        return null;
     };
 
     pos.tag = function(sentence) {
@@ -188,8 +179,10 @@
             suffix,
             confidence = l;
 
-        // Basic tags
+        // Basic tagging based on lexicon and 
+        // suffixes
         for (i = 0; i < l; i += 1) {
+
             token = sentence[i];
             // Attempt to get pos in a case sensitive way
             tag = next.lexicon[token];
@@ -199,14 +192,28 @@
                 tag = next.lexicon[token.toLowerCase()];
             }
 
+            // Found in lexicon!
             if (!!tag) {
                 tags.push(tag.pos);
                 sentiment[i] = tag.sentiment;
-            } else {
-                tags.push('NN');
-                confidence -= 1;
-                sentiment[i] = 0;
+                continue;
+
             }
+
+            // Last chance before rules being applied:
+            // test common suffixes.
+            tag = pos.testSuffixes(token);
+            if (!!tag) {
+                confidence -= 0.5;
+            }
+
+            // We default to NN if still no tag
+            if (!tag) {
+                confidence -= 1;
+                tag = 'NN';
+            }
+            tags.push(tag);
+            sentiment[i] = 0;
         }
 
         // Transformational rules
@@ -219,54 +226,29 @@
             suffix = tl > 3 ? token.slice(tl - 2) : '';
             tag = tags[i];
 
-            // rule 1: DT, {VBD | VBP} --> DT, NN
-            if (i > 0 && tags[i - 1] === 'DT' && (tag === 'VBD' || tag === 'VBP' || tag === 'VB')) {
-                tag = 'NN';
-            }
-            // rule 2: convert anything to a number (CD) if token matches a number
+            // Float numbers
             if (token !== '.' && token.match(/^[0-9\.]+$/g)) {
                 tag = 'CD';
             }
-            // rule 3: convert a noun to a past participle if words.get(i) ends with 'ed'
-            if (tag.indexOf('N') === 0 && tl > 3 && token.indexOf('ed') === tl - 2) {
-                tag = 'VBN';
-                confidence += 1;
+
+            if (tag.indexOf('N') === 0 && tl > 3) {
+                // Convert a noun to a past participle if words.get(i) ends with 'ed'
+                if (token.indexOf('ed') === tl - 2) {
+                    tag = 'VBN';
+                // Convert a common noun to a present participle verb (i.e., a gerand)
+                } else if (token.indexOf('ing') === tl - 3) {
+                    tag = 'VBG';
+                }
             }
 
-            // rule 4: convert any type to adverb if it ends in 'ly';
-            if (suffix === 'ly') {
-                tag = 'RB';
-            }
-
-            // rule 5: convert a common noun (NN or NNS) to a adjective if it ends with 'al'
-            if (tag.indexOf('NN') === 0 && suffix === 'al') {
-                tag = 'JJ';
-            }
-
-            // rule 6: convert a noun to a verb if the preceeding word is 'would'
-            if (tag.indexOf('NN') === 0 && (previous === 'would' || previous === 'could')) {
-                tag = 'VB';
-            }
-
-            // rule 7: if a word has been categorized as a common noun and it ends with 's',
-            // then set its type to plural common noun (NNS)
-            if (tag.indexOf('NN') === 0 && isPlural(token)) {
-                tag = 'NNS';
-            }
-
-            // rule 8: convert a common noun to a present participle verb (i.e., a gerand)
-            if (tag.indexOf('NN') === 0 && tl > 3 && token.indexOf('ing') === tl - 3) {
-                tag = 'VBG';
-            }
-
-            // rule 9: convert a common noun to  verb if a personal pronoun before
-            if (tag.indexOf('NN') === 0 && i > 0 && tags[i - 1] === 'PRP') {
-                tag = 'VBG';
-            }
-            
-            // rule 10, infer a proper noun if noun and capitalized
-            if (tag === 'NN' && token.match(/^[A-Z][a-z]+$/g)) {
+            // Infer a proper noun if noun or adjective capitalized
+            if ((tag === 'NN' || tag === 'JJ') && token.match(/^[A-Z][a-z\.]+$/g)) {
                 tag = 'NNP';
+            }
+
+            // Use inflector to detect plural nouns
+            if (tag === 'NN' && isPlural(token)) {
+                tag = 'NNS';
             }
 
             tags[i] = tag;

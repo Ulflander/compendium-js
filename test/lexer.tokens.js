@@ -36,23 +36,17 @@ exports.cannotSentence = function(test){
     test.done();
 };
 
-
-
-
 exports.oneAcronymSentence = function(test){
     test.deepEqual([['Welcome', 'in', 'the', 'U.S.', 'my', 'friend', '!!']], 
                     lexer.lex('Welcome in the U.S. my friend!!'));
     test.done();
 };
 
-
 exports.currenciesAndNumbersSentence = function(test){
     test.deepEqual([['This', 'will', 'cost', 'you', 'US', '$', '589.05', ',', 'almost', '600', '€', 'or', '400', '£', '-', '11100', '¥']], 
                     lexer.lex('This will cost you US$589.05, almost 600€ or 400£ - 11100¥'));
     test.done();
 };
-
-
 
 exports.tricky = function(test){
     test.deepEqual([

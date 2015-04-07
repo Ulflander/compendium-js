@@ -1,11 +1,11 @@
 (function() {
     var detectors = {
             // Detectors that work at a token level
-            token: [],
+            t: [],
             // Detectors at the sentence level
-            sentence: [],
+            s: [],
             // High level detector
-            text: []
+            p: []
         },
         detect = {};
 

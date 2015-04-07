@@ -125,7 +125,7 @@
                 continue;
             }
 
-            // If abbreviation, merge back final .
+            // If abbreviation, merge back .
             if (tok === '.' && count > 0 && abbreviations.indexOf(previous.toLowerCase()) > -1) {
                 in_acronym = false;
                 result[count - 1] += tok;
