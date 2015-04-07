@@ -2,7 +2,35 @@
 
 Natural Language Processing for Node.js and the browser. 
 
-100k only for the browser version.
+100k only for the browser package.
+
+Currently in Alpha version.
+
+## Milestones
+
+#### Version 1
+
+- ✔ Tokenization
+- ✔ Part-of-Speech tagging
+- ✔ Inflector (singularization, pluralization)
+- ✔ Acronyms detection
+- o Negation detection
+- o Tense detection
+- o Profiling (sentiment, politeness, type of sentence)
+    + ✔ Token scoring
+    + o Scoring consolidation
+    + o Politeness
+    + o Type of sentence
+- o Dependency parsing
+- o Example/demo page
+- o Date extraction
+- ✔ Entities extraction
+- o Use a trie for lexicon querying on runtime
+
+#### Version 2
+
+- o Dynamic loading of lexicon, w/ versioning and cache using Application Cache
+- o Use from a Web Worker (threaded processing)
 
 ## About the Part-of-Speech tagging
 
@@ -135,32 +163,6 @@ Use `gulp` command to build and watch the source files for changes for live rebu
 #### Test
 
 Next NLP uses `nodeunit` for running the tests. Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
-
-## Milestones
-
-#### Version 1
-
-- ✔ Tokenization
-- ✔ Part-of-Speech tagging
-- ✔ Inflector (singularization, pluralization)
-- ✔ Acronyms detection
-- o Negation detection
-- o Tense detection
-- o Profiling (sentiment, politeness, type of sentence)
-    + ✔ Token scoring
-    + o Scoring consolidation
-    + o Politeness
-    + o Type of sentence
-- o Dependency parsing
-- o Example/demo page
-- o Date extraction
-- ✔ Entities extraction
-- o Use a trie for lexicon querying on runtime
-
-#### Version 2
-
-- o Dynamic loading of lexicon, w/ versioning and cache using Application Cache
-- o Use from a Web Worker (threaded processing)
 
 
 ## Tags definition
