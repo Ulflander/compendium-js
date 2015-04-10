@@ -3,7 +3,7 @@
 
     var pos = {},
         // Shortcuts
-        isPlural = next.inflector.isPlural,
+        isPlural = compendium.inflector.isPlural,
 
         // Brill's conditions
         PREV1OR2TAG = 1,
@@ -28,9 +28,9 @@
         RBIGRAM = 20,
         PREV1OR2WD = 21,
 
-        rules = next.compendium.rules,
+        rules = compendium.compendium.rules,
         rulesLength = rules.length,
-        suffixes = next.compendium.suffixes,
+        suffixes = compendium.compendium.suffixes,
         suffixesLength = suffixes.length;
 
     pos.applyRule = function(rule, token, tag, index, tokens, tags) {
@@ -185,11 +185,11 @@
 
             token = sentence[i];
             // Attempt to get pos in a case sensitive way
-            tag = next.lexicon[token];
+            tag = compendium.lexicon[token];
 
             // If none, try with lower cased
             if (!tag && token.match(/[A-Z]/g)) {
-                tag = next.lexicon[token.toLowerCase()];
+                tag = compendium.lexicon[token.toLowerCase()];
             }
 
             // Found in lexicon!
@@ -263,7 +263,7 @@
         };
     };
 
-    next.pos = pos;
-    next.tag = pos.tag;
+    compendium.pos = pos;
+    compendium.tag = pos.tag;
 
 }());

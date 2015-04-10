@@ -1,8 +1,8 @@
-# Next NLP
+# Compendium
 
-Natural Language Processing for Node.js and the browser. 
+English Natural Language Processing for Node.js and the browser. 
 
-100k only for the browser package.
+100k only for the browser package. MIT licensed.
 
 Currently in Alpha version.
 

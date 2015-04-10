@@ -1,21 +1,28 @@
 
-var next = require('../dist/next-nlp.minimal.js'),
-    lexer = next.lexer;
+var compendium = require('../dist/compendium.minimal.js'),
+    lexer = compendium.lexer;
 
 
-exports.oneBasicSentence = function(test){
+exports['The quick brown fox jumps over the lazy dog.'] = function(test){
     test.deepEqual(['The quick brown fox jumps over the lazy dog.'], 
                     lexer.sentences('The quick brown fox jumps over the lazy dog.'));
     test.done();
 };
 
-exports.twoBasicSentences = function(test){
+exports['This is my sentence. This is another sentence.'] = function(test){
     test.deepEqual(['This is my sentence.', 'This is another sentence.'], 
                     lexer.sentences('This is my sentence. This is another sentence.'));
     test.done();
 };
 
-exports.commonSentenceSeparators = function(test){
+exports['I am so happy!!! This is an awesome day!!!?!!'] = function(test){
+    test.deepEqual(['I am so happy!!!', 'This is an awesome day!!!?!!'], 
+                    lexer.sentences('I am so happy!!! This is an awesome day!!!?!!'));
+    test.done();
+};
+
+exports['This is my sentence! This is another sentence? ' +
+        'This is a third sentence... And fourth one.'] = function(test){
     test.deepEqual(['This is my sentence!', 
                     'This is another sentence?', 
                     'This is a third sentence...', 
@@ -26,13 +33,13 @@ exports.commonSentenceSeparators = function(test){
     test.done();
 };
 
-exports.basicAbbrevationOneSentence = function(test){
+exports['I\'m Dr. Jekyll'] = function(test){
     test.deepEqual(['I\'m Dr. Jekyll'], 
                     lexer.sentences('I\'m Dr. Jekyll'));
     test.done();
 };
 
-exports.stanfordNlpExample = function(test){
+exports['Another ex-Golden Stater, Paul [...]'] = function(test){
     test.deepEqual(['Another ex-Golden Stater, Paul Stankowski from Oxnard, is contending for a berth on the U.S. Ryder Cup team after winning his first PGA Tour event last year and staying within three strokes of the lead through three rounds of last month\'s U.S. Open.', 
             'H.J. Heinz Company said it completed the sale of its Ore-Ida frozen-food business catering to the service industry to McCain Foods Ltd. for about $500 million.',
             'It\'s the first group action of its kind in Britain and one of only a handful of lawsuits against tobacco companies outside the U.S.',
@@ -44,7 +51,7 @@ exports.stanfordNlpExample = function(test){
     test.done();
 };
 
-exports.trickyOne = function(test) {
+exports['Hi there Dr. Joe, the price is 4.59 for N.A.S.A. Ph.Ds. I hope that\'s fine, etc. and you can attend Feb. 8th. Bye'] = function(test) {
     test.deepEqual([
         'Hi there Dr. Joe, the price is 4.59 for N.A.S.A. Ph.Ds.',
         'I hope that\'s fine, etc. and you can attend Feb. 8th.',

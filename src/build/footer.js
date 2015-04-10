@@ -1,2 +1,2 @@
 
-}(typeof exports === 'undefined'? this['next']={}: exports));
+}(typeof exports === 'undefined'? this['compendium']={}: exports));

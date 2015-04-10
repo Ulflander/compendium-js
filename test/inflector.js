@@ -1,6 +1,6 @@
 
-var next = require('../dist/next-nlp.minimal.js'),
-    inflector = next.inflector;
+var compendium = require('../dist/compendium.minimal.js'),
+    inflector = compendium.inflector;
 
 
 

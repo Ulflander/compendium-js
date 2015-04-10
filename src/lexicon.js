@@ -13,7 +13,7 @@
             l = arr.length,
             m,
             result = {},
-            compendium = next.compendium,
+            cpd = compendium.compendium,
             item;
 
         for (i = 0; i < l; i += 1) {
@@ -26,9 +26,9 @@
             };
         }
 
-        for (i in compendium) {
-            if (compendium.hasOwnProperty(i) && typeof compendium[i] === 'object') {
-                item = compendium[i];
+        for (i in cpd) {
+            if (cpd.hasOwnProperty(i) && typeof cpd[i] === 'object') {
+                item = cpd[i];
                 for (l in item) {
                     if (item.hasOwnProperty(l)) {
                         if (typeof item[l] === 'string') {
@@ -87,9 +87,9 @@
         return result;
     };
 
-    next.parser = parser;
-    next.lexicon = parser.parse(raw);
+    compendium.parser = parser;
+    compendium.lexicon = parser.parse(raw);
     
-    next.compendium.rules = parser.brills(next.compendium.rules);
-    next.compendium.suffixes = parser.suffixes(next.compendium.suffixes);
+    compendium.compendium.rules = parser.brills(compendium.compendium.rules);
+    compendium.compendium.suffixes = parser.suffixes(compendium.compendium.suffixes);
 }());

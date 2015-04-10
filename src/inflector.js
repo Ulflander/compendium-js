@@ -150,6 +150,6 @@
         return apply(str, plural_rules);
     };
 
-    next.inflector = inflector;
+    compendium.inflector = inflector;
 
 }());

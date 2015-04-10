@@ -5,7 +5,7 @@
  */
 
 (function() {
-    var compendium = {
+    var cpd = {
 
         // 
         rules: '@@rules',
@@ -85,6 +85,10 @@
             'exclusively': 'RB'
         },
 
+        breakpoints: {
+            
+        },
+        
         // Personal pronouns
         pps: {
             'i': 'PRP',
@@ -99,5 +103,5 @@
     };
 
 
-    next.compendium = compendium;
+    compendium.compendium = cpd;
 }());

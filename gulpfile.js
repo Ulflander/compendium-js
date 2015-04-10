@@ -12,7 +12,7 @@ function lexicon(level) {
     var lex = fs.readFileSync('src/data/lexicon.txt').toString(),
         sentiments = fs.readFileSync('src/data/sentiments.txt').toString(),
         // Use next compendium to filter lexicon
-        next = require('./'),
+        compendium = require('./'),
         i,
         l,
         j,
@@ -30,10 +30,10 @@ function lexicon(level) {
         crosscheck = fs.readFileSync('src/data/google-10000.txt').toString().split('\n');
     }
 
-    for (i in next.compendium) {
-        if (next.compendium.hasOwnProperty(i) && typeof next.compendium === 'object') {
-            for (j in next.compendium[i]) {
-                if (next.compendium[i].hasOwnProperty(j)) {
+    for (i in compendium.compendium) {
+        if (compendium.compendium.hasOwnProperty(i) && typeof compendium.compendium === 'object') {
+            for (j in compendium.compendium[i]) {
+                if (compendium.compendium[i].hasOwnProperty(j)) {
                     compendium.push(j);
                 }
             }
@@ -118,7 +118,7 @@ gulp.task('build_full', function() {
         r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
-            .pipe(concat('next-nlp.full.js'))
+            .pipe(concat('compendium.js'))
             .pipe(insert.prepend(h))
             .pipe(insert.append(f))
             .pipe(replace('@@lexicon', l))
@@ -137,7 +137,7 @@ gulp.task('build_minimal', function() {
         r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
-            .pipe(concat('next-nlp.minimal.js'))
+            .pipe(concat('compendium.minimal.js'))
             .pipe(insert.prepend(h))
             .pipe(insert.append(f))
             .pipe(replace('@@lexicon', l))

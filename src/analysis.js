@@ -22,6 +22,7 @@
                 sentiment: 0,
                 politeness: 0
             },
+            has_negation: false,
             entities: [],
             //dependencies: null,
             tokens: [],
@@ -29,15 +30,17 @@
         };
     };
 
-    analyser.createToken = function(str, pos, sentiment) {
+    analyser.createToken = function(raw, pos, sentiment) {
         return {
-            raw: str,
+            raw: raw,
             pos: pos || '',
             sentiment: sentiment,
             is_acronym: false,
+            is_breakpoint: false,
             is_plural: pos === 'NNS',
-            // is_negated: false,
-            // is_verb: false,
+            is_negated: false,
+            norm: typeof raw === 'string' ? raw.toLowerCase() : raw,
+            is_verb: pos.indexOf('VB') === 0
             // qualified_by: [],
             // applies_to: []
         };
@@ -74,14 +77,14 @@
             d = Date.now();
 
             // Get part of speech
-            pos = next.tag(sentences[i]);
+            pos = compendium.tag(sentences[i]);
 
             // Convert to object
             s = analyser.toObject(sentences[i], pos);
             
             // Apply token level detection
             for (j = 0, m = s.tokens.length; j < m; j += 1) {
-                next.detect.apply('t', s.tokens[j], j, s);
+                compendium.detect.apply('t', s.tokens[j], j, s);
             }
             
             s.time = Date.now() - d;
@@ -89,18 +92,18 @@
         }
         // For each sentence
         for (i = 0; i < l; i += 1) {
-            next.detect.apply('s', res[i], i, res);
+            compendium.detect.apply('s', res[i], i, res);
         }
         return res;
     };
 
-    next.analyse = function(o) {
+    compendium.analyse = function(o) {
         if (typeof o === 'string') {
-            o = next.lex(o);
+            o = compendium.lex(o);
         }
 
         var result = analyser.analyse(o);
-        next.detect.apply('p', result);
+        compendium.detect.apply('p', result);
         return result;
     };
 }());

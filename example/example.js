@@ -49,7 +49,7 @@
 
     var $ = document.querySelector;
 
-    var analysis = next.analyse(document.querySelector('#pos-demo-input').value),
+    var analysis = compendium.analyse(document.querySelector('#pos-demo-input').value),
         p = buildHtml(analysis, document.querySelector('#pos-demo-result'));
 
 

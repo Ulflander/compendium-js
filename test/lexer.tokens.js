@@ -1,54 +1,65 @@
 
-var next = require('../dist/next-nlp.minimal.js'),
-    lexer = next.lexer;
+var compendium = require('../dist/compendium.minimal.js'),
+    lexer = compendium.lexer;
 
 
-exports.oneBasicSentence = function(test){
+exports['The quick brown fox jumps over the lazy dog.'] = function(test){
     test.deepEqual([['The', 'quick', 'brown', 'fox', 'jumps', 'over', 'the', 'lazy', 'dog', '.']], 
                     lexer.lex('The quick brown fox jumps over the lazy dog.'));
     test.done();
 };
 
-exports.isContractionSentence = function(test){
+exports['It\'s good'] = function(test){
     test.deepEqual([['It', '\'s', 'good']], 
                     lexer.lex('It\'s good'));
     test.done();
 };
+exports['I\'m good'] = function(test){
+    test.deepEqual([['I', '\'m', 'good']], 
+                    lexer.lex('I\'m good'));
+    test.done();
+};
 
-exports.isntContractionSentence = function(test){
+exports['It isn\'t good'] = function(test){
     test.deepEqual([['It', 'is', 'n\'t', 'good']], 
                     lexer.lex('It isn\'t good'));
     test.done();
 };
-exports.wontContractionSentence = function(test){
+exports['It won\'t be good'] = function(test){
     test.deepEqual([['It', 'wo', 'n\'t', 'be', 'good']], 
                     lexer.lex('It won\'t be good'));
     test.done();
 };
-exports.cantContractionSentence = function(test){
+exports['It can\'t be good'] = function(test){
     test.deepEqual([['It', 'ca', 'n\'t', 'be', 'good']], 
                     lexer.lex('It can\'t be good'));
     test.done();
 };
-exports.cannotSentence = function(test){
+exports['It cannot be good'] = function(test){
     test.deepEqual([['It', 'can', 'not', 'be', 'good']], 
                     lexer.lex('It cannot be good'));
     test.done();
 };
 
-exports.oneAcronymSentence = function(test){
+exports['Welcome in the U.S. my friend!!'] = function(test){
     test.deepEqual([['Welcome', 'in', 'the', 'U.S.', 'my', 'friend', '!!']], 
                     lexer.lex('Welcome in the U.S. my friend!!'));
     test.done();
 };
 
-exports.currenciesAndNumbersSentence = function(test){
+exports['I shouldn\'t solely work, I should hard work'] = function(test){
+    test.deepEqual([['I', 'should', 'n\'t', 'solely', 'work', ',', 'I', 'should', 'hard', 'work']], 
+                    lexer.lex('I shouldn\'t solely work, I should hard work'));
+    test.done();
+};
+
+exports['This will cost you US$589.05, almost 600€ or 400£ - 11100¥'] = function(test){
     test.deepEqual([['This', 'will', 'cost', 'you', 'US', '$', '589.05', ',', 'almost', '600', '€', 'or', '400', '£', '-', '11100', '¥']], 
                     lexer.lex('This will cost you US$589.05, almost 600€ or 400£ - 11100¥'));
     test.done();
 };
 
-exports.tricky = function(test){
+exports['Hi there Dr. Joe, the price is 4.59 for N.A.S.A. Ph.Ds.! I hope that\'s fine, etc. and you can attend Feb. 8th. Bye'] = function(test){
     test.deepEqual([
         ['Hi', 'there', 'Dr.', 'Joe', ',', 'the', 'price', 'is', '4.59', 'for', 'N.A.S.A.', 'Ph.', 'Ds.', '!'],
         ['I', 'hope', 'that', '\'s', 'fine', ',', 'etc.', 'and', 'you', 'can', 'attend', 'Feb.', '8th', '.'],

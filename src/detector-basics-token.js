@@ -1,6 +1,6 @@
 (function() {
 
-    next.detect.addDetector('t', function(token, index, sentence) {
+    compendium.detect.addDetector('t', function(token, index, sentence) {
         var raw = token.raw;
 
         // If acronym

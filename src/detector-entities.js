@@ -2,7 +2,7 @@
     
     // Entity detection: 
     // consolidate NNP and NNPS 
-    next.detect.addDetector('s', function(sentence, index, sentences) {
+    compendium.detect.addDetector('s', function(sentence, index, sentences) {
         var i, l = sentence.length,
             entity;
 

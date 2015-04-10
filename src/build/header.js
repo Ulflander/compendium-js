@@ -1,3 +1,3 @@
-(function(next){
+(function(compendium){
 
     'use strict';

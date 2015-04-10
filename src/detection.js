@@ -28,6 +28,6 @@
         }
     };
 
-    next.detect = detect;
+    compendium.detect = detect;
     
 }());

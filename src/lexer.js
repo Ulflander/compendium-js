@@ -35,7 +35,7 @@
 
         split_token_regexp = /([\W])/g,
 
-        contractions = ['s', 't', 'll', 've', 'd'],
+        contractions = ['s', 'm', 't', 'll', 've', 'd'],
 
 
 
@@ -111,16 +111,11 @@
             } else {
                 next = '';
             }
-
-            // If dot in float
-            if (tok === '.' && previous.match(/^[0-9]+$/i) && next.match(/^[0-9]+$/i)) {
+            
+            // If dot in float or full float
+            if ((tok === '.' && previous.match(/^[0-9]+$/i) && next.match(/^[0-9]+$/i)) ||
+                tok.match(/^[0-9]+$/i) && previous.match(/^[0-9]+\.$/i)) {
                 in_acronym = false;
-                result[count - 1] += tok;
-                continue;
-            }
-
-            // If float
-            if (tok.match(/^[0-9]+$/i) && previous.match(/^[0-9]+\.$/i)) {
                 result[count - 1] += tok;
                 continue;
             }
@@ -194,7 +189,7 @@
         return sentences;
     };
 
-    next.lexer = lexer;
-    next.lex = lexer.lex;
+    compendium.lexer = lexer;
+    compendium.lex = lexer.lex;
 
 }());
