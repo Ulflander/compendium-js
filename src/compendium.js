@@ -7,6 +7,59 @@
 (function() {
     var cpd = {
 
+        // Thanks to https://github.com/spencermountain/nlp_compromise
+        abbrs: [
+            //honourifics
+            "jr", "mr", "mrs", "ms", "dr", "prof", "sr", "sen", "corp", "rep", 
+            "gov", "atty", "supt", "det", "rev", "col", "gen", "lt", 
+            "cmdr", "adm", "capt", "sgt", "cpl", "maj", "miss", "misses", 
+            "mister", "sir", "esq", "mstr", "phd", "adj", "adv", "asst", "bldg", 
+            "brig", "comdr", "hon", "messrs", "mlle", "mme", "op", "ord", "pvt", 
+            "reps", "res", "sens", "sfc", "surg", "ph", "ds",
+            //common abbreviations
+            "arc", "al", "ave", "blvd", "cl", "ct", "cres", "exp", "rd", "st", 
+            "dist", "mt", "ft", "fy", "hwy", "la", "pd", "pl", "plz", "tce", 
+            "vs", "etc", "esp", "llb", "md", "bl", "ma", "ba", "lit", "fl", 
+            "ex", "eg",
+            //place abbrevs
+            "ala", "ariz", "ark", "cal", "calif", "col", "colo", "conn", "del", 
+            "fed", "fla", "ga", "ida", "id", "ill", "ind", "ia", "kan", "kans", 
+            "ken", "ky", "la", "me", "md", "mass", "mich", "minn", "miss", "mo", 
+            "mont", "neb", "nebr", "nev", "mex", "okla", "ok", "ore", "penna", 
+            "penn", "pa", "dak", "tenn", "tex", "ut", "vt", "va", "wash", "wis", 
+            "wisc", "wy", "wyo", "usafa", "alta", "ont", "que", "sask", "yuk",
+            //date abbrevs
+            "jan", "feb", "mar", "apr", "jun", "jul", "aug", "sep", "oct", "nov", "dec", "sept", "sep",
+            //org abbrevs
+            "dept", "univ", "assn", "bros", "inc", "ltd", "co", "corp",
+            //proper nouns with exclamation marks
+            "yahoo", "joomla", "jeopardy"
+        ],
+
+        // Abbreviations replacement
+        abbrs_rpl: [
+            "junior",
+            "mister",
+            "",
+            "miss",
+            "doctor",
+            "professor",
+            "senior",
+            "senator",
+            "corporation",
+            "republican",
+            "governor",
+            "", // attorney
+            "", // supt
+            "", // det
+            "", // rev
+            "colonel",
+            "general",
+            "lieutenant",
+            "", // cmdr
+
+        ],
+
         // 
         rules: '@@rules',
 
@@ -88,16 +141,11 @@
         breakpoints: {
             
         },
-        
+
         // Personal pronouns
         pps: {
             'i': 'PRP',
             'you': 'PRP'
-        },
-
-        // Abbreviations
-        abbrs: {
-
         }
 
     };

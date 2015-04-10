@@ -20,9 +20,11 @@ exports['I\'m John but I\'m not happy'] = function(test){
 
 
 exports['I\'m happy but not today'] = function(test){
-    var analyse = compendium.analyse('I\'m John but I\'m not happy');
+    var analysis = compendium.analyse('I\'m John but I\'m not happy');
 
     test.equal(analysis[0].tokens[3].is_breakpoint, false);
     test.done();
 };
+
+
 

@@ -8,6 +8,7 @@ eous JJ
 ish JJ
 ive JJ
 less JJ
-[ae]delic JJ
+edelic JJ
+adelic JJ
 ly RB
 like JJ

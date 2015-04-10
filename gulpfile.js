@@ -65,7 +65,7 @@ function lexicon(level) {
         } else {
 
             // Taken in account by a rule
-            if (level > 0 && token.length > 3 && token.slice(token.length - 2) === 'ed' && line[1] === 'VBN') {
+            if (level > 0 && token.length > 3 && token.slice(token.length - 2) === 'ed' && line[1].indexOf('VB') === 0) {
                 skipped += 1;
                 continue;
             }

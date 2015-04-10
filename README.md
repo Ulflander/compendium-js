@@ -54,31 +54,31 @@ Two versions are available, one for the browser, the other for Node.js:
 
 #### Node.js
 
-    npm install --save next-nlp
+    npm install --save compendium
 
 and then:
 
-    var next = require('next-nlp');
+    var compendium = require('compendium');
         
-    console.log(next.analyse('Hello world'));
+    console.log(compendium.analyse('Hello world'));
 
 #### In the browser
 
 With `bower`:
 
-    bower install --save next-nlp
+    bower install --save compendium
 
-Otherwise clone this repo and copy the `dist/next-nlp.minimal.js` file into your project.
+Otherwise clone this repo and copy the `dist/compendium.minimal.js` file into your project.
 
 Then:
 
     <!-- Include the lib with the minimal lexicon -->
     <script type="text/javascript" 
-        src="path/to/next-nlp/dist/next-nlp.minimal.js"></script>
+        src="path/to/compendium/dist/compendium.minimal.js"></script>
      
     <!-- Use it -->
     <script type="text/javascript">
-        console.log(next.analyse('Hello world'));
+        console.log(compendium.analyse('Hello world'));
     </script>
 
 ## API
@@ -87,11 +87,11 @@ Then:
 
 Returns a matrix of tokens per sentences.
 
-    next.lex (text)
+    compendium.lex (text)
 
 Example:
 
-    next.lex('My name is Dr. Jekyll. My cat\'s name is Mr. Hyde.');
+    compendium.lex('My name is Dr. Jekyll. My cat\'s name is Mr. Hyde.');
     //  [
     //      ['My', 'name', 'is', 'Dr.', 'Jekyll', '.'],
     //      ['My', 'cat', '\'', 's', 'name', 'is', 'Mr.', 'Hyde', '.']
@@ -101,9 +101,9 @@ Example:
 
 Returns an array of tags and a confidence into the tagging.
 
-    next.tag (tokens)
+    compendium.tag (tokens)
 
-    next.tag(['My', 'name', 'is', 'Dr.', 'Jekyll', '.']);
+    compendium.tag(['My', 'name', 'is', 'Dr.', 'Jekyll', '.']);
     //  {
     //      tags: [ 'PRP$', 'NN', 'VBZ', 'NNP', 'NNP', '.' ],
     //      confidence: 1
@@ -111,7 +111,7 @@ Returns an array of tags and a confidence into the tagging.
 
 ##### analyse : perform a full analysis
 
-    next.analyse('My name is Dr. Jekyll.');
+    compendium.analyse('My name is Dr. Jekyll.');
     // [{ 
     //     time: 0,
     //     confidence: 1,

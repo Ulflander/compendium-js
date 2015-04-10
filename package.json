@@ -1,21 +1,21 @@
 {
-  "name": "next-nlp",
+  "name": "compendium",
   "version": "0.0.1",
   "description": "Natural Language Processing in the browser: Tokenization, Part-of-Speech tagging and more.",
-  "main": "dist/next-nlp.full.js",
+  "main": "dist/compendium.js",
   "scripts": {
     "test": "nodeunit test/*.js"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/Ulflander/next-nlp-js.git"
+    "url": "https://github.com/Ulflander/compendium-js.git"
   },
   "author": "Ulflander <xlaumonier@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/Ulflander/next-nlp-js/issues"
+    "url": "https://github.com/Ulflander/compendium-js/issues"
   },
-  "homepage": "https://github.com/Ulflander/next-nlp-js",
+  "homepage": "https://github.com/Ulflander/compendium-js",
   "devDependencies": {
     "gulp": "^3.8.11",
     "gulp-concat": "^2.5.2",

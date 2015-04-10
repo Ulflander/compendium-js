@@ -57,13 +57,14 @@ exports['two hundred and fifty five'] = function(test) {
 };
 
 exports['It\'s psychedelic.'] = function(test) {
-    var expected = [
-            ('PRP VBZ JJ .').split(' ')
-        ],
-        analysis = compendium.analyse('It\'s psychedelic.'),
-        actual = [analysis[0].tags];
+    var analysis = compendium.analyse('It\'s psychedelic.');
+    test.deepEqual([analysis[0].tags], [('PRP VBZ JJ .').split(' ')]);
+    test.done();
+};
 
-    test.deepEqual(actual, expected);
+exports['It\'s funkadelic.'] = function(test) {
+    var analysis = compendium.analyse('It\'s funkadelic.');
+    test.deepEqual([analysis[0].tags], [('PRP VBZ JJ .').split(' ')]);
     test.done();
 };
 
@@ -75,6 +76,28 @@ exports['I like you'] = function(test) {
         actual = [analysis[0].tags];
 
     test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports['He likes you'] = function(test) {
+    var analysis = compendium.analyse('He likes you');
+    test.deepEqual([analysis[0].tags], [('PRP VBZ PRP').split(' ')]);
+    test.done();
+};
+exports['She likes you'] = function(test) {
+    var analysis = compendium.analyse('She likes you');
+    test.deepEqual([analysis[0].tags], [('PRP VBZ PRP').split(' ')]);
+    test.done();
+};
+
+exports['We like you'] = function(test) {
+    var analysis = compendium.analyse('We like you');
+    test.deepEqual([analysis[0].tags], [('PRP VBP PRP').split(' ')]);
+    test.done();
+};
+exports['They like you'] = function(test) {
+    var analysis = compendium.analyse('They like you');
+    test.deepEqual([analysis[0].tags], [('PRP VBP PRP').split(' ')]);
     test.done();
 };
 
