@@ -86,7 +86,7 @@
                 return;
             }
         } else if (type === WDPREVWD) {
-            tmp = tokens[index - 1] || '';
+            tmp = tokens[index - 1] || '';
             if (token.toLowerCase() === rule.c2 && tmp.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
                 return;
@@ -297,7 +297,7 @@
                     // of first word of sentence, that is capitalized.
                     // Put in other words, an initial NN or JJ is converted into NNP
                     // only if second word is also an NNP.
-                    if (i === 1 && (previous === 'NN' || previous === 'JJ') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
+                    if (i === 1 && (previous === 'NN' || previous === 'JJ') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
                         tags[i - 1] = 'NNP';
                     }
                     tag = 'NNP';
