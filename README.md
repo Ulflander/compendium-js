@@ -6,7 +6,7 @@ English Natural Language Processing for Node.js and the browser.
 
 Features:
 
-- Tokenization (including hashtags, @ usernames, IPs, emails, urls...)
+- Tokenization
 - Part-of-Speech tagging (scores 90.5% on the Penn Treebank dataset for the minimal version, 92% with the full lexicon).
 - Negation/tense/... detection
 - Entities extraction
@@ -167,6 +167,12 @@ Next NLP uses `nodeunit` for running the tests. Install it with `npm install nod
 - o Example/demo page
 - o Date extraction
 - ✔ Entities extraction
+    - o Proper nouns
+    - o Hashtags
+    - o @usernames, 
+    - o IPs 
+    - o Email address
+    - o URL
 - o Use a trie for lexicon querying on runtime
 
 #### Version 2
