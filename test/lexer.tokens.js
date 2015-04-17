@@ -25,6 +25,16 @@ exports['I\'m good'] = function(test){
     test.done();
 };
 
+exports['Feeling kind of low...'] = function(test) {
+    test.deepEqual(lexer.lex('Feeling kind of low...'), [['Feeling', 'kind', 'of', 'low', '...']]);
+    test.done();
+};
+
+exports['happy!!!!!!'] = function(test) {
+    test.deepEqual(lexer.lex('happy!!!!!!'), [['happy', '!!!!!!']]);
+    test.done();
+};
+
 exports['It isn\'t good'] = function(test){
     test.deepEqual([['It', 'is', 'n\'t', 'good']], 
                     lexer.lex('It isn\'t good'));

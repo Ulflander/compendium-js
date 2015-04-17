@@ -30,15 +30,16 @@
         };
     };
 
-    analyser.createToken = function(raw, pos, sentiment) {
+    analyser.createToken = function(raw, pos) {
         return {
             raw: raw,
             pos: pos || '',
-            sentiment: sentiment,
+            sentiment: 0,
             is_acronym: false,
             is_breakpoint: false,
             is_plural: pos === 'NNS',
             is_negated: false,
+            is_abbr: false,
             norm: typeof raw === 'string' ? raw.toLowerCase() : raw,
             is_verb: pos.indexOf('VB') === 0
             // qualified_by: [],
@@ -56,7 +57,7 @@
         s.tags = pos.tags;
         s.confidence = pos.confidence;
         for (i = 0; i < l; i += 1) {
-            s.tokens.push(analyser.createToken(sentence[i], pos.tags[i], pos.sentiment[i]));
+            s.tokens.push(analyser.createToken(sentence[i], pos.tags[i]));
         }
         s.length = l;
         return s;

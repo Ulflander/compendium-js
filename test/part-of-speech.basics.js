@@ -3,6 +3,9 @@ var compendium = require('../build/compendium.minimal.js');
 
 // Comparative PoS result have been generated using the Stanford PoS tagger,
 // via http://nlp.stanford.edu:8080/parser/index.jsp
+// and in some case verified (and, rarely, fixed) using this other, purely machine learning based tagger:
+// http://nlpdotnet.com/services/Tagger.aspx
+// 
 
 exports['She sells seashells by the seashore. the shells she sells are sure seashells.'] = function(test) {
     var expected = [
@@ -33,7 +36,7 @@ exports['The quick brown fox jumps over the lazy dog.'] = function(test) {
 
 exports['A form of asbestos once used to make Kent cigarette filters has caused a high percentage of cancer deaths among a group of workers exposed to it more than 30 years ago, researchers reported.'] = function(test) {
     var expected = [
-            ('DT NN IN NN RB VBN TO VB NNP NN NNS VBZ VBN DT JJ NN IN NN NNS IN DT NN IN NNS VBN TO PRP JJR IN CD NNS RB , NNS VBD .').split(' ')
+            ('DT NN IN NN RB VBN TO VB NNP NN NNS VBZ VBN DT JJ NN IN NN NNS IN DT NN IN NNS VBN TO PRP JJR IN CD NNS IN , NNS VBD .').split(' ')
         ],
         analysis = compendium.analyse('A form of asbestos once used to make Kent cigarette filters has caused a high percentage of cancer deaths among a group of workers exposed to it more than 30 years ago, researchers reported.'),
         actual = [
@@ -53,6 +56,18 @@ exports['two hundred and fifty five'] = function(test) {
         actual = [analysis[0].tags];
 
     test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports['Feeling kind of low...'] = function(test) {
+    var analysis = compendium.analyse('Feeling kind of low...');
+    test.deepEqual([analysis[0].tags], [('VBG RB IN JJ .').split(' ')]);
+    test.done();
+};
+
+exports['happy!!!!!!'] = function(test) {
+    var analysis = compendium.analyse('happy !!!!!!');
+    test.deepEqual([analysis[0].tags], [('JJ .').split(' ')]);
     test.done();
 };
 
@@ -98,6 +113,13 @@ exports['We like you'] = function(test) {
 exports['They like you'] = function(test) {
     var analysis = compendium.analyse('They like you');
     test.deepEqual([analysis[0].tags], [('PRP VBP PRP').split(' ')]);
+    test.done();
+};
+
+
+exports['Mark Johns Jr., (sen. Al.)'] = function(test) {
+    var analysis = compendium.analyse('Mark Johns Jr., (sen. Al.)');
+    test.deepEqual([analysis[0].tags], [('NNP NNP NNP , ( NN NNP )').split(' ')]);
     test.done();
 };
 
@@ -178,11 +200,11 @@ exports['I will give up'] = function(test) {
     test.done();
 };
 
-exports['It\'s good'] = function(test) {
+exports['It\'s good!!!'] = function(test) {
     var expected = [
-            ('PRP VBZ JJ').split(' ')
+            ('PRP VBZ JJ .').split(' ')
         ],
-        analysis = compendium.analyse('It\'s good'),
+        analysis = compendium.analyse('It\'s good!!!'),
         actual = [analysis[0].tags];
 
     test.deepEqual(actual, expected);

@@ -4,9 +4,9 @@
 
         split_sentence_regexp = /(\S.+?[.\?!])(?=\s+|$|")/g,
 
-        abbrev_regexp = new RegExp("(^| )(" + abbreviations.join("|") + ")[\.!\?] ?$", "i"),
+        abbrev_regexp = new RegExp("(^| |\\\(|\\\[|\{)(" + abbreviations.join("|") + ")[\.!\?] ?$", "i"),
 
-        split_token_regexp = /([\W])/g,
+        word_boundaries = /([\s!\?\(\)\[\]\{\}"'`%•\.\:\;\,\$€£¥\\\/\+\=\_\&])/g,
 
         contractions = ['s', 'm', 't', 'll', 've', 'd'],
 
@@ -27,9 +27,10 @@
         // - cleanup
         for (i = 0; i < l; i += 1) {
             s = arr[i].trim();
+            
             // If an abreviation or acronym, merge forward
             if (s.match(abbrev_regexp) || s.match(/[ |\.][A-Z]\.?$/)) {
-                // If next token is
+                // If next token is not a letter
                 if (i < l - 1 && !arr[i + 1].match(/^[A-Z]\s/)) {
                     arr[i + 1] = s + ' ' + arr[i + 1].trim();
                 } else {
@@ -43,10 +44,30 @@
         return sentences;
     };
 
+    // UTF-8 compliant tokens splitter
+    lexer.splitTokens = function(str) {
+        var i, l = str.length, res = [], curr = '';
+
+        for (i = 0; i < l; i += 1) {
+            if (str[i].match(word_boundaries)) {
+                res.push(curr);
+                res.push(str[i]);
+                curr = '';
+            } else {
+                curr += str[i];
+            }
+        }
+
+        if (!!curr) {
+            res.push(curr);
+        }
+
+        return res;
+    };
+
     // Parse each token
     lexer.tokens = function(sentence) {
-        // Split with base regexp
-        var arr = sentence.split(split_token_regexp), 
+        var arr = lexer.splitTokens(sentence), 
             i, 
             l = arr.length, 
             tok,
@@ -108,7 +129,7 @@
             if (tok.match(/^\W+$/gi)) {
                 in_acronym = false;
                 // If same than previous one, merge back
-                if (tok === previous) {
+                if (tok === previous[0]) {
                     result[count - 1] += tok;
                     continue;
                 }
@@ -142,7 +163,7 @@
                 // Default case: add token
                 result.push('gon', 'na');
                 count += 2;
-            } else {
+            } else if (!!tok) {
                 result.push(tok);
                 count += 1;
             }

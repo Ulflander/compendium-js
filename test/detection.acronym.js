@@ -29,3 +29,17 @@ exports['I work at HSBC'] = function(test){
     test.equal(actual, expected);
     test.done();
 };
+
+exports['This is September.'] = function(test){
+    var analysis = compendium.analyse('This is september.');
+
+    test.equal(analysis[0].tokens[2].is_acronym, false);
+    test.done();
+};
+
+exports['I live in wisconsin.'] = function(test){
+    var analysis = compendium.analyse('I live in wisconsin.');
+
+    test.equal(analysis[0].tokens[3].is_acronym, false);
+    test.done();
+};

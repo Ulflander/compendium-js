@@ -2,6 +2,7 @@
 (function() {
 
     var pos = {},
+
         // Shortcuts
         isPlural = compendium.inflector.isPlural,
 
@@ -11,13 +12,15 @@
         NEXTTAG = 3,
         NEXTTAG2 = 4,
         PREVWORD = 5,
+        PREVWORDPREVTAG = 51,
         CURRENTWD = 6,
-        PREVBIGRAM = 7,
         WDPREVTAG = 8,
+        WDPREVWD = 81,
         NEXT1OR2OR3TAG = 9,
         NEXTBIGRAM = 10,
         NEXT2WD = 11,
         WDNEXTTAG = 12,
+        WDNEXTWD = 121,
         PREV1OR2OR3TAG = 13,
         SURROUNDTAG = 14,
         NEXTWD = 15,
@@ -46,8 +49,18 @@
                 tags[index] = rule.to;
                 return;
             }
+        } else if (type === PREVWORDPREVTAG) {
+            if (index > 0 && tags[index - 1] === rule.c2 && tokens[index - 1] === rule.c1) {
+                tags[index] = rule.to;
+                return;
+            }
         } else if (type === NEXTTAG) {
             if (tags[index + 1] === rule.c1) {
+                tags[index] = rule.to;
+                return;
+            }
+        } else if (type === NEXTTAG2) {
+            if (tags[index + 2] === rule.c1) {
                 tags[index] = rule.to;
                 return;
             }
@@ -72,6 +85,12 @@
                 tags[index] = rule.to;
                 return;
             }
+        } else if (type === WDPREVWD) {
+            tmp = tokens[index - 1] || '';
+            if (token.toLowerCase() === rule.c2 && tmp.toLowerCase() === rule.c1) {
+                tags[index] = rule.to;
+                return;
+            }
         } else if (type === NEXT1OR2OR3TAG) {
             if (tags[index + 1] === rule.c1 || tags[index + 2] === rule.c1 || tags[index + 3] === rule.c1) {
                 tags[index] = rule.to;
@@ -79,6 +98,11 @@
             }
         } else if (type === NEXT2WD) {
             if (tokens[index + 2] === rule.c1) {
+                tags[index] = rule.to;
+                return;
+            }
+        } else if (type === WDNEXTWD) {
+            if (token === rule.c1 && tokens[index + 1] === rule.c2) {
                 tags[index] = rule.to;
                 return;
             }
@@ -142,8 +166,7 @@
     pos.applyRules = function(token, index, tokens, tags) {
         var i;
         for (i = 0; i < rulesLength; i += 1) {
-            if (pos.applyRule(rules[i], token, tags[index], index, tokens, tags)) {
-            }
+            pos.applyRule(rules[i], token, tags[index], index, tokens, tags);
         }
     };
 
@@ -169,35 +192,48 @@
 
     pos.tag = function(sentence) {
         var tags = [],
-            sentiment = [],
             token,
             tag,
             i,
             l = sentence.length,
             tl,
-            previous,
             suffix,
+            previous,
             confidence = l;
 
         // Basic tagging based on lexicon and 
         // suffixes
         for (i = 0; i < l; i += 1) {
-
             token = sentence[i];
             // Attempt to get pos in a case sensitive way
             tag = compendium.lexicon[token];
 
             // If none, try with lower cased
-            if (!tag && token.match(/[A-Z]/g)) {
+            if (!tag && typeof token === 'string' && token.match(/[A-Z]/g)) {
                 tag = compendium.lexicon[token.toLowerCase()];
             }
 
             // Found in lexicon!
             if (!!tag) {
                 tags.push(tag.pos);
-                sentiment[i] = tag.sentiment;
                 continue;
+            }
 
+            // If no tag, check composed words
+            if (token.indexOf('-') > -1) {
+                suffix = token.split('-')[1];
+                tag = compendium.lexicon[suffix.toLowerCase()];
+                if (!!tag) {
+                    tags.push(tag.pos);
+                    continue;
+                }
+
+                suffix = token.split('-')[0];
+                tag = compendium.lexicon[suffix.toLowerCase()];
+                if (!!tag) {
+                    tags.push(tag.pos);
+                    continue;
+                }
             }
 
             // Last chance before rules being applied:
@@ -205,7 +241,10 @@
             tag = pos.testSuffixes(token);
             if (!!tag) {
                 confidence -= 0.5;
+                tags.push(tag);
+                continue;
             }
+
 
             // We default to NN if still no tag
             if (!tag) {
@@ -213,44 +252,63 @@
                 tag = 'NN';
             }
             tags.push(tag);
-            sentiment[i] = 0;
         }
 
         // Transformational rules
         for (i = 0; i < l; i += 1) {
-            if (i > 0) {
-                previous = sentence[i - 1].toLowerCase();
-            }
             token = sentence[i];
             tl = token.length;
             suffix = tl > 3 ? token.slice(tl - 2) : '';
             tag = tags[i];
+            previous = (i === 0 ? '' : tags[i - 1]);
 
             // Float numbers
-            if (token !== '.' && token.match(/^[0-9\.]+$/g)) {
-                tag = 'CD';
+            if (token.match(/^[0-9]+(\.[0-9]+)?$/g)) {
+                tags[i] = 'CD';
+                continue;
             }
 
-            if (tag.indexOf('N') === 0 && tl > 3) {
-                // Convert a noun to a past participle if words.get(i) ends with 'ed'
-                if (token.indexOf('ed') === tl - 2) {
-                    tag = 'VBN';
-                // Convert a common noun to a present participle verb (i.e., a gerand)
-                } else if (token.indexOf('ing') === tl - 3) {
-                    tag = 'VBG';
+            // Punc signs
+            if (token.match(/^(\?|\!|\.){1,}$/)) {
+                tags[i] = '.';
+                continue;
+            }
+
+            // Convert a common noun to a present participle verb (i.e., a gerand)
+            if (tl > 4 && (tag.indexOf('N') === 0 || tag === 'MD') && token.lastIndexOf('ing') === tl - 3) {
+                tags[i] = 'VBG';
+                continue;
+            } else
+            // Convert a noun to a past participle if words.get(i) ends with 'ed'
+            if (tl > 3 && tag.indexOf('N') === 0 && token.lastIndexOf('ed') === tl - 2) {
+                tags[i] = 'VBN';
+                continue;
+            }
+
+            // Proper noun inference
+            if (tag === 'NN' || tag === 'JJ') {
+                // All uppercased or an acronym, probably NNP
+                if (token.match(/^[A-Z]+$/g) || token.match(/^([a-z]{1}\.)+/gi)) {
+                    tag = 'NNP';
+
+                // Capitalized words. First sentence is skipped here
+                } else if (i > 0 && token.match(/^[A-Z][a-z\.]+$/g)) {
+                    // And handled here, avoiding most false positives 
+                    // of first word of sentence, that is capitalized.
+                    // Put in other words, an initial NN or JJ is converted into NNP
+                    // only if second word is also an NNP.
+                    if (i === 1 && (previous === 'NN' || previous === 'JJ') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
+                        tags[i - 1] = 'NNP';
+                    }
+                    tag = 'NNP';
                 }
-            }
-
-            // Infer a proper noun if noun or adjective capitalized
-            if ((tag === 'NN' || tag === 'JJ') && token.match(/^[A-Z][a-z\.]+$/g)) {
-                tag = 'NNP';
             }
 
             // Use inflector to detect plural nouns
             if (tag === 'NN' && isPlural(token)) {
                 tag = 'NNS';
             }
-
+            
             tags[i] = tag;
         }
 
@@ -258,7 +316,6 @@
 
         return {
             tags: tags,
-            sentiment: sentiment,
             confidence: confidence / l
         };
     };

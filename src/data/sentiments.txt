@@ -1,3 +1,4 @@
+... -3
 abandon -2
 abandoned -2
 abandons -2
@@ -978,7 +979,6 @@ fearless 2
 fearsome -2
 fed up -3
 feeble -2
-feeling 1
 felonies -3
 felony -3
 fervent 2
@@ -1399,7 +1399,7 @@ kill -3
 killed -3
 killing -3
 kills -3
-kind 2
+kind JJ/2
 kinder 2
 kiss 2
 kudos 3
@@ -1473,6 +1473,7 @@ loved 3
 lovelies 3
 lovely 3
 loving 2
+low -1
 lowest -1
 loyal 3
 loyalty 3

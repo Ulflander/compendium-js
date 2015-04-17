@@ -60,12 +60,16 @@ function lexicon(level) {
 
 
         lex[i] = line[0] + ' ' + line[1];
+
+        // If token has a sentiment score, add it
         if (idx > -1) {
             lex[i] += ' ' + sentiments[idx][1];
+
+        // otherwise check for minimal mode skipped tokens
         } else {
 
             // Taken in account by a rule
-            if (level > 0 && token.length > 3 && token.slice(token.length - 2) === 'ed' && line[1].indexOf('VB') === 0) {
+            if (level > 0 && token.length > 3 && token.slice(token.length - 2) === 'ed' && line[1] === 'VBN') {
                 skipped += 1;
                 continue;
             }
@@ -76,6 +80,7 @@ function lexicon(level) {
                 continue;
             }
 
+            // This is the default pos tag, no need, whatever the build
             if (line[1].indexOf('NN') === 0) {
                 skipped += 1;
                 continue;   
@@ -90,7 +95,7 @@ function lexicon(level) {
             }
         }
 
-        // Common mode: we expunge tokens with uppercase letters
+        // Minimal mode: we expunge tokens with uppercase letters
         if (level > 0 && token.toLowerCase() === token && token.indexOf('-') === -1) {
             mini.push(lex[i]);
         } else if (level > 0) {

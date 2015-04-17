@@ -39,6 +39,13 @@ exports['I\'m Dr. Jekyll'] = function(test){
     test.done();
 };
 
+exports['Mark Johns Jr., (sen. Al.)'] = function(test){
+    test.deepEqual([['Mark', 'Johns', 'Jr.', ',', '(', 'sen.', 'Al.', ')']], 
+                    lexer.lex('Mark Johns Jr., (sen. Al.)'));
+    test.done();
+};
+
+
 exports['Another ex-Golden Stater, Paul [...]'] = function(test){
     test.deepEqual(['Another ex-Golden Stater, Paul Stankowski from Oxnard, is contending for a berth on the U.S. Ryder Cup team after winning his first PGA Tour event last year and staying within three strokes of the lead through three rounds of last month\'s U.S. Open.', 
             'H.J. Heinz Company said it completed the sale of its Ore-Ida frozen-food business catering to the service industry to McCain Foods Ltd. for about $500 million.',
