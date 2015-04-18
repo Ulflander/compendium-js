@@ -2,7 +2,7 @@
 
 English Natural Language Processing for Node.js and the browser.
 
-75k only for the browser package. Ultra-fast.
+75k only for the browser package.
 
 Features:
 
@@ -14,26 +14,13 @@ Features:
 
 MIT licensed.
 
-## Flavours
-
-Two versions are available, one for the browser, the other for Node.js:
-
-- Full version for Node.js uses the lexicon from Mark Watson's FastTag (around 90 000 terms)
-- Minimal version for the browser contains only a few thousands terms extracted from the full version, and filtered using:
-    - the list of the 10000 most common English words [an extract](https://github.com/first20hours/google-10000-english) from the [Google's Trillion Word Corpus](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)
-    - the list of scored sentiments words. 
+- [How to use](#how-to-use)
+- [API](#api)
+- [About the Part-of-Speech tagging](#part-of-speech-tagging)
+- [Development](#development)
+- [Milestones](#milestones)
 
 ## How to use
-
-#### Node.js
-
-    npm install --save compendium
-
-and then:
-
-    var compendium = require('compendium');
-        
-    console.log(compendium.analyse('Hello world'));
 
 #### In the browser
 
@@ -54,7 +41,61 @@ Then:
         console.log(compendium.analyse('Hello world'));
     </script>
 
+#### Node.js
+
+    npm install --save compendium
+
+and then:
+
+    var compendium = require('compendium');
+        
+    console.log(compendium.analyse('Hello world'));
+
 ## API
+
+##### analyse : perform a full analysis
+
+The only function to be called. Take a string as parameter and returns an array containing an analysis for each sentence.
+
+    compendium.analyse('My name is Dr. Jekyll.');
+
+will return an object like:
+
+    [ { time: 5,                        // Time of processing, in ms
+        confidence: 0.5,                // PoS tagging confidence
+        length: 6,                      // Count of tokens
+        raw: 'My name is Dr. Jekyll .', // Raw string
+        profile:                        
+         { label: 'neutral',            // Sentiment: `negative`, `neutral`, `positive`
+           sentiment: 0,                // Sentiment score
+           politeness: 0,               // Politeness score
+           negated: false },            // Is sentence mainly negated
+        entities: [ {                   // List of entities
+            raw: 'Dr. Jekyll',          // Raw reconstructed entity
+            norm: 'doctor jekyll',      // Normalized entity
+            fromIndex: 3,               // Start token index
+            toIndex: 4,                 // End token index
+            type: null } ],             // Type of entity: null for unknown, `ip`, `email`...
+        tags:                           // Array of PoS tags
+         [ 'PRP$', 'NN', 'VBZ', 'NNP', 'NNP', '.' ],
+        tokens:                         // Tokens details
+         [ { raw: 'My',                 // Raw token
+            norm: 'my',                 // Normalized
+            pos: 'PRP$',                // PoS tag
+            profile:                    
+             { sentiment: 0,            // Sentiment score
+               emphasis: 1,             // Emphasis multiplier
+               negated: false,          // Is negated
+               breakpoint: false },     // Is breakpoint
+            attr:
+             { acronym: false,          // Is acronym
+               plural: false,           // Is plural
+               abbr: false,             // Is an abbreviation
+               verb: false } },         // Is a verb
+            //
+            // ... Other tokens
+            //
+       ] } ]
 
 ##### lex : tokenize a string
 
@@ -82,61 +123,6 @@ Returns an array of tags and a confidence into the tagging.
     //      confidence: 1
     //  }
 
-##### analyse : perform a full analysis
-
-    compendium.analyse('My name is Dr. Jekyll.');
-    // [{ 
-    //     time: 0,
-    //     confidence: 1,
-    //     raw: 'My name is Dr. Jekyll .',
-    //     tokens:[{ 
-    //         raw: 'My',
-    //         pos: 'PRP$',
-    //         is_acronym: false
-    //     }, {
-    //         raw: 'name',
-    //         pos: 'NN',
-    //         is_acronym: false
-    //     }, {
-    //         raw: 'is',
-    //         pos: 'VBZ',
-    //         is_acronym: false
-    //     }, {
-    //         raw: 'Dr.',
-    //         pos: 'NNP',
-    //         is_acronym: true
-    //     }, {
-    //         raw: 'Jekyll',
-    //         pos: 'NNP',
-    //         is_acronym: false
-    //     }, {
-    //         raw: '.',
-    //         pos: '.',
-    //         is_acronym: false 
-    //     }],
-    //     tags: [ 'PRP$', 'NN', 'VBZ', 'NNP', 'NNP', '.']
-    // }]
-
-## Development
-
-#### Setup env
-
-    npm install
-
-then, in order to initialize the build process:
-
-    mkdir build && gulp lexicon
-
-#### Build
-
-Next NLP requires `gulp` for the build process. Install it globally using `npm install -g gulp`.
-
-Use `gulp` command to build and watch the source files for changes for live rebuild. Use `gulp -p` 
-
-#### Test
-
-Next NLP uses `nodeunit` for running the tests. Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
-
 ## Part-of-Speech tagging
 
 Tagging is performed using a [Brill tagger](http://en.wikipedia.org/wiki/Eric_Brill) (i.e. a base lexicon and some set of rules), with the addition of some inflexion-based rules.
@@ -148,40 +134,15 @@ It takes inspiration from the following projects that are worth being checked ou
 
 PoS tagging tests are performed both against the [Penn Treebank](http://www.cis.upenn.edu/~treebank/) dataset, and against results generated by the [Stanford PoS tagger](http://nlp.stanford.edu/software/tagger.shtml) ([here is an online API](nlp.stanford.edu:8080/parser/index.jsp)), double checked with common sense and [another](http://nlpdotnet.com/services/Tagger.aspx) tagger fully machine-learning oriented.
 
+#### Lexicons
 
-## Milestones
+Full version for Node.js uses the lexicon from Mark Watson's FastTag (around 90 000 terms).
 
-#### Version 1
+Minimal version for the browser contains only a few thousands terms extracted from the full version, and filtered using:
+    - the list of the 10000 most common English words [an extract](https://github.com/first20hours/google-10000-english) from the [Google's Trillion Word Corpus](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)
+    - the list of scored sentiments words. 
 
-- ✔ Tokenization
-- ✔ Part-of-Speech tagging
-- ✔ Inflector (singularization, pluralization)
-- ✔ Acronyms detection
-- ✔ Negation detection
-- o Profiling (sentiment, politeness, type of sentence)
-    + ✔ Token scoring
-    + ✔ Scoring consolidation
-    + o Politeness
-    + o Type of sentence
-- o Tense detection
-- o Dependency parsing
-- o Example/demo page
-- o Date extraction
-- ✔ Entities extraction
-    - o Proper nouns
-    - o Hashtags
-    - o @usernames, 
-    - o IPs 
-    - o Email address
-    - o URL
-- o Use a trie for lexicon querying on runtime
-
-#### Version 2
-
-- o Dynamic loading of lexicon, w/ versioning and cache using Application Cache
-- o Use from a Web Worker (threaded processing)
-
-## Tags definition
+#### Tags definition
 
     , Comma                     ,
     : Mid-sent punct.           : ;
@@ -232,4 +193,56 @@ Compendium also includes the following new tag:
 
     EM Emoticon                 :) :(
 
+
+## Development
+
+#### Setup env
+
+    npm install
+
+then, in order to initialize the build process:
+
+    mkdir build && gulp lexicon
+
+#### Build
+
+Next NLP requires `gulp` for the build process. Install it globally using `npm install -g gulp`.
+
+Use `gulp` command to build and watch the source files for changes for live rebuild. Use `gulp -p` 
+
+#### Test
+
+Next NLP uses `nodeunit` for running the tests. Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
+
+## Milestones
+
+#### Version 1
+
+- ✔ Tokenization
+- ✔ Part-of-Speech tagging
+- ✔ Inflector (singularization, pluralization)
+- ✔ Acronyms detection
+- ✔ Negation detection
+- o Profiling (sentiment, politeness, type of sentence)
+    + ✔ Token scoring
+    + ✔ Scoring consolidation
+    + o Politeness
+    + o Type of sentence
+- o Tense detection
+- o Dependency parsing
+- o Example/demo page
+- o Date extraction
+- ✔ Entities extraction
+    - o Proper nouns
+    - o Hashtags
+    - o @usernames, 
+    - o IPs 
+    - o Email address
+    - o URL
+- o Use a trie for lexicon querying on runtime
+
+#### Version 2
+
+- o Dynamic loading of lexicon, w/ versioning and cache using Application Cache
+- o Use from a Web Worker (threaded processing)
 

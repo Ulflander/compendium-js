@@ -19,6 +19,7 @@
             score += profile.sentiment;
             emphasis *= profile.emphasis;
         }
+        
         score *= emphasis;
         p.sentiment = score;
         if (score < -0.5) {
