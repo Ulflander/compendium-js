@@ -41,11 +41,11 @@ Then:
 
 #### Node.js
 
-    npm install --save compendium
+    npm install --save compendium-js
 
 and then:
 
-    var compendium = require('compendium');
+    var compendium = require('compendium-js');
         
     console.log(compendium.analyse('Hello world'));
 
