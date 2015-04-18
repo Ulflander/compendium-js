@@ -137,8 +137,9 @@ PoS tagging tests are performed both against the [Penn Treebank](http://www.cis.
 Full version for Node.js uses the lexicon from Mark Watson's FastTag (around 90 000 terms).
 
 Minimal version for the browser contains only a few thousands terms extracted from the full version, and filtered using:
-    - the list of the 10000 most common English words [an extract](https://github.com/first20hours/google-10000-english) from the [Google's Trillion Word Corpus](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)
-    - the list of scored sentiments words. 
+
+- the list of the 10000 most common English words [an extract](https://github.com/first20hours/google-10000-english) from the [Google's Trillion Word Corpus](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)
+- the list of scored sentiments words. 
 
 #### Tags definition
 
@@ -206,11 +207,12 @@ then, in order to initialize the build process:
 
 Compendium requires `gulp` for the build process. Install it globally using `npm install -g gulp`.
 
-Use `gulp` command to build and watch the source files for changes for live rebuild. Use `gulp -p` 
+Use `gulp` command to build and watch the source files for changes for live rebuild.
 
 #### Test
 
-Compendium uses `nodeunit` for running the tests. Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
+Compendium uses `nodeunit` for running the tests. 
+Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
 
 ## Milestones
 
