@@ -10,12 +10,15 @@
             if (sentence.tags[i] === 'NNP' || sentence.tags[i] === 'NNPS') {
                 if (!!entity) {
                     entity.raw += ' ' + sentence.tokens[i].raw,
+                    entity.norm += ' ' + sentence.tokens[i].norm,
                     entity.toIndex = i;
                 } else {
                     entity = {
                         raw: sentence.tokens[i].raw,
+                        norm: sentence.tokens[i].norm,
                         fromIndex: i,
-                        toIndex: i
+                        toIndex: i,
+                        type: null
                     };
                     sentence.entities.push(entity);
                 }

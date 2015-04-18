@@ -67,7 +67,7 @@ VBP MD 6 gon
 VBP VB 8 MD have
 RB DT 8 VBD no
 RB DT 8 IN no
-RP IN 8 VB up
 IN RP 8 VBD up
+JJ JJS 8 DT latest
 IN RB 8 CD up
 PRP$ PRP 8 VBD her

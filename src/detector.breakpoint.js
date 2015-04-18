@@ -6,7 +6,7 @@
             pos = token.pos;
 
         if (pos === ',') {
-            token.is_breakpoint = true;
+            token.profile.breakpoint = true;
         }
     });
 }());

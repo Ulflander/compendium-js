@@ -13,24 +13,24 @@
 
         for (i = 0; i < l; i += 1) {
             token = sentence.tokens[i];
-            if (token.is_breakpoint) {
+            if (token.profile.breakpoint) {
                 ll = 0;
                 negated = false;
             } else if (negations.indexOf(token.norm) > -1) {
                 n += 1;
-                token.is_negated = true;
+                token.profile.negated = true;
                 negated = true;
             } else if (negated && cancelNegations.indexOf(token.norm) > -1 && ll === 0) {
-                sentence.tokens[i - 1].is_negated = false;
+                sentence.tokens[i - 1].profile.negated = false;
                 n -= 1;
                 negated = false;
             } else if (!!negated) {
                 n += 1;
                 ll += 1;
-                token.is_negated = true;
+                token.profile.negated = true;
             }
         }
 
-        sentence.has_negation = n > 0;
+        sentence.profile.negated = n > 0;
     });
 }());

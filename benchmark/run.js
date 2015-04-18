@@ -1,11 +1,29 @@
-// Run PoS test against penn treebank
-// Result history:
-// - April 15th: 88.76% (minimal) / 90.13% (full) 
-// - April 15th: 89.35% (minimal) / 90.56% (full)
-// - April 15th: 89.91% (minimal) / 92.34% (full)
-// - April 15th: 90.59% (minimal) / 92.29% (full) 
-//      > makes sense but interesting: new brill rules provided a great improvement in minimal
-//        mode but a slight decline in full mode - this is the limit of rules over a lexicon
+/*
+
+Run PoS test against penn treebank
+
+JSON file took from nlp_compromise (thanks!).
+
+It's good to note that some of the Penn Treebank dataset sentences are not perfectly tagged, so measure 
+of deviation from Penn Treebank is quite subjective, as Compendium may be good where Penn is wrong 
+(in a VERY little measure). Examples of Penn errors:
+
+Too much money is at stake for program traders to give up. - give/VB up/IN where it should be give/VB up/RP
+
+Result history:
+- April 15th: Minimal: 88.76% / Full: 90.13%
+- April 15th: Minimal: 89.35% / Full: 90.56%
+- April 15th: Minimal: 89.91% / Full: 92.34%
+- April 15th: Minimal: 90.59% / Full: 92.29%
+     > makes sense but interesting: new brill rules provided a great improvement in minimal
+       mode but a slight decline in full mode - this is the limit of rules over a lexicon
+
+- April 17th, 1959 sentences: 
+    Minimal:    90.65% exact tags, 352 exact sentences, 0.36ms ave. per sentence
+    Full:       92.74% exact tags, 518 exact sentences, 0.72ms ave. per sentence
+
+
+*/
 
 var data = require("./penn_treebank").data,
     compendium = require('../build/compendium.minimal.js'),
@@ -73,9 +91,10 @@ for (var k in data) {
         cTotalTags += 1;
         if (penn_pos[i] !== tags[i]) {
             failed = true;
+            var tk = cpd_pos.tokens[i].norm;
 
-            if (i > 0) {
-            var d = penn_pos[i] + '/' + penn_pos[i - 1] + ' - ' + tags[i] + ' / ' + cpd_pos.tokens[i].norm.slice(-4);
+            if (tk.length > 6 && penn_pos[i].indexOf('VB') == -1) {
+            var d = penn_pos[i] + '/' + tags[i] + ' - ' + tk.slice(-5);
 
                 if (DIFFS.hasOwnProperty(d)) {
                     DIFFS[d] += 1;

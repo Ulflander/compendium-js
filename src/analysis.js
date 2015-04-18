@@ -17,7 +17,7 @@
             length: 0,
             raw: str,
             // type: 'unknown',
-            profiling: {
+            profile: {
                 label: 'neutral',
                 sentiment: 0,
                 politeness: 0
@@ -33,15 +33,20 @@
     analyser.createToken = function(raw, pos) {
         return {
             raw: raw,
-            pos: pos || '',
-            sentiment: 0,
-            is_acronym: false,
-            is_breakpoint: false,
-            is_plural: pos === 'NNS',
-            is_negated: false,
-            is_abbr: false,
             norm: typeof raw === 'string' ? raw.toLowerCase() : raw,
-            is_verb: pos.indexOf('VB') === 0
+            pos: pos || '',
+            profile: {
+                sentiment: 0,
+                emphasis: 1,
+                negated: false,
+                breakpoint: false
+            },
+            attr: {
+                acronym: false,
+                plural: false,
+                abbr: false,
+                verb: pos.indexOf('VB') === 0
+            }
             // qualified_by: [],
             // applies_to: []
         };
