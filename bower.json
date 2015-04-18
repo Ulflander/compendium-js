@@ -1,12 +1,12 @@
 {
-  "name": "next-nlp",
-  "version": "0.0.1",
-  "homepage": "https://github.com/Ulflander/next-nlp-js",
+  "name": "compendium",
+  "version": "0.0.2",
+  "homepage": "https://github.com/Ulflander/compendium-js",
   "authors": [
     "Ulflander <xlaumonier@gmail.com>"
   ],
-  "description": "Natural Language Processing in Node and the browser: Tokenization, Part-of-Speech tagging and more",
-  "main": "dist/next-nlp.minimal.js",
+  "description": "English Natural Language Processing in Node and the browser: Tokenization, Part-of-Speech tagging and more",
+  "main": "dist/compendium.minimal.js",
   "keywords": [
     "nlp",
     "natural"
