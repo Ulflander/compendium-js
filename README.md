@@ -4,19 +4,17 @@ English Natural Language Processing for Node.js and the browser.
 
 75k only for the browser package.
 
-Features:
+Scores 90.5% on the Penn Treebank dataset with the browser version, 92% with the node version.
 
-- Tokenization
-- Part-of-Speech tagging (scores 90.5% on the Penn Treebank dataset for the minimal version, 92% with the full lexicon).
-- Negation/tense/... detection
-- Entities extraction
-- Sentiment analysis (with smileys!)
+Includes sentiment analysis, entities extraction, and many more.
 
 MIT licensed.
 
 - [How to use](#how-to-use)
 - [API](#api)
 - [About the Part-of-Speech tagging](#part-of-speech-tagging)
+    - [Lexicons](#lexicons)
+    - [Tags definition](#tags-definition)
 - [Development](#development)
 - [Milestones](#milestones)
 
@@ -206,13 +204,13 @@ then, in order to initialize the build process:
 
 #### Build
 
-Next NLP requires `gulp` for the build process. Install it globally using `npm install -g gulp`.
+Compendium requires `gulp` for the build process. Install it globally using `npm install -g gulp`.
 
 Use `gulp` command to build and watch the source files for changes for live rebuild. Use `gulp -p` 
 
 #### Test
 
-Next NLP uses `nodeunit` for running the tests. Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
+Compendium uses `nodeunit` for running the tests. Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
 
 ## Milestones
 
