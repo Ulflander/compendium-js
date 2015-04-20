@@ -14,11 +14,7 @@ exports['It\'s good'] = function(test){
                     lexer.lex('It\'s good'));
     test.done();
 };
-exports['It\'s good 😋'] = function(test){
-    test.deepEqual([['It', '\'s', 'good', '😋']], 
-                    lexer.lex('It\'s good 😋'));
-    test.done();
-};
+
 exports['I\'m good'] = function(test){
     test.deepEqual([['I', '\'m', 'good']], 
                     lexer.lex('I\'m good'));

@@ -1,17 +1,45 @@
 (function() {
 
-    var abbreviations = compendium.compendium.abbrs,
+    var cpd = compendium.compendium,
 
-        split_sentence_regexp = /(\S.+?[.\?!])(?=\s+|$|")/g,
+        abbreviations = cpd.abbrs,
+
+        split_sentence_regexp = /(\S.+?[….\?!\n])(?=\s+|$|")/g,
 
         abbrev_regexp = new RegExp("(^| |\\\(|\\\[|\{)(" + abbreviations.join("|") + ")[\.!\?] ?$", "i"),
 
-        word_boundaries = /([\s!\?\(\)\[\]\{\}"'`%•\.\:\;\,\$€£¥\\\/\+\=\_\&])/g,
+        word_boundaries = ' !?()[]{}"\'`%•.…:;,$€£¥\\/+=_&',
 
         contractions = ['s', 'm', 't', 'll', 've', 'd'],
 
+        encoder = compendium.punycode.ucs2,
+
+        // Use to determinate float parts
+        cd = /^-?[0-9]+$/,
+        acd = /^[0-9]+$/,
+        cdf = /^-?[0-9]+\.$/,
+
+        // Special regexps
+        r = {
+            email: '\\s([^\\s]+@[^\\s]+\.[a-z]+)',
+            username: '\\s(@[a-z0-9_]+)',
+            hashtag: '\\s(#[a-z0-9_]+)',
+            url: '\\s((https?|ftp):\/\/[\-a-z0-9+&@#\/%\?=~_|!:,\.;]*[\-a-z0-9+&@#\/%=~_|])',
+            ip: '\\s(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5]))\\s'
+        },
+
         // namespace
-        lexer = {};
+        lexer = {},
+
+        i, l = cpd.emots.length, emot;
+
+    // Add regexps for emoticons
+    for (i = 0; i < l * 2; i += 2) {
+        emot = cpd.emots[i / 2];
+        r['em_' + i] = '\\s(' + emot.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '+)';
+        r['em_' + (i + 1)] = '[a-z0-9](' + emot.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '+)';
+    }
+
 
     // Parse into sentences
     lexer.sentences =  function(str) {
@@ -29,9 +57,9 @@
             s = arr[i].trim();
             
             // If an abreviation or acronym, merge forward
-            if (s.match(abbrev_regexp) || s.match(/[ |\.][A-Z]\.?$/)) {
+            if (s.match(abbrev_regexp) || s.match(/[ |\.][A-Za-z]\.?$/)) {
                 // If next token is not a letter
-                if (i < l - 1 && !arr[i + 1].match(/^[A-Z]\s/)) {
+                if (i < l - 1 && !arr[i + 1].match(/^[A-Za-z]\s/)) {
                     arr[i + 1] = s + ' ' + arr[i + 1].trim();
                 } else {
                     sentences.push(s);
@@ -44,23 +72,75 @@
         return sentences;
     };
 
-    // UTF-8 compliant tokens splitter
+    // UTF-8 compliant tokens splitter: parses sentence char by char after having applied general utility 
+    // regexps. Will seperate emojis into tokens.
     lexer.splitTokens = function(str) {
-        var i, l = str.length, res = [], curr = '';
-
-        for (i = 0; i < l; i += 1) {
-            if (str[i].match(word_boundaries)) {
-                res.push(curr);
-                res.push(str[i]);
+        var i, 
+            l = str.length, 
+            curr,
+            // result
+            res = [], 
+            // regexp
+            re,
+            // trick for testing simpler regexps
+            restr = ' ' + str + ' ',
+            decoded,
+            spotted = {},
+            xpush = function(w) {
+                if (!w) {
+                    return;
+                }
+                decoded = encoder.decode(w);
+                var i, l = decoded.length, curr = '';
+                for (i = 0; i < l; i += 1) {
+                    if (decoded[i] >= 0x1f5ff) {
+                        if (!!curr) {
+                            res.push(curr);
+                        }
+                        res.push(encoder.encode([decoded[i]]));
+                        curr = '';
+                    } else {
+                        curr += encoder.encode([decoded[i]]);
+                    }
+                }
+                if (!!curr) {
+                    res.push(curr);
+                }
+            },
+            push = function(w1, w2) {
+                xpush(w1);
+                xpush(w2);
                 curr = '';
+            };
+
+        // First run some general regexps onto the texts and aggregate the indexes
+        for (i in r) {
+            if (r.hasOwnProperty(i)) {
+                re = new RegExp(r[i], 'gi');
+                while ((curr = re.exec(restr)) !== null) {
+                    spotted[curr.index] = {
+                        content: curr[1],
+                        length: curr[0].length - 1
+                    }
+                }
+            }
+        }
+
+        for (curr = '', i = 0; i < l; i += 1) {
+            // If spotted by regexp, simply append result
+            if (spotted.hasOwnProperty(i)) {
+                push(curr, spotted[i].content);
+                i += spotted[i].length - 1;
+            } else 
+            // TODO: benchmark if word_boundaries.indexOf more perf than str.match(regexp)
+            if (word_boundaries.indexOf(str[i]) > -1) {
+                push(curr, str[i]);
             } else {
                 curr += str[i];
             }
         }
 
-        if (!!curr) {
-            res.push(curr);
-        }
+        push(curr);
 
         return res;
     };
@@ -105,8 +185,8 @@
             }
             
             // If dot in float or full float
-            if ((tok === '.' && previous.match(/^[0-9]+$/i) && next.match(/^[0-9]+$/i)) ||
-                tok.match(/^[0-9]+$/i) && previous.match(/^[0-9]+\.$/i)) {
+            if ((tok === '.' && previous.match(cd) && next.match(acd)) ||
+                (tok.match(cd) && previous.match(cdf))) {
                 in_acronym = false;
                 result[count - 1] += tok;
                 continue;
@@ -134,7 +214,7 @@
                     continue;
                 }
             // Else if single letter and in acronym, merge back
-            } else if (tok.match(/^[A-Z]{1}$/g) && i < l - 1 && next === '.') {
+            } else if (tok.match(/^[A-Za-z]{1}$/g) && i < l - 1 && next === '.') {
                 in_acronym = true;
             }
 

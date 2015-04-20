@@ -17,9 +17,12 @@
                 ll = 0;
                 negated = false;
             } else if (negations.indexOf(token.norm) > -1) {
-                n += 1;
-                token.profile.negated = true;
-                negated = true;
+                if (!negated) {
+                    n += 1;
+                    negated = true;
+                } else {
+                    negated = false;
+                }
             } else if (negated && cancelNegations.indexOf(token.norm) > -1 && ll === 0) {
                 sentence.tokens[i - 1].profile.negated = false;
                 n -= 1;
@@ -27,8 +30,8 @@
             } else if (!!negated) {
                 n += 1;
                 ll += 1;
-                token.profile.negated = true;
             }
+            token.profile.negated = negated;
         }
 
         sentence.profile.negated = n > 0;

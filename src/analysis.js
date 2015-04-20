@@ -20,6 +20,7 @@
             profile: {
                 label: 'neutral',
                 sentiment: 0,
+                emphasis: 1,
                 politeness: 0
             },
             has_negation: false,
@@ -93,12 +94,14 @@
                 compendium.detect.apply('t', s.tokens[j], j, s);
             }
             
-            s.time = Date.now() - d;
             res.push(s);
+            s.time = Date.now() - d;
         }
         // For each sentence
         for (i = 0; i < l; i += 1) {
+            d = Date.now();
             compendium.detect.apply('s', res[i], i, res);
+            res[i].time += Date.now() - d;
         }
         return res;
     };

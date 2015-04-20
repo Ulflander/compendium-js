@@ -7,6 +7,26 @@
 (function() {
     var cpd = {
 
+        // Regular verbs
+        // Conjugated and expanded in compendium.parser.js
+        verbs: [
+            'disgorge',
+            'claim',
+            'screw',
+            'jump'
+        ],
+
+        // Common exceptions to the words ending with "ing"
+        // but that are not the gerund of a verb
+        ing_excpt: [
+            'anything',
+            'spring',
+            'something',
+            'thing',
+            'king',
+            'nothing'
+        ],
+
         // Thanks to https://github.com/spencermountain/nlp_compromise
         // for initial list.
         // Odd entries are abbreviations, even entries are replacement
@@ -21,6 +41,7 @@
             'ms', 'miss',
             'dr', 'doctor',
             'prof', 'professor',
+            'pr', 'professor',
             'sr', 'senior',
             'sen', 'senator',
             'corp', 'corporation',
@@ -173,6 +194,11 @@
             'co', ''
         ],
 
+        // Regular verbs
+        regular: [
+            'jump'
+        ],
+
         // Abbreviation replacements
         // (populated by parser)
         abbrs_rplt: [],
@@ -184,11 +210,16 @@
             'jeopardy'
         ],
 
-        // Rules from `rules.txt`
+        // Rules from `rules.txt`, 
+        // populated by gulpfile and parsed by compendium.parser.js
         rules: '@@rules',
 
         // Suffixes from `suffixes.txt`
+        // populated by gulpfile and parsed by compendium.parser.js
         suffixes: '@@suffixes',
+
+        // Raw emoticons, populated by compendium.parser.js
+        emots: [],
 
         // Numbers and their value
         // (PoS tag `CD`)
@@ -230,11 +261,113 @@
             trillion: 1000000000000
         },
 
+        nationalities: {
+            afghan: 'JJ',
+            albanian: 'JJ',
+            algerian: 'JJ',
+            argentine: 'JJ',
+            armenian: 'JJ',
+            australian: 'JJ',
+            aussie: 'JJ',
+            austrian: 'JJ',
+            bangladeshi: 'JJ',
+            belgian: 'JJ',
+            bolivian: 'JJ',
+            bosnian: 'JJ',
+            brazilian: 'JJ',
+            bulgarian: 'JJ',
+            cambodian: 'JJ',
+            canadian: 'JJ',
+            chilean: 'JJ',
+            chinese: 'JJ',
+            colombian: 'JJ',
+            croat: 'JJ',
+            cuban: 'JJ',
+            czech: 'JJ',
+            dominican: 'JJ',
+            egyptian: 'JJ',
+            british: 'JJ',
+            estonian: 'JJ',
+            ethiopian: 'JJ',
+            finnish: 'JJ',
+            french: 'JJ',
+            gambian: 'JJ',
+            georgian: 'JJ',
+            german: 'JJ',
+            greek: 'JJ',
+            haitian: 'JJ',
+            hungarian: 'JJ',
+            indian: 'JJ',
+            indonesian: 'JJ',
+            iranian: 'JJ',
+            iraqi: 'JJ',
+            irish: 'JJ',
+            israeli: 'JJ',
+            italian: 'JJ',
+            jamaican: 'JJ',
+            japanese: 'JJ',
+            jordanian: 'JJ',
+            kenyan: 'JJ',
+            korean: 'JJ',
+            kuwaiti: 'JJ',
+            latvian: 'JJ',
+            lebanese: 'JJ',
+            liberian: 'JJ',
+            libyan: 'JJ',
+            lithuanian: 'JJ',
+            macedonian: 'JJ',
+            malaysian: 'JJ',
+            mexican: 'JJ',
+            mongolian: 'JJ',
+            moroccan: 'JJ',
+            dutch: 'JJ',
+            nicaraguan: 'JJ',
+            nigerian: 'JJ',
+            norwegian: 'JJ',
+            omani: 'JJ',
+            pakistani: 'JJ',
+            palestinian: 'JJ',
+            filipino: 'JJ',
+            polish: 'JJ',
+            portuguese: 'JJ',
+            qatari: 'JJ',
+            romanian: 'JJ',
+            russian: 'JJ',
+            rwandan: 'JJ',
+            samoan: 'JJ',
+            saudi: 'JJ',
+            scottish: 'JJ',
+            senegalese: 'JJ',
+            serbian: 'JJ',
+            singaporean: 'JJ',
+            slovak: 'JJ',
+            somali: 'JJ',
+            sudanese: 'JJ',
+            swedish: 'JJ',
+            swiss: 'JJ',
+            syrian: 'JJ',
+            taiwanese: 'JJ',
+            thai: 'JJ',
+            tunisian: 'JJ',
+            ugandan: 'JJ',
+            ukrainian: 'JJ',
+            american: 'JJ',
+            hindi: 'JJ',
+            spanish: 'JJ',
+            venezuelan: 'JJ',
+            vietnamese: 'JJ',
+            welsh: 'JJ',
+            african: 'JJ',
+            european: 'JJ',
+            asian: 'JJ',
+            californian: 'JJ'
+        },
+
         // Negation marks
         neg: {
             not: 'RB',
-            'n\'t': 'RB',
-            '\'t': 'RB',
+            'n\'t':  'RB',
+            '\'t':  'RB',
             no: 'RB',
             neither: 'DT',
             nor: 'DT',
@@ -252,8 +385,8 @@
             fail: 'VB',
             exclude: 'VB',
             lack: 'NN',
-            absence: '',
-            none: ''
+            absence: 'NN',
+            none: 'NN'
         },
 
         // Counter negation marks
@@ -271,7 +404,7 @@
         },
 
         // Personal pronouns
-        // filtered in lexicon
+        // filtered in lexicon (y?)
         p: {
             i: 'PRP',
             you: 'PRP'
@@ -320,15 +453,14 @@
             'biatch','bloody','blowjob','blow job','bollock','bollok',
             'boner','boob','bugger','bum','butt','buttplug','clitoris','cock',
             'coon','crap','cunt','damn','dick','dildo','dyke','fag',
-            'feck','fellate','fellatio','felching','fuck','fudgepacker','fudge packer','flange',
-            'homo','jerk','jizz','knobend','knob end','labia','lmao','lmfao','muff',
+            'feck','fellate','fellatio','felching','fuck','fucking','fudgepacker','fudge packer','flange',
+            'homo','jerk','jizz','knobend','knob end','labia','lmfao','muff',
             'nigger','nigga','penis','piss','poop','prick','pube',
             'pussy','queer','scrotum','sex','shit','s hit','sh1t','slut','smegma',
             'spunk','tit','tosser','turd','twat','vagina','wank','whore'
         ],
 
-        polite: ['thanks', 'thank', 'please', 'excuse', 'pardon', 'welcome', 'sorry', 'might'],
-
+        polite: ['thanks', 'thank', 'please', 'excuse', 'pardon', 'welcome', 'sorry', 'might']
     };
 
 

@@ -11,7 +11,6 @@
             l,
             i;
 
-
         // raw can be string or number
         if (typeof raw === 'string') {
             lc = raw.toLowerCase();
@@ -39,8 +38,12 @@
             i = raw[0];
             if (i === '!' || i === '?') {
                 token.profile.emphasis = raw.length > 1 ? 2 : 1.5;
+                if (raw.length > 1) {
+                    token.norm = raw[0];
+                }
             } else if (i === '.' && raw[1] === '.') {
                 token.profile.emphasis = 1.5;
+                token.norm = '...';
             }
         } else if (token.pos === 'EM') {
             token.profile.emphasis = 1.2;

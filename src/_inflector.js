@@ -4,9 +4,9 @@
 (function() {
 
     /*
-        The following regexp rules have been extracted from
-        http://code.google.com/p/inflection-js/ and then improved 
-        given test unit results.
+        The following singularization/pluralization regexp rules have
+        been extracted from http://code.google.com/p/inflection-js/ 
+        and then improved given test unit results.
      */
 
     /*
@@ -135,6 +135,9 @@
     };
 
     inflector.isPlural = function(str) {
+        if (str.match(/ss$/gi)) {
+            return false;
+        }
         return match(str, singular_rules);
     };
 
@@ -149,6 +152,29 @@
     inflector.pluralize = function(str) {
         return apply(str, plural_rules);
     };
+
+    /*
+        The following methods are experimental for now.
+    */
+
+    inflector.conjugate = function(vb, to) {
+        var l = vb[vb.length - 1];
+        if (vb.match(/([ua]mp|ay|ight|ok|aim|ew)$/gi)) {
+            return inflector.conjugateLongVowel(vb, to)
+        }
+    };
+
+    inflector.conjugateLongVowel = function(vb, to) {
+        if (to === 'VBZ') {
+            return vb + 's';
+        } else if (to === 'VBG') {
+            return vb + 'ing';
+        } else if (to === 'VBN') {
+            return vb + 'ed';
+        }
+        return vb;
+    };
+
 
     compendium.inflector = inflector;
 

@@ -31,6 +31,12 @@ exports['I shouldn\'t work, I should rest'] = function(test){
     test.done();
 };
 
+exports['I can\'t say you are not dumb'] = function(test){
+    var analysis = compendium.analyse('I can\'t say you are not dumb');
+    test.equal(analysis[0].tokens[7].profile.negated, false);
+    test.done();
+};
+
 exports['I shouldn\'t solely work, I should hard work'] = function(test){
     var expected = false,
         analysis = compendium.analyse('I shouldn\'t solely work, I should hard work'),

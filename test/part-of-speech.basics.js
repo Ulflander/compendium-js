@@ -6,6 +6,10 @@ var compendium = require('../build/compendium.minimal.js');
 // and in some case verified (and, rarely, fixed) using this other, purely machine learning based tagger:
 // http://nlpdotnet.com/services/Tagger.aspx
 // 
+exports['None of the money was missing'] = function(test) {
+    test.deepEqual(['NN', 'IN', 'DT', 'NN', 'VBD', 'VBG'], compendium.analyse('None of the money was missing')[0].tags);
+    test.done();
+};
 
 exports['She sells seashells by the seashore. the shells she sells are sure seashells.'] = function(test) {
     var expected = [
@@ -23,7 +27,7 @@ exports['She sells seashells by the seashore. the shells she sells are sure seas
 };
 exports['The quick brown fox jumps over the lazy dog.'] = function(test) {
     var expected = [
-            ('DT JJ JJ NN NNS IN DT JJ NN .').split(' ')
+            ('DT JJ JJ NN VBZ IN DT JJ NN .').split(' ')
         ],
         analysis = compendium.analyse('The quick brown fox jumps over the lazy dog.'),
         actual = [
@@ -42,6 +46,18 @@ exports['A form of asbestos once used to make Kent cigarette filters has caused 
         actual = [
             analysis[0].tags
         ];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+
+exports['2 -1'] = function(test) {
+    var expected = [
+            ('CD CD').split(' ')
+        ],
+        analysis = compendium.analyse('2 -1'),
+        actual = [analysis[0].tags];
 
     test.deepEqual(actual, expected);
     test.done();
@@ -68,6 +84,18 @@ exports['Feeling kind of low...'] = function(test) {
 exports['happy!!!!!!'] = function(test) {
     var analysis = compendium.analyse('happy !!!!!!');
     test.deepEqual([analysis[0].tags], [('JJ .').split(' ')]);
+    test.done();
+};
+
+exports['😋'] = function(test) {
+    var analysis = compendium.analyse('😋');
+    test.deepEqual([analysis[0].tags], [('EM').split(' ')]);
+    test.done();
+};
+
+exports['happy 😋 !!!!!!'] = function(test) {
+    var analysis = compendium.analyse('happy 😋 !!!!!!');
+    test.deepEqual([analysis[0].tags], [('JJ EM .').split(' ')]);
     test.done();
 };
 

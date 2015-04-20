@@ -2,26 +2,45 @@
 
 Run PoS test against penn treebank
 
-JSON file took from nlp_compromise (thanks!).
+JSON file took from nlp_compromise (thanks a bunch!).
 
 It's good to note that some of the Penn Treebank dataset sentences are not perfectly tagged, so measure 
 of deviation from Penn Treebank is quite subjective, as Compendium may be good where Penn is wrong 
-(in a VERY little measure). Examples of Penn errors:
+(in a VERY LITTLE proportion.. 0.1 to 0.3% probably on used test set). Examples of Penn errors:
 
 Too much money is at stake for program traders to give up. - give/VB up/IN where it should be give/VB up/RP
+
+I still don't know where these errors (if it's proved they are) come from, as I don't have access to raw
+original version of the dataset.
 
 Result history:
 - April 15th: Minimal: 88.76% / Full: 90.13%
 - April 15th: Minimal: 89.35% / Full: 90.56%
 - April 15th: Minimal: 89.91% / Full: 92.34%
 - April 15th: Minimal: 90.59% / Full: 92.29%
-     > makes sense but interesting: new brill rules provided a great improvement in minimal
-       mode but a slight decline in full mode - this is the limit of rules over a lexicon
+        > makes sense but interesting: new brill rules provided a great improvement in minimal
+        mode but a slight decline in full mode - this is the limit of rules over a lexicon
 
 - April 17th, 1959 sentences: 
-    Minimal:    90.65% exact tags, 352 exact sentences, 0.36ms ave. per sentence
-    Full:       92.74% exact tags, 518 exact sentences, 0.72ms ave. per sentence
+    Minimal:    90.65% exact tags, 352 exact sentences, 0.72ms ave. per sentence
+    Full:       92.74% exact tags, 518 exact sentences, 0.36ms ave. per sentence
 
+        > would be worth the check why the full mode is a lot more fast - instinct says because
+        likely initial lexicon search is successful, so it doesn't search for variations. Trie 
+        lexicon will probably make both modes faster.
+
+- April 19th, 1947 sentences: 
+    Minimal:    90.68% exact tags, 355 exact sentences, 0.75ms ave. per sentence
+    Full:       93.14% exact tags, 565 exact sentences, 0.36ms ave. per sentence
+
+        > Lexer improvements made an appreciable difference in full mode: +0.4%.
+
+- April 19th: 
+    Minimal:    91.50% exact tags, 412/1949 exact sentences, 0.84ms ave. per sentence
+    Full:       94.22% exact tags, 549/1523 exact sentences, 0.36ms ave. per sentence
+
+        > Whole set of new rules and vocabulary in compendium, more granularity on existing 
+        rules (verbs inference, less suffixes...)
 
 */
 
@@ -91,17 +110,20 @@ for (var k in data) {
         cTotalTags += 1;
         if (penn_pos[i] !== tags[i]) {
             failed = true;
-            var tk = cpd_pos.tokens[i].norm;
 
-            if (tk.length > 6 && penn_pos[i].indexOf('VB') == -1) {
-            var d = penn_pos[i] + '/' + tags[i] + ' - ' + tk.slice(-5);
+            var tk = cpd_pos.tokens[i].raw;
+
+            var d = tk;
 
                 if (DIFFS.hasOwnProperty(d)) {
-                    DIFFS[d] += 1;
+                    DIFFS[d].c += 1;
+
+                    DIFFS[d].prev.push('(' + penn_pos[i - 1] + ') ' + penn_pos[i] + '<<'+tags[i]);
+
                 } else {
-                    DIFFS[d] = 1;
+                    DIFFS[d] = {c: 1, prev: [penn_pos[i - 1]]};
                 }
-            }
+            
         } else {
             cSuccessTags += 1;
         }
@@ -122,18 +144,19 @@ for (var k in data) {
 // Put diffs in an array
 var diffs_arr = [];
 for (k in DIFFS) {
-    if (DIFFS[k] > 2 && k.indexOf('NN') === -1) {
-        diffs_arr.push({
-            tags: k,
-            score: DIFFS[k]
-        });
-    }
+
+    diffs_arr.push({
+        key: k,
+        score: DIFFS[k].c,
+        prev: DIFFS[k].prev
+    });
+
 }
 // Order by score
 diffs_arr.sort(function(a, b) {
     return b.score - a.score;
 });
-for (i = 0; i < 10; i += 1) {
+for (i = 0; i < 20; i += 1) {
     console.log(diffs_arr[i]);
 }
 

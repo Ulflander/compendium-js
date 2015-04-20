@@ -31,9 +31,11 @@
         RBIGRAM = 20,
         PREV1OR2WD = 21,
 
-        rules = compendium.compendium.rules,
+        cpd = compendium.compendium,
+        emots = cpd.emots,
+        rules = cpd.rules,
         rulesLength = rules.length,
-        suffixes = compendium.compendium.suffixes,
+        suffixes = cpd.suffixes,
         suffixesLength = suffixes.length;
 
     pos.applyRule = function(rule, token, tag, index, tokens, tags) {
@@ -190,6 +192,11 @@
         return null;
     };
 
+    // Tag a tokenized sentence.
+    // Apply three passes:
+    // 1. Guess a tag based on lexicon + prefixes (see `suffixes.txt`)
+    // 2. Manual tranformation rules
+    // 3. Apply Brill's conditions from `rules.txt`
     pos.tag = function(sentence) {
         var tags = [],
             token,
@@ -199,62 +206,70 @@
             tl,
             suffix,
             previous,
-            confidence = l;
+            confidence = 0,
+
+            append = function(tag, c) {
+                tags.push(typeof tag === 'object' ? tag.pos : tag);
+                confidence += c;
+            };
 
         // Basic tagging based on lexicon and 
         // suffixes
         for (i = 0; i < l; i += 1) {
             token = sentence[i];
+            
+            if (emots.indexOf(token) > -1) {
+                append('EM', 1);
+                continue;
+            }
+
             // Attempt to get pos in a case sensitive way
             tag = compendium.lexicon[token];
 
-            // If none, try with lower cased
-            if (!tag && typeof token === 'string' && token.match(/[A-Z]/g)) {
-                tag = compendium.lexicon[token.toLowerCase()];
+            if (!!tag && tag !== '-') {
+                append(tag, 1);
+                continue;
             }
 
-            // Found in lexicon!
-            if (!!tag) {
-                tags.push(tag.pos);
-                continue;
+            // If none, try with lower cased
+            if (typeof token === 'string' && token.match(/[A-Z]/g)) {
+                tag = compendium.lexicon[token.toLowerCase()];
+
+                if (!!tag && tag !== '-') {
+                    append(tag, 0.75);
+                    continue;
+                }
             }
 
             // If no tag, check composed words
             if (token.indexOf('-') > -1) {
                 suffix = token.split('-')[1];
                 tag = compendium.lexicon[suffix.toLowerCase()];
-                if (!!tag) {
-                    tags.push(tag.pos);
+                if (!!tag && tag !== '-') {
+                    append(tag, 0.5);
                     continue;
                 }
 
                 suffix = token.split('-')[0];
                 tag = compendium.lexicon[suffix.toLowerCase()];
-                if (!!tag) {
-                    tags.push(tag.pos);
+                if (!!tag && tag !== '-') {
+                    append(tag, 0.5);
                     continue;
                 }
             }
 
-            // Last chance before rules being applied:
-            // test common suffixes.
+            // Test common suffixes.
             tag = pos.testSuffixes(token);
             if (!!tag) {
-                confidence -= 0.5;
-                tags.push(tag);
+                append(tag, 0.25);
                 continue;
             }
 
-
             // We default to NN if still no tag
-            if (!tag) {
-                confidence -= 1;
-                tag = 'NN';
-            }
-            tags.push(tag);
+            append('NN', 0);
         }
 
-        // Transformational rules
+        // Manual transformational rules
         for (i = 0; i < l; i += 1) {
             token = sentence[i];
             tl = token.length;
@@ -262,8 +277,8 @@
             tag = tags[i];
             previous = (i === 0 ? '' : tags[i - 1]);
 
-            // Float numbers
-            if (token.match(/^[0-9]+(\.[0-9]+)?$/g)) {
+            // Numbers
+            if (token.match(/^-?[0-9]+(\.[0-9]+)?$/g)) {
                 tags[i] = 'CD';
                 continue;
             }
@@ -273,20 +288,28 @@
                 tags[i] = '.';
                 continue;
             }
-
+            
             // Convert a common noun to a present participle verb (i.e., a gerand)
-            if (tl > 4 && (tag.indexOf('N') === 0 || tag === 'MD') && token.lastIndexOf('ing') === tl - 3) {
+            if (tl > 4 && token.lastIndexOf('ing') === tl - 3 && 
+                cpd.ing_excpt.indexOf(token.toLowerCase()) === -1 &&
+                (tag.indexOf('N') === 0 || tag === 'MD' || tag === '-') && 
+                (i === 0 || !token.match(/^[A-Z][a-z]+/g)) &&
+                previous !== 'NN' && previous !== 'JJ' && previous !== 'DT') {
                 tags[i] = 'VBG';
                 continue;
-            } else
-            // Convert a noun to a past participle if words.get(i) ends with 'ed'
-            if (tl > 3 && tag.indexOf('N') === 0 && token.lastIndexOf('ed') === tl - 2) {
+            }
+
+            // Convert a noun to a past participle if token ends with 'ed'
+            if (tl > 3 && token.lastIndexOf('ed') === tl - 2 && 
+                (tag.indexOf('N') === 0 || tag === '-') &&
+                (i === 0 || !token.match(/^[A-Z][a-z]+/g))) {
                 tags[i] = 'VBN';
                 continue;
             }
 
             // Proper noun inference
-            if (tag === 'NN' || tag === 'JJ') {
+            if (tag === 'NN' || 
+                    (tag === 'JJ' && cpd.nationalities.hasOwnProperty(token.toLowerCase()) === false)) {
                 // All uppercased or an acronym, probably NNP
                 if (token.match(/^[A-Z]+$/g) || token.match(/^([a-z]{1}\.)+/gi)) {
                     tag = 'NNP';
@@ -312,6 +335,7 @@
             tags[i] = tag;
         }
 
+        // Finally 
         pos.apply(sentence, tags);
 
         return {

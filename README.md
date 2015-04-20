@@ -2,11 +2,11 @@
 
 English Natural Language Processing for Node.js and the browser.
 
-75k only for the browser package.
+90k only for the browser package.
 
-Scores 90.5% on the Penn Treebank dataset with the browser version, 92% with the node version.
+Scores 92% on the Penn Treebank dataset with the browser version, 94% with the node version.
 
-Includes sentiment analysis, entities extraction, and many more.
+Includes sentiment analysis, entities extraction, and more.
 
 MIT licensed.
 
@@ -38,6 +38,8 @@ Then:
     <script type="text/javascript">
         console.log(compendium.analyse('Hello world'));
     </script>
+
+In order to ensure that Compendium will work as intended, you must specify the encoding of the HTML page as UTF-8.
 
 #### Node.js
 

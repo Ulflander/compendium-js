@@ -31,7 +31,7 @@ function lexicon(level) {
     }
 
     for (i in compendium.compendium) {
-        if (compendium.compendium.hasOwnProperty(i) && typeof compendium.compendium === 'object') {
+        if (compendium.compendium.hasOwnProperty(i) && !Array.isArray(compendium.compendium[i]) && typeof compendium.compendium[i] === 'object') {
             for (j in compendium.compendium[i]) {
                 if (compendium.compendium[i].hasOwnProperty(j)) {
                     compendium.push(j);
@@ -49,17 +49,21 @@ function lexicon(level) {
         sts.push(sentiments[j][0]);
     }
 
+
     for (i = 0, l = lex.length; i < l; i += 1) {
         line = lex[i].split(' ');
         token = line[0].trim();
         idx = sts.indexOf(token);
-        token === 'lazy' ? console.log(idx) : null;
-        if (compendium.indexOf(token) > -1) {
+        sts[idx] = '--';
+
+        // If is word but no PoS tag, skip it
+        if (compendium.indexOf(token) > -1 && idx === -1) {
             continue;
         }
 
 
-        lex[i] = line[0] + ' ' + line[1];
+        lex[i] = line[0] + ' ' + (line[1] || 'NN');
+
 
         // If token has a sentiment score, add it
         if (idx > -1) {
@@ -95,6 +99,9 @@ function lexicon(level) {
             }
         }
 
+        if (i % 1000 === 0) {
+            console.log(i);
+        }
         // Minimal mode: we expunge tokens with uppercase letters
         if (level > 0 && token.toLowerCase() === token && token.indexOf('-') === -1) {
             mini.push(lex[i]);
@@ -102,6 +109,12 @@ function lexicon(level) {
             skipped += 1;
         }
 
+    }
+    for (j = 0, m = sentiments.length; j < m; j += 1) {
+        if (sts[j] !== '--') {
+            lex.push(sentiments[j][0] + ' - ' + sentiments[j][1]);
+            mini.push(sentiments[j][0] + ' - ' + sentiments[j][1]);
+        }
     }
 
 
@@ -118,7 +131,7 @@ function lexicon(level) {
 gulp.task('build_full', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
-        l = fs.readFileSync('build/lexicon-full.txt'),
+        l = fs.readFileSync('build/lexicon-full.txt').toString().split('\\').join('\\\\'),
         s = fs.readFileSync('src/suffixes.txt').toString().split('\n').join('\t'),
         r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
 
@@ -137,7 +150,7 @@ gulp.task('build_full', function() {
 gulp.task('build_minimal', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
-        l = fs.readFileSync('build/lexicon-minimal.txt'),
+        l = fs.readFileSync('build/lexicon-minimal.txt').toString().split('\\').join('\\\\'),
         s = fs.readFileSync('src/suffixes.txt').toString().split('\n').join('\t'),
         r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
 
