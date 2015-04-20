@@ -17,7 +17,9 @@
             l = lc.length;
          
             // Test abbreviation
-            if (l > 1 && raw.indexOf('.') === l - 1 && (i = cpd.abbrs.indexOf(lc.slice(0, l - 1))) > -1) {
+            if (l > 1 && 
+                (raw.indexOf('.') === l - 1 && (i = cpd.abbrs.indexOf(lc.slice(0, l - 1))) > -1) || 
+                ((i = cpd.abbrs.indexOf(lc)) > -1)) {
                 token.attr.abbr = true;
                 token.norm = cpd.abbrs_rplt[i];
             // Test acronym
