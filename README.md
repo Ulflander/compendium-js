@@ -144,7 +144,7 @@ Starting from here various processors will handle further analysis of the text. 
 
 Token level processors add attributes to each token (sentiment and emphasis scores, normalized token...).
 
-Sentence level processors work accross many tokens, allowing (negation detection, entity recognition, sentiment analysis...).
+Sentence level processors work accross many tokens (negation detection, entity recognition, sentiment analysis...).
 
 Global level processors (there are none yet) are supposed to provide a global analysis of the whole text: topics, global sentiment labelling...
 
