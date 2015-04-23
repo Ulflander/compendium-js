@@ -23,3 +23,11 @@ exports['Hello world.'] = function(test){
     test.equal(analysis[0].profile.types.indexOf('foreign'), -1);
     test.done();
 };
+
+// Should be headline
+exports['NVIDIA Names Stanford\'s Bill Dally Chief Scientist, VP Of Research http://bit.ly/Fvvg9'] = function(test){
+    var analysis = compendium.analyse('NVIDIA Names Stanford\'s Bill Dally Chief Scientist, VP Of Research http://bit.ly/Fvvg9');
+
+    test.notEqual(analysis[0].profile.types.indexOf('headline'), -1);
+    test.done();
+};

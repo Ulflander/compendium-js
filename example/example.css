@@ -31,6 +31,7 @@ body {
 .types {
     position: absolute;
     right: 0;
+    top: 0;
 }
 .types > span {
     padding: 3px 5px;

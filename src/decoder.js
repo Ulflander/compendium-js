@@ -19,8 +19,8 @@
             // http://html5sec.org/#133.
             '`': /&#x60/gi,
 
-            // Damn generation-y and millenials
-            'shit': /(s&^t|sh\*t)/gi,
+            // Damn generation-y and millenials, damn impoliteness
+            'shit': /(s\&\^t|sh\*t)/gi,
             'fuck': /(f\*ck)/gi,
             'just kidding': 'j/k',
             'without': /w\/[to]/g,

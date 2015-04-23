@@ -194,6 +194,8 @@
         'Mr. Bush has said he would like to be able to use this procedure.',
         'But the two legal experts, responding to an inquiry by Sen. Edward Kennedy ( D., Mass. ), wrote in a joint letter that the president lacks the constitutional authority to exercise a line-item veto.',
         'The two professors said the Constitution authorizes the president to veto entire bills, not partial measures.',
-        'Moreover, they said the first appropriations bill passed 200 years ago covered many different items, and there was no discussion of a line-item veto.'
+        'Moreover, they said the first appropriations bill passed 200 years ago covered many different items, and there was no discussion of a line-item veto.',
+        'La terminal norte es para los vuelos internacionales.',
+        'Je suis un garçon'
 
 ];

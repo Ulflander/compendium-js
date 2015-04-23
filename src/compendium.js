@@ -44,7 +44,8 @@
             'severly',
             'particularly',
             'highly',
-            'quite'
+            'quite',
+            'pretty'
         ],
 
         // Thanks to https://github.com/spencermountain/nlp_compromise

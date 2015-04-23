@@ -16,9 +16,10 @@
             raw = token.raw;
             tokens_length += token.raw.length;
 
-            if (raw.match(/^[A-Z][^A-Z]+$/g)) {
+            if (raw.match(/^[A-Z][a-zA-Z]+$/g)) {
                 capitalized += 1;
-            } else if (raw.match(/[A-Z]+/) && !raw.match(/[a-z]/)) {
+            }
+            if (raw.match(/[A-Z]+/) && !raw.match(/[a-z]/)) {
                 uppercased += 1;
             }
 

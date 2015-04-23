@@ -14,7 +14,6 @@ exports['IM LOWERCASED'] = function(test){
     var analysis = compendium.analyse('IM LOWERCASED');
 
     test.equal(analysis[0].stats.p_upper, 100);
-    test.equal(analysis[0].stats.p_cap, 0);
     test.done();
 };
 
