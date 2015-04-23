@@ -70,16 +70,17 @@ will return an object like:
         raw: 'My name is Dr. Jekyll .', // Raw string
         stats:
          { confidence: 0.4583,          // PoS tagging confidence
-           p_foreign: 0,                // Percentage of foreign PoS tags
-           p_upper: 0,                  // Percentage of uppercased tokens
-           p_cap: 50,                   // Percentage of capitalized tokens
+           p_foreign: 0,                // Percentage of foreign PoS tags, e.g. `FW`
+           p_upper: 0,                  // Percentage of uppercased tokens, e.g. `HELLO`
+           p_cap: 50,                   // Percentage of capitalized tokens, e.g. `Hello`
            avg_length: 3 },             // Average token length
         profile:                        
-         { label: 'neutral',            // Sentiment: `negative`, `neutral`, `positive`
+         { label: 'neutral',            // Sentiment: `negative`, `neutral`, `positive`, `mixed`
            sentiment: 0,                // Sentiment score
            amplitude: 0,                // Sentiment amplitude
            types: [],                   // Types ('tags') of sentence
-           politeness: 0,               // Politeness score
+           politeness: 0,               // Politeness score (coming soon)
+           dirtiness: 0,                // Dirtiness score (coming soon)
            negated: false },            // Is sentence mainly negated
         entities: [ {                   // List of entities
             raw: 'Dr. Jekyll',          // Raw reconstructed entity
