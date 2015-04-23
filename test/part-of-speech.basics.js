@@ -1,5 +1,5 @@
 
-var compendium = require('../build/compendium.minimal.js');
+var compendium = require('../dist/compendium.minimal.js');
 
 // Comparative PoS result have been generated using the Stanford PoS tagger,
 // via http://nlp.stanford.edu:8080/parser/index.jsp

@@ -1,6 +1,6 @@
 # Compendium
 
-Rule-Based English Natural Language Processing for Node.js and the browser.
+Rule-based English Natural Language Processing for Node.js and the browser.
 
 90k only for the browser package.
 

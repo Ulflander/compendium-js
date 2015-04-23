@@ -1,5 +1,5 @@
 
-var compendium = require('../build/compendium.minimal.js');
+var compendium = require('../dist/compendium.minimal.js');
 
 exports['Joe Carter went to the Toronto International Film Festival to go see Inception.'] = function(test) {
     var expectedPoS = [

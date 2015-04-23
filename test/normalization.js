@@ -1,5 +1,5 @@
 
-var compendium = require('../build/compendium.minimal.js');
+var compendium = require('../dist/compendium.minimal.js');
 
 
 
