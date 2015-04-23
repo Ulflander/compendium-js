@@ -2,11 +2,9 @@
 
 Rule-based English Natural Language Processing for Node.js and the browser.
 
-90k only for the browser package.
+90k only for the browser package, scores 91% on the Penn Treebank dataset with the browser version, 94% with the node version, MIT licensed.
 
-Scores 91% on the Penn Treebank dataset with the browser version, 94% with the node version.
-
-MIT licensed.
+[![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js)
 
 [![Compendium demo screenshot](http://laumonier.co/compendium-js/example/compendium.png)](http://laumonier.co/compendium-js/example/example.html).
 
