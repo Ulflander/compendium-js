@@ -66,13 +66,20 @@ The only function to be called. Take a string as parameter and returns an array 
 
 will return an object like:
 
-    [ { time: 5,                        // Time of processing, in ms
-        confidence: 0.5,                // PoS tagging confidence
+    [ { time: 9,                        // Time of processing, in ms
         length: 6,                      // Count of tokens
         raw: 'My name is Dr. Jekyll .', // Raw string
+        stats:
+         { confidence: 0.4583,          // PoS tagging confidence
+           p_foreign: 0,                // Percentage of foreign PoS tags
+           p_upper: 0,                  // Percentage of uppercased tokens
+           p_cap: 50,                   // Percentage of capitalized tokens
+           avg_length: 3 },             // Average token length
         profile:                        
          { label: 'neutral',            // Sentiment: `negative`, `neutral`, `positive`
            sentiment: 0,                // Sentiment score
+           amplitude: 0,                // Sentiment amplitude
+           types: [],                   // Types ('tags') of sentence
            politeness: 0,               // Politeness score
            negated: false },            // Is sentence mainly negated
         entities: [ {                   // List of entities
@@ -96,7 +103,8 @@ will return an object like:
              { acronym: false,          // Is acronym
                plural: false,           // Is plural
                abbr: false,             // Is an abbreviation
-               verb: false } },         // Is a verb
+               verb: false,             // Is a verb
+               entity: -1 } },          // Entity index, `-1` if no entity
             //
             // ... Other tokens
             //

@@ -43,10 +43,17 @@ Result history:
         rules (verbs inference, less suffixes...)
         > Lighter embedded lexicons in both modes
 
+- April 23th: 
+    Minimal:    91.77% exact tags, 435/1949 exact sentences, 1.38ms ave. per sentence
+    Full:       94.37% exact tags, 564/1523 exact sentences, 1.15ms ave. per sentence
+
+        > Whole set of new rules and vocabulary in compendium, more granularity on existing 
+        rules (verbs inference, less suffixes...)
+        > Lighter embedded lexicons in both modes
 */
 
 var data = require("./penn_treebank").data,
-    compendium = require('../build/compendium.minimal.js'),
+    compendium = require('../build/compendium.js'),
     toPoSArray = function(arr) {
         var res = [], i, l = arr.length;
         for (i = 0; i < l; i += 1) {
