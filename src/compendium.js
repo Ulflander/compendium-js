@@ -43,7 +43,8 @@
             'notably',
             'severly',
             'particularly',
-            'highly'
+            'highly',
+            'quite'
         ],
 
         // Thanks to https://github.com/spencermountain/nlp_compromise
