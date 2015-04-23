@@ -4,8 +4,6 @@ Rule-Based English Natural Language Processing for Node.js and the browser.
 
 90k only for the browser package.
 
-Part-of-Speech tagging, sentiment analysis, entity recognition and more.
-
 Scores 91% on the Penn Treebank dataset with the browser version, 94% with the node version.
 
 MIT licensed.
