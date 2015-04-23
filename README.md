@@ -6,7 +6,7 @@ English Natural Language Processing for Node.js and the browser.
 
 Scores 92% on the Penn Treebank dataset with the browser version, 94% with the node version.
 
-![Compendium demo screenshot](http://laumonier.co/compendium-js/example/compendium.png)
+[![Compendium demo screenshot](http://laumonier.co/compendium-js/example/compendium.png)](http://laumonier.co/compendium-js/example/example.html).
 
 [Test it by yourself](http://laumonier.co/compendium-js/example/example.html).
 
