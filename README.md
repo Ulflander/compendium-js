@@ -15,10 +15,8 @@ MIT licensed.
 - [Analysis process](#analysis-process)
     - [Decoding](#decoding)
     - [Part-of-speech tagging](#part-of-speech-tagging)
-    - [Lemmatization, stemming](#lemmatization-stemming)
-    - [Stats processor](#stats-processor)
-    - [Final processing](#final-processing)
-    - [Sentiment analysis](#sentiment-analysis)
+    - [Analysis](#analysis)
+    - [Lexicons](#lexicons)
 - [Development](#development)
 - [Milestones](#milestones)
 - [PoS tags definition](#tags-definition)
@@ -110,38 +108,11 @@ will return an object like:
             //
        ] } ]
 
-##### lex : tokenize a string
-
-Returns a matrix of tokens per sentences.
-
-    compendium.lex (text)
-
-Example:
-
-    compendium.lex('My name is Dr. Jekyll. My cat\'s name is Mr. Hyde.');
-    //  [
-    //      ['My', 'name', 'is', 'Dr.', 'Jekyll', '.'],
-    //      ['My', 'cat', '\'s', 'name', 'is', 'Mr.', 'Hyde', '.']
-    //  ]
-
-##### tag : return Part-of-Speech tags from an array of tokens
-
-Returns an array of tags and a confidence into the tagging.
-
-    compendium.tag (tokens)
-
-    compendium.tag(['My', 'name', 'is', 'Dr.', 'Jekyll', '.']);
-    //  {
-    //      tags: [ 'PRP$', 'NN', 'VBZ', 'NNP', 'NNP', '.' ],
-    //      confidence: 1
-    //  }
-
-
 ## Analysis process
 
 #### Decoding
 
-Handles normalization of HTML entities, and replace some particular (mostly negative) slangs.
+Handles normalization of HTML entities, and replace some particular slangs.
 
 #### Lexer
 
@@ -151,10 +122,6 @@ No good PoS tagging is possible without a good lexer. A lot of efforts have been
 - A second one applies some regular expressions to extract specific portions of the sentences (URLs, emails, emoticons...)
 - The third pass is a char by char parser that split tokens, and that relies on [Punycode.js](https://github.com/bestiejs/punycode.js/) to properly handle emojis
 - The final pass consolidates things like acronyms, abbreviations, contractions..., and handle a few exceptions
-
-#### Lemmatization, stemming
-
-More details soon.
 
 #### Part-of-speech tagging
 
@@ -171,7 +138,7 @@ PoS tagging tests are performed both against the [Penn Treebank](http://www.cis.
 
 More details soon.
 
-#### Final processing
+#### Analysis
 
 Starting from here various processors will handle further analysis of the text. Processors can work at three different levels:
 
@@ -179,9 +146,9 @@ Starting from here various processors will handle further analysis of the text. 
 - the sentence level
 - the text (global) level
 
-Token level processors add attributes to each token: sentiment and emphasis scores, normalized token...
+Token level processors add attributes to each token (sentiment and emphasis scores, normalized token...).
 
-Sentence level processors work accross many tokens, allowing negation detection, entity recognition, sentiment analysis...
+Sentence level processors work accross many tokens, allowing (negation detection, entity recognition, sentiment analysis...).
 
 Global level processors (there are none yet) are supposed to provide a global analysis of the whole text: topics, global sentiment labelling...
 
