@@ -52,6 +52,12 @@ exports['It cannot be good'] = function(test){
     test.done();
 };
 
+exports['This newspaper sells more than 170,000'] = function(test) {
+    test.deepEqual([['This', 'newspaper', 'sells', 'more', 'than', '170,000']], 
+                    lexer.lex('This newspaper sells more than 170,000'));
+    test.done();
+};
+
 exports['Welcome in the U.S. my friend!!'] = function(test){
     test.deepEqual([['Welcome', 'in', 'the', 'U.S.', 'my', 'friend', '!!']], 
                     lexer.lex('Welcome in the U.S. my friend!!'));

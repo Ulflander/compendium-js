@@ -39,3 +39,17 @@ exports['The machines are coming for your job @zeynep @nytimes http://www.nytime
     test.done();
 };
 
+// Test decoding through decoder
+exports['[compendium.decode] I &lt;3 Procter &amp; Gamble&#x27;s'] = function(test) {
+    test.deepEqual('I <3 Procter & Gamble\'s', compendium.decode('I &lt;3 Procter &amp; Gamble&#x27;s'));
+    test.done();
+};
+
+// Test decoder through global analysis
+exports['[compendium.analysis] I &lt;3 Procter &amp; Gamble&#x27;s'] = function(test) {
+    for (var analysis = compendium.analyse('I &lt;3 Procter &amp; Gamble&#x27;s')[0], i = 0, res = []; i < analysis.length; i += 1) {
+        res.push(analysis.tokens[i].raw);
+    }
+    test.deepEqual(['I', '<3', 'Procter', '&', 'Gamble', '\'s'], res);
+    test.done();
+};

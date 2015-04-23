@@ -35,3 +35,13 @@ exports['Mark Johns Jr., (sen. Ala.) against John Doe Sr. (atty. Wis.)'] = funct
     test.equal(analysis[0].tokens[14].norm, 'wisconsin');
     test.done();
 };
+
+
+exports['Mark Johns Jr., (Sen. R-Ala.) against John Doe Sr. (Gov. D-Texas)'] = function(test){
+    var analysis = compendium.analyse('Mark Johns Jr., (Sen. R-Ala.) against John Doe Sr. (Gov. D-Texas)');
+
+    test.equal(analysis[0].tokens[6].norm, 'republican, alabama');
+    test.equal(analysis[0].tokens[14].norm, 'democrat, texas');
+    test.done();
+};
+

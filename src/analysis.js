@@ -8,62 +8,21 @@
 
 (function() {
 
-    var analyser = {};
+    var analyser = {},
+        iA = Array.isArray;
 
-    analyser.createSentence = function(str) {
-        return {
-            time: 0,
-            confidence: 1,
-            length: 0,
-            raw: str,
-            // type: 'unknown',
-            profile: {
-                label: 'neutral',
-                sentiment: 0,
-                emphasis: 1,
-                politeness: 0
-            },
-            has_negation: false,
-            entities: [],
-            //dependencies: null,
-            tokens: [],
-            tags: []
-        };
-    };
-
-    analyser.createToken = function(raw, pos) {
-        return {
-            raw: raw,
-            norm: typeof raw === 'string' ? raw.toLowerCase() : raw,
-            pos: pos || '',
-            profile: {
-                sentiment: 0,
-                emphasis: 1,
-                negated: false,
-                breakpoint: false
-            },
-            attr: {
-                acronym: false,
-                plural: false,
-                abbr: false,
-                verb: pos.indexOf('VB') === 0
-            }
-            // qualified_by: [],
-            // applies_to: []
-        };
-    };
 
 
     analyser.toObject = function(sentence, pos) {
-        var s = this.createSentence(sentence.join(' ')),
+        var s = factory.sentence(sentence.join(' ')),
             i,
             l = sentence.length,
             token;
 
         s.tags = pos.tags;
-        s.confidence = pos.confidence;
+        s.stats.confidence = pos.confidence;
         for (i = 0; i < l; i += 1) {
-            s.tokens.push(analyser.createToken(sentence[i], pos.tags[i]));
+            s.tokens.push(factory.token(sentence[i], pos.tags[i]));
         }
         s.length = l;
         return s;
@@ -82,12 +41,17 @@
         // For each sentence
         for (i = 0; i < l; i += 1) {
             d = Date.now();
+            // Cleanup sentence by replacing some tokens
+            compendium.clean(sentences[i]);
 
             // Get part of speech
             pos = compendium.tag(sentences[i]);
 
             // Convert to object
             s = analyser.toObject(sentences[i], pos);
+
+            // Generate statistics
+            compendium.stat(s);
             
             // Apply token level detection
             for (j = 0, m = s.tokens.length; j < m; j += 1) {
@@ -107,12 +71,20 @@
     };
 
     compendium.analyse = function(o) {
+        var result = null;
+
+        // If provided a string, let's decode and lex it before analysis
         if (typeof o === 'string') {
-            o = compendium.lex(o);
+            o = compendium.lex(compendium.decode(o));
         }
 
-        var result = analyser.analyse(o);
+        if (!iA(o) || !iA(o[0])) {
+            throw new Error('Compendium requires a string or a matrix of sentences/tokens as argument.');
+        }
+
+        result = analyser.analyse(o);
         compendium.detect.apply('p', result);
+
         return result;
     };
 }());

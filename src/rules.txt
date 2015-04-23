@@ -93,3 +93,12 @@ NNS VBZ 8 PRP plans
 NNS VBZ 8 NN plans
 NNS VBZ 8 NNP plans
 NNS VBZ 8 NNPS plans
+RB NNP 12 south NNP
+RB NNP 12 east NNP
+RB NNP 12 west NNP
+RB NNP 12 north NNP
+WRB RB 12 when PRP
+RBR JJR 81 year earlier
+RBR JJR 81 years earlier
+NN VB 17 NN TO
+VBG NN 2 JJR

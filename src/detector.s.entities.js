@@ -1,28 +1,47 @@
 (function() {
-    
-    // Entity detection: 
+
+    var isBeforeProperNoun = function (sentence, index) {
+        if (index >= sentence.length) {
+            return false;
+        }
+        var next = sentence.tags[index + 1];
+        return next === 'NNP' || next == 'NNPS';
+    };
+
+    // Entity detection at the sentence level: 
     // consolidate NNP and NNPS 
     compendium.detect.addDetector('s', function(sentence, index, sentences) {
         var i, l = sentence.length,
+            stats = sentence.stats,
+            tag,
+            token,
+            lastIndex,
             entity;
 
+        // If sentence is mainly uppercased or capitalized, this strategy cant work
+        if (stats.p_upper > 70 || stats.p_cap > 50) {
+            return;
+        }
+
         for (i = 0; i < l; i += 1) {
-            if (sentence.tags[i] === 'NNP' || sentence.tags[i] === 'NNPS') {
+            tag = sentence.tags[i];
+            token = sentence.tokens[i];
+            if (token.attr.entity > - 1) {
+                entity = null;
+            } else if (tag === 'NN') {
+                entity = null;
+            } else if (tag === 'NNP' || tag === 'NNPS' || 
+                (!!entity && (tag === '&' || tag === 'CC' || tag === 'TO') && isBeforeProperNoun(sentence, i))) {
                 if (!!entity) {
-                    entity.raw += ' ' + sentence.tokens[i].raw,
-                    entity.norm += ' ' + sentence.tokens[i].norm,
+                    entity.raw += ' ' + token.raw,
+                    entity.norm += ' ' + token.norm,
                     entity.toIndex = i;
+                    token.attr.entity = lastIndex;
                 } else {
-                    entity = {
-                        raw: sentence.tokens[i].raw,
-                        norm: sentence.tokens[i].norm,
-                        fromIndex: i,
-                        toIndex: i,
-                        type: null
-                    };
-                    sentence.entities.push(entity);
+                    entity = factory.entity(token, i);
+                    lastIndex = token.attr.entity = sentence.entities.push(entity) - 1;
                 }
-            } else if (!!entity) {
+            } else {
                 entity = null;
             }
         }

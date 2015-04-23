@@ -209,6 +209,7 @@ avid 2
 avoid -1
 avoided -1
 avoids -1
+aww 1
 await -1
 awaited -1
 awaits -1
@@ -335,11 +336,11 @@ burden -2
 burdened -2
 burdening -2
 burdens -2
+burn -1
 calm 2
 calmed 2
 calming 2
 calms 2
-can't stand -3
 cancel -1
 cancelled -1
 cancelling -1
@@ -353,7 +354,6 @@ careful 2
 carefully 2
 careless -2
 cares 2
-cashing in -2
 casualty -2
 catastrophe -3
 catastrophic -4
@@ -500,7 +500,6 @@ convinced 1
 convinces 1
 convivial 2
 cool 1
-cool stuff 3
 cornered -2
 corpse -1
 costly -2
@@ -761,9 +760,7 @@ dithering -2
 dizzy -1
 dodging -2
 dodgy -2
-does not work -3
 dolorous -2
-dont like -2
 doom -2
 doomed -2
 doubt -1
@@ -978,7 +975,6 @@ fearful -2
 fearing -2
 fearless 2
 fearsome -2
-fed up -3
 feeble -2
 felonies -3
 felony -3
@@ -1039,13 +1035,13 @@ frustrates -2
 frustrating -2
 frustration -2
 ftw 3
-fuck -4
+fuck -2
 fucked -4
 fucker -4
 fuckers -4
 fuckface -4
 fuckhead -4
-fucking -4
+fucking -2
 fucktard -4
 fud -3
 fuked -4
@@ -1107,8 +1103,6 @@ greater 3
 greatest 3
 greed -3
 greedy -2
-green wash -3
-green washing -3
 greenwash -3
 greenwasher -3
 greenwashers -3
@@ -1446,7 +1440,6 @@ litigation -1
 litigious -2
 lively 2
 livid -2
-lmao 4
 lmfao 4
 loathe -3
 loathed -3
@@ -1516,7 +1509,7 @@ mercy 2
 merry 3
 mess -2
 messed -2
-messing up -2
+messing -2
 methodical 2
 mindless -2
 miracle 4
@@ -1605,14 +1598,11 @@ nifty 2
 niggas -5
 nigger -5
 no -1
-no fun -3
 noble 2
 noisy -1
 nonsense -2
 noob -2
 nosey -2
-not good -2
-not working -3
 notorious -2
 novel 2
 numb -1
@@ -1921,7 +1911,6 @@ rich 2
 ridiculous -3
 rig -1
 rigged -1
-right direction 3
 rigorous 3
 rigorously 3
 riot -2
@@ -1936,7 +1925,6 @@ robs -2
 robust 2
 rofl 4
 roflcopter 4
-roflmao 4
 romance 2
 rotfl 4
 rotflmfao 4
@@ -1979,7 +1967,8 @@ screamed -2
 screaming -2
 screams -2
 screwed -2
-screwed up -3
+screws -2
+screw -2
 scumbag -4
 secure 2
 secured 2
@@ -2073,7 +2062,6 @@ solved 1
 solves 1
 solving 1
 somber -2
-some kind 0
 son-of-a-bitch -5
 soothe 3
 soothed 3
@@ -2903,3 +2891,27 @@ B-D 1
 ;-) 4
 ;-] 4
 ;-D 4
+<3 3
+brb 0
+btw 0
+b4n 0
+bcnu 0
+bff 0
+cya 0
+dbeyr -1
+ily 2
+lmao 2
+lol 2
+np 0
+oic 0
+omg 0
+rotflmao 4
+stby -2
+swak 2
+tfh -2
+rtm -1
+rtfm -2
+ttyl 0
+tyvm 2
+wywh 2
+xoxo - hugs and kisses

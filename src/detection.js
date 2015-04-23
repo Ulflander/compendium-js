@@ -1,4 +1,6 @@
+// Tiny detectors manager
 (function() {
+    // Lists of detectors
     var detectors = {
             // Detectors that work at a token level
             t: [],
@@ -7,6 +9,7 @@
             // High level detector
             p: []
         },
+        // namespace
         detect = {};
 
     detect.addDetector = function (type, callback) {
@@ -17,6 +20,7 @@
         }
     };
 
+    // Apply all detectors of given type on given arguments
     detect.apply = function (type) {
         var i, l,
             args = Array.prototype.slice.call(arguments).slice(1);

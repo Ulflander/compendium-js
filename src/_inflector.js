@@ -135,7 +135,7 @@
     };
 
     inflector.isPlural = function(str) {
-        if (str.match(/ss$/gi)) {
+        if (str.match(/([saui]s|[^i]a)$/gi)) {
             return false;
         }
         return match(str, singular_rules);
@@ -159,7 +159,7 @@
 
     inflector.conjugate = function(vb, to) {
         var l = vb[vb.length - 1];
-        if (vb.match(/([ua]mp|ay|ight|ok|aim|ew)$/gi)) {
+        if (vb.match(/([ua]mp|ay|ight|ok|aim|ew|ack)$/gi)) {
             return inflector.conjugateLongVowel(vb, to)
         }
     };

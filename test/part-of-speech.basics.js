@@ -11,6 +11,12 @@ exports['None of the money was missing'] = function(test) {
     test.done();
 };
 
+
+exports['sh*t was hilarious...LMAO!!!'] = function(test) {
+    test.deepEqual(['NN', 'VBD', 'JJ', '.', 'UH', '.'], compendium.analyse('sh*t was hilarious...LMAO!!!')[0].tags);
+    test.done();
+};
+
 exports['She sells seashells by the seashore. the shells she sells are sure seashells.'] = function(test) {
     var expected = [
             ('PRP VBZ NNS IN DT NN .').split(' '),
@@ -64,6 +70,18 @@ exports['2 -1'] = function(test) {
 };
 
 
+exports['300,000 copies'] = function(test) {
+    var expected = [
+            ('CD NNS').split(' ')
+        ],
+        analysis = compendium.analyse('300,000 copies'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+
 exports['two hundred and fifty five'] = function(test) {
     var expected = [
             ('CD CD CC CD CD').split(' ')
@@ -74,6 +92,7 @@ exports['two hundred and fifty five'] = function(test) {
     test.deepEqual(actual, expected);
     test.done();
 };
+
 
 exports['Feeling kind of low...'] = function(test) {
     var analysis = compendium.analyse('Feeling kind of low...');

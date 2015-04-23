@@ -36,11 +36,12 @@ Result history:
         > Lexer improvements made an appreciable difference in full mode: +0.4%.
 
 - April 19th: 
-    Minimal:    91.50% exact tags, 412/1949 exact sentences, 0.84ms ave. per sentence
-    Full:       94.22% exact tags, 549/1523 exact sentences, 0.36ms ave. per sentence
+    Minimal:    91.74% exact tags, 434/1949 exact sentences, 1.04ms ave. per sentence
+    Full:       94.35% exact tags, 562/1523 exact sentences, 0.83ms ave. per sentence
 
         > Whole set of new rules and vocabulary in compendium, more granularity on existing 
         rules (verbs inference, less suffixes...)
+        > Lighter embedded lexicons in both modes
 
 */
 
@@ -85,7 +86,6 @@ var cSuccessTags = 0;
 
 for (var k in data) {
     cTotal += 1;
-
     // First reconstruct PoS array from Penn treebank so we can compare easily
     // (also add final punc sign)
     var penn_pos = toPoSArray(data[k].pos),
@@ -107,22 +107,28 @@ for (var k in data) {
         poslog2 = '';
 
     for (i = 0; i < m; i += 1) {
+        var tk = cpd_pos.tokens[i].raw;
         cTotalTags += 1;
+
+        // Exceptions where difference between penn / compendium is
+        // accepted (different tagging style)
+        if ((tags[i] === '$' && penn_pos[i] === 'CD') ||
+            (tags[i] === 'SYM' && tk === '%')) {
+            cSuccessTags += 1;
+        } else 
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            var tk = cpd_pos.tokens[i].raw;
-
-            var d = tk;
+            if (i > 1 && penn_pos[i - 2] === 'TO' && penn_pos[i - 1] === 'RB') {
+                var d = penn_pos[i] + ' << ' + tk + ' << ' + tags[i] ;
 
                 if (DIFFS.hasOwnProperty(d)) {
                     DIFFS[d].c += 1;
 
-                    DIFFS[d].prev.push('(' + penn_pos[i - 1] + ') ' + penn_pos[i] + '<<'+tags[i]);
-
                 } else {
                     DIFFS[d] = {c: 1, prev: [penn_pos[i - 1]]};
                 }
+            }
             
         } else {
             cSuccessTags += 1;
@@ -134,8 +140,8 @@ for (var k in data) {
     if (failed) {
         cFailed += 1;
         failures.tags += 1;
-        //console.log(text + '\n' + cpd_pos.raw)
-        //console.log(poslog1 + '\n' + poslog2)
+        // console.log(text)
+        // console.log(poslog1 + '\n' + poslog2)
     } else {
         cSuccess += 1;
     }
@@ -156,8 +162,11 @@ for (k in DIFFS) {
 diffs_arr.sort(function(a, b) {
     return b.score - a.score;
 });
+
 for (i = 0; i < 20; i += 1) {
-    console.log(diffs_arr[i]);
+    if (!!diffs_arr[i]) {
+        console.log(diffs_arr[i]);
+    }
 }
 
 

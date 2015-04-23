@@ -45,6 +45,8 @@
         var type = rule.type,
             tmp,
             tmp2;
+
+        token = token.toLowerCase();
         
         if (type === PREVTAG) {
             if (index > 0 && tags[index - 1] === rule.c1) {
@@ -52,7 +54,8 @@
                 return;
             }
         } else if (type === PREVWORDPREVTAG) {
-            if (index > 0 && tags[index - 1] === rule.c2 && tokens[index - 1] === rule.c1) {
+            tmp = tokens[index - 1] || '';
+            if (index > 0 && tags[index - 1] === rule.c2 && tmp.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
                 return;
             }
@@ -78,18 +81,18 @@
                 return;
             }
         } else if (type === CURRENTWD) {
-            if (token.toLowerCase() === rule.c1) {
+            if (token === rule.c1) {
                 tags[index] = rule.to;
                 return;
             }
         } else if (type === WDPREVTAG) {
-            if (token.toLowerCase() === rule.c2 && tags[index - 1] === rule.c1) {
+            if (token === rule.c2 && tags[index - 1] === rule.c1) {
                 tags[index] = rule.to;
                 return;
             }
         } else if (type === WDPREVWD) {
             tmp = tokens[index - 1] || '';
-            if (token.toLowerCase() === rule.c2 && tmp.toLowerCase() === rule.c1) {
+            if (token === rule.c2 && tmp.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
                 return;
             }
@@ -99,12 +102,14 @@
                 return;
             }
         } else if (type === NEXT2WD) {
-            if (tokens[index + 2] === rule.c1) {
+            tmp = tokens[index + 2] || '';
+            if (tmp.toLowerCase() === rule.c1) {
                 tags[index] = rule.to;
                 return;
             }
         } else if (type === WDNEXTWD) {
-            if (token === rule.c1 && tokens[index + 1] === rule.c2) {
+            tmp = tokens[index + 1] || '';
+            if (token === rule.c1 && tmp.toLowerCase() === rule.c2) {
                 tags[index] = rule.to;
                 return;
             }
@@ -135,7 +140,7 @@
                 return;
             }
         } else if (type === PREV2TAG) {
-            if (tags[index - 2] === rule.c1) {
+            if (tags[index - 2] === rule.c1 && tags[index - 1] === rule.c2) {
                 tags[index] = rule.to;
                 return;
             }
@@ -184,7 +189,7 @@
     pos.testSuffixes = function(token) {
         var i;
         for (i = 0; i < suffixesLength; i += 1) {
-            if (suffixes[i].regexp.test(token)) {
+            if (token.match(suffixes[i].regexp)) {
                 return suffixes[i].pos;
             }
         }
@@ -209,7 +214,8 @@
             confidence = 0,
 
             append = function(tag, c) {
-                tags.push(typeof tag === 'object' ? tag.pos : tag);
+                tag = typeof tag === 'object' ? tag.pos : tag;
+                tags.push(tag === '-' ? 'NN' : tag);
                 confidence += c;
             };
 
@@ -278,13 +284,23 @@
             previous = (i === 0 ? '' : tags[i - 1]);
 
             // Numbers
-            if (token.match(/^-?[0-9]+(\.[0-9]+)?$/g)) {
+            if (token.match(/^-?[0-9]+([\.,][0-9]+)?$/g) ||
+                // years
+                token.match(/^([0-9]{2}|[0-9]{4})s$/g) ||
+                //range
+                token.match(/^[0-9]{2,4}-[0-9]{2,4}$/g)) {
                 tags[i] = 'CD';
                 continue;
             }
 
+            // Symbols
+            if (token.match(/^[%\+\-\/@]$/g)) {
+                tags[i] = 'SYM';
+                continue;
+            }
+
             // Punc signs
-            if (token.match(/^(\?|\!|\.){1,}$/)) {
+            if (token.match(/^(\?|\!|\.){1,}$/g)) {
                 tags[i] = '.';
                 continue;
             }
@@ -294,7 +310,7 @@
                 cpd.ing_excpt.indexOf(token.toLowerCase()) === -1 &&
                 (tag.indexOf('N') === 0 || tag === 'MD' || tag === '-') && 
                 (i === 0 || !token.match(/^[A-Z][a-z]+/g)) &&
-                previous !== 'NN' && previous !== 'JJ' && previous !== 'DT') {
+                previous !== 'NN' && previous !== 'JJ' && previous !== 'DT' && previous !== 'VBG') {
                 tags[i] = 'VBG';
                 continue;
             }

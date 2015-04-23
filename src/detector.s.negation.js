@@ -1,7 +1,7 @@
 (function() {
 
-    var negations = Object.keys(compendium.compendium.neg),
-        cancelNegations = Object.keys(compendium.compendium.neg_neg);
+    var negations = Object.keys(cpd.neg),
+        cancelNegations = Object.keys(cpd.neg_neg);
 
     // Negation detection
     compendium.detect.addDetector('s', function(sentence, index, sentences) {

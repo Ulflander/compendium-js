@@ -41124,6 +41124,7 @@ avowed JJ
 avowedly RB
 avuncular JJ
 aw UH
+aww UH
 await VB VBP
 awaited VBD JJ VBN
 awaiting VBG
@@ -93022,3 +93023,28 @@ B-D EM
 ;-) EM
 ;-] EM
 ;-D EM
+<3 EM
+wtf UH
+brb UH
+btw UH
+b4n UH
+bcnu UH
+bff UH
+cya UH
+dbeyr UH
+ily UH
+lmao UH
+lol UH
+np UH
+oic UH
+omg UH
+rotflmao UH
+stby UH
+swak UH
+tfh UH
+rtm UH
+rtfm UH
+ttyl UH
+tyvm UH
+wywh UH
+xoxo UH

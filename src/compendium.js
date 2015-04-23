@@ -5,7 +5,7 @@
  */
 
 (function() {
-    var cpd = {
+    extend(cpd, {
 
         // Regular verbs
         // Conjugated and expanded in compendium.parser.js
@@ -13,7 +13,8 @@
             'disgorge',
             'claim',
             'screw',
-            'jump'
+            'jump',
+            'lack'
         ],
 
         // Common exceptions to the words ending with "ing"
@@ -25,6 +26,24 @@
             'thing',
             'king',
             'nothing'
+        ],
+
+        // Adverbs 
+        emphasis: [
+            'totally',
+            'fully',
+            'really',
+            'surprisingly',
+            'absolutely',
+            'actively',
+            'clearly',
+            'crazily',
+            'greatly',
+            'happily',
+            'notably',
+            'severly',
+            'particularly',
+            'highly'
         ],
 
         // Thanks to https://github.com/spencermountain/nlp_compromise
@@ -44,6 +63,7 @@
             'pr', 'professor',
             'sr', 'senior',
             'sen', 'senator',
+            'sens', 'senators',
             'corp', 'corporation',
             'rep', '',
             'gov', '',
@@ -192,11 +212,6 @@
             'inc', 'incorported',
             'ltd', 'limited',
             'co', ''
-        ],
-
-        // Regular verbs
-        regular: [
-            'jump'
         ],
 
         // Abbreviation replacements
@@ -457,12 +472,9 @@
             'homo','jerk','jizz','knobend','knob end','labia','lmfao','muff',
             'nigger','nigga','penis','piss','poop','prick','pube',
             'pussy','queer','scrotum','sex','shit','s hit','sh1t','slut','smegma',
-            'spunk','tit','tosser','turd','twat','vagina','wank','whore'
+            'spunk','tit','tosser','turd','twat','vagina','wank','whore', 'crappy'
         ],
 
         polite: ['thanks', 'thank', 'please', 'excuse', 'pardon', 'welcome', 'sorry', 'might']
-    };
-
-
-    compendium.compendium = cpd;
+    });
 }());

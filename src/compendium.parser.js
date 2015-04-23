@@ -3,8 +3,7 @@
 // Parses the lexicon and augment it using compendium
 // Also prepare various fields of compendium: parse brill's rules, suffixes...
 (function() {
-    var cpd = compendium.compendium,
-        inflector = compendium.inflector,
+    var inflector = compendium.inflector,
 
         // Parses a Next lexicon
         parse = function(lexicon) {
@@ -27,26 +26,9 @@
             // Prepopulate lexicon with conjugation of regular verbs
             for (i = 0, l = cpd.verbs.length; i < l; i += 1) {
                 item = cpd.verbs[i];
-                console.log(item);
-
-                result[item] = {
-                    pos: 'VBP',
-                    sentiment: 0,
-                    condition: null
-                };
 
                 result[inflector.conjugate(item, 'VBZ')] = {
                     pos: 'VBZ',
-                    sentiment: 0,
-                    condition: null
-                };
-                result[inflector.conjugate(item, 'VBG')] = {
-                    pos: 'VBG',
-                    sentiment: 0,
-                    condition: null
-                };
-                result[inflector.conjugate(item, 'VBN')] = {
-                    pos: 'VBN',
                     sentiment: 0,
                     condition: null
                 };
@@ -145,11 +127,20 @@
             for (i = 0; i < l; i += 1) {
                 line = raw[i].split(' ');
                 result.push({
-                    regexp: new RegExp('^.+' + line[0] + '$', 'gi'),
+                    regexp: new RegExp('^.{1,}' + line[0].trim() + '$', 'gi'),
                     pos: line[1]
                 });
             }
             cpd.suffixes = result;
+        },
+
+        // Pluralized dirty words
+        dirty = function(raw) {
+            var i, l = raw.length;
+
+            for (i = 0; i < l; i += 1) {
+                raw.push(inflector.pluralize(raw[i]));
+            }
         },
 
         // Take care of abbreviations
@@ -170,4 +161,5 @@
     brills(cpd.rules);
     suffixes(cpd.suffixes);
     abbrs(cpd.abbrs);
+    dirty(cpd.dirty);
 }());

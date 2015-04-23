@@ -44,7 +44,7 @@ exports['"I\'m happy." vs "I\'m happy!" vs "I\'m happy!!!!"'] = function(test) {
 exports['I\'m not sad.'] = function(test) {
     var analysis = compendium.analyse('I\'m not sad.');
 
-    test.equal(analysis[0].profile.label, 'positive');
+    test.notEqual(analysis[0].profile.label, 'negative');
     test.done();
 };
 
