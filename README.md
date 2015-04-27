@@ -1,5 +1,7 @@
 # Compendium
 
+[![Join the chat at https://gitter.im/Ulflander/compendium-js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ulflander/compendium-js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Rule-based English Natural Language Processing for Node.js and the browser.
 
 90k only for the browser package, scores 91% on the Penn Treebank dataset with the browser version, 94% with the node version, MIT licensed.
