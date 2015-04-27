@@ -19,6 +19,9 @@
                 entity = factory.entity(token, index, k);
                 token.attr.entity = sentence.entities.push(entity) - 1;
 
+                // Correct sentence confidence
+                sentence.stats.confidence += 1 / sentence.length;
+
                 // Let's be kind and normalize this journo thingie
                 if (k === 'pl') {
                     entity.type = 'political_affiliation';
@@ -31,7 +34,6 @@
                     }
                     
                     if (norm[1][l - 1] === '.') {
-                        console.log(norm);
                         i = cpd.abbrs.indexOf(norm[1].slice(0, l-1));
                         if (i > -1) {
                             norm[1] = cpd.abbrs_rplt[i];

@@ -19,7 +19,7 @@
             entity;
 
         // If sentence is mainly uppercased or capitalized, this strategy cant work
-        if (stats.p_upper > 70 || stats.p_cap > 50) {
+        if (stats.p_upper > 75 || stats.p_cap > 75) {
             return;
         }
 

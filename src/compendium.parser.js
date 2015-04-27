@@ -11,6 +11,7 @@
                 arr = lexicon.split('\t'),
                 i,
                 l,
+                vbz,
                 pt, // PoS tag
                 s, // score
                 c, // score pos condition
@@ -21,18 +22,6 @@
                 // We also keep track of emoticons
                 emots = [],
                 item;
-
-
-            // Prepopulate lexicon with conjugation of regular verbs
-            for (i = 0, l = cpd.verbs.length; i < l; i += 1) {
-                item = cpd.verbs[i];
-
-                result[inflector.conjugate(item, 'VBZ')] = {
-                    pos: 'VBZ',
-                    sentiment: 0,
-                    condition: null
-                };
-            }
 
             // Parses lexicon
             for (i = 0, l = arr.length; i < l; i += 1) {
@@ -90,6 +79,26 @@
                         }
                     }
                 }
+            }
+
+
+            // Prepopulate lexicon with conjugation of regular verbs
+            // Reapply sentiment if base form has a score
+            for (i = 0, l = cpd.verbs.length; i < l; i += 1, s = 0) {
+                item = cpd.verbs[i];
+                vbz = inflector.conjugate(item, 'VBZ');
+                if (!vbz) {
+                    //console.log(item, s, inflector.conjugate(item, 'VBZ'));
+                    continue;
+                }
+                if (result.hasOwnProperty(item)) {
+                    s = result[item].sentiment;
+                }
+                result[vbz] = {
+                    pos: 'VBZ',
+                    sentiment: s,
+                    condition: null
+                };
             }
 
             // Register emoticons in compendium for further use by lexer

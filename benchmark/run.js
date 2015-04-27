@@ -53,7 +53,7 @@ Result history:
 */
 
 var data = require("./penn_treebank").data,
-    compendium = require('../build/compendium.js'),
+    compendium = require('../build/compendium.minimal.js'),
     toPoSArray = function(arr) {
         var res = [], i, l = arr.length;
         for (i = 0; i < l; i += 1) {
@@ -126,11 +126,12 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            if (i > 1 && penn_pos[i - 2] === 'TO' && penn_pos[i - 1] === 'RB') {
+            if (i > 1 && penn_pos[i] === 'NNS' && tags[i] === 'VBZ') {
                 var d = penn_pos[i] + ' << ' + tk + ' << ' + tags[i] ;
 
                 if (DIFFS.hasOwnProperty(d)) {
                     DIFFS[d].c += 1;
+                    DIFFS[d].prev.push(penn_pos[i - 1]);
 
                 } else {
                     DIFFS[d] = {c: 1, prev: [penn_pos[i - 1]]};

@@ -1,2 +1,3 @@
 +VB|VBP {1,} imperative
 WDT|WP|WP$|WRB {0,2} VB|VBP|VBD|VBZ {1,} interrogative
+{1,} "?" $ interrogative

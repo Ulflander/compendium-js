@@ -63,7 +63,7 @@
             // Set emphasis 
             profile.emphasis *= 1 + (local_emphasis / 10);
             emphasis *= profile.emphasis;
-            if (local_emphasis > 0) {
+            if (local_emphasis > 0 && ['DT', 'POS', 'IN'].indexOf(pos) === -1) {
                 local_emphasis -= 1;
             }
         }

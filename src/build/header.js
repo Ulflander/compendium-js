@@ -10,7 +10,7 @@
             profile: {
                 negative_threshold: -0.2,
                 positive_threshold: 0.2,
-                amplitude_threshold: 0.2
+                amplitude_threshold: 0.3
             }
         };
 

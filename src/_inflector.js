@@ -157,14 +157,8 @@
         The following methods are experimental for now.
     */
 
-    inflector.conjugate = function(vb, to) {
-        var l = vb[vb.length - 1];
-        if (vb.match(/([ua]mp|ay|ight|ok|aim|ew|ack)$/gi)) {
-            return inflector.conjugateLongVowel(vb, to)
-        }
-    };
 
-    inflector.conjugateLongVowel = function(vb, to) {
+    var conjugateLongVowelConsonant = function (vb, to) {
         if (to === 'VBZ') {
             return vb + 's';
         } else if (to === 'VBG') {
@@ -175,6 +169,26 @@
         return vb;
     };
 
+    var conjugateConsonentE = function(vb, to) {
+        var base = vb.slice(0, vb.length - 1);
+        if (to === 'VBZ') {
+            return vb + 's';
+        } else if (to === 'VBG') {
+            return base + 'ing';
+        } else if (to === 'VBN') {
+            return base + 'ed';
+        }
+        return vb;
+    };
+
+    inflector.conjugate = function(vb, to) {
+        var l = vb[vb.length - 1];
+        if (vb.match(/([ua]mp|ay|ight|ok|aim|ew|ack|[oa]rn|er|it|ll)$/gi)) {
+            return conjugateLongVowelConsonant(vb, to)
+        } else if (vb.match(/[^aeiouy]e$/gi)) {
+            return conjugateConsonentE(vb, to)
+        }
+    };
 
     compendium.inflector = inflector;
 

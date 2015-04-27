@@ -12,7 +12,7 @@
         }
 
         // Headline type
-        if (stats.p_cap > 75 && stats.p_upper < 25 && l > 10) {
+        if (stats.p_cap > 75 && stats.p_upper < 50 && l > 10) {
             types.push('headline');
         }
         

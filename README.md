@@ -217,6 +217,12 @@ Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the t
 - o Use from a Web Worker (threaded processing)
 
 
+## Changelog
+
+### 0.0.5
+
+- Statistics skips punctuation tokens
+
 ### Tags definition
 
     , Comma                     ,

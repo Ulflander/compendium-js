@@ -16,7 +16,14 @@ exports['Je suis un garçon'] = function(test){
     test.done();
 };
 
-// Should not be foreign
+// URLs, hashtags... should not account as foreign
+exports['#Canon http://u.mavrev.com/5a3t'] = function(test){
+    var analysis = compendium.analyse('#Canon http://u.mavrev.com/5a3t');
+
+    test.equal(analysis[0].profile.types.indexOf('foreign'), -1);
+    test.done();
+};
+
 exports['Hello world.'] = function(test){
     var analysis = compendium.analyse('Hello world.');
 
@@ -31,3 +38,15 @@ exports['NVIDIA Names Stanford\'s Bill Dally Chief Scientist, VP Of Research htt
     test.notEqual(analysis[0].profile.types.indexOf('headline'), -1);
     test.done();
 };
+
+/*
+exports['Who am I? (variations)'] = function(test) {
+    var analysis = compendium.analyse('who am i');
+    test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
+    var analysis = compendium.analyse('who am i?');
+    test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
+    var analysis = compendium.analyse('Who I am?');
+    test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
+    test.done();
+};
+*/

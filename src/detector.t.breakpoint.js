@@ -1,6 +1,6 @@
 (function() {
 
-    var pos_breakpoints = [',', ':', ';'],
+    var pos_breakpoints = [',', ':', ';', '('],
         raw_breakpoints = ['-', '—', '/'];
 
 	// Flag breakpoints at the token level

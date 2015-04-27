@@ -770,6 +770,7 @@ doubting -1
 doubts -1
 douche -3
 douchebag -3
+douchebaggery -3
 downcast -2
 downhearted -2
 downside -2
@@ -802,6 +803,7 @@ dupe -2
 duped -2
 dysfunction -2
 eager 2
+earn 1
 earnest 2
 ease 2
 easy 1
@@ -2104,6 +2106,7 @@ starving -2
 steadfast 2
 steal -2
 steals -2
+steep -2
 stereotype -2
 stereotyped -2
 stifled -1

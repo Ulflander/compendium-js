@@ -7,6 +7,7 @@
     compendium.detect.addDetector('t', function(token, index, sentence) {
         var raw = token.raw,
             norm = token.norm,
+            stem = token.stem,
             sentiment = 0,
             emphasis = 1,
             lc,
@@ -53,6 +54,12 @@
                 i = lexicon[norm];
                 if (!i.condition || token.pos === i.condition) {
                     sentiment = i.sentiment;
+                }
+            // If not found, test stem
+            } else if (lexicon.hasOwnProperty(stem)) {
+                i = lexicon[stem];
+                if (!i.condition || token.pos === i.condition) {
+                    sentiment = i.sentiment / 2;
                 }
             // If not found, check polite/dirty words
             } else if (cpd.dirty.indexOf(norm) > -1) {

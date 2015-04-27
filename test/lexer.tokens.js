@@ -84,3 +84,31 @@ exports['Hi there Dr. Joe, the price is 4.59 for N.A.S.A. Ph.Ds.! I hope that\'s
     ], lexer.lex('Hi there Dr. Joe, the price is 4.59 for N.A.S.A. Ph.Ds.! I hope that\'s fine, etc. and you can attend Feb. 8th. Bye'))
     test.done();
 };
+
+// Test smartquotes replacement + entity detection between quotes
+
+exports['I just started using a package called \"Compendium\" and find that it works quite well.'] = function(test){
+    var analysis = compendium.analyse('I just started using a package called \"Compendium\" and find that it works quite well.');
+
+    test.equal(analysis[0].tokens[7].raw, '"');
+    test.notEqual(analysis[0].tokens[8].attr.entity, -1);
+    test.equal(analysis[0].tokens[9].raw, '"');
+    test.done();
+};
+exports['I just started using a package called “Compendium” and find that it works quite well.'] = function(test){
+    var analysis = compendium.analyse('I just started using a package called “Compendium” and find that it works quite well.');
+
+    test.equal(analysis[0].tokens[7].raw, '"');
+    test.notEqual(analysis[0].tokens[8].attr.entity, -1);
+    test.equal(analysis[0].tokens[9].raw, '"');
+    test.done();
+};
+exports['I just started using a package called ‘Compendium’ and find that it works quite well.'] = function(test){
+    var analysis = compendium.analyse('I just started using a package called ‘Compendium’ and find that it works quite well.');
+
+    test.equal(analysis[0].tokens[7].raw, "'");
+    test.notEqual(analysis[0].tokens[8].attr.entity, -1);
+    test.equal(analysis[0].tokens[9].raw, "'");
+    test.done();
+};
+
