@@ -197,11 +197,20 @@ Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the t
     + ✔ Token scoring
     + ✔ Scoring consolidation
     + o Politeness
+        - o Politeness score
+        - o Dirtyness score
     + o Type of sentence
+        - ✔ Foreign
+        - ✔ Headline
+        - o Interrogative
+        - o Imperative
+        - o Declarative
+        - o Approval
+        - o Refusal
+- o Date extraction
 - o Tense detection
 - o Dependency parsing
 - ✔ Example/demo page
-- o Date extraction
 - ✔ Entities extraction
     - ✔ Proper nouns
     - ✔ Hashtags
@@ -222,6 +231,9 @@ Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the t
 ### 0.0.5
 
 - Statistics skips punctuation tokens
+- Improve verb inflector
+- Better sentiment profiling
+- Better breakpoint detection
 
 ### Tags definition
 
