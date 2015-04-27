@@ -204,7 +204,8 @@ Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the t
     + o Type of sentence
         - ✔ Foreign
         - ✔ Headline
-        - o Interrogative
+        - ✔ Interrogative
+        - o Exclamatory
         - o Imperative
         - o Declarative
         - o Approval
@@ -229,6 +230,12 @@ Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the t
 
 
 ## Changelog
+
+### 0.0.6
+
+- Add `interrogative` and `exclamatory` sentence types
+- Fix low confidence for obvious PoS tagging (CD, SYM...)
+- [Gulpfile] Add test run on live rebuild
 
 ### 0.0.5
 

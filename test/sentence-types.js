@@ -24,6 +24,14 @@ exports['#Canon http://u.mavrev.com/5a3t'] = function(test){
     test.done();
 };
 
+// URLs, hashtags... should not account as foreign
+exports['jQuery UI 1.6 Book Review - http://cfbloggers.org/?c=30631'] = function(test){
+    var analysis = compendium.analyse('jQuery UI 1.6 Book Review - http://cfbloggers.org/?c=30631');
+
+    test.equal(analysis[0].profile.types.indexOf('foreign'), -1);
+    test.done();
+};
+
 exports['Hello world.'] = function(test){
     var analysis = compendium.analyse('Hello world.');
 
@@ -49,3 +57,40 @@ exports['Who am I? (variations)'] = function(test) {
     test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
     test.done();
 };
+
+
+exports['where am i'] = function(test) {
+    var analysis = compendium.analyse('where am i');
+    test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
+    test.done();
+}
+exports['when is this'] = function(test) {    
+    var analysis = compendium.analyse('when is this');
+    test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
+    test.done();
+}
+exports['who is he'] = function(test) {    
+    var analysis = compendium.analyse('who is he');
+    test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
+    test.done();
+}
+exports['why so'] = function(test) {    
+    var analysis = compendium.analyse('why so');
+    test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
+    test.done();
+}
+exports['what the fuck'] = function(test) {    
+    var analysis = compendium.analyse('what the fuck');
+    test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
+    test.done();
+}
+exports['whose one'] = function(test) {    
+    var analysis = compendium.analyse('whose one');
+    test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
+    test.done();
+}
+exports['yeah!!!!'] = function(test) {
+    var analysis = compendium.analyse('yeah!!!!');
+    test.notEqual(analysis[0].profile.types.indexOf('exclamatory'), -1);
+    test.done();
+}

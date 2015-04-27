@@ -1,6 +1,6 @@
 {
   "name": "compendium-js",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Natural Language Processing in the browser: Tokenization, Part-of-Speech tagging and more.",
   "main": "dist/compendium.js",
   "scripts": {

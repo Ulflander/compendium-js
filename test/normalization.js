@@ -1,7 +1,11 @@
 
 var compendium = require('../dist/compendium.minimal.js');
 
-
+exports['Nah, I dunno'] = function(test) {
+    var analysis = compendium.analyse('Nah, I dunno');
+    test.equal(analysis[0].tokens[0].norm, 'no');
+    test.done();
+};
 
 exports['This is the I.C.U.'] = function(test){
     var analysis = compendium.analyse('This is the I.C.U.');

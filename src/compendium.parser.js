@@ -91,8 +91,15 @@
                     //console.log(item, s, inflector.conjugate(item, 'VBZ'));
                     continue;
                 }
+
                 if (result.hasOwnProperty(item)) {
                     s = result[item].sentiment;
+                } else {
+                    result[item] = {
+                        pos: 'VB',
+                        sentiment: s,
+                        condition: null
+                    };
                 }
                 result[vbz] = {
                     pos: 'VBZ',

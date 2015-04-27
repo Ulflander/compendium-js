@@ -1168,7 +1168,7 @@ heaven 2
 heavenly 4
 heavyhearted -2
 hell -4
-help 2
+help 0
 helpful 2
 helping 2
 helpless -2
@@ -1625,6 +1625,7 @@ offender -2
 offending -2
 offends -2
 offline -1
+ohhdee 1
 oks 2
 ominous 3
 once-in-a-lifetime 3

@@ -80,6 +80,13 @@ function lexicon(level) {
                 continue;
             }
 
+            // Is a verb in compendium
+            if (level > 0 && line[1] === 'VB' && compendium.compendium.verbs.indexOf(line[0]) > -1) {
+                skipped += 1;
+                console.log('skip ', line[0])
+                continue;
+            }
+
             // Taken in account by a rule
             if (level > 0 && token.length > 3 && token.slice(token.length - 2) === 'ed' && line[1] === 'VBN') {
                 skipped += 1;
@@ -203,5 +210,6 @@ gulp.task('minimal_lexicon', function(cb) {
 
 gulp.task('default', ['build'], function() {
     gulp.watch(['src/*.js', 'src/*.txt'], ['build', 'test']);
+    gulp.watch(['test/*.js'], ['test']);
     gulp.watch('src/data/*.txt', ['full_lexicon', 'minimal_lexicon']);
 });

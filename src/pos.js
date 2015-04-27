@@ -290,17 +290,20 @@
                 //range
                 token.match(/^[0-9]{2,4}-[0-9]{2,4}$/g)) {
                 tags[i] = 'CD';
+                confidence += 1;
                 continue;
             }
 
             // Symbols
             if (token.match(/^[%\+\-\/@]$/g)) {
+                confidence += 1;
                 tags[i] = 'SYM';
                 continue;
             }
 
             // Punc signs
             if (token.match(/^(\?|\!|\.){1,}$/g)) {
+                confidence += 1;
                 tags[i] = '.';
                 continue;
             }

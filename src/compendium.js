@@ -687,6 +687,7 @@
         abbrs: [
             // millenials
             'srsly', 'seriously',
+            'nah', 'no',
             //honourifics
             'jr', 'junior',
             'mr', 'mister',
@@ -847,6 +848,8 @@
             'ltd', 'limited',
             'co', ''
         ],
+
+        synonyms: '@@synonyms',
 
         // Abbreviation replacements
         // (populated by parser)
