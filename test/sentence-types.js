@@ -39,7 +39,7 @@ exports['NVIDIA Names Stanford\'s Bill Dally Chief Scientist, VP Of Research htt
     test.done();
 };
 
-/*
+
 exports['Who am I? (variations)'] = function(test) {
     var analysis = compendium.analyse('who am i');
     test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
@@ -49,4 +49,3 @@ exports['Who am I? (variations)'] = function(test) {
     test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
     test.done();
 };
-*/

@@ -1,6 +1,7 @@
 
 var gulp = require('gulp'),
     fs = require('fs'),
+    nodeunit = require('gulp-nodeunit'),
     concat = require('gulp-concat'),
     insert = require('gulp-insert'),
     uglify = require('gulp-uglify'),
@@ -178,6 +179,15 @@ gulp.task('build_minimal', function() {
             .pipe(gulp.dest('dist/'));
 });
 
+gulp.task('test', ['build_minimal'], function() {
+    return gulp.src('test/*.js')
+        .pipe(nodeunit({
+            reporterOptions: {
+                output: 'test'
+            }
+        }));
+});
+
 gulp.task('build', ['build_minimal', 'build_full']);
 gulp.task('lexicon', ['minimal_lexicon', 'full_lexicon']);
 
@@ -192,6 +202,6 @@ gulp.task('minimal_lexicon', function(cb) {
 });
 
 gulp.task('default', ['build'], function() {
-    gulp.watch(['src/*.js', 'src/*.txt'], ['build']);
+    gulp.watch(['src/*.js', 'src/*.txt'], ['build', 'test']);
     gulp.watch('src/data/*.txt', ['full_lexicon', 'minimal_lexicon']);
 });
