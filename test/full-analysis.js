@@ -15,9 +15,11 @@ exports['Joe Carter went to the Toronto International Film Festival to go see In
     test.equal(analysis[0].tokens[1].attr.verb, false);
     test.equal(analysis[0].tokens[2].attr.verb, true);
 
-    // Check sentence flags
+    // Check profiling
     test.equal(analysis[0].profile.negated, false);
     test.equal(analysis[0].profile.label, 'neutral');
+    test.equal(analysis[0].profile.politeness, 0);
+    test.equal(analysis[0].profile.dirtiness, 0);
     
     // Check entity details
     test.equal(analysis[0].entities.length, 3);

@@ -2,16 +2,10 @@
 
 /**
  * Analyser - High level utility that goes through the full analysis steps 
- * (lexer, PoS, detectors)
+ * (lexer, PoS, detectors) and returns an analysis result object.
  */
 
-
 (function() {
-
-    var analyser = {},
-        iA = Array.isArray;
-
-
 
     analyser.toObject = function(sentence, pos) {
         var s = factory.sentence(sentence.join(' ')),

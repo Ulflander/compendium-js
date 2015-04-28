@@ -6,11 +6,15 @@
     var cpd = {},
         lexer = {},
         factory = {},
+        analyser = {},
+        iA = Array.isArray,
         config = {
             profile: {
                 negative_threshold: -0.2,
                 positive_threshold: 0.2,
-                amplitude_threshold: 0.3
+                amplitude_threshold: 0.3,
+                polite_threshold: 0.2,
+                dirty_threshold: 0.3
             }
         };
 

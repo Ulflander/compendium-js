@@ -33,7 +33,9 @@
                     p_cap: 0,
                     // Average token length
                     // - Can be used as indicator for text quality
-                    avg_length: 0
+                    avg_length: 0,
+                    // Number of breakpoints
+                    breakpoints: 0
                 },
                 // type: 'unknown',
                 profile: {
@@ -42,6 +44,7 @@
                     emphasis: 1,
                     amplitude: 0,
                     politeness: 0,
+                    dirtiness: 0,
                     // Types. A sentence can have many types:
                     // (e.g. `imperative` + `refusal` for `don't do it` or
                     // `foreign` + `interrogative` for `Suis-je le monstre?`)

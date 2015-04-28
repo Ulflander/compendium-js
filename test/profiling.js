@@ -7,6 +7,11 @@ exports['yes 😋'] = function(test){
     test.equal(analysis[0].profile.label, 'positive');
     test.done();
 };
+exports['It should fail'] = function(test) {
+    var analysis = compendium.analyse('It should fail');
+    test.notEqual(analysis[0].tokens[2].profile.sentiment, 0);
+    test.done();
+};
 
 exports['yes 😟'] = function(test){
     var analysis = compendium.analyse('yes 😟');
@@ -19,6 +24,22 @@ exports['Eating eggplant. Why bother?'] = function(test) {
     var analysis = compendium.analyse('Eating eggplant. Why bother?');
 
     test.equal(analysis[0].profile.label, 'neutral');
+    test.done();
+};
+
+exports['Fuck yeah'] = function(test) {
+    var analysis = compendium.analyse('Fuck yeah');
+
+    test.equal(analysis[0].profile.politeness, 0);
+    test.notEqual(analysis[0].profile.dirtiness, 0);
+    test.done();
+};
+
+exports['Yes please'] = function(test) {
+    var analysis = compendium.analyse('Yes please');
+
+    test.notEqual(analysis[0].profile.politeness, 0);
+    test.equal(analysis[0].profile.dirtiness, 0);
     test.done();
 };
 
@@ -47,6 +68,7 @@ exports['I\'m not sad.'] = function(test) {
     test.notEqual(analysis[0].profile.label, 'negative');
     test.done();
 };
+
 
 exports['I\'m sad.'] = function(test) {
     var analysis = compendium.analyse('I\'m sad.');

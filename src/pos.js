@@ -209,7 +209,8 @@
             i,
             l = sentence.length,
             tl,
-            suffix,
+            lower,
+            tmp,
             previous,
             confidence = 0,
 
@@ -237,9 +238,11 @@
                 continue;
             }
 
+            lower = token.toLowerCase();
+
             // If none, try with lower cased
             if (typeof token === 'string' && token.match(/[A-Z]/g)) {
-                tag = compendium.lexicon[token.toLowerCase()];
+                tag = compendium.lexicon[lower];
 
                 if (!!tag && tag !== '-') {
                     append(tag, 0.75);
@@ -249,15 +252,17 @@
 
             // If no tag, check composed words
             if (token.indexOf('-') > -1) {
-                suffix = token.split('-')[1];
-                tag = compendium.lexicon[suffix.toLowerCase()];
+                // tmp is second part of composed word
+                tmp = token.split('-')[1];
+                tag = compendium.lexicon[tmp.toLowerCase()];
                 if (!!tag && tag !== '-') {
                     append(tag, 0.5);
                     continue;
                 }
 
-                suffix = token.split('-')[0];
-                tag = compendium.lexicon[suffix.toLowerCase()];
+                // tmp is first part of composed word
+                tmp = token.split('-')[0];
+                tag = compendium.lexicon[tmp.toLowerCase()];
                 if (!!tag && tag !== '-') {
                     append(tag, 0.5);
                     continue;
@@ -271,6 +276,18 @@
                 continue;
             }
 
+            // Test synonyms
+            tmp = compendium.synonym(lower);
+            if (tmp !== lower) {
+                tag = compendium.lexicon[tmp];
+
+                if (!!tag) {
+                    append(tag, 0.50);
+                    continue;
+                }
+
+            }
+
             // We default to NN if still no tag
             append('NN', 0);
         }
@@ -279,7 +296,6 @@
         for (i = 0; i < l; i += 1) {
             token = sentence[i];
             tl = token.length;
-            suffix = tl > 3 ? token.slice(tl - 2) : '';
             tag = tags[i];
             previous = (i === 0 ? '' : tags[i - 1]);
 
@@ -319,7 +335,7 @@
             }
 
             // Convert a noun to a past participle if token ends with 'ed'
-            if (tl > 3 && token.lastIndexOf('ed') === tl - 2 && 
+            if (tl > 3 && token.match(/[^e]ed$/gi) && 
                 (tag.indexOf('N') === 0 || tag === '-') &&
                 (i === 0 || !token.match(/^[A-Z][a-z]+/g))) {
                 tags[i] = 'VBN';

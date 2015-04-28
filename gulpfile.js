@@ -153,6 +153,7 @@ gulp.task('build_full', function() {
         f = fs.readFileSync('src/build/footer.js'),
         l = fs.readFileSync('build/lexicon-full.txt').toString().split('\\').join('\\\\'),
         s = fs.readFileSync('src/suffixes.txt').toString().split('\n').join('\t'),
+        sy = fs.readFileSync('src/synonyms.txt').toString().split('\n').join('\t'),
         r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
@@ -161,6 +162,7 @@ gulp.task('build_full', function() {
             .pipe(insert.append(f))
             .pipe(replace('@@lexicon', l))
             .pipe(replace('@@suffixes', s))
+            .pipe(replace('@@synonyms', sy))
             .pipe(replace('@@rules', r))
             .pipe(gulp.dest('build/'))
             .pipe(uglify())
@@ -172,6 +174,7 @@ gulp.task('build_minimal', function() {
         f = fs.readFileSync('src/build/footer.js'),
         l = fs.readFileSync('build/lexicon-minimal.txt').toString().split('\\').join('\\\\'),
         s = fs.readFileSync('src/suffixes.txt').toString().split('\n').join('\t'),
+        sy = fs.readFileSync('src/synonyms.txt').toString().split('\n').join('\t'),
         r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
@@ -180,6 +183,7 @@ gulp.task('build_minimal', function() {
             .pipe(insert.append(f))
             .pipe(replace('@@lexicon', l))
             .pipe(replace('@@suffixes', s))
+            .pipe(replace('@@synonyms', sy))
             .pipe(replace('@@rules', r))
             .pipe(gulp.dest('build/'))
             .pipe(uglify())

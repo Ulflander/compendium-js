@@ -11,6 +11,11 @@ exports['None of the money was missing'] = function(test) {
     test.done();
 };
 
+// *eed tokens should not be VBN
+exports['The most certain way to succeed is always to try just one more time.'] = function(test) {
+    test.notEqual('VBN', compendium.analyse('The most certain way to succeed is always to try just one more time.')[0].tags[5])
+    test.done();
+};
 
 exports['sh*t was hilarious...LMAO!!!'] = function(test) {
     test.deepEqual(['NN', 'VBD', 'JJ', '.', 'UH', '.'], compendium.analyse('sh*t was hilarious...LMAO!!!')[0].tags);
@@ -300,3 +305,17 @@ exports['Pierre Vinken, 61 years old, will join the board as a nonexecutive dire
     test.deepEqual(actual, expected);
     test.done();
 };
+
+// 'em is synonym of them, should be PRP
+exports['If you can\'t beat \'em, join \'em.'] = function(test) {
+    var expected = [
+            ('IN PRP MD RB VB PRP , VB PRP .').split(' ')
+        ],
+        analysis = compendium.analyse('If you can\'t beat \'em, join \'em.'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+

@@ -9,6 +9,12 @@ exports['The quick brown fox jumps over the lazy dog.'] = function(test){
     test.done();
 };
 
+exports['If you can\'t beat \'em, join \'em.'] = function(test) {
+    test.deepEqual([['If', 'you', 'ca', 'n\'t', 'beat', '\'em', ',', 'join', '\'em', '.']], 
+                    lexer.lex('If you can\'t beat \'em, join \'em.'));
+    test.done();
+};
+
 exports['It\'s good'] = function(test){
     test.deepEqual([['It', '\'s', 'good']], 
                     lexer.lex('It\'s good'));
@@ -86,7 +92,7 @@ exports['Hi there Dr. Joe, the price is 4.59 for N.A.S.A. Ph.Ds.! I hope that\'s
 };
 
 // Test smartquotes replacement + entity detection between quotes
-
+// https://github.com/Ulflander/compendium-js/issues/1
 exports['I just started using a package called \"Compendium\" and find that it works quite well.'] = function(test){
     var analysis = compendium.analyse('I just started using a package called \"Compendium\" and find that it works quite well.');
 

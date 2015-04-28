@@ -11,6 +11,7 @@
         // Simple breakpoints
         if (pos_breakpoints.indexOf(pos) > -1 || raw_breakpoints.indexOf(raw) > -1) {
             token.profile.breakpoint = true;
+            sentence.stats.breakpoints += 1;
         }
     });
 }());

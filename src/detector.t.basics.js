@@ -19,13 +19,15 @@
      
         // Test abbreviation
         if (l > 1 && 
-            (raw.indexOf('.') === l - 1 && (i = cpd.abbrs.indexOf(lc.slice(0, l - 1))) > -1) || 
-            ((i = cpd.abbrs.indexOf(lc)) > -1)) {
+            (raw.indexOf('.') === l - 1 && (i = cpd.abbrs.indexOf(lc.slice(0, l - 1))) > -1)) {
             token.attr.abbr = true;
             norm = cpd.abbrs_rplt[i];
         // Test acronym
         } else if (raw.match(/^([a-z]{1}\.)+/gi)) {
             token.attr.acronym = true;
+        // Test synonym
+        } else {
+            norm = compendium.synonym(norm);
         }
 
         // Emphasis

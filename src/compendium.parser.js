@@ -42,7 +42,7 @@
                 if (pt === 'EM' && compendium.punycode.ucs2.decode(item[0]).length > 1) {
                     emots.push(item[0]);
                 }
-                //console.log(item[0])
+
                 result[item[0]] = {
                     pos: pt,
                     sentiment: s,
@@ -60,18 +60,22 @@
                     item = cpd[i];
                     for (l in item) {
                         if (item.hasOwnProperty(l)) {
+                            s = 0;
                             // {'word': 'PoS_TAG'}
                             if (typeof item[l] === 'string') {
+                                if (result.hasOwnProperty(l)) {
+                                    s = result[l].sentiment;
+                                }
                                 result[l] = {
                                     pos: item[l],
-                                    sentiment: 0,
+                                    sentiment: s,
                                     condition: null
                                 };
                             // {'word': 0}
                             } else if (typeof item[l] === 'number') {
                                 result[l] = {
                                     pos: 'CD',
-                                    sentiment: 0,
+                                    sentiment: s,
                                     value: item[l],
                                     condition: null
                                 };
@@ -86,6 +90,7 @@
             // Reapply sentiment if base form has a score
             for (i = 0, l = cpd.verbs.length; i < l; i += 1, s = 0) {
                 item = cpd.verbs[i];
+
                 vbz = inflector.conjugate(item, 'VBZ');
                 if (!vbz) {
                     //console.log(item, s, inflector.conjugate(item, 'VBZ'));
@@ -171,6 +176,15 @@
             }
             cpd.abbrs = res;
             cpd.abbrs_rplt = rplt;
+        },
+
+        synonyms = function(raw) {
+            raw = raw.split('\t');
+            var i, l = raw.length, result = [];
+            for (i = 0; i < l; i += 1) {
+                result.push(raw[i].split(' '));
+            }
+            cpd.synonyms = result;
         };
 
     compendium.lexicon = parse("@@lexicon");    
@@ -178,4 +192,5 @@
     suffixes(cpd.suffixes);
     abbrs(cpd.abbrs);
     dirty(cpd.dirty);
+    synonyms(cpd.synonyms);
 }());

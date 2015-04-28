@@ -31,3 +31,9 @@ exports['je suis le monstre'] = function(test){
     test.equal(analysis[0].stats.avg_length, 3.75);
     test.done();
 };
+exports['When in Rome, do as the Romans.'] = function(test) {
+    var analysis = compendium.analyse('When in Rome, do as the Romans.');
+
+    test.equal(analysis[0].stats.breakpoints, 1);
+    test.done();
+}

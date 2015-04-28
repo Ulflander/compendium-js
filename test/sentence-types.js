@@ -23,6 +23,14 @@ exports['#Canon http://u.mavrev.com/5a3t'] = function(test){
     test.equal(analysis[0].profile.types.indexOf('foreign'), -1);
     test.done();
 };
+// A sentence with one foreign word but good confidence 
+// in PoS tagging should not account as foreign
+exports['I hate aig and their non loan given asses.'] = function(test){
+    var analysis = compendium.analyse('I hate aig and their non loan given asses.');
+
+    test.equal(analysis[0].profile.types.indexOf('foreign'), -1);
+    test.done();
+};
 
 // URLs, hashtags... should not account as foreign
 exports['jQuery UI 1.6 Book Review - http://cfbloggers.org/?c=30631'] = function(test){
@@ -58,7 +66,9 @@ exports['Who am I? (variations)'] = function(test) {
     test.done();
 };
 
-
+// All the following should pass because of:
+// - WP, WP$, WRB as first token
+// - no breakpoint
 exports['where am i'] = function(test) {
     var analysis = compendium.analyse('where am i');
     test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
@@ -94,3 +104,10 @@ exports['yeah!!!!'] = function(test) {
     test.notEqual(analysis[0].profile.types.indexOf('exclamatory'), -1);
     test.done();
 }
+// Following should fail because of a breakpoint and no "?"
+exports['When in Rome, do as the Romans.'] = function(test) {
+    var analysis = compendium.analyse('When in Rome, do as the Romans.');
+    test.equal(analysis[0].profile.types.indexOf('interrogative'), -1);
+    test.done();
+}
+

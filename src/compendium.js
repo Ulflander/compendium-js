@@ -657,6 +657,9 @@
             'nothing'
         ],
 
+        // All verbs ending 
+        ing_test: [],
+
         // Adverbs 
         emphasis: [
             'totally',
@@ -685,9 +688,6 @@
         // Replacements are extracted from this array and 
         // added in `abbrs_rplt` when lexicon is parsed (see lexicon.js).
         abbrs: [
-            // millenials
-            'srsly', 'seriously',
-            'nah', 'no',
             //honourifics
             'jr', 'junior',
             'mr', 'mister',
@@ -1112,6 +1112,6 @@
             'spunk','tit','tosser','turd','twat','vagina','wank','whore', 'crappy'
         ],
 
-        polite: ['thanks', 'thank', 'please', 'excuse', 'pardon', 'welcome', 'sorry', 'might']
+        polite: ['thanks', 'thank', 'please', 'excuse', 'pardon', 'welcome', 'sorry', 'might', 'ai', 'ought']
     });
 }());

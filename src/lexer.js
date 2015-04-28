@@ -8,7 +8,7 @@
 
         word_boundaries = ' !?()[]{}"\'`%•.…:;,$€£¥\\/+=\*_–&',
 
-        contractions = ['s', 'm', 't', 'll', 've', 'd'],
+        contractions = ['s', 'm', 't', 'll', 've', 'd', 'em'],
 
         encoder = compendium.punycode.ucs2,
 

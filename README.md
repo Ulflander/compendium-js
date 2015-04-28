@@ -47,6 +47,10 @@ In order to ensure that Compendium will work as intended, you must specify the e
 
 #### Node.js
 
+If you wish to work on NLP on server side, I strongly suggest to use the Stanford CoreNLP tools. It is in my point of view the best-in-class PoS tagger and coreference resolution system. Here is a [simple node.js wrapper for it](https://github.com/xissy/node-stanford-simple-nlp).
+
+If you still want to use Compendium (because of its features), here is how to install it:
+
     npm install --save compendium-js
 
 and then:
@@ -200,17 +204,18 @@ Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the t
     + ✔ Scoring consolidation
     + o Politeness
         - o Politeness score
-        - o Dirtyness score
+        - o Dirtiness score
     + o Type of sentence
         - ✔ Foreign
         - ✔ Headline
         - ✔ Interrogative
-        - o Exclamatory
+        - ✔ Exclamatory
         - o Imperative
         - o Declarative
         - o Approval
         - o Refusal
 - o Date extraction
+- o Synonyms manager
 - o Tense detection
 - o Dependency parsing
 - ✔ Example/demo page
@@ -230,6 +235,12 @@ Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the t
 
 
 ## Changelog
+
+### 0.0.7
+
+- Better sentiment profiling for mixed sentiment, in particular when using multiple adverbs
+- Politeness, dirtiness scores
+- Synonyms feature for tokens normalization
 
 ### 0.0.6
 

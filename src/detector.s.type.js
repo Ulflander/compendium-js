@@ -11,7 +11,13 @@
             last = sentence.tokens[l - 1];
         
         // First type: foreign sentence
-        if ((stats.p_foreign >= 10 || stats.confidence <= 0.2) && l > 3) {
+        // can only work with at least a few tokens
+        if (l > 3 &&
+            // if more than 10% foreign words and a somewhat low confidence
+            ((stats.p_foreign >= 10 && stats.confidence < 0.5) || 
+            // or if very low confidence
+            stats.confidence <= 0.2)) {
+            // then is foreign
             types.push('foreign');
         }
 
@@ -20,11 +26,14 @@
             types.push('headline');
         }
         
-        // Question, simple mode
+        // Exclamatory, straightforward
         if (last.norm === '!') {
             types.push('exclamatory');
-        } else if (questions_first_tags.indexOf(first.pos) > -1 ||
-            last.norm === '?') {
+        } else 
+        // Question, obviously with final "?"
+        if (last.norm === '?' ||
+            // or starting with a particular tag, without breakpoint
+            (questions_first_tags.indexOf(first.pos) > -1 && stats.breakpoints === 0)) {
             types.push('interrogative');
         }
 

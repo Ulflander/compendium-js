@@ -1,6 +1,7 @@
 (function() {
 
     var dirty = cpd.dirty,
+        polite = cpd.polite,
         emphasis_adverbs = cpd.emphasis;
 
     // Set profile
@@ -15,6 +16,10 @@
             token_score = 0,
             amplitude = 0,
             local_emphasis = 0,
+            politeness = 0,
+            isPolite,
+            dirtiness = 0,
+            isDirty,
             min = 0,
             max = 0,
             p = sentence.profile;
@@ -29,20 +34,22 @@
             profile = sentence.tokens[i].profile;
             pos = sentence.tokens[i].pos;
             norm = sentence.tokens[i].norm;
+            isDirty = dirty.indexOf(norm) > -1;
+            isPolite = polite.indexOf(norm) > -1;
 
-            // Local emphasis
-            if (pos === 'RB' && emphasis_adverbs.indexOf(norm) > -1) {
-                if (profile.negated) {
-                    local_emphasis = 2;
-                } else {
-                    local_emphasis = 4;
-                }
+            if (isDirty) {
+                dirtiness += 1;
+            } else if (isPolite) {
+                politeness += 1;
             }
 
-            // Handles negation
+            // Get token base emphasis and multiply it with global emphasis
+            emphasis *= profile.emphasis;
+
+            // Handles negation, update token profile with according sentiment score
             if (profile.negated && pos !== '.' && pos !== 'EM') {
                 // If negative but dirty word, doesn't invert score
-                if (dirty.indexOf(norm) > -1) {
+                if (isDirty) {
                     profile.sentiment = profile.sentiment / 2;
                 // Normal negation: score inverted and reduced
                 } else {
@@ -50,19 +57,32 @@
                 }
             }
 
-            // Get the score
-            token_score = profile.sentiment;
+            // Check if token is a local emphasis 
+            // Note: local emphasis is NOT used by the final sentence sentiment score,
+            // but only to compute the score of individuals tokens.
+            if (pos === 'JJS' || (pos === 'RB' && emphasis_adverbs.indexOf(norm) > -1)) {
+                if (profile.negated) {
+                    local_emphasis += 2;
+                } else {
+                    local_emphasis += 4;
+                }
+            }
+
+            // Get the score using local emphasis
+            token_score = profile.sentiment * (1 + (local_emphasis / 10));
             score += token_score;
-            // For amplitude
+
+            // Keep track of token min/max scores for amplitude
             if (token_score > max) {
                 max = token_score;
             } else if (token_score < min) {
                 min = token_score;
             }
 
-            // Set emphasis 
+            // Update token emphasis using local emphasis for user consumption
             profile.emphasis *= 1 + (local_emphasis / 10);
-            emphasis *= profile.emphasis;
+
+            // Update local emphasis
             if (local_emphasis > 0 && ['DT', 'POS', 'IN'].indexOf(pos) === -1) {
                 local_emphasis -= 1;
             }
@@ -77,6 +97,8 @@
         p.sentiment = score;
         p.emphasis = emphasis;
         p.amplitude = amplitude;
+        p.dirtiness = dirtiness / l;
+        p.politeness = politeness / l;
         if (score < config.profile.negative_threshold) {
             p.label = 'negative';
         } else if (score > config.profile.positive_threshold) {
