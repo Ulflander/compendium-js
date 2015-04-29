@@ -9,24 +9,28 @@ English NLP in the browser. 90k only, MIT licensed.
 
 ## How to use
 
-With [bower](http://bower.io/):
+##### Step 1: get the lib
+
+Install it with [bower](http://bower.io/):
 
     bower install --save compendium
 
 Or clone this repo and copy the `dist/compendium.minimal.js` file into your project.
 
-Then:
+Check [here](https://github.com/Ulflander/compendium-js/wiki/Node.js) for instructions related to Node.js.
 
-    <!-- Include the lib with the minimal lexicon -->
+##### Step 2: include the lib in your HTML page
+
     <script type="text/javascript" 
         src="path/to/compendium/dist/compendium.minimal.js"></script>
-     
-    <!-- Use it -->
-    <script type="text/javascript">
-        console.log(compendium.analyse('Hello world'));
-    </script>
 
 In order to ensure that Compendium will work as intended, you must specify the encoding of the HTML page as UTF-8.
+
+##### Step 3: enjoy     
+
+Call the `compendium.analyse` function with a string as parameter, and get a complete analysis of the text.
+
+    console.log(compendium.analyse('Hello world'));
 
 ## API
 
