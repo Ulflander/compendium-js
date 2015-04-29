@@ -56,7 +56,7 @@
             // and values are either a part of speech tag
             // or an integer (POS tag `CD`)
             for (i in cpd) {
-                if (cpd.hasOwnProperty(i) && typeof cpd[i] === 'object' && !Array.isArray(cpd[i])) {
+                if (cpd.hasOwnProperty(i) && typeof cpd[i] === 'object' && !iA(cpd[i])) {
                     item = cpd[i];
                     for (l in item) {
                         if (item.hasOwnProperty(l)) {
@@ -100,11 +100,11 @@
                 if (result.hasOwnProperty(item)) {
                     s = result[item].sentiment;
                 } else {
-                    result[item] = {
-                        pos: 'VB',
-                        sentiment: s,
-                        condition: null
-                    };
+                    // result[item] = {
+                    //     pos: 'VB',
+                    //     sentiment: s,
+                    //     condition: null
+                    // };
                 }
                 result[vbz] = {
                     pos: 'VBZ',
@@ -178,6 +178,15 @@
             cpd.abbrs_rplt = rplt;
         },
 
+        nationalities = function(raw) {
+            var i, l, res = {};
+            raw = raw.split(' ');
+            for (i = 0, l = raw.length; i < l; i += 1) {
+                res[raw[i]] = 'JJ';
+            }
+            cpd.nationalities = res;
+        },
+
         synonyms = function(raw) {
             raw = raw.split('\t');
             var i, l = raw.length, result = [];
@@ -186,11 +195,12 @@
             }
             cpd.synonyms = result;
         };
-
-    compendium.lexicon = parse("@@lexicon");    
+   
     brills(cpd.rules);
     suffixes(cpd.suffixes);
     abbrs(cpd.abbrs);
     dirty(cpd.dirty);
     synonyms(cpd.synonyms);
+    nationalities(cpd.nationalities);
+    compendium.lexicon = parse("@@lexicon"); 
 }());

@@ -7,6 +7,7 @@
         lexer = {},
         factory = {},
         analyser = {},
+        detectors = {},
         iA = Array.isArray,
         config = {
             profile: {
@@ -18,6 +19,8 @@
             }
         };
 
+
+    compendium.detect = detectors;
     compendium.compendium = cpd;
     compendium.lexer = lexer;
     compendium.factory = factory;

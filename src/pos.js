@@ -295,9 +295,16 @@
         // Manual transformational rules
         for (i = 0; i < l; i += 1) {
             token = sentence[i];
+            lower = token.toLowerCase();
             tl = token.length;
             tag = tags[i];
             previous = (i === 0 ? '' : tags[i - 1]);
+
+            // Special case extracted form penn treebank testin
+            if (i === 0 && lower === 'that') {
+                tags[i] = 'DT';
+                continue;
+            }
 
             // Numbers
             if (token.match(/^-?[0-9]+([\.,][0-9]+)?$/g) ||
@@ -326,7 +333,7 @@
             
             // Convert a common noun to a present participle verb (i.e., a gerand)
             if (tl > 4 && token.lastIndexOf('ing') === tl - 3 && 
-                cpd.ing_excpt.indexOf(token.toLowerCase()) === -1 &&
+                cpd.ing_excpt.indexOf(lower) === -1 &&
                 (tag.indexOf('N') === 0 || tag === 'MD' || tag === '-') && 
                 (i === 0 || !token.match(/^[A-Z][a-z]+/g)) &&
                 previous !== 'NN' && previous !== 'JJ' && previous !== 'DT' && previous !== 'VBG') {
@@ -342,9 +349,15 @@
                 continue;
             }
 
+            // Check if word could be an infinitive verb
+            if (cpd.verbs.indexOf(lower) > -1 && (previous === 'TO')) {
+                tag = 'VB';
+            }
+
             // Proper noun inference
             if (tag === 'NN' || 
-                    (tag === 'JJ' && cpd.nationalities.hasOwnProperty(token.toLowerCase()) === false)) {
+                    tag === 'VB' || 
+                    (tag === 'JJ' && cpd.nationalities.hasOwnProperty(lower) === false)) {
                 // All uppercased or an acronym, probably NNP
                 if (token.match(/^[A-Z]+$/g) || token.match(/^([a-z]{1}\.)+/gi)) {
                     tag = 'NNP';
@@ -355,7 +368,7 @@
                     // of first word of sentence, that is capitalized.
                     // Put in other words, an initial NN or JJ is converted into NNP
                     // only if second word is also an NNP.
-                    if (i === 1 && (previous === 'NN' || previous === 'JJ') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
+                    if (i === 1 && (previous === 'NN' || previous === 'JJ' || previous === 'VB') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
                         tags[i - 1] = 'NNP';
                     }
                     tag = 'NNP';
@@ -371,6 +384,7 @@
         }
 
         // Finally 
+        pos.apply(sentence, tags);
         pos.apply(sentence, tags);
 
         return {

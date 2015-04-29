@@ -9,22 +9,22 @@ exports['Hello Mr. Hide.'] = function(test){
     test.done();
 };
 
-exports['This is september'] = function(test){
+exports['This is september 2014'] = function(test){
     var analysis = compendium.analyse('This is september');
 
     test.equal(analysis[0].tokens[2].attr.abbr, false);
     test.done();
 };
 
-exports['This is September.'] = function(test){
+exports['This is September. 2014'] = function(test){
     var analysis = compendium.analyse('This is September.');
 
     test.equal(analysis[0].tokens[2].attr.abbr, false);
     test.done();
 };
 
-exports['This is Sept.'] = function(test){
-    var analysis = compendium.analyse('This is Sept.');
+exports['This is Sept. 2014'] = function(test){
+    var analysis = compendium.analyse('This is Sept. 2014');
 
     test.equal(analysis[0].tokens[2].attr.abbr, true);
     test.done();

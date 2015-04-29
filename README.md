@@ -1,36 +1,21 @@
 # Compendium
 
+Rule-based English NLP in the browser. 90k only, MIT licensed.
 
-Rule-based English Natural Language Processing for Node.js and the browser.
 
-90k only for the browser package, scores 91% on the Penn Treebank dataset with the browser version, 94% with the node version, MIT licensed.
 
 [![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) 
-[![Join the chat at https://gitter.im/Ulflander/compendium-js](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ulflander/compendium-js?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Project chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ulflander/compendium-js)
 
-[![Compendium demo screenshot](http://laumonier.co/compendium-js/example/compendium.png)](http://laumonier.co/compendium-js/example/example.html).
-
-- [Demo](http://laumonier.co/compendium-js/example/example.html)
-- [How to use](#how-to-use)
-- [API](#api)
-- [Analysis process](#analysis-process)
-    - [Decoding](#decoding)
-    - [Part-of-speech tagging](#part-of-speech-tagging)
-    - [Analysis](#analysis)
-    - [Lexicons](#lexicons)
-- [Development](#development)
-- [Milestones](#milestones)
-- [PoS tags definition](#tags-definition)
+[![Compendium demo](http://laumonier.co/compendium-js/example/compendium.png)](http://laumonier.co/compendium-js/example/example.html)
 
 ## How to use
 
-#### In the browser
-
-With `bower`:
+With [bower](http://bower.io/):
 
     bower install --save compendium
 
-Otherwise clone this repo and copy the `dist/compendium.minimal.js` file into your project.
+Or clone this repo and copy the `dist/compendium.minimal.js` file into your project.
 
 Then:
 
@@ -45,23 +30,9 @@ Then:
 
 In order to ensure that Compendium will work as intended, you must specify the encoding of the HTML page as UTF-8.
 
-#### Node.js
-
-If you wish to work on NLP on server side, I strongly suggest to use the Stanford CoreNLP tools. It is in my point of view the best-in-class PoS tagger and coreference resolution system. Here is a [simple node.js wrapper for it](https://github.com/xissy/node-stanford-simple-nlp).
-
-If you still want to use Compendium (because of its features), here is how to install it:
-
-    npm install --save compendium-js
-
-and then:
-
-    var compendium = require('compendium-js');
-        
-    console.log(compendium.analyse('Hello world'));
-
 ## API
 
-##### analyse : perform a full analysis
+##### analyse
 
 The only function to be called. Take a string as parameter and returns an array containing an analysis for each sentence.
 
@@ -83,8 +54,8 @@ will return an object like:
            sentiment: 0,                // Sentiment score
            amplitude: 0,                // Sentiment amplitude
            types: [],                   // Types ('tags') of sentence
-           politeness: 0,               // Politeness score (coming soon)
-           dirtiness: 0,                // Dirtiness score (coming soon)
+           politeness: 0,               // Politeness score
+           dirtiness: 0,                // Dirtiness score
            negated: false },            // Is sentence mainly negated
         entities: [ {                   // List of entities
             raw: 'Dr. Jekyll',          // Raw reconstructed entity
@@ -113,195 +84,3 @@ will return an object like:
             // ... Other tokens
             //
        ] } ]
-
-## Analysis process
-
-#### Decoding
-
-Handles normalization of HTML entities, and replace some particular slangs.
-
-#### Lexer
-
-No good PoS tagging is possible without a good lexer. A lot of efforts have been put into Compendium's lexer, so it provides the right tokens to be analysed. Currently the lexer is a combination of 4 passes:
-
-- A first pass split the text into sentences
-- A second one applies some regular expressions to extract specific portions of the sentences (URLs, emails, emoticons...)
-- The third pass is a char by char parser that split tokens, and that relies on [Punycode.js](https://github.com/bestiejs/punycode.js/) to properly handle emojis
-- The final pass consolidates things like acronyms, abbreviations, contractions..., and handle a few exceptions
-
-#### Part-of-speech tagging
-
-Tagging is performed using a [Brill tagger](http://en.wikipedia.org/wiki/Eric_Brill) (i.e. a base lexicon and some set of rules), with the addition of some inflexion-based rules.
-
-It takes inspiration from the following projects that are worth being checked out:
-- Eric Brill tagger: latest implementation published under MIT license is available for download on Plymouth University [at this link (direct download)](http://www.tech.plym.ac.uk/soc/staff/guidbugm/software/RULE_BASED_TAGGER_V.1.14.tar.Z).
-- [Mark Watson's FastTag Java library](https://github.com/mark-watson/fasttag_v2), one of the implementation of Brill's tagger.
-- [NLP Compromise](https://github.com/spencermountain/nlp_compromise), another great JS NLP toolkit, with an interesting inflection-based approach
-
-PoS tagging tests are performed both against the [Penn Treebank](http://www.cis.upenn.edu/~treebank/) dataset, and against results generated by the [Stanford PoS tagger](http://nlp.stanford.edu/software/tagger.shtml) ([here is an online API](nlp.stanford.edu:8080/parser/index.jsp)), double checked with common sense and [another](http://nlpdotnet.com/services/Tagger.aspx) tagger fully machine-learning oriented.
-
-#### Analysis
-
-Starting from here various processors will handle further analysis of the text. Processors can work at three different levels:
-
-- the token level
-- the sentence level
-- the text (global) level
-
-Token level processors add attributes to each token (sentiment and emphasis scores, normalized token...).
-
-Sentence level processors work accross many tokens (negation detection, entity recognition, sentiment analysis...).
-
-Global level processors (there are none yet) are supposed to provide a global analysis of the whole text: topics, global sentiment labelling...
-
-### Lexicons
-
-Full version for Node.js uses the lexicon from Mark Watson's FastTag (around 90 000 terms).
-
-Minimal version for the browser contains only a few thousands terms extracted from the full version, and filtered using:
-
-- the list of the 10000 most common English words [an extract](https://github.com/first20hours/google-10000-english) from the [Google's Trillion Word Corpus](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)
-- the list of scored sentiments words
-- Compendium suffixes detector
-- Compendium embedded knowledge
-
-## Development
-
-#### Setup env
-
-    npm install
-
-then, in order to initialize the build process:
-
-    mkdir build && gulp lexicon
-
-#### Build
-
-Compendium requires `gulp` for the build process. Install it globally using `npm install -g gulp`.
-
-Use `gulp` command to build and watch the source files for changes for live rebuild.
-
-#### Test
-
-Compendium uses `nodeunit` for running the tests. 
-Install it with `npm install nodeunit -g`. Use `nodeunit test/*.js` to run the tests.
-
-#### Run Penn Treebank benchmark
-
-`node benchmark/run.js` will run Compendium against a selection of the Penn Treebank dataset.
-
-## Milestones
-
-#### Version 1
-
-- ✔ Tokenization
-- ✔ Part-of-Speech tagging
-- ✔ Inflector (singularization, pluralization)
-- ✔ Acronyms detection
-- ✔ Negation detection
-- o Profiling (sentiment, politeness, type of sentence)
-    + ✔ Token scoring
-    + ✔ Scoring consolidation
-    + o Politeness
-        - o Politeness score
-        - o Dirtiness score
-    + o Type of sentence
-        - ✔ Foreign
-        - ✔ Headline
-        - ✔ Interrogative
-        - ✔ Exclamatory
-        - o Imperative
-        - o Declarative
-        - o Approval
-        - o Refusal
-- o Date extraction
-- o Synonyms manager
-- o Tense detection
-- o Dependency parsing
-- ✔ Example/demo page
-- ✔ Entities extraction
-    - ✔ Proper nouns
-    - ✔ Hashtags
-    - ✔ @usernames, 
-    - ✔ IPs 
-    - ✔ Email address
-    - ✔ URL
-- o Use a trie for lexicon querying on runtime
-
-#### Version 2
-
-- o Dynamic loading of lexicon, w/ versioning and cache using Application Cache
-- o Use from a Web Worker (threaded processing)
-
-
-## Changelog
-
-### 0.0.7
-
-- Better sentiment profiling for mixed sentiment, in particular when using multiple adverbs
-- Politeness, dirtiness scores
-- Synonyms feature for tokens normalization
-
-### 0.0.6
-
-- Add `interrogative` and `exclamatory` sentence types
-- Fix low confidence for obvious PoS tagging (CD, SYM...)
-- [Gulpfile] Add test run on live rebuild
-
-### 0.0.5
-
-- Statistics skips punctuation tokens
-- Improve verb inflector
-- Better sentiment profiling
-- Better breakpoint detection
-
-### Tags definition
-
-    , Comma                     ,
-    : Mid-sent punct.           : ;
-    . Sent-final punct          . ! ?
-    " quote                     "
-    ( Left paren                (
-    ) Right paren               )
-    # Pound sign                #
-    CC Coord Conjuncn           and,but,or
-    CD Cardinal number          one,two,1,2
-    CR Currency sign            $,€,£
-    DT Determiner               the,some
-    EX Existential there        there
-    FW Foreign Word             mon dieu
-    IN Preposition              of,in,by
-    JJ Adjective                big
-    JJR Adj., comparative       bigger
-    JJS Adj., superlative       biggest
-    LS List item marker         1,One
-    MD Modal                    can,should
-    NN Noun, sing. or mass      dog
-    NNP Proper noun, sing.      Edinburgh
-    NNPS Proper noun, plural    Smiths
-    NNS Noun, plural            dogs
-    PDT Predeterminer           all, both
-    POS Possessive ending       's
-    PP Personal pronoun         I,you,she
-    PRP$ Possessive pronoun     my,one's
-    RB Adverb                   quickly, not
-    RBR Adverb, comparative     faster
-    RBS Adverb, superlative     fastest
-    RP Particle                 up,off
-    SYM Symbol                  +,%,&
-    TO 'to'                     to
-    UH Interjection             oh, oops
-    VB verb, base form          eat
-    VBD verb, past tense        ate
-    VBG verb, gerund            eating
-    VBN verb, past part         eaten
-    VBP Verb, present           eat
-    VBZ Verb, present           eats
-    WDT Wh-determiner           which,that
-    WP Wh pronoun               who,what
-    WP$ Possessive-Wh           whose
-    WRB Wh-adverb               how,where
-
-Compendium also includes the following new tag:
-
-    EM Emoticon                 :) :(

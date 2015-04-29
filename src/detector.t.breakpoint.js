@@ -4,7 +4,7 @@
         raw_breakpoints = ['-', '—', '/'];
 
 	// Flag breakpoints at the token level
-    compendium.detect.addDetector('t', function(token, index, sentence) {
+    detectors.add('t', function(token, index, sentence) {
         var raw = token.raw,
             pos = token.pos;
 

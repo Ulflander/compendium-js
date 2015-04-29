@@ -49,7 +49,7 @@
             
             // Apply token level detection
             for (j = 0, m = s.tokens.length; j < m; j += 1) {
-                compendium.detect.apply('t', s.tokens[j], j, s);
+                detectors.apply('t', s.tokens[j], j, s);
             }
             
             res.push(s);
@@ -58,7 +58,7 @@
         // For each sentence
         for (i = 0; i < l; i += 1) {
             d = Date.now();
-            compendium.detect.apply('s', res[i], i, res);
+            detectors.apply('s', res[i], i, res);
             res[i].time += Date.now() - d;
         }
         return res;
@@ -77,7 +77,7 @@
         }
 
         result = analyser.analyse(o);
-        compendium.detect.apply('p', result);
+        detectors.apply('p', result);
 
         return result;
     };

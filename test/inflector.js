@@ -4,15 +4,77 @@ var compendium = require('../dist/compendium.minimal.js'),
 
 
 
-exports.singularize = function(test){
+exports.Singularize = function(test){
     test.done();
 };
 
-exports['is singular'] = function(test){
+exports['Singular test'] = function(test){
+    test.ok(inflector.isSingular('cow'), '"cow" should be considered as singular');
+    test.ok(inflector.isSingular('person'), '"person" should be considered as singular');
+    test.ok(inflector.isSingular('snake'), '"snake" should be considered as singular');
+    test.ok(inflector.isSingular('ski'), '"ski" should be considered as singular');
+    test.ok(inflector.isSingular('Barrymore'), '"Barrymore" should be considered as singular');
+    test.ok(inflector.isSingular('witch'), '"witch" should be considered as singular');
+    test.ok(inflector.isSingular('box'), '"box" should be considered as singular');
+    test.ok(inflector.isSingular('gas'), '"gas" should be considered as singular');
+    test.ok(inflector.isSingular('kiss'), '"kiss" should be considered as singular');
+    test.ok(inflector.isSingular('index'), '"index" should be considered as singular');
+    test.ok(inflector.isSingular('appendix'), '"appendix" should be considered as singular');
+    test.ok(inflector.isSingular('criterion'), '"criterion" should be considered as singular');
+    test.ok(inflector.isSingular('berry'), '"berry" should be considered as singular');
+    test.ok(inflector.isSingular('activity'), '"activity" should be considered as singular');
+    test.ok(inflector.isSingular('daisy'), '"daisy" should be considered as singular');
+    test.ok(inflector.isSingular('church'), '"church" should be considered as singular');
+    test.ok(inflector.isSingular('fox'), '"fox" should be considered as singular');
+    test.ok(inflector.isSingular('stomach'), '"stomach" should be considered as singular');
+    test.ok(inflector.isSingular('epoch'), '"epoch" should be considered as singular');
+    test.ok(inflector.isSingular('knife'), '"knife" should be considered as singular');
+    test.ok(inflector.isSingular('half'), '"half" should be considered as singular');
+    test.ok(inflector.isSingular('scarf'), '"scarf" should be considered as singular');
+    test.ok(inflector.isSingular('chief'), '"chief" should be considered as singular');
+    test.ok(inflector.isSingular('spoof'), '"spoof" should be considered as singular');
+    test.ok(inflector.isSingular('solo'), '"solo" should be considered as singular');
+    test.ok(inflector.isSingular('zero'), '"zero" should be considered as singular');
+    test.ok(inflector.isSingular('avocado'), '"avocado" should be considered as singular');
+    test.ok(inflector.isSingular('studio'), '"studio" should be considered as singular');
+    test.ok(inflector.isSingular('zoo'), '"zoo" should be considered as singular');
+    test.ok(inflector.isSingular('embryo'), '"embryo" should be considered as singular');
+    test.ok(inflector.isSingular('hero'), '"hero" should be considered as singular');
+    test.ok(inflector.isSingular('banjo'), '"banjo" should be considered as singular');
+    test.ok(inflector.isSingular('cargo'), '"cargo" should be considered as singular');
+    test.ok(inflector.isSingular('flamingo'), '"flamingo" should be considered as singular');
+    test.ok(inflector.isSingular('fresco'), '"fresco" should be considered as singular');
+    test.ok(inflector.isSingular('ghetto'), '"ghetto" should be considered as singular');
+    test.ok(inflector.isSingular('halo'), '"halo" should be considered as singular');
+    test.ok(inflector.isSingular('mango'), '"mango" should be considered as singular');
+    test.ok(inflector.isSingular('memento'), '"memento" should be considered as singular');
+    test.ok(inflector.isSingular('motto'), '"motto" should be considered as singular');
+    test.ok(inflector.isSingular('tornado'), '"tornado" should be considered as singular');
+    test.ok(inflector.isSingular('tuxedo'), '"tuxedo" should be considered as singular');
+    test.ok(inflector.isSingular('volcano'), '"volcano" should be considered as singular');
+    test.ok(inflector.isSingular('bus'), '"bus" should be considered as singular');
+    test.ok(inflector.isSingular('crisis'), '"crisis" should be considered as singular');
+    test.ok(inflector.isSingular('analysis'), '"analysis" should be considered as singular');
+    test.ok(inflector.isSingular('neurosis'), '"neurosis" should be considered as singular');
+    test.ok(inflector.isSingular('aircraft'), '"aircraft" should be considered as singular');
+    test.ok(inflector.isSingular('halibut'), '"halibut" should be considered as singular');
+    test.ok(inflector.isSingular('moose'), '"moose" should be considered as singular');
+    test.ok(inflector.isSingular('salmon'), '"salmon" should be considered as singular');
+    test.ok(inflector.isSingular('sheep'), '"sheep" should be considered as singular');
+    test.ok(inflector.isSingular('spacecraft'), '"spacecraft" should be considered as singular');
+    test.ok(inflector.isSingular('tuna'), '"tuna" should be considered as singular');
+    test.ok(inflector.isSingular('trout'), '"trout" should be considered as singular');
+    test.ok(inflector.isSingular('armadillo'), '"armadillo" should be considered as singular');
+    test.ok(inflector.isSingular('auto'), '"auto" should be considered as singular');
+    test.ok(inflector.isSingular('bravo'), '"bravo" should be considered as singular');
+    test.ok(inflector.isSingular('bronco'), '"bronco" should be considered as singular');
+    test.ok(inflector.isSingular('casino'), '"casino" should be considered as singular');
+    test.ok(inflector.isSingular('combo'), '"combo" should be considered as singular');
+    test.ok(inflector.isSingular('gazebo'), '"gazebo" should be considered as singular');
     test.done();
 };
 
-exports.pluralize = function(test){
+exports.Pluralize = function(test){
     test.equals('cows', inflector.pluralize('cow'));
     test.equals('people', inflector.pluralize('person'));
     test.equals('snakes', inflector.pluralize('snake'));
@@ -78,6 +140,33 @@ exports.pluralize = function(test){
     test.done();
 };
 
-exports['is plural'] = function(test){
+exports['Plural test'] = function(test){
+    test.done();
+};
+
+
+exports['Conjugation'] = function(test){
+    test.equals('chopped', inflector.toPast('chop'));
+    test.equals('worried', inflector.toPast('worry'));
+    test.equals('worries', inflector.toPresents('worry'));
+    test.equals('worrying', inflector.toGerund('worry'));
+    test.equals('agreed', inflector.toPast('agree'));
+    test.equals('agrees', inflector.toPresents('agree'));
+    test.equals('agreeing', inflector.toGerund('agree'));
+    test.equals('argued', inflector.toPast('argue'));
+    test.equals('argues', inflector.toPresents('argue'));
+    test.equals('arguing', inflector.toGerund('argue'));
+    test.equals('lunched', inflector.toPast('lunch'));
+    test.equals('lunches', inflector.toPresents('lunch'));
+    test.equals('lunching', inflector.toGerund('lunch'));
+    test.equals('banned', inflector.toPast('ban'));
+    test.equals('bans', inflector.toPresents('ban'));
+    test.equals('banning', inflector.toGerund('ban'));
+    test.equals('begged', inflector.toPast('beg'));
+    test.equals('begs', inflector.toPresents('beg'));
+    test.equals('begging', inflector.toGerund('beg'));
+    test.equals('lied', inflector.toPast('lie'));
+    test.equals('lies', inflector.toPresents('lie'));
+    test.equals('lying', inflector.toGerund('lie'));
     test.done();
 };

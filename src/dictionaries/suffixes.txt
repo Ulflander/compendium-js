@@ -50,9 +50,7 @@ mmy JJ
 ppy JJ
 tary JJ
 nary JJ
-tial JJ
-nial JJ
-lial JJ
+ial JJ
 vid JJ
 rid JJ
 wards RB

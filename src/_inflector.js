@@ -130,10 +130,25 @@
             return false;
         };
 
+    
+    /**
+     * Test if given token (supposed noun) is singular.
+     *
+     * @memberOf compendium.inflector
+     * @param  {String}  str Token to test
+     * @return {Boolean}     Value `true` if token is singular, `false` otherwise
+     */
     inflector.isSingular = function(str) {
-        return match(str, plural_rules);
+        return inflector.isUncountable(str) || match(str, plural_rules);
     };
 
+    /**
+     * Test if given token (supposed noun) is plural.
+     *
+     * @memberOf compendium.inflector
+     * @param  {String}  str Token to test
+     * @return {Boolean}     Value `true` if token is plural, `false` otherwise
+     */
     inflector.isPlural = function(str) {
         if (str.match(/([saui]s|[^i]a)$/gi)) {
             return false;
@@ -141,16 +156,23 @@
         return match(str, singular_rules);
     };
 
+    /**
+     * Test if given token (supposed noun) is uncountable.
+     *
+     * @memberOf compendium.inflector
+     * @param  {String}  str Token to test
+     * @return {Boolean}     Value `true` if token is plural, `false` otherwise
+     */
     inflector.isUncountable = function(str) {
         return uncountable_words.indexOf(str) > -1;
     };
 
     inflector.singularize = function(str) {
-        return apply(str, singular_rules);
+        return inflector.isPlural(str) ? apply(str, singular_rules) : str;
     };
 
     inflector.pluralize = function(str) {
-        return apply(str, plural_rules);
+        return inflector.isSingular(str) ? apply(str, plural_rules) : str;
     };
 
     /*
@@ -169,6 +191,17 @@
         return vb;
     };
 
+    var conjugateShortVowelConsonant = function (vb, to) {
+        if (to === 'VBZ') {
+            return vb + 's';
+        } else if (to === 'VBG') {
+            return vb + vb[vb.length - 1] + 'ing';
+        } else if (to === 'VBN') {
+            return vb + vb[vb.length - 1] + 'ed';
+        }
+        return vb;
+    };
+
     var conjugateConsonentE = function(vb, to) {
         var base = vb.slice(0, vb.length - 1);
         if (to === 'VBZ') {
@@ -181,13 +214,93 @@
         return vb;
     };
 
+    var conjugateConsonantY = function(vb, to) {
+        var base = vb.slice(0, vb.length - 1);
+        if (to === 'VBZ') {
+            return base + 'ies';
+        } else if (to === 'VBG') {
+            return vb + 'ing';
+        } else if (to === 'VBN') {
+            return base + 'ied';
+        }
+        return vb;
+    };
+
+    var conjugateEe = function(vb, to) {
+        if (to === 'VBZ') {
+            return vb + 's';
+        } else if (to === 'VBG') {
+            return vb + 'ing';
+        } else if (to === 'VBN') {
+            return vb + 'd';
+        }
+        return vb;
+    };
+    var conjugateUe = function(vb, to) {
+        if (to === 'VBZ') {
+            return vb + 's';
+        } else if (to === 'VBG') {
+            return vb.slice(0, vb.length - 1) + 'ing';
+        } else if (to === 'VBN') {
+            return vb + 'd';
+        }
+        return vb;
+    };
+    var conjugateIe = function(vb, to) {
+        if (to === 'VBZ') {
+            return vb + 's';
+        } else if (to === 'VBG') {
+            return vb.slice(0, vb.length - 2) + 'ying';
+        } else if (to === 'VBN') {
+            return vb + 'd';
+        }
+        return vb;
+    };
+
+    var conjugateSibilant = function(vb, to) {
+        if (to === 'VBZ') {
+            return vb + 'es';
+        } else if (to === 'VBG') {
+            return vb + 'ing';
+        } else if (to === 'VBN') {
+            return vb + 'ed';
+        }
+        return vb;
+    };
+
     inflector.conjugate = function(vb, to) {
         var l = vb[vb.length - 1];
-        if (vb.match(/([ua]mp|ay|ight|ok|aim|ew|ack|[oa]rn|er|it|ll)$/gi)) {
-            return conjugateLongVowelConsonant(vb, to)
+        if (vb.match(/[^aeiou]y$/gi)) {
+            return conjugateConsonantY(vb, to);
         } else if (vb.match(/[^aeiouy]e$/gi)) {
             return conjugateConsonentE(vb, to)
+        } else if (vb.match(/([aeiuo][ptlgnm]|ir|cur|[^aeiuo][oua][db])$/gi)) {
+            return conjugateShortVowelConsonant(vb, to)
+        } else if (vb.match(/([ieao]ss|[aeiouy]zz|[aeiouy]ch|nch|rch|[aeiouy]sh|[iae]tch|ax)$/gi)) {
+            return conjugateSibilant(vb, to)
+        } else if (vb.match(/(ee)$/gi)) {
+            return conjugateEe(vb, to)
+        } else if (vb.match(/(ie)$/gi)) {
+            return conjugateIe(vb, to)
+        } else if (vb.match(/(ue)$/gi)) {
+            return conjugateUe(vb, to)
+        } else if (vb.match(/([uao]m[pb]|[oa]wn|ey|elp|[ei]gn|ilm|o[uo]r|[oa]ugh|igh|ki|ff|oubt|ount|awl|o[alo]d|[iu]rl|upt|[oa]y|ight|oid|empt|act|aud|e[ea]d|ound|[aeiou][srcln]t|ept|dd|[eia]n[dk]|[ioa][xk]|[oa]rm|[ue]rn|[ao]ng|uin|eam|ai[mr]|[oea]w|[eaoui][rscl]k|[oa]r[nd]|ear|er|it|ll)$/gi)) {
+            return conjugateLongVowelConsonant(vb, to)
         }
+
+        return null;
+    };
+
+    inflector.toPast = function(vb) {
+        return inflector.conjugate(vb, 'VBN');
+    };
+
+    inflector.toGerund = function(vb) {
+        return inflector.conjugate(vb, 'VBG');
+    };
+
+    inflector.toPresents = function(vb) {
+        return inflector.conjugate(vb, 'VBZ');
     };
 
     compendium.inflector = inflector;

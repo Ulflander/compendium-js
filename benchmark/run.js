@@ -50,6 +50,14 @@ Result history:
         > Whole set of new rules and vocabulary in compendium, more granularity on existing 
         rules (verbs inference, less suffixes...)
         > Lighter embedded lexicons in both modes
+
+- April 29th:
+    Minimal:    91.58% exact tags, 431/1949 exact sentences, 1.96ms ave. per sentence
+    Full:       94.13% exact tags, 551/1949 exact sentences, 1.57ms ave. per sentence
+
+        > Slight decrease for the last week, but on the other hand, Compendium gained a lot
+        of features (verbs inflection, synonyms...). Will regain a lot on next round of 
+        new rules
 */
 
 var data = require("./penn_treebank").data,
@@ -126,16 +134,18 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            if (i > 1 && penn_pos[i] === 'NNS' && tags[i] === 'VBZ') {
-                var d = penn_pos[i] + ' << ' + tk + ' << ' + tags[i] ;
+            var d = penn_pos[i] + ' << ' + tk + ' << ' + tags[i] ;
 
-                if (DIFFS.hasOwnProperty(d)) {
-                    DIFFS[d].c += 1;
-                    DIFFS[d].prev.push(penn_pos[i - 1]);
+            if (DIFFS.hasOwnProperty(d)) {
+                DIFFS[d].c += 1;
+                DIFFS[d].prev += ' ' + penn_pos[i - 1];
+                DIFFS[d].next += ' ' + penn_pos[i + 1];
 
-                } else {
-                    DIFFS[d] = {c: 1, prev: [penn_pos[i - 1]]};
-                }
+            } else {
+                DIFFS[d] = {c: 1, 
+                    prev: penn_pos[i - 1],
+                    next: penn_pos[i + 1]
+                };
             }
             
         } else {
@@ -162,7 +172,8 @@ for (k in DIFFS) {
     diffs_arr.push({
         key: k,
         score: DIFFS[k].c,
-        prev: DIFFS[k].prev
+        prev: DIFFS[k].prev,
+        next: DIFFS[k].next
     });
 
 }

@@ -10,7 +10,7 @@
 
     // Entity detection at the sentence level: 
     // consolidate NNP and NNPS 
-    compendium.detect.addDetector('s', function(sentence, index, sentences) {
+    detectors.add('s', function(sentence, index, sentences) {
         var i, l = sentence.length,
             stats = sentence.stats,
             tag,

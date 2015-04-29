@@ -118,3 +118,10 @@ exports['I just started using a package called ‘Compendium’ and find that it
     test.done();
 };
 
+// ill is at the end of the sentence, it's not an abbr
+exports['He was ill.'] = function(test) {
+    var analysis = compendium.analyse('He was ill.');
+    test.equal(analysis[0].tokens[2].norm, 'ill');
+    test.equal(analysis[0].tokens[3].pos, '.');
+    test.done();
+};

@@ -3,7 +3,7 @@
     var questions_first_tags = ['WP', 'WP$', 'WRB'];
 
     // Detect the type of sentence
-    compendium.detect.addDetector('s', function(sentence, index) {
+    detectors.add('s', function(sentence, index) {
         var l = sentence.length, 
             stats = sentence.stats,
             types = sentence.profile.types,

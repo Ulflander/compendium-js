@@ -10,10 +10,17 @@ exports['None of the money was missing'] = function(test) {
     test.deepEqual(['NN', 'IN', 'DT', 'NN', 'VBD', 'VBG'], compendium.analyse('None of the money was missing')[0].tags);
     test.done();
 };
+exports['I am saudi'] = function(test) {
+    test.deepEqual(['PRP', 'VBP', 'JJ'], compendium.analyse('I am saudi')[0].tags);
+    test.done();
+};
+
 
 // *eed tokens should not be VBN
+// TO try should be VB
 exports['The most certain way to succeed is always to try just one more time.'] = function(test) {
-    test.notEqual('VBN', compendium.analyse('The most certain way to succeed is always to try just one more time.')[0].tags[5])
+    test.notEqual('VBN', compendium.analyse('The most certain way to succeed is always to try just one more time.')[0].tags[5]);
+    test.deepEqual(['DT', 'RBS', 'JJ', 'NN', 'TO', 'VB', 'VBZ', 'RB', 'TO', 'VB', 'RB', 'CD', 'JJR', 'NN', '.'], compendium.analyse('The most certain way to succeed is always to try just one more time.')[0].tags);
     test.done();
 };
 

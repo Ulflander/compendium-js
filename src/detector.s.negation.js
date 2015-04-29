@@ -4,7 +4,7 @@
         cancelNegations = Object.keys(cpd.neg_neg);
 
     // Negation detection
-    compendium.detect.addDetector('s', function(sentence, index, sentences) {
+    detectors.add('s', function(sentence, index, sentences) {
         var i, l = sentence.length,
             token,
             negated = false,

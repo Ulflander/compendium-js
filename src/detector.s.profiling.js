@@ -5,7 +5,7 @@
         emphasis_adverbs = cpd.emphasis;
 
     // Set profile
-    compendium.detect.addDetector('s', function(sentence, index, sentences) {
+    detectors.add('s', function(sentence, index, sentences) {
         var i,
             l = sentence.length,
             profile,

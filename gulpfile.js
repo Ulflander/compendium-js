@@ -10,8 +10,8 @@ var gulp = require('gulp'),
 
 function lexicon(level) {
 
-    var lex = fs.readFileSync('src/data/lexicon.txt').toString(),
-        sentiments = fs.readFileSync('src/data/sentiments.txt').toString(),
+    var lex = fs.readFileSync('src/lexicon/lexicon.txt').toString(),
+        sentiments = fs.readFileSync('src/lexicon/sentiments.txt').toString(),
         // Use next compendium to filter lexicon
         compendium = require('./'),
         i,
@@ -29,7 +29,7 @@ function lexicon(level) {
         m;
 
     if (level === 2) {
-        crosscheck = fs.readFileSync('src/data/google-10000.txt').toString().split('\n');
+        crosscheck = fs.readFileSync('src/lexicon/google-10000.txt').toString().split('\n');
     }
 
     for (i in compendium.compendium) {
@@ -83,7 +83,6 @@ function lexicon(level) {
             // Is a verb in compendium
             if (level > 0 && line[1] === 'VB' && compendium.compendium.verbs.indexOf(line[0]) > -1) {
                 skipped += 1;
-                console.log('skip ', line[0])
                 continue;
             }
 
@@ -152,9 +151,11 @@ gulp.task('build_full', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
         l = fs.readFileSync('build/lexicon-full.txt').toString().split('\\').join('\\\\'),
-        s = fs.readFileSync('src/suffixes.txt').toString().split('\n').join('\t'),
-        sy = fs.readFileSync('src/synonyms.txt').toString().split('\n').join('\t'),
-        r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
+        s = fs.readFileSync('src/dictionaries/suffixes.txt').toString().split('\n').join('\t'),
+        sy = fs.readFileSync('src/dictionaries/synonyms.txt').toString().split('\n').join('\t'),
+        na = fs.readFileSync('src/dictionaries/nationalities.txt').toString().split('\n').join(' '),
+        v = fs.readFileSync('src/dictionaries/regular-verbs.txt').toString().split('\n').join(' '),
+        r = fs.readFileSync('src/dictionaries/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
             .pipe(concat('compendium.js'))
@@ -163,6 +164,8 @@ gulp.task('build_full', function() {
             .pipe(replace('@@lexicon', l))
             .pipe(replace('@@suffixes', s))
             .pipe(replace('@@synonyms', sy))
+            .pipe(replace('@@nationalities', na))
+            .pipe(replace('@@verbs', v))
             .pipe(replace('@@rules', r))
             .pipe(gulp.dest('build/'))
             .pipe(uglify())
@@ -173,9 +176,11 @@ gulp.task('build_minimal', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
         l = fs.readFileSync('build/lexicon-minimal.txt').toString().split('\\').join('\\\\'),
-        s = fs.readFileSync('src/suffixes.txt').toString().split('\n').join('\t'),
-        sy = fs.readFileSync('src/synonyms.txt').toString().split('\n').join('\t'),
-        r = fs.readFileSync('src/rules.txt').toString().split('\n').join('\t');
+        s = fs.readFileSync('src/dictionaries/suffixes.txt').toString().split('\n').join('\t'),
+        sy = fs.readFileSync('src/dictionaries/synonyms.txt').toString().split('\n').join('\t'),
+        na = fs.readFileSync('src/dictionaries/nationalities.txt').toString().split('\n').join(' '),
+        v = fs.readFileSync('src/dictionaries/regular-verbs.txt').toString().split('\n').join(' '),
+        r = fs.readFileSync('src/dictionaries/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
             .pipe(concat('compendium.minimal.js'))
@@ -184,7 +189,9 @@ gulp.task('build_minimal', function() {
             .pipe(replace('@@lexicon', l))
             .pipe(replace('@@suffixes', s))
             .pipe(replace('@@synonyms', sy))
+            .pipe(replace('@@nationalities', na))
             .pipe(replace('@@rules', r))
+            .pipe(replace('@@verbs', v))
             .pipe(gulp.dest('build/'))
             .pipe(uglify())
             .pipe(gulp.dest('dist/'));
@@ -213,7 +220,7 @@ gulp.task('minimal_lexicon', function(cb) {
 });
 
 gulp.task('default', ['build'], function() {
-    gulp.watch(['src/*.js', 'src/*.txt'], ['build', 'test']);
+    gulp.watch(['src/*.js', 'src/dictionaries/*.txt'], ['build', 'test']);
     gulp.watch(['test/*.js'], ['test']);
-    gulp.watch('src/data/*.txt', ['full_lexicon', 'minimal_lexicon']);
+    gulp.watch('src/lexicon/*.txt', ['full_lexicon', 'minimal_lexicon']);
 });
