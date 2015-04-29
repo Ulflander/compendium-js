@@ -1,10 +1,8 @@
 # Compendium
 
-Rule-based English NLP in the browser. 90k only, MIT licensed.
+English NLP in the browser. 90k only, MIT licensed.
 
-
-
-[![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) 
+[![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) [![npm version](https://badge.fury.io/js/compendium-js.svg)](http://badge.fury.io/js/compendium-js) 
 [![Project chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ulflander/compendium-js)
 
 [![Compendium demo](http://laumonier.co/compendium-js/example/compendium.png)](http://laumonier.co/compendium-js/example/example.html)
