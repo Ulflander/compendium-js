@@ -2,10 +2,20 @@
 
 English NLP in the browser. 90k only, MIT licensed.
 
+Compendium provides an accurate analysis of a piece of text in a minimal time, in the browser.
+
+It includes Part-of-Speech tagging, NER, sentiment analysis and more.
+
 [![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) [![npm version](https://badge.fury.io/js/compendium-js.svg)](http://badge.fury.io/js/compendium-js) 
 [![Project chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ulflander/compendium-js)
 
+Go to the [wiki](https://github.com/Ulflander/compendium-js/wiki) to get more details about the project.
+
+## Demo
+
 [![Compendium demo](http://laumonier.co/compendium-js/example/compendium.png)](http://laumonier.co/compendium-js/example/example.html)
+
+Test the interactive demo [here](http://laumonier.co/compendium-js/example/example.html).
 
 ## How to use
 
@@ -30,7 +40,7 @@ In order to ensure that Compendium will work as intended, you must specify the e
 
 Call the `compendium.analyse` function with a string as parameter, and get a complete analysis of the text.
 
-    console.log(compendium.analyse('Hello world'));
+    console.log( compendium.analyse('Hello world :)') );
 
 ## API
 
@@ -86,3 +96,7 @@ will return an object like:
             // ... Other tokens
             //
        ] } ]
+
+## Want more?
+
+Check out the [wiki](https://github.com/Ulflander/compendium-js/wiki).
