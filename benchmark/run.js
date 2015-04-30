@@ -134,15 +134,17 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            var d = penn_pos[i] + ' << ' + tk + ' << ' + tags[i] ;
+            var d = penn_pos[i];
 
             if (DIFFS.hasOwnProperty(d)) {
                 DIFFS[d].c += 1;
+                DIFFS[d].token += ' ' + tk;
                 DIFFS[d].prev += ' ' + penn_pos[i - 1];
                 DIFFS[d].next += ' ' + penn_pos[i + 1];
 
             } else {
                 DIFFS[d] = {c: 1, 
+                    token: tk,
                     prev: penn_pos[i - 1],
                     next: penn_pos[i + 1]
                 };
@@ -173,6 +175,7 @@ for (k in DIFFS) {
         key: k,
         score: DIFFS[k].c,
         prev: DIFFS[k].prev,
+        token: DIFFS[k].token,
         next: DIFFS[k].next
     });
 

@@ -27,8 +27,15 @@
             'with': 'w/',
         };
 
-    // Takes a raw text and normalize it:
-    // - replace some HTML entities
+    /**
+     * Decode a string: replace some HTML entities (such as `&amp;` to `&`) and some 
+     * slangs that include some punctuation chars (such as `w/` to `with`). This function
+     * is called by the analyser **before** tokenization.
+     *
+     * @memberOf compendium
+     * @param  {String} txt String to decode
+     * @return {String}     Decoded string
+     */
     compendium.decode = function(txt) {
         var k;
         for (k in unescapes) {

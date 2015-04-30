@@ -47,9 +47,9 @@
         ],
 
         // Thanks to https://github.com/spencermountain/nlp_compromise
-        // for initial list.
-        // Odd entries are abbreviations, even entries are replacement
-        // potentially ambiguous abbrvs have no replacement.
+        // for initial abbreviations list.
+        // Odd entries are abbreviations, even entries are replacement.
+        // Potentially ambiguous abbrvs have no replacement.
         // Replacements are extracted from this array and 
         // added in `abbrs_rplt` when lexicon is parsed (see lexicon.js).
         abbrs: [

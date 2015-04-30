@@ -64,6 +64,13 @@
         return res;
     };
 
+    /**
+     * Process a text and returns an analysis object.
+     *
+     * @memberOf compendium
+     * @param  {String} o A string that will be tokenized by the lexer
+     * @return {Array}    An array of analysis objects, one for each sentence of the given text
+     */
     compendium.analyse = function(o) {
         var result = null;
 

@@ -87,7 +87,7 @@
         /*
           This is a helper method that applies rules based replacement to a String
           Signature:
-            apply(str, rules, skip, override) == String
+            apply(str, rules, override) == String
           Arguments:
             str - String - String to modify and return based on the passed rules
             rules - Array: [RegExp, String] - Regexp to match paired with String to use for replacement
@@ -128,6 +128,104 @@
                 }
             }
             return false;
+        },
+
+
+        /*
+            Conjugation methods. Following methods are experimental for now.
+        */
+   
+        VBZ = 'VBZ',
+        VBG = 'VBG',
+        VBN = 'VBN',
+
+        conjugateLongVowelConsonant = function (vb, to) {
+            if (to === VBZ) {
+                return vb + 's';
+            } else if (to === VBG) {
+                return vb + 'ing';
+            } else if (to === VBN) {
+                return vb + 'ed';
+            }
+            return vb;
+        },
+
+        conjugateShortVowelConsonant = function (vb, to) {
+            if (to === VBZ) {
+                return vb + 's';
+            } else if (to === VBG) {
+                return vb + vb[vb.length - 1] + 'ing';
+            } else if (to === VBN) {
+                return vb + vb[vb.length - 1] + 'ed';
+            }
+            return vb;
+        },
+
+        conjugateConsonentE = function(vb, to) {
+            var base = vb.slice(0, vb.length - 1);
+            if (to === VBZ) {
+                return vb + 's';
+            } else if (to === VBG) {
+                return base + 'ing';
+            } else if (to === VBN) {
+                return base + 'ed';
+            }
+            return vb;
+        },
+
+        conjugateConsonantY = function(vb, to) {
+            var base = vb.slice(0, vb.length - 1);
+            if (to === VBZ) {
+                return base + 'ies';
+            } else if (to === VBG) {
+                return vb + 'ing';
+            } else if (to === VBN) {
+                return base + 'ied';
+            }
+            return vb;
+        },
+
+        conjugateEe = function(vb, to) {
+            if (to === VBZ) {
+                return vb + 's';
+            } else if (to === VBG) {
+                return vb + 'ing';
+            } else if (to === VBN) {
+                return vb + 'd';
+            }
+            return vb;
+        },
+
+        conjugateUe = function(vb, to) {
+            if (to === VBZ) {
+                return vb + 's';
+            } else if (to === VBG) {
+                return vb.slice(0, vb.length - 1) + 'ing';
+            } else if (to === VBN) {
+                return vb + 'd';
+            }
+            return vb;
+        },
+        conjugateIe = function(vb, to) {
+            if (to === VBZ) {
+                return vb + 's';
+            } else if (to === VBG) {
+                return vb.slice(0, vb.length - 2) + 'ying';
+            } else if (to === VBN) {
+                return vb + 'd';
+            }
+            return vb;
+        };
+
+        var conjugateSibilant = function(vb, to) {
+            if (to === VBZ) {
+                return vb + 'es';
+            } else if (to === VBG) {
+                return vb + 'ing';
+            } else if (to === VBN) {
+                return vb + 'ed';
+            }
+            return vb;
         };
 
     
@@ -167,107 +265,40 @@
         return uncountable_words.indexOf(str) > -1;
     };
 
+    /**
+     * Singularize given noun. Will test if given noun is plural before
+     * singularizing it.
+     *
+     * @memberOf compendium.inflector
+     * @param  {String} str Noun to singularize
+     * @return {String}     The singularized noun
+     */
     inflector.singularize = function(str) {
         return inflector.isPlural(str) ? apply(str, singular_rules) : str;
     };
 
+    /**
+     * Pluralize given noun. Will test if given noun is singular before
+     * pluralizing it.
+     *
+     * @memberOf compendium.inflector
+     * @param  {String} str Noun to singularize
+     * @return {String}     The pluralized noun
+     */
     inflector.pluralize = function(str) {
         return inflector.isSingular(str) ? apply(str, plural_rules) : str;
     };
 
-    /*
-        The following methods are experimental for now.
-    */
 
 
-    var conjugateLongVowelConsonant = function (vb, to) {
-        if (to === 'VBZ') {
-            return vb + 's';
-        } else if (to === 'VBG') {
-            return vb + 'ing';
-        } else if (to === 'VBN') {
-            return vb + 'ed';
-        }
-        return vb;
-    };
-
-    var conjugateShortVowelConsonant = function (vb, to) {
-        if (to === 'VBZ') {
-            return vb + 's';
-        } else if (to === 'VBG') {
-            return vb + vb[vb.length - 1] + 'ing';
-        } else if (to === 'VBN') {
-            return vb + vb[vb.length - 1] + 'ed';
-        }
-        return vb;
-    };
-
-    var conjugateConsonentE = function(vb, to) {
-        var base = vb.slice(0, vb.length - 1);
-        if (to === 'VBZ') {
-            return vb + 's';
-        } else if (to === 'VBG') {
-            return base + 'ing';
-        } else if (to === 'VBN') {
-            return base + 'ed';
-        }
-        return vb;
-    };
-
-    var conjugateConsonantY = function(vb, to) {
-        var base = vb.slice(0, vb.length - 1);
-        if (to === 'VBZ') {
-            return base + 'ies';
-        } else if (to === 'VBG') {
-            return vb + 'ing';
-        } else if (to === 'VBN') {
-            return base + 'ied';
-        }
-        return vb;
-    };
-
-    var conjugateEe = function(vb, to) {
-        if (to === 'VBZ') {
-            return vb + 's';
-        } else if (to === 'VBG') {
-            return vb + 'ing';
-        } else if (to === 'VBN') {
-            return vb + 'd';
-        }
-        return vb;
-    };
-    var conjugateUe = function(vb, to) {
-        if (to === 'VBZ') {
-            return vb + 's';
-        } else if (to === 'VBG') {
-            return vb.slice(0, vb.length - 1) + 'ing';
-        } else if (to === 'VBN') {
-            return vb + 'd';
-        }
-        return vb;
-    };
-    var conjugateIe = function(vb, to) {
-        if (to === 'VBZ') {
-            return vb + 's';
-        } else if (to === 'VBG') {
-            return vb.slice(0, vb.length - 2) + 'ying';
-        } else if (to === 'VBN') {
-            return vb + 'd';
-        }
-        return vb;
-    };
-
-    var conjugateSibilant = function(vb, to) {
-        if (to === 'VBZ') {
-            return vb + 'es';
-        } else if (to === 'VBG') {
-            return vb + 'ing';
-        } else if (to === 'VBN') {
-            return vb + 'ed';
-        }
-        return vb;
-    };
-
+    /**
+     * Conjugate a verb from its infinitive to given tense.
+     *
+     * @memberOf compendium.inflector
+     * @param  {String} vb Infinitive verb
+     * @param  {String} to PoS tag to conjugate to (`VBZ` for third-person present, `VBN` for past tense, `VBG` for gerund)
+     * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
+     */
     inflector.conjugate = function(vb, to) {
         var l = vb[vb.length - 1];
         if (vb.match(/[^aeiou]y$/gi)) {
@@ -291,16 +322,42 @@
         return null;
     };
 
+
+    /**
+     * Conjugate a verb from its infinitive to past tense. 
+     * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBN');`.
+     *
+     * @memberOf compendium.inflector
+     * @param  {String} vb Infinitive verb
+     * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
+     */
     inflector.toPast = function(vb) {
-        return inflector.conjugate(vb, 'VBN');
+        return inflector.conjugate(vb, VBN);
     };
 
+
+    /**
+     * Conjugate a verb from its infinitive to its gerund. 
+     * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBG');`.
+     *
+     * @memberOf compendium.inflector
+     * @param  {String} vb Infinitive verb
+     * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
+     */
     inflector.toGerund = function(vb) {
-        return inflector.conjugate(vb, 'VBG');
+        return inflector.conjugate(vb, VBG);
     };
 
+    /**
+     * Conjugate a verb from its infinitive to the third-person present tense. 
+     * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBZ');`.
+     *
+     * @memberOf compendium.inflector
+     * @param  {String} vb Infinitive verb
+     * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
+     */
     inflector.toPresents = function(vb) {
-        return inflector.conjugate(vb, 'VBZ');
+        return inflector.conjugate(vb, VBZ);
     };
 
     compendium.inflector = inflector;
