@@ -207,6 +207,7 @@
             token,
             tag,
             i,
+            j,
             l = sentence.length,
             tl,
             lower,
@@ -225,9 +226,17 @@
         for (i = 0; i < l; i += 1) {
             token = sentence[i];
             
-            if (emots.indexOf(token) > -1) {
-                append('EM', 1);
-                continue;
+            if (token.length > 1) {
+                tag = null;
+                for (j = 0, tl = emots.length; j < tl; j += 1) {
+                    if (token.indexOf(emots[j]) === 0) {
+                        tag = 'EM';    
+                    }
+                }
+                if (!!tag) {
+                    append(tag, 1);
+                    continue;
+                }
             }
 
             // Attempt to get pos in a case sensitive way

@@ -118,6 +118,18 @@ exports['happy!!!!!!'] = function(test) {
     test.done();
 };
 
+exports['Hey :))))'] = function(test) {
+    var analysis = compendium.analyse('Hey :))))');
+    test.deepEqual([analysis[0].tags], [('UH EM').split(' ')]);
+    test.done();
+};
+
+exports['Hey :]]]]'] = function(test) {
+    var analysis = compendium.analyse('Hey :]]]]');
+    test.deepEqual([analysis[0].tags], [('UH EM').split(' ')]);
+    test.done()
+};
+
 exports['😋'] = function(test) {
     var analysis = compendium.analyse('😋');
     test.deepEqual([analysis[0].tags], [('EM').split(' ')]);

@@ -21,6 +21,18 @@ exports['It\'s good 😋 at 255.255.255.0'] = function(test){
     test.done();
 };
 
+exports['Hey :))))'] = function(test) {
+    test.deepEqual([['Hey', ':))))']],
+                    lexer.lex('Hey :))))'))
+    test.done()
+};
+
+exports['Hey :]]]]'] = function(test) {
+    test.deepEqual([['Hey', ':]]]]']],
+                    lexer.lex('Hey :]]]]'))
+    test.done()
+};
+
 exports['124.2.2.2'] = function(test){
     test.deepEqual([['124.2.2.2']], 
                     lexer.lex('124.2.2.2'));
