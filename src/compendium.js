@@ -10,6 +10,9 @@
         // Regular verbs
         // Conjugated and expanded in compendium.parser.js
         verbs: '@@verbs'.split(' '),
+        
+        // Irregular verbs
+        irregular: '@@iverbs'.split(' '),
 
         // Common exceptions to the words ending with "ing"
         // but that are not the gerund of a verb

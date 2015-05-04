@@ -164,6 +164,13 @@
                 tags[index] = rule.to;
                 return;
             }
+        } else if (type === PREV1OR2TAG) {
+            tmp = tags[index - 1] || '';
+            tmp2 = tags[index - 2] || '';
+            if (tmp === rule.c1 || tmp2 === rule.c1) {
+                tags[index] = rule.to;
+                return;
+            }
         }
 
         return 0;
@@ -197,6 +204,88 @@
         return null;
     };
 
+    pos.getTag = function(token, append) {
+        var tag,
+            j,
+            tl,
+            lower,
+            tmp;
+        
+        if (token.length > 1) {
+            tag = null;
+            for (j = 0, tl = emots.length; j < tl; j += 1) {
+                if (token.indexOf(emots[j]) === 0) {
+                    tag = 'EM';    
+                }
+            }
+            if (!!tag) {
+                append(tag, 1);
+                return;
+            }
+        }
+
+        // Attempt to get pos in a case sensitive way
+        tag = compendium.lexicon[token];
+
+        if (!!tag && tag !== '-') {
+            append(tag, 1);
+            return;
+        }
+
+        lower = token.toLowerCase();
+
+        // If none, try with lower cased
+        if (typeof token === 'string' && token.match(/[A-Z]/g)) {
+            tag = compendium.lexicon[lower];
+
+            if (!!tag && tag !== '-') {
+                append(tag, 0.75);
+                return;
+            }
+        }
+
+        // If no tag, check composed words
+        if (token.indexOf('-') > -1) {
+            // tmp is second part of composed word
+            tmp = token.split('-')[1];
+            tag = compendium.lexicon[tmp.toLowerCase()];
+            if (!!tag && tag !== '-') {
+                append(tag, 0.5);
+                return;
+            }
+
+            // tmp is first part of composed word
+            tmp = token.split('-')[0];
+            tag = compendium.lexicon[tmp.toLowerCase()];
+            if (!!tag && tag !== '-') {
+                append(tag, 0.5);
+                return;
+            }
+        }
+
+        // Test common suffixes.
+        tag = pos.testSuffixes(token);
+        if (!!tag) {
+            append(tag, 0.25);
+            return;
+        }
+
+        // Test synonyms
+        tmp = compendium.synonym(lower);
+        if (tmp !== lower) {
+            tag = compendium.lexicon[tmp];
+
+            if (!!tag) {
+                append(tag, 0.50);
+                return;
+            }
+
+        }
+
+        // We default to NN if still no tag
+        append('NN', 0);
+    };
+
     // Tag a tokenized sentence.
     // Apply three passes:
     // 1. Guess a tag based on lexicon + prefixes (see `suffixes.txt`)
@@ -224,81 +313,7 @@
         // Basic tagging based on lexicon and 
         // suffixes
         for (i = 0; i < l; i += 1) {
-            token = sentence[i];
-            
-            if (token.length > 1) {
-                tag = null;
-                for (j = 0, tl = emots.length; j < tl; j += 1) {
-                    if (token.indexOf(emots[j]) === 0) {
-                        tag = 'EM';    
-                    }
-                }
-                if (!!tag) {
-                    append(tag, 1);
-                    continue;
-                }
-            }
-
-            // Attempt to get pos in a case sensitive way
-            tag = compendium.lexicon[token];
-
-            if (!!tag && tag !== '-') {
-                append(tag, 1);
-                continue;
-            }
-
-            lower = token.toLowerCase();
-
-            // If none, try with lower cased
-            if (typeof token === 'string' && token.match(/[A-Z]/g)) {
-                tag = compendium.lexicon[lower];
-
-                if (!!tag && tag !== '-') {
-                    append(tag, 0.75);
-                    continue;
-                }
-            }
-
-            // If no tag, check composed words
-            if (token.indexOf('-') > -1) {
-                // tmp is second part of composed word
-                tmp = token.split('-')[1];
-                tag = compendium.lexicon[tmp.toLowerCase()];
-                if (!!tag && tag !== '-') {
-                    append(tag, 0.5);
-                    continue;
-                }
-
-                // tmp is first part of composed word
-                tmp = token.split('-')[0];
-                tag = compendium.lexicon[tmp.toLowerCase()];
-                if (!!tag && tag !== '-') {
-                    append(tag, 0.5);
-                    continue;
-                }
-            }
-
-            // Test common suffixes.
-            tag = pos.testSuffixes(token);
-            if (!!tag) {
-                append(tag, 0.25);
-                continue;
-            }
-
-            // Test synonyms
-            tmp = compendium.synonym(lower);
-            if (tmp !== lower) {
-                tag = compendium.lexicon[tmp];
-
-                if (!!tag) {
-                    append(tag, 0.50);
-                    continue;
-                }
-
-            }
-
-            // We default to NN if still no tag
-            append('NN', 0);
+            pos.getTag(sentence[i], append);
         }
 
         // Manual transformational rules
@@ -393,7 +408,6 @@
         }
 
         // Finally 
-        pos.apply(sentence, tags);
         pos.apply(sentence, tags);
 
         return {

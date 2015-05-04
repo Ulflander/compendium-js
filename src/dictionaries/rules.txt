@@ -18,6 +18,7 @@ WRB RB 12 when PRP
 WRB RB 8 IN how
 JJ RB 8 RB much
 JJR RBR 12 more JJ
+RP RB 8 VBD up
 IN RP 8 VB up
 RB RP 8 VB back
 RB RP 8 VBD back
