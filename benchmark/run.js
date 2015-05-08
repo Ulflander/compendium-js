@@ -8,7 +8,8 @@ It's good to note that some of the Penn Treebank dataset sentences are not perfe
 of deviation from Penn Treebank is quite subjective, as Compendium may be good where Penn is wrong 
 (in a VERY LITTLE proportion.. 0.1 to 0.3% probably on used test set). Examples of Penn errors:
 
-Too much money is at stake for program traders to give up. - give/VB up/IN where it should be give/VB up/RP
+- Too much money is at stake for program traders to give up. - give/VB up/IN where it should be give/VB up/RP
+- Currently, ShareData has about 4.1 million common shares outstanding. Currently/NNP where it should be Currently/RB
 
 I still don't know where these errors (if it's proved they are) come from, as I don't have access to raw
 original version of the dataset.
@@ -53,15 +54,23 @@ Result history:
 
 - April 29th:
     Minimal:    91.58% exact tags, 431/1949 exact sentences, 1.96ms ave. per sentence
-    Full:       94.13% exact tags, 551/1949 exact sentences, 1.57ms ave. per sentence
+    Full:       94.13% exact tags, 551/1523 exact sentences, 1.57ms ave. per sentence
 
         > Slight decrease for the last week, but on the other hand, Compendium gained a lot
         of features (verbs inflection, synonyms...). Will regain a lot on next round of 
         new rules
+
+- May 8th:
+    Minimal:    92.32% exact tags, 480/1949 exact sentences, 1.90ms ave. per sentence
+    Full:       94.37% exact tags, 772/1546 exact sentences, 1.57ms ave. per sentence
+
+        > New increase! A 0.80% gain in minimal mode, only by using simpler inferences 
+        on composed words. Almost no change in full mode.
+
 */
 
 var data = require("./penn_treebank").data,
-    compendium = require('../build/compendium.minimal.js'),
+    compendium = require('../build/compendium.js'),
     toPoSArray = function(arr) {
         var res = [], i, l = arr.length;
         for (i = 0; i < l; i += 1) {
@@ -140,13 +149,15 @@ for (var k in data) {
                 DIFFS[d].c += 1;
                 DIFFS[d].token += ' ' + tk;
                 DIFFS[d].prev += ' ' + penn_pos[i - 1];
+                DIFFS[d].curr += ' ' + tags[i];
                 DIFFS[d].next += ' ' + penn_pos[i + 1];
 
             } else {
                 DIFFS[d] = {c: 1, 
                     token: tk,
                     prev: penn_pos[i - 1],
-                    next: penn_pos[i + 1]
+                    next: penn_pos[i + 1],
+                    curr: tags[i]
                 };
             }
             
@@ -176,6 +187,7 @@ for (k in DIFFS) {
         score: DIFFS[k].c,
         prev: DIFFS[k].prev,
         token: DIFFS[k].token,
+        curr: DIFFS[k].curr,
         next: DIFFS[k].next
     });
 

@@ -1,4 +1,5 @@
-(function(){
+!function(){
+ 
 
     compendium.stat = function(sentence) {
         var i,
@@ -43,4 +44,4 @@
         stats.p_cap = capitalized * 100 / ln;
         stats.avg_length = tokens_length / ln;
     };
-}());
+}();

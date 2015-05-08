@@ -10,7 +10,7 @@
 // Release 2 (substantially revised) by Christopher McKenzie, Aug 2009
 // Release 3 as part as Compendium (again revised, mainly readability & perf) by 'Ulflander', April 2015
 
-(function(){
+!function(){
     var step2list = {
             'ational' : 'ate',
             'tional' : 'tion',
@@ -191,4 +191,4 @@
     };
 
     compendium.stemmer = stemmer;
-}());
+}();

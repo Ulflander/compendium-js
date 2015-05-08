@@ -1,4 +1,4 @@
-(function() {
+!function() {
     var s = cpd.synonyms,
         l = s.length;
 
@@ -12,4 +12,4 @@
         return str;
     };
 
-}());
+}();

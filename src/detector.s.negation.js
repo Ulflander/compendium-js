@@ -1,4 +1,4 @@
-(function() {
+!function() {
 
     var negations = Object.keys(cpd.neg),
         cancelNegations = Object.keys(cpd.neg_neg);
@@ -36,4 +36,4 @@
 
         sentence.profile.negated = n > 0;
     });
-}());
+}();

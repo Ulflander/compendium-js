@@ -1,5 +1,5 @@
 /*! https://mths.be/punycode v1.3.2 by @mathias */
-;(function() {
+!function() {
 
 
     /**
@@ -493,4 +493,4 @@
 
     compendium.punycode = punycode;
 
-}());
+}();

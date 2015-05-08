@@ -1,4 +1,4 @@
-(function() {
+!function() {
 
     var abbreviations = cpd.abbrs,
 
@@ -279,4 +279,4 @@
     
     compendium.lex = lexer.lex;
 
-}());
+}();

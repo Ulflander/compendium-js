@@ -1,4 +1,4 @@
-(function() {
+!function() {
 
     var lexicon = compendium.lexicon;
 
@@ -75,4 +75,4 @@
         token.profile.emphasis = emphasis;
         token.norm = norm;
     });
-}());
+}();

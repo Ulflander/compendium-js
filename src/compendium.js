@@ -4,7 +4,7 @@
  * Compendium (NLP knowledge base)
  */
 
-(function() {
+!function() {
     extend(cpd, {
 
         // Regular verbs
@@ -372,4 +372,4 @@
 
         polite: 'thanks thank please excuse pardon welcome sorry might ought'.split(' ')
     });
-}());
+}();

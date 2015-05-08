@@ -8,6 +8,8 @@
         factory = {},
         analyser = {},
         detectors = {},
+        dependencies = {},
+        pos = {},
         iA = Array.isArray,
         config = {
             profile: {
@@ -21,10 +23,11 @@
 
 
     compendium.detect = detectors;
+    compendium.dependencies = dependencies;
     compendium.compendium = cpd;
     compendium.lexer = lexer;
     compendium.factory = factory;
-    compendium.pos = {};
+    compendium.pos = pos;
     compendium.config = config;
 
     function extend(target, object) {

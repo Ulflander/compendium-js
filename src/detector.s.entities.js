@@ -1,4 +1,4 @@
-(function() {
+!function() {
 
     var isBeforeProperNoun = function (sentence, index) {
         if (index >= sentence.length) {
@@ -48,4 +48,4 @@
 
 
     });
-}());
+}();

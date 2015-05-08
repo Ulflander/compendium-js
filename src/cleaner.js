@@ -1,4 +1,4 @@
-(function(){
+!function(){
 
     var replacements = {
         '2moro': 'tomorrow',
@@ -25,4 +25,4 @@
             }
         }
     };
-}());
+}();

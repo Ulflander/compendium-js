@@ -1,4 +1,4 @@
-(function() {
+!function() {
 
     var pos_breakpoints = [',', ':', ';', '('],
         raw_breakpoints = ['-', '—', '/'];
@@ -14,4 +14,4 @@
             sentence.stats.breakpoints += 1;
         }
     });
-}());
+}();

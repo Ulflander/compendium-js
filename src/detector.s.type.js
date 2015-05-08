@@ -1,4 +1,4 @@
-(function() {
+!function() {
 
     var questions_first_tags = ['WP', 'WP$', 'WRB'];
 
@@ -38,4 +38,4 @@
         }
 
     });
-}());
+}();

@@ -1,4 +1,4 @@
-(function() {
+!function() {
 
 
     // Flag entities at the token level
@@ -45,4 +45,4 @@
             }
         } 
     });
-}());
+}();

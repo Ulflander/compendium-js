@@ -1,7 +1,7 @@
 
 
 
-(function() {
+!function() {
 
     /*
         The following singularization/pluralization regexp rules have
@@ -362,4 +362,4 @@
 
     compendium.inflector = inflector;
 
-}());
+}();

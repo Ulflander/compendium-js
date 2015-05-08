@@ -1,4 +1,4 @@
-(function() {
+!function() {
     // Factory for analysis objects
     extend(factory, {
         entity: function(token, index, type) {
@@ -87,6 +87,14 @@
                 // qualified_by: [],
                 // applies_to: []
             };
+        },
+
+        // Internal, used by PoS tagger to represent a tag probability
+        tag: function(tag, confidence) {
+            return {
+                tag: tag || 'NN',
+                confidence: confidence || 0
+            }
         }
     });
-}());
+}();

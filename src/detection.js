@@ -1,5 +1,5 @@
 // Tiny detectors manager
-(function() {
+!function() {
     // Lists of detectors
     var list = {
             // Detectors that work at a token level
@@ -30,4 +30,4 @@
         }
     };
     
-}());
+}();

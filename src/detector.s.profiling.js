@@ -1,4 +1,4 @@
-(function() {
+!function() {
 
     var dirty = cpd.dirty,
         polite = cpd.polite,
@@ -107,4 +107,4 @@
             p.label = 'mixed';
         }
     });
-}());
+}();

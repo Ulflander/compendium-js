@@ -2,7 +2,7 @@
 
 // Parses the lexicon and augment it using compendium
 // Also prepare various fields of compendium: parse brill's rules, suffixes...
-(function() {
+!function() {
     var inflector = compendium.inflector,
 
         // Parses a Next lexicon
@@ -203,4 +203,4 @@
     synonyms(cpd.synonyms);
     nationalities(cpd.nationalities);
     compendium.lexicon = parse("@@lexicon"); 
-}());
+}();

@@ -1,4 +1,4 @@
-(function() {
+!function() {
     
     var unescapes = {
             // Borrowed from https://github.com/mathiasbynens/he/blob/master/src/he.js for
@@ -45,4 +45,4 @@
         }
         return txt;
     };
-}());
+}();

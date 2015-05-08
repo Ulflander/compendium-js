@@ -5,7 +5,7 @@
  * (lexer, PoS, detectors) and returns an analysis result object.
  */
 
-(function() {
+!function() {
 
     analyser.toObject = function(sentence, pos) {
         var s = factory.sentence(sentence.join(' ')),
@@ -88,4 +88,4 @@
 
         return result;
     };
-}());
+}();
