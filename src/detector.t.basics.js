@@ -57,6 +57,12 @@
                 if (!i.condition || token.pos === i.condition) {
                     sentiment = i.sentiment;
                 }
+            // If not found, test singular
+            } else if (token.pos === 'NNS' && lexicon.hasOwnProperty(inflector.singularize(norm))) {
+                i = lexicon[stem];
+                if (!i.condition || token.pos === i.condition) {
+                    sentiment = i.sentiment / 2;
+                }
             // If not found, test stem
             } else if (lexicon.hasOwnProperty(stem)) {
                 i = lexicon[stem];

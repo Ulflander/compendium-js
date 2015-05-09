@@ -9,6 +9,7 @@
         analyser = {},
         detectors = {},
         dependencies = {},
+        inflector = {},
         pos = {},
         iA = Array.isArray,
         config = {
@@ -24,6 +25,7 @@
 
     compendium.detect = detectors;
     compendium.dependencies = dependencies;
+    compendium.inflector = inflector;
     compendium.compendium = cpd;
     compendium.lexer = lexer;
     compendium.factory = factory;

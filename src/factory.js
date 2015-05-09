@@ -83,9 +83,11 @@
                     abbr: false,
                     verb: pos.indexOf('VB') === 0,
                     entity: -1
+                },
+                deps: {
+                    governor: null,
+                    dependents: []
                 }
-                // qualified_by: [],
-                // applies_to: []
             };
         },
 

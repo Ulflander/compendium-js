@@ -1,9 +1,7 @@
 !function() {
 
-    var pos = {},
 
-        // Shortcuts
-        isPlural = compendium.inflector.isPlural,
+    var isPlural = compendium.inflector.isPlural,
 
         // Brill's conditions
         PREV1OR2TAG = 1,

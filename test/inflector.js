@@ -5,6 +5,71 @@ var compendium = require('../dist/compendium.minimal.js'),
 
 
 exports.Singularize = function(test){
+    /*
+    test.equals('cow', inflector.singularize('cows'));
+    test.equals('person', inflector.singularize('people'));
+    test.equals('snake', inflector.singularize('snakes'));
+    test.equals('ski', inflector.singularize('skis'));
+    test.equals('Barrymore', inflector.singularize('Barrymores'));
+    test.equals('witch', inflector.singularize('witches'));
+    test.equals('box', inflector.singularize('boxes'));
+    test.equals('gas', inflector.singularize('gases'));
+    test.equals('kiss', inflector.singularize('kisses'));
+    test.equals('index', inflector.singularize('indices'));
+    test.equals('appendix', inflector.singularize('appendices'));
+    test.equals('criterion', inflector.singularize('criteria'));
+    test.equals('berry', inflector.singularize('berries'));
+    test.equals('activity', inflector.singularize('activities'));
+    test.equals('daisy', inflector.singularize('daisies'));
+    test.equals('church', inflector.singularize('churches'));
+    test.equals('fox', inflector.singularize('foxes'));
+    test.equals('stomach', inflector.singularize('stomachs'));
+    test.equals('epoch', inflector.singularize('epochs'));
+    test.equals('knife', inflector.singularize('knives'));
+    test.equals('half', inflector.singularize('halves'));
+    test.equals('scarf', inflector.singularize('scarves'));
+    test.equals('chief', inflector.singularize('chiefs'));
+    test.equals('spoof', inflector.singularize('spoofs'));
+    test.equals('solo', inflector.singularize('solos'));
+    test.equals('zero', inflector.singularize('zeros'));
+    test.equals('avocado', inflector.singularize('avocados'));
+    test.equals('studio', inflector.singularize('studios'));
+    test.equals('zoo', inflector.singularize('zoos'));
+    test.equals('embryo', inflector.singularize('embryos'));
+
+    test.equals('hero', inflector.singularize('heroes'));
+    test.equals('banjo', inflector.singularize('banjos'));
+    test.equals('cargo', inflector.singularize('cargos'));
+    test.equals('flamingo', inflector.singularize('flamingos'));
+    test.equals('fresco', inflector.singularize('frescos'));
+    test.equals('ghetto', inflector.singularize('ghettos'));
+    test.equals('halo', inflector.singularize('halos'));
+    test.equals('mango', inflector.singularize('mangos'));
+    test.equals('memento', inflector.singularize('mementos'));
+    test.equals('motto', inflector.singularize('mottos'));
+    test.equals('tornado', inflector.singularize('tornados'));
+    test.equals('tuxedo', inflector.singularize('tuxedos'));
+    test.equals('volcano', inflector.singularize('volcanos'));
+    test.equals('bus', inflector.singularize('buses'));
+    test.equals('crisis', inflector.singularize('crises'));
+    test.equals('analysis', inflector.singularize('analyses'));
+    test.equals('neurosis', inflector.singularize('neuroses'));
+    test.equals('aircraft', inflector.singularize('aircraft'));
+    test.equals('halibut', inflector.singularize('halibut'));
+    test.equals('moose', inflector.singularize('moose'));
+    test.equals('salmon', inflector.singularize('salmon'));
+    test.equals('sheep', inflector.singularize('sheep'));
+    test.equals('spacecraft', inflector.singularize('spacecraft'));
+    test.equals('tuna', inflector.singularize('tuna'));
+    test.equals('trout', inflector.singularize('trout'));
+    test.equals('armadillo', inflector.singularize('armadillos'));
+    test.equals('auto', inflector.singularize('autos'));
+    test.equals('bravo', inflector.singularize('bravos'));
+    test.equals('bronco', inflector.singularize('broncos'));
+    test.equals('casino', inflector.singularize('casinos'));
+    test.equals('combo', inflector.singularize('combos'));
+    test.equals('gazebo', inflector.singularize('gazebos'));
+    */
     test.done();
 };
 
@@ -141,6 +206,7 @@ exports.Pluralize = function(test){
 };
 
 exports['Plural test'] = function(test){
+
     test.done();
 };
 

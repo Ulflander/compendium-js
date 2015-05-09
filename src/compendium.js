@@ -46,7 +46,8 @@
             'highly',
             'quite',
             'pretty',
-            'seriously'
+            'seriously',
+            'very'
         ],
 
         // Thanks to https://github.com/spencermountain/nlp_compromise
@@ -275,10 +276,10 @@
             eighty: 80,
             ninety: 90,
             hundred: 100,
-            thousand: 1000,
-            million: 1000000,
-            billion: 1000000000,
-            trillion: 1000000000000
+            thousand: 1e3,
+            million: 1e6,
+            billion: 1e9,
+            trillion: 1e12
         },
 
         nationalities: '@@nationalities',

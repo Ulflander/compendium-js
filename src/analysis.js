@@ -46,6 +46,9 @@
 
             // Generate statistics
             compendium.stat(s);
+
+            // Create dependency tree
+            dependencies.parse(s);
             
             // Apply token level detection
             for (j = 0, m = s.tokens.length; j < m; j += 1) {

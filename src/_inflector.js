@@ -82,8 +82,6 @@
             [/s$/gi,                                                           '']
         ],
 
-        inflector = {},
-
         /*
           This is a helper method that applies rules based replacement to a String
           Signature:
@@ -228,138 +226,139 @@
             return vb;
         };
 
-    
-    /**
-     * Test if given token (supposed noun) is singular.
-     *
-     * @memberOf compendium.inflector
-     * @param  {String}  str Token to test
-     * @return {Boolean}     Value `true` if token is singular, `false` otherwise
-     */
-    inflector.isSingular = function(str) {
-        return inflector.isUncountable(str) || match(str, plural_rules);
-    };
+    extend(inflector, {
+        /**
+         * Test if given token (supposed noun) is singular.
+         *
+         * @memberOf compendium.inflector
+         * @param  {String}  str Token to test
+         * @return {Boolean}     Value `true` if token is singular, `false` otherwise
+         */
+        isSingular: function(str) {
+            return inflector.isUncountable(str) || match(str, plural_rules);
+        },
 
-    /**
-     * Test if given token (supposed noun) is plural.
-     *
-     * @memberOf compendium.inflector
-     * @param  {String}  str Token to test
-     * @return {Boolean}     Value `true` if token is plural, `false` otherwise
-     */
-    inflector.isPlural = function(str) {
-        if (str.match(/([saui]s|[^i]a)$/gi)) {
-            return false;
+        /**
+         * Test if given token (supposed noun) is plural.
+         *
+         * @memberOf compendium.inflector
+         * @param  {String}  str Token to test
+         * @return {Boolean}     Value `true` if token is plural, `false` otherwise
+         */
+        isPlural: function(str) {
+            if (str.match(/([saui]s|[^i]a)$/gi)) {
+                return false;
+            }
+            return match(str, singular_rules);
+        },
+
+        /**
+         * Test if given token (supposed noun) is uncountable.
+         *
+         * @memberOf compendium.inflector
+         * @param  {String}  str Token to test
+         * @return {Boolean}     Value `true` if token is plural, `false` otherwise
+         */
+        isUncountable: function(str) {
+            return uncountable_words.indexOf(str) > -1;
+        },
+
+        /**
+         * Singularize given noun. Will test if given noun is plural before
+         * singularizing it.
+         *
+         * @memberOf compendium.inflector
+         * @param  {String} str Noun to singularize
+         * @return {String}     The singularized noun
+         */
+        singularize: function(str) {
+            return inflector.isPlural(str) ? apply(str, singular_rules) : str;
+        },
+
+        /**
+         * Pluralize given noun. Will test if given noun is singular before
+         * pluralizing it.
+         *
+         * @memberOf compendium.inflector
+         * @param  {String} str Noun to singularize
+         * @return {String}     The pluralized noun
+         */
+        pluralize: function(str) {
+            return inflector.isSingular(str) ? apply(str, plural_rules) : str;
+        },
+
+
+
+        /**
+         * Conjugate a verb from its infinitive to given tense.
+         *
+         * @memberOf compendium.inflector
+         * @param  {String} vb Infinitive verb
+         * @param  {String} to PoS tag to conjugate to (`VBZ` for third-person present, `VBN` for past tense, `VBG` for gerund)
+         * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
+         */
+        conjugate: function(vb, to) {
+            var l = vb[vb.length - 1];
+            if (vb.match(/[^aeiou]y$/gi)) {
+                return conjugateConsonantY(vb, to);
+            } else if (vb.match(/[^aeiouy]e$/gi)) {
+                return conjugateConsonentE(vb, to)
+            } else if (vb.match(/([aeiuo][ptlgnm]|ir|cur|[^aeiuo][oua][db])$/gi)) {
+                return conjugateShortVowelConsonant(vb, to)
+            } else if (vb.match(/([ieao]ss|[aeiouy]zz|[aeiouy]ch|nch|rch|[aeiouy]sh|[iae]tch|ax)$/gi)) {
+                return conjugateSibilant(vb, to)
+            } else if (vb.match(/(ee)$/gi)) {
+                return conjugateEe(vb, to)
+            } else if (vb.match(/(ie)$/gi)) {
+                return conjugateIe(vb, to)
+            } else if (vb.match(/(ue)$/gi)) {
+                return conjugateUe(vb, to)
+            } else if (vb.match(/([uao]m[pb]|[oa]wn|ey|elp|[ei]gn|ilm|o[uo]r|[oa]ugh|igh|ki|ff|oubt|ount|awl|o[alo]d|[iu]rl|upt|[oa]y|ight|oid|empt|act|aud|e[ea]d|ound|[aeiou][srcln]t|ept|dd|[eia]n[dk]|[ioa][xk]|[oa]rm|[ue]rn|[ao]ng|uin|eam|ai[mr]|[oea]w|[eaoui][rscl]k|[oa]r[nd]|ear|er|it|ll)$/gi)) {
+                return conjugateLongVowelConsonant(vb, to)
+            }
+
+            return null;
+        },
+
+
+        /**
+         * Conjugate a verb from its infinitive to past tense. 
+         * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBN');`.
+         *
+         * @memberOf compendium.inflector
+         * @param  {String} vb Infinitive verb
+         * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
+         */
+        toPast: function(vb) {
+            return inflector.conjugate(vb, VBN);
+        },
+
+
+        /**
+         * Conjugate a verb from its infinitive to its gerund. 
+         * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBG');`.
+         *
+         * @memberOf compendium.inflector
+         * @param  {String} vb Infinitive verb
+         * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
+         */
+        toGerund: function(vb) {
+            return inflector.conjugate(vb, VBG);
+        },
+
+        /**
+         * Conjugate a verb from its infinitive to the third-person present tense. 
+         * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBZ');`.
+         *
+         * @memberOf compendium.inflector
+         * @param  {String} vb Infinitive verb
+         * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
+         */
+        toPresents: function(vb) {
+            return inflector.conjugate(vb, VBZ);
         }
-        return match(str, singular_rules);
-    };
 
-    /**
-     * Test if given token (supposed noun) is uncountable.
-     *
-     * @memberOf compendium.inflector
-     * @param  {String}  str Token to test
-     * @return {Boolean}     Value `true` if token is plural, `false` otherwise
-     */
-    inflector.isUncountable = function(str) {
-        return uncountable_words.indexOf(str) > -1;
-    };
-
-    /**
-     * Singularize given noun. Will test if given noun is plural before
-     * singularizing it.
-     *
-     * @memberOf compendium.inflector
-     * @param  {String} str Noun to singularize
-     * @return {String}     The singularized noun
-     */
-    inflector.singularize = function(str) {
-        return inflector.isPlural(str) ? apply(str, singular_rules) : str;
-    };
-
-    /**
-     * Pluralize given noun. Will test if given noun is singular before
-     * pluralizing it.
-     *
-     * @memberOf compendium.inflector
-     * @param  {String} str Noun to singularize
-     * @return {String}     The pluralized noun
-     */
-    inflector.pluralize = function(str) {
-        return inflector.isSingular(str) ? apply(str, plural_rules) : str;
-    };
-
-
-
-    /**
-     * Conjugate a verb from its infinitive to given tense.
-     *
-     * @memberOf compendium.inflector
-     * @param  {String} vb Infinitive verb
-     * @param  {String} to PoS tag to conjugate to (`VBZ` for third-person present, `VBN` for past tense, `VBG` for gerund)
-     * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
-     */
-    inflector.conjugate = function(vb, to) {
-        var l = vb[vb.length - 1];
-        if (vb.match(/[^aeiou]y$/gi)) {
-            return conjugateConsonantY(vb, to);
-        } else if (vb.match(/[^aeiouy]e$/gi)) {
-            return conjugateConsonentE(vb, to)
-        } else if (vb.match(/([aeiuo][ptlgnm]|ir|cur|[^aeiuo][oua][db])$/gi)) {
-            return conjugateShortVowelConsonant(vb, to)
-        } else if (vb.match(/([ieao]ss|[aeiouy]zz|[aeiouy]ch|nch|rch|[aeiouy]sh|[iae]tch|ax)$/gi)) {
-            return conjugateSibilant(vb, to)
-        } else if (vb.match(/(ee)$/gi)) {
-            return conjugateEe(vb, to)
-        } else if (vb.match(/(ie)$/gi)) {
-            return conjugateIe(vb, to)
-        } else if (vb.match(/(ue)$/gi)) {
-            return conjugateUe(vb, to)
-        } else if (vb.match(/([uao]m[pb]|[oa]wn|ey|elp|[ei]gn|ilm|o[uo]r|[oa]ugh|igh|ki|ff|oubt|ount|awl|o[alo]d|[iu]rl|upt|[oa]y|ight|oid|empt|act|aud|e[ea]d|ound|[aeiou][srcln]t|ept|dd|[eia]n[dk]|[ioa][xk]|[oa]rm|[ue]rn|[ao]ng|uin|eam|ai[mr]|[oea]w|[eaoui][rscl]k|[oa]r[nd]|ear|er|it|ll)$/gi)) {
-            return conjugateLongVowelConsonant(vb, to)
-        }
-
-        return null;
-    };
-
-
-    /**
-     * Conjugate a verb from its infinitive to past tense. 
-     * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBN');`.
-     *
-     * @memberOf compendium.inflector
-     * @param  {String} vb Infinitive verb
-     * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
-     */
-    inflector.toPast = function(vb) {
-        return inflector.conjugate(vb, VBN);
-    };
-
-
-    /**
-     * Conjugate a verb from its infinitive to its gerund. 
-     * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBG');`.
-     *
-     * @memberOf compendium.inflector
-     * @param  {String} vb Infinitive verb
-     * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
-     */
-    inflector.toGerund = function(vb) {
-        return inflector.conjugate(vb, VBG);
-    };
-
-    /**
-     * Conjugate a verb from its infinitive to the third-person present tense. 
-     * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBZ');`.
-     *
-     * @memberOf compendium.inflector
-     * @param  {String} vb Infinitive verb
-     * @return {String}    The conjugated verb if a rule has been found, `null` otherwise
-     */
-    inflector.toPresents = function(vb) {
-        return inflector.conjugate(vb, VBZ);
-    };
-
+    });
     compendium.inflector = inflector;
 
 }();

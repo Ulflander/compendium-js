@@ -81,7 +81,7 @@ function lexicon(level) {
             }
 
             // Is a verb in compendium
-            if (level > 0 && line[1] === 'VB' && compendium.compendium.verbs.indexOf(line[0]) > -1) {
+            if (level > 0 && line[1] === 'VB' && compendium.compendium.verbs.indexOf(token) > -1) {
                 skipped += 1;
                 continue;
             }
@@ -113,7 +113,7 @@ function lexicon(level) {
 
             // Minimal mode: we crosscheck with the 10000 most commons english words
             // and all the nouns
-            if (level === 2 && idx === -1 && token.match(/[a-z]/g) && token.indexOf('\'') === -1 && crosscheck.indexOf(token) === -1) {
+            if (level === 2 && token.match(/[a-z]/g) && token.indexOf('\'') === -1 && crosscheck.indexOf(token) === -1) {
                 skipped += 1;
                 continue;
             }
