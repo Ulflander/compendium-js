@@ -1,11 +1,13 @@
-# Compendium
-
-English NLP in the browser. 90k only, MIT licensed.
-
-Part-of-Speech tagging (92% on Penn treebank), entity recognition, sentiment analysis and more.
-
 [![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) [![npm version](https://badge.fury.io/js/compendium-js.svg)](http://badge.fury.io/js/compendium-js) 
 [![Project chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ulflander/compendium-js)
+
+# Compendium
+
+English NLP for Node.js and the browser. 
+
+90k only, MIT licensed.
+
+Part-of-Speech tagging (92% on Penn treebank), entity recognition, sentiment analysis and more.
 
 Go to the [wiki](https://github.com/Ulflander/compendium-js/wiki) to get more details about the project.
 

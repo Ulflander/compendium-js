@@ -52,6 +52,56 @@ exports['She looks very beautiful'] = function(test) {
 };
 
 
+exports['I changed my mind'] = function(test) {
+    var analysis = compendium.analyse('I changed my mind')[0];
+
+    test.equals(analysis.governor, 1, 'Sentence governor should be `changed`');
+    test.equals(analysis.tokens[1].deps.master, null, '`changed` should be governor');
+    test.equals(analysis.tokens[1].deps.governor, true, '`changed` should be governor');
+    test.equals(analysis.tokens[0].deps.master, 1, '`I` should have `changed` as master');
+    test.equals(analysis.tokens[0].deps.type, 'subj', '`I` should be subject of `changed`');
+    test.equals(analysis.tokens[2].deps.master, 3, '`my` should have `mind` as master');
+    test.equals(analysis.tokens[2].deps.type, 'poss', '`my` should be `poss` of `mind`');
+    test.equals(analysis.tokens[3].deps.master, 1, '`mind` should have `changed` as master');
+    test.done();
+};
+
+// exports['Genetically modified food'] = function(test) {
+//     var analysis = compendium.analyse('Genetically modified food')[0];
+//     test.equals(analysis.governor, 2, 'Sentence governor should be `food`');
+//     test.equals(analysis.tokens[2].deps.master, null, '`food` should be governor');
+//     test.equals(analysis.tokens[2].deps.governor, true, '`food` should be governor');
+
+//     test.done();
+// };
+
+exports['where is the trick'] = function(test) {
+    var analysis = compendium.analyse('where is the trick')[0];
+    test.equals(analysis.governor, 1, 'Sentence governor should be `is`');
+    test.equals(analysis.tokens[1].deps.master, null, '`is` should be governor');
+    test.equals(analysis.tokens[1].deps.governor, true, '`is` should be governor');
+    test.equals(analysis.tokens[0].deps.master, 1, '`where` should have `is` as master');
+    test.equals(analysis.tokens[0].deps.type, 'attr', '`where` should be `attr`');
+    test.equals(analysis.tokens[2].deps.master, 3, '`the` should have `trick` as master');
+    test.equals(analysis.tokens[3].deps.master, 1, '`trick` should have `is` as master');
+
+    test.done();
+};
+
+exports['but where is the trick'] = function(test) {
+    var analysis = compendium.analyse('but where is the trick')[0];
+    test.equals(analysis.governor, 2, 'Sentence governor should be `is`');
+    test.equals(analysis.tokens[2].deps.master, null, '`is` should be governor');
+    test.equals(analysis.tokens[2].deps.governor, true, '`is` should be governor');
+    test.equals(analysis.tokens[0].deps.master, 2, '`but` should have `is` as master');
+    test.equals(analysis.tokens[1].deps.master, 2, '`where` should have `is` as master');
+    test.equals(analysis.tokens[1].deps.type, 'attr', '`where` should be `attr`');
+    test.equals(analysis.tokens[3].deps.master, 4, '`the` should have `trick` as master');
+    test.equals(analysis.tokens[4].deps.master, 2, '`trick` should have `is` as master');
+
+    test.done();
+};
+
 
 
 
