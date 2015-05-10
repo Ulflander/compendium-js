@@ -73,7 +73,7 @@
             // Loop onto result 
             // - merge forward when necessary
             // - cleanup
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 s = arr[i].trim();
                 
                 // If an abreviation or acronym, merge forward
@@ -111,7 +111,7 @@
                     }
                     decoded = encoder.decode(w);
                     var i, l = decoded.length, curr = '';
-                    for (i = 0; i < l; i += 1) {
+                    for (i = 0; i < l; i ++) {
                         if (decoded[i] >= 0x1f5ff) {
                             if (!!curr) {
                                 res.push(curr);
@@ -136,7 +136,7 @@
             applyRegexps(restr, spotted, lexer.regexps);
             applyRegexps(restr, spotted, r_emots);
 
-            for (curr = '', i = 0; i < l; i += 1) {
+            for (curr = '', i = 0; i < l; i ++) {
                 // If spotted by regexp, simply append result
                 if (spotted.hasOwnProperty(i)) {
                     push(curr, spotted[i].content);
@@ -173,7 +173,7 @@
             //      * Floats
             //      * Acronyms
             //      * Simmilar 
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 // Cleanup
                 tok = arr[i].trim();
 
@@ -260,7 +260,7 @@
                     count += 2;
                 } else if (!!tok) {
                     result.push(tok);
-                    count += 1;
+                    count ++;
                 }
             }
             
@@ -270,7 +270,7 @@
         // Parse a string into arrays of tokens in an array of sentences.
         lex: function(str) {
             var sentences = lexer.sentences(str), i, l = sentences.length;
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 sentences[i] = lexer.tokens(sentences[i]);
             }
             return sentences;

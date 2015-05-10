@@ -19,7 +19,7 @@
      * @param  {Array} arr  A one-dimension array of tokens
      */
     compendium.clean = function(arr) {
-        for (var i = 0, l = arr.length; i < l; i += 1) {
+        for (var i = 0, l = arr.length; i < l; i ++) {
             if (replacements.hasOwnProperty(arr[i])) {
                 arr[i] = replacements[arr[i]];
             }

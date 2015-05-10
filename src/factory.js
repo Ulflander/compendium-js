@@ -13,8 +13,15 @@
         },
         sentence: function(str) {
             return {
+                // Time spent for sentence analysis 
+                // (bullshit because some detectors are not taken in account).
                 time: 0,
+                // Count of tokens in the sentence
                 length: 0,
+                // Governor of the sentence 
+                // (dependency parsing)
+                governor: -1,
+                // Raw sentence string
                 raw: str,
                 // Those statistics are used by the 
                 // detectors (entity detection, quality evalution)
@@ -85,8 +92,9 @@
                     entity: -1
                 },
                 deps: {
-                    governor: null,
-                    dependents: []
+                    master: null,
+                    governor: false,
+                    type: 'unknown'
                 }
             };
         },

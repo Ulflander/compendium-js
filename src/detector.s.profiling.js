@@ -30,7 +30,7 @@
         }
 
         // Loop on tokens
-        for (i = 0; i < l; i += 1) {
+        for (i = 0; i < l; i ++) {
             profile = sentence.tokens[i].profile;
             pos = sentence.tokens[i].pos;
             norm = sentence.tokens[i].norm;
@@ -38,9 +38,9 @@
             isPolite = polite.indexOf(norm) > -1;
 
             if (isDirty) {
-                dirtiness += 1;
+                dirtiness ++;
             } else if (isPolite) {
-                politeness += 1;
+                politeness ++;
             }
 
             // Get token base emphasis and multiply it with global emphasis
@@ -84,7 +84,7 @@
 
             // Update local emphasis
             if (local_emphasis > 0 && ['DT', 'POS', 'IN'].indexOf(pos) === -1) {
-                local_emphasis -= 1;
+                local_emphasis --;
             }
         }
 

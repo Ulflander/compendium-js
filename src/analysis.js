@@ -15,7 +15,7 @@
 
         s.tags = pos.tags;
         s.stats.confidence = pos.confidence;
-        for (i = 0; i < l; i += 1) {
+        for (i = 0; i < l; i ++) {
             s.tokens.push(factory.token(sentence[i], pos.tags[i]));
         }
         s.length = l;
@@ -33,7 +33,7 @@
             m;
 
         // For each sentence
-        for (i = 0; i < l; i += 1) {
+        for (i = 0; i < l; i ++) {
             d = Date.now();
             // Cleanup sentence by replacing some tokens
             compendium.clean(sentences[i]);
@@ -51,7 +51,7 @@
             dependencies.parse(s);
             
             // Apply token level detection
-            for (j = 0, m = s.tokens.length; j < m; j += 1) {
+            for (j = 0, m = s.tokens.length; j < m; j ++) {
                 detectors.apply('t', s.tokens[j], j, s);
             }
             
@@ -59,7 +59,7 @@
             s.time = Date.now() - d;
         }
         // For each sentence
-        for (i = 0; i < l; i += 1) {
+        for (i = 0; i < l; i ++) {
             d = Date.now();
             detectors.apply('s', res[i], i, res);
             res[i].time += Date.now() - d;

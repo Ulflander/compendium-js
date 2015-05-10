@@ -178,7 +178,7 @@
         // Apply all rules on given token/tag combo
         applyRules: function(token, index, tokens, tags) {
             var i;
-            for (i = 0; i < rulesLength; i += 1) {
+            for (i = 0; i < rulesLength; i ++) {
                 pos.applyRule(rules[i], token, tags[index], index, tokens, tags);
             }
         },
@@ -186,7 +186,7 @@
         // Apply all rules on given arrays of tokens and tags
         apply: function(tokens, tags) {
             var i, l = tokens.length;
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 this.applyRules(tokens[i], i, tokens, tags);
             }
             return tags;
@@ -194,7 +194,7 @@
 
         testSuffixes: function(token) {
             var i;
-            for (i = 0; i < suffixesLength; i += 1) {
+            for (i = 0; i < suffixesLength; i ++) {
                 if (token.match(suffixes[i].regexp)) {
                     return suffixes[i].pos;
                 }
@@ -213,7 +213,7 @@
             
             if (token.length > 1) {
                 tag = null;
-                for (j = 0, tl = emots.length; j < tl; j += 1) {
+                for (j = 0, tl = emots.length; j < tl; j ++) {
                     if (token.indexOf(emots[j]) === 0) {
                         tagObject.tag = 'EM';
                         tagObject.confidence = 1;
@@ -307,13 +307,13 @@
 
             // Basic tagging based on lexicon and 
             // suffixes
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 tmp = pos.getTag(sentence[i]);
                 append(tmp.tag, tmp.confidence);
             }
 
             // Manual transformational rules
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 token = sentence[i];
                 lower = token.toLowerCase();
                 tl = token.length;
@@ -333,20 +333,20 @@
                     //range
                     token.match(/^[0-9]{2,4}-[0-9]{2,4}$/g)) {
                     tags[i] = 'CD';
-                    confidence += 1;
+                    confidence ++;
                     continue;
                 }
 
                 // Symbols
                 if (token.match(/^[%\+\-\/@]$/g)) {
-                    confidence += 1;
+                    confidence ++;
                     tags[i] = 'SYM';
                     continue;
                 }
 
                 // Punc signs
                 if (token.match(/^(\?|\!|\.){1,}$/g)) {
-                    confidence += 1;
+                    confidence ++;
                     tags[i] = '.';
                     continue;
                 }

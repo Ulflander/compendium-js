@@ -20,7 +20,7 @@
                 token.attr.entity = sentence.entities.push(entity) - 1;
 
                 // Correct sentence confidence
-                sentence.stats.confidence += 1 / sentence.length;
+                sentence.stats.confidence ++ / sentence.length;
 
                 // Let's be kind and normalize this journo thingie
                 if (k === 'pl') {

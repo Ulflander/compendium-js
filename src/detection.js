@@ -24,7 +24,7 @@
             args = Array.prototype.slice.call(arguments).slice(1);
 
         if (list.hasOwnProperty(type)) {
-            for (i = 0, l = list[type].length; i < l; i += 1) {
+            for (i = 0, l = list[type].length; i < l; i ++) {
                 list[type][i].apply(null, args);
             }
         }

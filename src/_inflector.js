@@ -103,7 +103,7 @@
                 return str;
             }
 
-            for (i = 0, l = rules.length; i < l; i += 1) {
+            for (i = 0, l = rules.length; i < l; i ++) {
                 if (str.match(rules[i][0])) {
                     str = str.replace(rules[i][0], rules[i][1]);
                     break;
@@ -120,7 +120,7 @@
                 return false;
             }
 
-            for (i = 0, l = rules.length; i < l; i += 1) {
+            for (i = 0, l = rules.length; i < l; i ++) {
                 if (str.match(rules[i][0])) {
                     return true;
                 }

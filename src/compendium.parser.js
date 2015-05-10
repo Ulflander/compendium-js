@@ -24,7 +24,7 @@
                 item;
 
             // Parses lexicon
-            for (i = 0, l = arr.length; i < l; i += 1) {
+            for (i = 0, l = arr.length; i < l; i ++) {
                 item = arr[i].split(' ');
                 m = item.length - 1;
                 pt = item[1].trim(),
@@ -88,7 +88,7 @@
 
             // Prepopulate lexicon with conjugation of regular verbs
             // Reapply sentiment if base form has a score
-            for (i = 0, l = cpd.verbs.length; i < l; i += 1, s = 0) {
+            for (i = 0, l = cpd.verbs.length; i < l; i ++, s = 0) {
                 item = cpd.verbs[i];
 
                 vbz = inflector.conjugate(item, 'VBZ');
@@ -127,7 +127,7 @@
                 i,
                 l = raw.length;
 
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 line = raw[i].split(' ');
                 result.push({
                     from: line[0],
@@ -145,7 +145,7 @@
             raw = raw.split('\t');
             var i, l = raw.length, result = [], line;
 
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 line = raw[i].split(' ');
                 result.push({
                     regexp: new RegExp('^.{1,}' + line[0].trim() + '$', 'gi'),
@@ -159,7 +159,7 @@
         dirty = function(raw) {
             var i, l = raw.length;
 
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 raw.push(inflector.pluralize(raw[i]));
             }
         },
@@ -167,7 +167,7 @@
         // Take care of abbreviations
         abbrs = function(arr) {
             var i, l = arr.length, res = [], rplt = [];
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 if (i % 2 === 0) {
                     res.push(arr[i]);
                 } else {
@@ -181,7 +181,7 @@
         nationalities = function(raw) {
             var i, l, res = {};
             raw = raw.split(' ');
-            for (i = 0, l = raw.length; i < l; i += 1) {
+            for (i = 0, l = raw.length; i < l; i ++) {
                 res[raw[i]] = 'JJ';
             }
             cpd.nationalities = res;
@@ -190,7 +190,7 @@
         synonyms = function(raw) {
             raw = raw.split('\t');
             var i, l = raw.length, result = [];
-            for (i = 0; i < l; i += 1) {
+            for (i = 0; i < l; i ++) {
                 result.push(raw[i].split(' '));
             }
             cpd.synonyms = result;

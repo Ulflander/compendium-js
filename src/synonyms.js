@@ -4,7 +4,7 @@
 
     compendium.synonym = function(str) {
         var i;
-        for (i = 0; i < l; i += 1) {
+        for (i = 0; i < l; i ++) {
             if (s[i].indexOf(str) > 0) {
                 return s[i][0];
             }

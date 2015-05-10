@@ -13,25 +13,25 @@
             uppercased = 0,
             capitalized = 0;
 
-        for (i = 0; i < l; i += 1) {
+        for (i = 0; i < l; i ++) {
             token = sentence.tokens[i];
             raw = token.raw;
             tokens_length += raw.length;
 
             if (!raw.match(/[a-z]/gi)) {
-                ln -= 1;
+                ln --;
                 continue;
             }
 
             if (raw.match(/^[A-Z][a-zA-Z]+$/g)) {
-                capitalized += 1;
+                capitalized ++;
             }
             if (raw.match(/[A-Z]+/) && !raw.match(/[a-z]/)) {
-                uppercased += 1;
+                uppercased ++;
             }
 
             if (sentence.tags[i] === 'FW') {
-                foreign += 1;
+                foreign ++;
             }
         }
 

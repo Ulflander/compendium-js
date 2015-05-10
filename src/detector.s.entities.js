@@ -23,7 +23,7 @@
             return;
         }
 
-        for (i = 0; i < l; i += 1) {
+        for (i = 0; i < l; i ++) {
             tag = sentence.tags[i];
             token = sentence.tokens[i];
             if (token.attr.entity > - 1) {
