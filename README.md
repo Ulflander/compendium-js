@@ -25,14 +25,12 @@ Install it with [bower](http://bower.io/):
 
 Or clone this repo and copy the `dist/compendium.minimal.js` file into your project.
 
-Check [here](https://github.com/Ulflander/compendium-js/wiki/Node.js) for instructions related to Node.js.
-
 ##### Step 2: include the lib in your HTML page
 
     <script type="text/javascript" 
         src="path/to/compendium/dist/compendium.minimal.js"></script>
 
-In order to ensure that Compendium will work as intended, you must specify the encoding of the HTML page as UTF-8.
+**In order to ensure that Compendium will work as intended, you must specify the encoding of the HTML page as UTF-8.**
 
 ##### Step 3: enjoy     
 
@@ -55,13 +53,13 @@ Call the `compendium.analyse` function with a string as parameter, and get a com
 
 ## API
 
-##### analyse
+The main function to call is `analyse`. 
 
-The only function to be called. Take a string as parameter and returns an array containing an analysis for each sentence.
+It takes a string as unique argument, and returns an array containing an analysis for each sentence. For example, calling:
 
     compendium.analyse('My name is Dr. Jekyll.');
 
-will return an object like:
+will return an array like this one:
 
     [ { time: 9,                        // Time of processing, in ms
         length: 6,                      // Count of tokens
