@@ -14,7 +14,7 @@ Test the interactive demo [here](http://laumonier.co/compendium-js/test/example/
 ##### Summary
 
 - [Client-side install](#client-side-install)
-- [Nodejs install](#node-js-install)
+- [Node.js install](#nodejs-install)
 - [How to use](#api)
 - [PoS tags](#part-of-speech-tags-definition)
 - Wiki
