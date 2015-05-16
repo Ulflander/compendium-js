@@ -8,6 +8,7 @@
         var raw = token.raw,
             norm = token.norm,
             stem = token.stem,
+            pos = token.pos,
             sentiment = 0,
             emphasis = 1,
             lc,
@@ -31,7 +32,7 @@
         }
 
         // Emphasis
-        if (token.pos === '.') {
+        if (pos === '.') {
             i = raw[0];
             if (i === '!' || i === '?') {
                 emphasis = raw.length > 1 ? 2 : i === '?' ? 1 : 1.5;
@@ -42,15 +43,17 @@
                 emphasis = 1.2;
                 norm = '...';
             }
-        } else if (token.pos === 'EM') {
+        } else if (pos === 'EM') {
             emphasis = 1.2;
-        } else if (token.pos === 'UH') {
+        } else if (pos === 'UH') {
             emphasis = 1.1;
+        } else if (pos.length === 3 && pos.indexOf('VB') === 0) {
+            token.attr.infinitive = inflector.infinitive(norm);
         }
 
         // Sentiment score
         // Only if not NNP or NNPS ("Dick Cheney" is not about a dick)
-        if (token.pos !== 'NNP' && token.pos !== 'NNPS') {
+        if (pos !== 'NNP' && pos !== 'NNPS') {
             // Get one from lexicon
             if (lexicon.hasOwnProperty(norm)) {
                 i = lexicon[norm];
@@ -58,15 +61,15 @@
                     sentiment = i.sentiment;
                 }
             // If not found, test singular
-            } else if (token.pos === 'NNS' && lexicon.hasOwnProperty(inflector.singularize(norm))) {
+            } else if (pos === 'NNS' && lexicon.hasOwnProperty(inflector.singularize(norm))) {
                 i = lexicon[inflector.singularize(norm)];
-                if (!i.condition || token.pos === i.condition) {
+                if (!i.condition || pos === i.condition) {
                     sentiment = i.sentiment / 2;
                 }
             // If not found, test stem
             } else if (lexicon.hasOwnProperty(stem)) {
                 i = lexicon[stem];
-                if (!i.condition || token.pos === i.condition) {
+                if (!i.condition || pos === i.condition) {
                     sentiment = i.sentiment / 2;
                 }
             // If not found, check polite/dirty words

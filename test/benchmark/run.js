@@ -48,10 +48,6 @@ Result history:
     Minimal:    91.77% exact tags, 435/1949 exact sentences, 1.38ms ave. per sentence
     Full:       94.37% exact tags, 564/1523 exact sentences, 1.15ms ave. per sentence
 
-        > Whole set of new rules and vocabulary in compendium, more granularity on existing 
-        rules (verbs inference, less suffixes...)
-        > Lighter embedded lexicons in both modes
-
 - April 29th:
     Minimal:    91.58% exact tags, 431/1949 exact sentences, 1.96ms ave. per sentence
     Full:       94.13% exact tags, 551/1523 exact sentences, 1.57ms ave. per sentence
@@ -67,10 +63,23 @@ Result history:
         > New increase! A 0.80% gain in minimal mode, only by using simpler inferences 
         on composed words. Almost no change in full mode.
 
+- May 10th:
+    Minimal:    92.52% exact tags, 506/1949 exact sentences, 1.79ms ave. per sentence
+    Full:       94.58% exact tags, 611/1546 exact sentences, 2.58ms ave. per sentence
+
+        > Ok, contrasted results after insertion of irregular verbs. First a decrease to 91%, 
+        then has been hard to reach again the previous score - lot of new rules to solve 
+        newly found issues.
+
+        The decrease following addition of verbs was due to the fact that new automated verbs 
+        inflections to populate the lexicon replaced some original lexicon terms, whose 
+        statistical tag was not a verb-related one, but rather noun or adjective. Here is again 
+        a limit of rule-based processors versus machine learning based one.
+
 */
 
 var data = require("./penn_treebank").data,
-    compendium = require('../build/compendium.minimal.js'),
+    compendium = require('../../build/compendium.minimal.js'),
     toPoSArray = function(arr) {
         var res = [], i, l = arr.length;
         for (i = 0; i < l; i += 1) {
@@ -142,25 +151,6 @@ for (var k in data) {
         } else 
         if (penn_pos[i] !== tags[i]) {
             failed = true;
-
-            var d = penn_pos[i];
-
-            if (DIFFS.hasOwnProperty(d)) {
-                DIFFS[d].c += 1;
-                DIFFS[d].token += ' ' + tk;
-                DIFFS[d].prev += ' ' + penn_pos[i - 1];
-                DIFFS[d].curr += ' ' + tags[i];
-                DIFFS[d].next += ' ' + penn_pos[i + 1];
-
-            } else {
-                DIFFS[d] = {c: 1, 
-                    token: tk,
-                    prev: penn_pos[i - 1],
-                    next: penn_pos[i + 1],
-                    curr: tags[i]
-                };
-            }
-            
         } else {
             cSuccessTags += 1;
         }
@@ -184,11 +174,7 @@ for (k in DIFFS) {
 
     diffs_arr.push({
         key: k,
-        score: DIFFS[k].c,
-        prev: DIFFS[k].prev,
-        token: DIFFS[k].token,
-        curr: DIFFS[k].curr,
-        next: DIFFS[k].next
+        score: DIFFS[k].c
     });
 
 }
@@ -197,7 +183,7 @@ diffs_arr.sort(function(a, b) {
     return b.score - a.score;
 });
 
-for (i = 0; i < 20; i += 1) {
+for (i = 0; i < 50; i += 1) {
     if (!!diffs_arr[i]) {
         console.log(diffs_arr[i]);
     }
@@ -205,16 +191,6 @@ for (i = 0; i < 20; i += 1) {
 
 
 // Final 
-/*
-console.log('Global:');
-console.log('Total: ', cTotal);
-console.log('Successful: ', cSuccess, '-', (cSuccess * 100 / cTotal) + '%');
-console.log('Failed: ', cFailed, ' (Length: ', failures.len, ', tags: ', failures.tags, ')');
-
-console.log('\nTags:');
-console.log('Total: ', cTotalTags);
-console.log('Successful: ', cSuccessTags, '-', (cSuccessTags * 100 / cTotalTags) + '%');
-*/
 console.log('Tags recognized: ', (cSuccessTags * 100 / cTotalTags) + '% on ', cTotal - failures.len ,' sentences (', cSuccess , ' fully good)');
 console.log('Average time: ', cTotalTime / cTotal);
 

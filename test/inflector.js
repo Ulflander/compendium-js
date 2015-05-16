@@ -236,3 +236,16 @@ exports['Conjugation'] = function(test){
     test.equals('lying', inflector.toGerund('lie'));
     test.done();
 };
+
+
+exports['Infinitive'] = function(test) {
+    test.equals(inflector.infinitive('went'), 'go');
+    test.equals(inflector.infinitive('spoken'), 'speak');
+    test.equals(inflector.infinitive('awoken'), 'awake');
+    test.equals(inflector.infinitive('arrived'), 'arrive');
+    test.equals(inflector.infinitive('arriving'), 'arrive');
+    test.equals(inflector.infinitive('arrives'), 'arrive');
+    test.done();
+};
+
+

@@ -260,6 +260,28 @@ exports['I\'ll give up'] = function(test) {
     test.done();
 };
 
+exports['It will be good'] = function(test) {
+    var expected = [
+            ('PRP MD VB JJ').split(' ')
+        ],
+        analysis = compendium.analyse('It will be good'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports['Sleepin, rollin, adrenalin, domain'] = function(test) {
+    var expected = [
+            ('VBG , VBG , NN , NN').split(' ')
+        ],
+        analysis = compendium.analyse('Sleepin, rollin, adrenalin, domain'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
 exports['I will give up'] = function(test) {
     var expected = [
             ('PRP MD VB RP').split(' ')
@@ -298,6 +320,17 @@ exports['The bridge has been damaged'] = function(test) {
             ('DT NN VBZ VBN VBN').split(' ')
         ],
         analysis = compendium.analyse('The bridge has been damaged'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports['Show me a trick'] = function(test) {
+    var expected = [
+            ('VB PRP DT NN').split(' ')
+        ],
+        analysis = compendium.analyse('Show me a trick'),
         actual = [analysis[0].tags];
 
     test.deepEqual(actual, expected);

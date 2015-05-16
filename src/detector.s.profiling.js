@@ -2,7 +2,9 @@
 
     var dirty = cpd.dirty,
         polite = cpd.polite,
-        emphasis_adverbs = cpd.emphasis;
+        emphasis_adverbs = cpd.emphasis,
+
+        future_modals = ['wo', '\'ll', 'will'];
 
     // Set profile
     detectors.add('s', function(sentence, index, sentences) {
@@ -10,6 +12,7 @@
             l = sentence.length,
             profile,
             score = 0,
+            token,
             pos,
             norm,
             emphasis = 1,
@@ -22,8 +25,23 @@
             isDirty,
             min = 0,
             max = 0,
+            gov = sentence.governor,
             p = sentence.profile;
 
+                console.log(gov);
+        // Main tense
+        if (gov > -1) {
+            token = sentence.tokens[gov];
+            pos = token.pos;
+            if (token.attr.is_verb) {
+                p.main_tense = (pos === 'VBD' ? 'past' : 'present');
+            } else if (pos === 'MD' && future_modals.indexOf(token.norm) > -1) {
+                p.main_tense = 'future';
+            }
+        }
+
+        // Sentiment analysis calculation
+        
         // If moslty uppercased, give an emphasis bonus
         if (sentence.stats.p_upper > 70) {
             emphasis = 1.2;

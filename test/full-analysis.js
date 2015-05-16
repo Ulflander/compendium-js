@@ -12,8 +12,17 @@ exports['Joe Carter went to the Toronto International Film Festival to go see In
     test.deepEqual([analysis[0].tags], expectedPoS);
     
     // Check token flags
-    test.equal(analysis[0].tokens[1].attr.verb, false);
-    test.equal(analysis[0].tokens[2].attr.verb, true);
+    test.equal(analysis[0].tokens[1].attr.is_verb, false);
+    test.equal(analysis[0].tokens[1].attr.is_noun, true);
+
+    test.equal(analysis[0].tokens[2].attr.is_verb, true);
+    test.equal(analysis[0].tokens[2].attr.is_noun, false);
+    test.equal(analysis[0].tokens[2].attr.infinitive, 'go');
+
+    test.equal(analysis[0].tokens[3].attr.is_verb, false);
+
+    test.equal(analysis[0].tokens[5].norm, 'toronto');
+    test.equal(analysis[0].tokens[5].attr.is_noun, true);
 
     // Check profiling
     test.equal(analysis[0].profile.negated, false);

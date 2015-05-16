@@ -23,8 +23,10 @@ function lexicon(level) {
         idx,
         line,
         token,
+        found,
         skipped = 0,
         crosscheck,
+        irregularVerbs = compendium.compendium.irregular,
         compendiumTokens = [],
         m;
 
@@ -81,9 +83,35 @@ function lexicon(level) {
             }
 
             // Is a verb in compendium
-            if (level > 0 && line[1] === 'VB' && compendium.compendium.verbs.indexOf(token) > -1) {
-                skipped += 1;
-                continue;
+            if (level > 0 && line[1] === 'VB') {
+
+                // Regular verb
+                if (compendium.compendium.verbs.indexOf(token) > -1) {
+                    skipped += 1;
+                    continue;
+                }
+            }
+
+            // All kind of verbs
+            if (level > 0 && line[1].indexOf('VB') > -1) {
+
+                // Irregular verbs                
+                for (found = false, j = 0, m = irregularVerbs.length; j < m; j += 1) {
+                    if (irregularVerbs[j].indexOf(token) > -1) {
+                        found = true;
+                        break;  
+                    }
+                }
+                if (!!found) {
+                    skipped += 1;
+                    continue;
+                }
+
+                if (line[1] === 'VBZ' || line[1] === 'VBZ' || line[1] === 'VBD' || line[1] === 'VBG') {
+                    console.log('skipped', token)
+                    skipped += 1;
+                    continue;   
+                }
             }
 
             // Taken in account by a rule
@@ -155,6 +183,7 @@ gulp.task('build_full', function() {
         sy = fs.readFileSync('src/dictionaries/synonyms.txt').toString().split('\n').join('\t'),
         na = fs.readFileSync('src/dictionaries/nationalities.txt').toString().split('\n').join(' '),
         v = fs.readFileSync('src/dictionaries/regular-verbs.txt').toString().split('\n').join(' '),
+        iv = fs.readFileSync('src/dictionaries/irregular-verbs.txt').toString().split('\n').join('\t'),
         r = fs.readFileSync('src/dictionaries/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
@@ -166,6 +195,7 @@ gulp.task('build_full', function() {
             .pipe(replace('@@synonyms', sy))
             .pipe(replace('@@nationalities', na))
             .pipe(replace('@@verbs', v))
+            .pipe(replace('@@iverbs', iv))
             .pipe(replace('@@rules', r))
             .pipe(gulp.dest('build/'))
             .pipe(uglify())
@@ -180,6 +210,7 @@ gulp.task('build_minimal', function() {
         sy = fs.readFileSync('src/dictionaries/synonyms.txt').toString().split('\n').join('\t'),
         na = fs.readFileSync('src/dictionaries/nationalities.txt').toString().split('\n').join(' '),
         v = fs.readFileSync('src/dictionaries/regular-verbs.txt').toString().split('\n').join(' '),
+        iv = fs.readFileSync('src/dictionaries/irregular-verbs.txt').toString().split('\n').join('\t'),
         r = fs.readFileSync('src/dictionaries/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src('src/*.js')
@@ -192,6 +223,7 @@ gulp.task('build_minimal', function() {
             .pipe(replace('@@nationalities', na))
             .pipe(replace('@@rules', r))
             .pipe(replace('@@verbs', v))
+            .pipe(replace('@@iverbs', iv))
             .pipe(gulp.dest('build/'))
             .pipe(uglify())
             .pipe(gulp.dest('dist/'));

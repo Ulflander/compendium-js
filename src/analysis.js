@@ -22,6 +22,13 @@
         return s;
     };
 
+    /**
+     * Analyse an array of tokenized sentences.
+     *
+     * @memberOf compendium.analyser
+     * @param  {Array} sentences  Matrix of tokens per sentences
+     * @return {Array}            An array of analysis object, one for each sentence
+     */
     analyser.analyse = function(sentences) {
         var res = [],
             i,
@@ -56,13 +63,10 @@
             }
             
             res.push(s);
+
+            detectors.apply('s', s, i, res);
+
             s.time = Date.now() - d;
-        }
-        // For each sentence
-        for (i = 0; i < l; i ++) {
-            d = Date.now();
-            detectors.apply('s', res[i], i, res);
-            res[i].time += Date.now() - d;
         }
         return res;
     };

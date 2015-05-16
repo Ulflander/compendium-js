@@ -51,6 +51,8 @@ ppy JJ
 tary JJ
 nary JJ
 ial JJ
+alous JJ
+ally RB
 vid JJ
 rid JJ
 wards RB

@@ -9,7 +9,7 @@
         parse = function(lexicon) {
             var d = Date.now(),
                 arr = lexicon.split('\t'),
-                i,
+                i, j,
                 l,
                 vbz,
                 pt, // PoS tag
@@ -44,7 +44,7 @@
                 }
 
                 result[item[0]] = {
-                    pos: pt,
+                    pos: pt === '-' ? 'NN' : pt,
                     sentiment: s,
                     condition: c
                 };
@@ -109,9 +109,47 @@
                 result[vbz] = {
                     pos: 'VBZ',
                     sentiment: s,
-                    condition: null
+                    condition: null,
+                    infinitive: item
                 };
+
+                result[inflector.conjugate(item, 'VBN')] = {
+                    pos: 'VBN',
+                    sentiment: s,
+                    condition: null,
+                    infinitive: item
+                };
+
+                result[inflector.conjugate(item, 'VBG')] = {
+                    pos: 'VBG',
+                    sentiment: s,
+                    condition: null,
+                    infinitive: item
+                };
+
             }
+
+            // Prepopulate lexion with irregular verbs
+            for (i = 0, l = cpd.irregular.length; i < l; i ++, s = 0) {
+                item = cpd.irregular[i];
+                if (result.hasOwnProperty(item)) {
+                    s = result[item].sentiment;
+                }
+                m = item[0];
+                for (j = 0; j < 5; j ++) {
+                    item[j].split('/').map(function(o) {
+                        if (!result.hasOwnProperty(o)) {
+                            result[o] = {
+                                pos: j === 0 ? 'VB' : j === 1 ? 'VBD' : j === 2 ? 'VBN' : j === 3 ? 'VBZ' : 'VBG',
+                                sentiment: s,
+                                condition: null,
+                                infinitive: m
+                            }
+                        }
+                    });
+                }
+            }
+            
 
             // Register emoticons in compendium for further use by lexer
             cpd.emots = emots;

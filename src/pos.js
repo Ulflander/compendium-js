@@ -8,6 +8,7 @@
         PREVTAG = 2,
         NEXTTAG = 3,
         NEXTTAG2 = 4,
+        PREVTAG2 = 41,
         PREVWORD = 5,
         PREVWORDPREVTAG = 51,
         CURRENTWD = 6,
@@ -23,12 +24,13 @@
         NEXTWD = 15,
         NEXT1OR2TAG = 16,
         PREV2TAG = 17,
+        NEXT2TAG = 171,
         NEXT1OR2WD = 18,
         PREV2WD = 19,
         RBIGRAM = 20,
         PREV1OR2WD = 21,
 
-        cpd = compendium.compendium,
+        lexicon = compendium.lexicon,
         emots = cpd.emots,
         rules = cpd.rules,
         rulesLength = rules.length,
@@ -65,6 +67,11 @@
                 }
             } else if (type === NEXTTAG2) {
                 if (tags[index + 2] === rule.c1) {
+                    tags[index] = rule.to;
+                    return;
+                }
+            } else if (type === PREVTAG2) {
+                if (tags[index - 2] === rule.c1) {
                     tags[index] = rule.to;
                     return;
                 }
@@ -140,6 +147,11 @@
                 }
             } else if (type === PREV2TAG) {
                 if (tags[index - 2] === rule.c1 && tags[index - 1] === rule.c2) {
+                    tags[index] = rule.to;
+                    return;
+                }
+            } else if (type === NEXT2TAG) {
+                if (tags[index + 1] === rule.c1 && tags[index + 2] === rule.c2) {
                     tags[index] = rule.to;
                     return;
                 }
@@ -320,10 +332,21 @@
                 tag = tags[i];
                 previous = (i === 0 ? '' : tags[i - 1]);
 
-                // Special case extracted form penn treebank testin
-                if (i === 0 && lower === 'that') {
-                    tags[i] = 'DT';
-                    continue;
+                // First position rules
+                if (i === 0) {
+                    // Special case extracted form penn treebank testin
+                    if (lower === 'that') {
+                        tags[i] = 'DT';
+                        confidence ++;
+                        continue;
+                    }
+
+                    // First position infinitive verb
+                    if (tag === 'NN' && cpd.verbs.indexOf(lower) > -1) {
+                        tags[i] = 'VB';
+                        confidence ++;
+                        continue;
+                    }
                 }
 
                 // Numbers
@@ -351,22 +374,33 @@
                     continue;
                 }
                 
-                // Convert a common noun to a present participle verb (i.e., a gerand)
+                // Convert a noun to a past participle if token ends with 'ed'
+                if (tl > 3 && token.match(/[^e]ed$/gi) && 
+                    (tag.indexOf('N') === 0) &&
+                    (i === 0 || !token.match(/^[A-Z][a-z]+/g))) {
+                    tags[i] = 'VBN';
+                    continue;
+                }
+
+                // Convert a common noun to a present participle verb (i.e., a gerund)
                 if (tl > 4 && token.lastIndexOf('ing') === tl - 3 && 
                     cpd.ing_excpt.indexOf(lower) === -1 &&
-                    (tag.indexOf('N') === 0 || tag === 'MD' || tag === '-') && 
+                    (tag.indexOf('N') === 0 || tag === 'MD') && 
                     (i === 0 || !token.match(/^[A-Z][a-z]+/g)) &&
                     previous !== 'NN' && previous !== 'JJ' && previous !== 'DT' && previous !== 'VBG') {
                     tags[i] = 'VBG';
                     continue;
                 }
 
-                // Convert a noun to a past participle if token ends with 'ed'
-                if (tl > 3 && token.match(/[^e]ed$/gi) && 
-                    (tag.indexOf('N') === 0 || tag === '-') &&
-                    (i === 0 || !token.match(/^[A-Z][a-z]+/g))) {
-                    tags[i] = 'VBN';
-                    continue;
+                // in(g) gerund inference with missing 'g'
+                if (tl > 4 && lower.lastIndexOf('in') === tl - 2 && tag === 'NN' &&
+                    (i === 0 || !token.match(/^[A-Z][a-z]+/g)) &&
+                    previous !== 'NN' && previous !== 'JJ' && previous !== 'DT' && previous !== 'VBG') {
+                    tmp = lexicon[lower + 'g'];
+                    if (!!tmp && tmp.pos === 'VBG') {
+                        tags[i] = 'VBG';
+                        continue;
+                    }
                 }
 
                 // Check if word could be an infinitive verb
@@ -391,6 +425,7 @@
                         if (i === 1 && (previous === 'NN' || previous === 'JJ' || previous === 'VB') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
                             tags[i - 1] = 'NNP';
                         }
+                        
                         tag = 'NNP';
                     }
                 }

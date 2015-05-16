@@ -356,6 +356,22 @@
          */
         toPresents: function(vb) {
             return inflector.conjugate(vb, VBZ);
+        },
+
+        /**
+         * Get the infinitive of given verb token.
+         * @param  {String} vb lowercased conjugated verb
+         * @return {String}    Lowercased infinitive verb if found, `null` otherwise
+         */
+        infinitive: function(vb) {
+            // Find in lexicon
+            var item = compendium.lexicon[vb];
+            if (!!item && item.hasOwnProperty('infinitive')) {
+                return item['infinitive'];
+            }
+            
+            // Otherwise return null
+            return null;
         }
 
     });

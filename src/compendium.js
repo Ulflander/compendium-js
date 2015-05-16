@@ -12,7 +12,7 @@
         verbs: '@@verbs'.split(' '),
         
         // Irregular verbs
-        irregular: '@@iverbs'.split(' '),
+        irregular: '@@iverbs'.split('\t').map(function(o){return o.split(' ')}),
 
         // Common exceptions to the words ending with "ing"
         // but that are not the gerund of a verb

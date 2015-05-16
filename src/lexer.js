@@ -268,6 +268,13 @@
         },
 
         // Parse a string into arrays of tokens in an array of sentences.
+        /**
+         * Parse a string into a matrix of tokens per sentences.
+         *
+         * @memberOf compendium.lexer
+         * @param  {String} str A string to be tokenized
+         * @return {Array}      A matrix of tokens per sentences.
+         */
         lex: function(str) {
             var sentences = lexer.sentences(str), i, l = sentences.length;
             for (i = 0; i < l; i ++) {
@@ -277,6 +284,15 @@
         }
     });
     
+
+    /**
+     * Parse a string into a matrix of tokens per sentences. Alias of {@link compendium.lexer.lex}.
+     *
+     * @function lex
+     * @memberOf compendium
+     * @param  {String} str A string to be tokenized
+     * @return {Array}      A matrix of tokens per sentences.
+     */
     compendium.lex = lexer.lex;
 
 }();

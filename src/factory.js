@@ -62,7 +62,8 @@
                     // `interrogative`, 
                     // `headline`
                     // `foreign`
-                    types: []
+                    types: [],
+                    main_tense: 'present'
                 },
                 has_negation: false,
                 entities: [],
@@ -86,9 +87,12 @@
                 },
                 attr: {
                     acronym: false,
-                    plural: false,
                     abbr: false,
-                    verb: pos.indexOf('VB') === 0,
+                    is_verb: pos.indexOf('VB') === 0,
+                    infinitive: null,
+                    is_noun: pos.indexOf('NN') === 0,
+                    plural: null,
+                    singular: null,
                     entity: -1
                 },
                 deps: {
