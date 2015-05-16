@@ -589,6 +589,7 @@ turn
 twist
 type
 undress
+unemploy
 unfasten
 unite
 unlock

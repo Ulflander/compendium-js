@@ -24,6 +24,8 @@
             tokenSpan,
             classe,
             entity,
+            flags,
+            label,
             span;
 
         for (i = 0, l = sentences.length; i < l; i += 1) {
@@ -34,19 +36,30 @@
             span = d.createElement('div'),
             span.setAttribute('class', 'meta');
             span.innerHTML = ' <span>Confidence:&nbsp;' + round(sentences[i].stats.confidence)  + '</span>' +
-                            ' <span>Sentiment: score:&nbsp;' + round(sentences[i].profile.sentiment)  + ', ' +
+                            ' <span>Sentiment score:&nbsp;' + round(sentences[i].profile.sentiment)  + ', ' +
                             'amplitude:&nbsp;' + round(sentences[i].profile.amplitude)  + ', ' +
-                            'emphasis:&nbsp;' + round(sentences[i].profile.emphasis)  + '</span>' +
-                            ' <span>Label:&nbsp;<span class="bold ' + classe + '">' + sentences[i].profile.label  + '</span></span>';
+                            'emphasis:&nbsp;' + round(sentences[i].profile.emphasis)  + '</span>';
 
             sentenceSpan.appendChild(span);
 
+            flags = d.createElement('div'),
+            flags.setAttribute('class', 'types');
+            sentenceSpan.appendChild(flags);
+
             if (sentences[i].profile.types.length > 0) {
-                span = d.createElement('div'),
-                span.setAttribute('class', 'types');
-                sentenceSpan.appendChild(span);
-                span.innerHTML = '<span class="bg-info">' +
+                flags.innerHTML = '<span class="bg-info">' +
                     sentences[i].profile.types.join('</span><span class="bg-info">') + '</span>';
+            }
+
+            label = sentences[i].profile.label;
+            if (label === 'neutral') {
+                flags.innerHTML += '<span class="bg-info">neutral</span>';
+            } else if (label === 'mixed') {
+                flags.innerHTML += '<span class="bg-orange">mixed</span>';
+            } else if (label === 'positive') {
+                flags.innerHTML += '<span class="bg-green">positive</span>';
+            } else {
+                flags.innerHTML += '<span class="bg-red">negative</span>';
             }
 
             for (j = 0, m = sentences[i].tokens.length; j < m; j += 1) {
@@ -77,18 +90,14 @@
                 span.setAttribute('class', classe);
 
                 span = d.createElement('div');
-                span.setAttribute('class', 'norm');
-                span.innerText = token.norm;
-                tokenSpan.appendChild(span);
-
-                span = d.createElement('div');
-                span.setAttribute('class', 'sentiment');
-                span.innerText = (token.profile.negated ? '-' : '+') + '/' + round(token.profile.sentiment) + '/' + round(token.profile.emphasis);
-                tokenSpan.appendChild(span);
-
-                span = d.createElement('div');
                 span.setAttribute('class', 'pos');
                 span.innerText = token.pos;
+
+                if (token.profile.sentiment > 0) {
+                    span.innerText += ' / +' + token.profile.sentiment;
+                } else if (token.profile.sentiment < 0) {
+                    span.innerText += ' / ' + token.profile.sentiment;
+                }
                 tokenSpan.appendChild(span);
 
                 // Get entity

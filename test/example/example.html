@@ -2,6 +2,7 @@
 <head>
     <title>Compendium - Demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="example.css">
 </head>
@@ -9,42 +10,29 @@
     <div class="container">
         <div>
             <h1>Compendium</h1>
-            <h3>English Natural Language Processing for Node.js and the browser</h3>
+            <h3>English NLP for Node.js and the browser</h3>
             
             <p>Type/paste any text below, or click the button: 
                 <button class="btn btn-info" id="pos-demo-random">Random text</button>
             </p>
         </div>
         <div>
-            <textarea class="form-control" rows="3" id="pos-demo-input">The quick brown fox jumps over the lazy dog.</textarea>
-            <div>Total time: <span id="time"></span> milliseconds
-            </div>
-            <div id="pos-demo-result">
+            <textarea class="form-control" rows="3" id="pos-demo-input">I &lt;3 Compendium!</textarea>
+            <div id="pos-demo">
+                <div id="pos-demo-result">
+                </div>
+                <div>Total time: <span id="time"></span> milliseconds</div>
             </div>
         </div>
         <div>
             <h3>Feedback</h3>
             <p>Want to help improve Compendium? <a href="https://github.com/Ulflander/compendium-js/issues">Open an issue</a> on GitHub or <a href="https://twitter.com/xavlaumonier">reach me</a> on Twitter.</p>
-            <h3>How to read</h3>
-            <ul>
-                <li>Center: raw token, green if sentiment is positive, red if negative, bold if token is an entity</li>
-                <li>Top left: entity type</li>
-                <li>Top right: normalized token</li>
-                <li>Bottom right: PoS tag</li>
-                <li>Bottom left: 
-                    <ul>
-                        <li>First part: "-" if token is negated, "+" if token is not negated</li> 
-                        <li>Second part: Sentiment score</li> 
-                        <li>Third part: Emphasis</li> 
-                    </ul>
-                </li>
-            </ul>
         </div>
         <div>
             <h3>Credits</h3>
             <p><a href="https://github.com/Ulflander/compendium-js">Compendium</a> is a MIT licensed lib by 
                 <a href="http://laumonier.co/">Ulflander</a>.</p>
-            <p>Random texts are from the following corpuses:</p>
+            <p>Random example texts available on this page are from the following corpuses:</p>
             <ul>
                 <li><a href="http://help.sentiment140.com/for-students">Sentiment140 tweet corpus</a></li>
                 <li><a href="http://www.cis.upenn.edu/~treebank/">Penn treebank</a> dataset</li>
@@ -52,7 +40,7 @@
             </ul>
         </div>
     </div>
-    <script type="text/javascript" src="../build/compendium.minimal.js"></script>
+    <script type="text/javascript" src="../../build/compendium.minimal.js"></script>
     <script type="text/javascript" src="example.js"></script>
     <script type="text/javascript" src="all-examples.js"></script>
     <script>

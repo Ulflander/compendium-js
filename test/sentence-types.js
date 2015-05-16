@@ -16,6 +16,15 @@ exports['Je suis un garçon'] = function(test){
     test.done();
 };
 
+
+// Should be foreign because of confidence === 0 and more than 2 tokens
+exports['fdsfj nlsflsdfndj lsdfjn'] = function(test){
+    var analysis = compendium.analyse('fdsfj nlsflsdfndj lsdfjn');
+
+    test.notEqual(analysis[0].profile.types.indexOf('foreign'), -1);
+    test.done();
+};
+
 // URLs, hashtags... should not account as foreign
 exports['#Canon http://u.mavrev.com/5a3t'] = function(test){
     var analysis = compendium.analyse('#Canon http://u.mavrev.com/5a3t');

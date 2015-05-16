@@ -28,7 +28,6 @@
             gov = sentence.governor,
             p = sentence.profile;
 
-                console.log(gov);
         // Main tense
         if (gov > -1) {
             token = sentence.tokens[gov];

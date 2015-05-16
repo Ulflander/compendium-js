@@ -2303,6 +2303,7 @@ undermining -2
 undeserving -2
 undesirable -2
 uneasy -2
+unemploy -2
 unemployment -2
 unequal -1
 unequaled 2

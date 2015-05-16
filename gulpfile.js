@@ -60,6 +60,7 @@ function lexicon(level) {
         idx = sts.indexOf(token);
         sts[idx] = '--';
 
+
         // If no sentiment, and already contained in compendium, skip it
         if (compendiumTokens.indexOf(token) > -1 && idx === -1) {
             skipped += 1;
@@ -67,7 +68,7 @@ function lexicon(level) {
         }
 
 
-        lex[i] = line[0] + ' ' + (line[1] || 'NN');
+        lex[i] = token + ' ' + (line[1] || 'NN');
 
         // If token has a sentiment score, add it
         if (idx > -1) {
@@ -108,7 +109,7 @@ function lexicon(level) {
                 }
 
                 if (line[1] === 'VBZ' || line[1] === 'VBZ' || line[1] === 'VBD' || line[1] === 'VBG') {
-                    console.log('skipped', token)
+                    //console.log('skipped', token)
                     skipped += 1;
                     continue;   
                 }
@@ -148,7 +149,7 @@ function lexicon(level) {
         }
 
         // Minimal mode: we expunge tokens with uppercase letters
-        if (level > 0 && token.toLowerCase() === token && token.indexOf('-') === -1) {
+        if (level > 0 && token.toLowerCase() === token && (token.indexOf('-') === -1 || line[1] === 'EM')) {
             mini.push(lex[i]);
         } else if (level > 0) {
             skipped += 1;

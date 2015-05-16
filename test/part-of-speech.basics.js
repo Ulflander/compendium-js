@@ -336,6 +336,38 @@ exports['Show me a trick'] = function(test) {
     test.deepEqual(actual, expected);
     test.done();
 };
+exports['store is closed'] = function(test) {
+    var expected = [
+            ('NN VBZ JJ').split(' ')
+        ],
+        analysis = compendium.analyse('store is closed'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports['stores are closed'] = function(test) {
+    var expected = [
+            ('NNS VBP JJ').split(' ')
+        ],
+        analysis = compendium.analyse('stores are closed'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+exports[':-)'] = function(test) {
+    var expected = [
+            ('EM').split(' ')
+        ],
+        analysis = compendium.analyse(':-)'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
 
 exports['This is why Mike is an awesome guy'] = function(test) {
     var expected = [

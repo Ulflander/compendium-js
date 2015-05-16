@@ -21,6 +21,19 @@ exports['It\'s good 😋 at 255.255.255.0'] = function(test){
     test.done();
 };
 
+// Commented tests for now, breaks others
+//  exports['It\'s good! 😋'] = function(test){
+//     test.deepEqual([['It', '\'s', 'good', '!', '😋']], 
+//                     lexer.lex('It\'s good! 😋'));
+//     test.done();
+// };
+
+// exports['It\'s good! 😋 :))))'] = function(test){
+//     test.deepEqual([['It', '\'s', 'good', '!', '😋', ':))))']], 
+//                     lexer.lex('It\'s good! 😋 :))))'));
+//     test.done();
+// };
+
 exports['Hey :))))'] = function(test) {
     test.deepEqual([['Hey', ':))))']],
                     lexer.lex('Hey :))))'))

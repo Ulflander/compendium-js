@@ -23,49 +23,49 @@ Result history:
         mode but a slight decline in full mode - this is the limit of rules over a lexicon
 
 - April 17th, 1959 sentences: 
-    Minimal:    90.65% exact tags, 352 exact sentences, 0.72ms ave. per sentence
-    Full:       92.74% exact tags, 518 exact sentences, 0.36ms ave. per sentence
+    Minimal:    90.65% exact tags, 352 exact sentences, 0.72ms av. per sentence
+    Full:       92.74% exact tags, 518 exact sentences, 0.36ms av. per sentence
 
         > would be worth the check why the full mode is a lot more fast - instinct says because
         likely initial lexicon search is successful, so it doesn't search for variations. Trie 
         lexicon will probably make both modes faster.
 
 - April 19th, 1947 sentences: 
-    Minimal:    90.68% exact tags, 355 exact sentences, 0.75ms ave. per sentence
-    Full:       93.14% exact tags, 565 exact sentences, 0.36ms ave. per sentence
+    Minimal:    90.68% exact tags, 355 exact sentences, 0.75ms av. per sentence
+    Full:       93.14% exact tags, 565 exact sentences, 0.36ms av. per sentence
 
         > Lexer improvements made an appreciable difference in full mode: +0.4%.
 
 - April 19th: 
-    Minimal:    91.74% exact tags, 434/1949 exact sentences, 1.04ms ave. per sentence
-    Full:       94.35% exact tags, 562/1523 exact sentences, 0.83ms ave. per sentence
+    Minimal:    91.74% exact tags, 434/1949 exact sentences, 1.04ms av. per sentence
+    Full:       94.35% exact tags, 562/1523 exact sentences, 0.83ms av. per sentence
 
         > Whole set of new rules and vocabulary in compendium, more granularity on existing 
         rules (verbs inference, less suffixes...)
         > Lighter embedded lexicons in both modes
 
 - April 23th: 
-    Minimal:    91.77% exact tags, 435/1949 exact sentences, 1.38ms ave. per sentence
-    Full:       94.37% exact tags, 564/1523 exact sentences, 1.15ms ave. per sentence
+    Minimal:    91.77% exact tags, 435/1949 exact sentences, 1.38ms av. per sentence
+    Full:       94.37% exact tags, 564/1523 exact sentences, 1.15ms av. per sentence
 
 - April 29th:
-    Minimal:    91.58% exact tags, 431/1949 exact sentences, 1.96ms ave. per sentence
-    Full:       94.13% exact tags, 551/1523 exact sentences, 1.57ms ave. per sentence
+    Minimal:    91.58% exact tags, 431/1949 exact sentences, 1.96ms av. per sentence
+    Full:       94.13% exact tags, 551/1523 exact sentences, 1.57ms av. per sentence
 
         > Slight decrease for the last week, but on the other hand, Compendium gained a lot
         of features (verbs inflection, synonyms...). Will regain a lot on next round of 
         new rules
 
 - May 8th:
-    Minimal:    92.32% exact tags, 480/1949 exact sentences, 1.90ms ave. per sentence
-    Full:       94.37% exact tags, 772/1546 exact sentences, 1.57ms ave. per sentence
+    Minimal:    92.32% exact tags, 480/1949 exact sentences, 1.90ms av. per sentence
+    Full:       94.37% exact tags, 772/1546 exact sentences, 1.57ms av. per sentence
 
         > New increase! A 0.80% gain in minimal mode, only by using simpler inferences 
         on composed words. Almost no change in full mode.
 
 - May 10th:
-    Minimal:    92.52% exact tags, 506/1949 exact sentences, 1.79ms ave. per sentence
-    Full:       94.58% exact tags, 611/1546 exact sentences, 2.58ms ave. per sentence
+    Minimal:    92.52% exact tags, 506/1949 exact sentences, 1.79ms av. per sentence
+    Full:       94.58% exact tags, 611/1546 exact sentences, 2.58ms av. per sentence
 
         > Ok, contrasted results after insertion of irregular verbs. First a decrease to 91%, 
         then has been hard to reach again the previous score - lot of new rules to solve 
@@ -76,6 +76,11 @@ Result history:
         statistical tag was not a verb-related one, but rather noun or adjective. Here is again 
         a limit of rule-based processors versus machine learning based one.
 
+- May 16th: 
+    Minimal:    92.36% exact tags, 499/1949 exact sentences, 1.90ms av. per sentence
+    Full:       94.37% exact tags, 586/1546 exact sentences, 2.02ms av. per sentence
+
+    > Yet another slight decrease, due to support of lot of new features in v0.0.11
 */
 
 var data = require("./penn_treebank").data,

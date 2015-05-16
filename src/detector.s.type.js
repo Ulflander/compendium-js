@@ -12,7 +12,7 @@
         
         // First type: foreign sentence
         // can only work with at least a few tokens
-        if (l > 3 &&
+        if (l > 2 &&
             // if more than 10% foreign words and a somewhat low confidence
             ((stats.p_foreign >= 10 && stats.confidence < 0.5) || 
             // or if very low confidence

@@ -56,7 +56,7 @@
                 }
             } else if (type === PREVWORDPREVTAG) {
                 tmp = tokens[index - 1] || '';
-                if (index > 0 && tags[index - 1] === rule.c2 && tmp.toLowerCase() === rule.c1) {
+                if (tags[index - 1] === rule.c2 && tmp.toLowerCase() === rule.c1) {
                     tags[index] = rule.to;
                     return;
                 }

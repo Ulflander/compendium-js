@@ -1,12 +1,33 @@
 
 body {
-    font-family: sans-serif;    
+    font-family: 'Lato', serif;
 }
 
 #pos-demo-input {
     margin-bottom: 20px;
 }
 
+#pos-demo {
+    background: #fafafa;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 20px;
+    clear: both;
+}
+
+.bg-orange {
+    background: orange;
+    color: white;
+}
+
+.bg-red {
+    background: red;
+    color: white;
+}
+.bg-green {
+    background: green;
+    color: white;
+}
 
 .positive {
     color: green;
@@ -34,8 +55,9 @@ body {
     top: 0;
 }
 .types > span {
-    padding: 3px 5px;
+    padding: 3px 10px;
     border-radius: 2px;
+    margin-left: 5px;
 }
 
 .sentence {
@@ -43,8 +65,12 @@ body {
     display: block;
     margin-bottom: 20px;
     float: left;
-    border-bottom: 1px solid #ddd;
     width: 100%;
+    border-bottom: 1px solid #fff;
+}
+.sentence:after{
+    content: '';
+    clear: both;
 }
 
 .meta {
@@ -69,20 +95,20 @@ body {
     margin-bottom: 20px;
     float: left;
 }
-.raw .emphasized {
-    text-decoration: underline;
+.emphasized {
+    font-style: italic;
 }
 .token .pos {
     position: absolute;
-    top: 45px;
+    top: 50px;
     right: 0;
-    font-size: 10px;
+    font-size: 12px;
 }
 
 .token .entity {
     position: absolute;
     top: 10px;
-    left: 0;
+    right: 0;
     font-size: 10px;
 }
 
