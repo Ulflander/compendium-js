@@ -11,7 +11,7 @@ Go to the [wiki](https://github.com/Ulflander/compendium-js/wiki) to get more de
 
 ## Demo
 
-[![Compendium demo](http://laumonier.co/compendium-js/example/compendium.png)](http://laumonier.co/compendium-js/example/example.html)
+[![Compendium demo](http://laumonier.co/compendium-js/test/example/compendium.png)](http://laumonier.co/compendium-js/test/example/example.html)
 
 Test the interactive demo [here](http://laumonier.co/compendium-js/example/example.html).
 
