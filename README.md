@@ -7,13 +7,19 @@ English NLP for Node.js and the browser.
 
 35k gzipped only, Part-of-Speech tagging (92% on Penn treebank), entity recognition, sentiment analysis and more, MIT licensed.
 
-Go to the [wiki](https://github.com/Ulflander/compendium-js/wiki) to get more details about the project.
-
-## Demo
-
 [![Compendium demo](http://laumonier.co/compendium-js/test/example/compendium.png)](http://laumonier.co/compendium-js/test/example/example.html)
 
 Test the interactive demo [here](http://laumonier.co/compendium-js/example/example.html).
+
+Summary:
+- [Client-side install](#client-side-install)
+- [Node.js install](#node-js-install)
+- [How to use](#API)
+- [PoS tags](#part-of-speech-tags-definition)
+- Wiki
+  - [Changelog](https://github.com/Ulflander/compendium-js/wiki/Changelog)
+  - [Milestones](https://github.com/Ulflander/compendium-js/wiki/Milestones)
+  - [Analysis process](https://github.com/Ulflander/compendium-js/wiki/Analysis-process)
 
 ## Client-side install
 
@@ -106,7 +112,7 @@ will return an array like this one:
             //
        ] } ]
 
-## Part-of-Speecg tags definition
+## Part-of-Speech tags definition
 
 Here is the list of Part-of-Speech tags used by Compendium. See at the bottom newly introduced tags.
 
@@ -159,6 +165,9 @@ Compendium also includes the following new tag:
     CR Currency sign            $,€,£
     EM Emoticon                 :) :(
 
+## Development
+
+Go to the [wiki](https://github.com/Ulflander/compendium-js/wiki) to get more details about the project.
 
 ## License
 
