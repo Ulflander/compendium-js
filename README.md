@@ -9,9 +9,10 @@ English NLP for Node.js and the browser.
 
 [![Compendium demo](http://laumonier.co/compendium-js/test/example/compendium.png)](http://laumonier.co/compendium-js/test/example/example.html)
 
-Test the interactive demo [here](http://laumonier.co/compendium-js/example/example.html).
+Test the interactive demo [here](http://laumonier.co/compendium-js/test/example/example.html).
 
-Summary:
+##### Summary
+
 - [Client-side install](#client-side-install)
 - [Node.js install](#node-js-install)
 - [How to use](#API)
