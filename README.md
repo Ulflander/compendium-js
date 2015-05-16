@@ -15,7 +15,7 @@ Go to the [wiki](https://github.com/Ulflander/compendium-js/wiki) to get more de
 
 Test the interactive demo [here](http://laumonier.co/compendium-js/example/example.html).
 
-## How to use
+## Client-side install
 
 ##### Step 1: get the lib
 
@@ -39,6 +39,19 @@ In order to ensure that Compendium will work as intended, you must specify the e
 Call the `compendium.analyse` function with a string as parameter, and get a complete analysis of the text.
 
     console.log( compendium.analyse('Hello world :)') );
+
+## Node.js install
+
+##### Step 1: get the lib
+
+    npm install --save compendium-js
+
+##### Step 2: enjoy
+
+    var compendium = require('compendium-js');
+        
+    console.log(compendium.analyse('Hello world :)'));
+
 
 ## API
 
@@ -95,9 +108,59 @@ will return an object like:
             //
        ] } ]
 
-## Want more?
+## Part-of-Speecg tags definition
 
-Check out the [wiki](https://github.com/Ulflander/compendium-js/wiki).
+Here is the list of Part-of-Speech tags used by Compendium. See at the bottom newly introduced tags.
+
+    , Comma                     ,
+    : Mid-sent punct.           : ;
+    . Sent-final punct          . ! ?
+    " quote                     "
+    ( Left paren                (
+    ) Right paren               )
+    # Pound sign                #
+    CC Coord Conjuncn           and,but,or
+    CD Cardinal number          one,two,1,2
+    DT Determiner               the,some
+    EX Existential there        there
+    FW Foreign Word             mon dieu
+    IN Preposition              of,in,by
+    JJ Adjective                big
+    JJR Adj., comparative       bigger
+    JJS Adj., superlative       biggest
+    LS List item marker         1,One
+    MD Modal                    can,should
+    NN Noun, sing. or mass      dog
+    NNP Proper noun, sing.      Edinburgh
+    NNPS Proper noun, plural    Smiths
+    NNS Noun, plural            dogs
+    PDT Predeterminer           all, both
+    POS Possessive ending       's
+    PP Personal pronoun         I,you,she
+    PRP$ Possessive pronoun     my,one's
+    RB Adverb                   quickly, not
+    RBR Adverb, comparative     faster
+    RBS Adverb, superlative     fastest
+    RP Particle                 up,off
+    SYM Symbol                  +,%,&
+    TO 'to'                     to
+    UH Interjection             oh, oops
+    VB verb, base form          eat
+    VBD verb, past tense        ate
+    VBG verb, gerund            eating
+    VBN verb, past part         eaten
+    VBP Verb, present           eat
+    VBZ Verb, present           eats
+    WDT Wh-determiner           which,that
+    WP Wh pronoun               who,what
+    WP$ Possessive-Wh           whose
+    WRB Wh-adverb               how,where
+
+Compendium also includes the following new tag:
+
+    CR Currency sign            $,€,£
+    EM Emoticon                 :) :(
+
 
 ## License
 
