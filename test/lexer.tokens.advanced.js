@@ -21,6 +21,12 @@ exports['It\'s good 😋 at 255.255.255.0'] = function(test){
     test.done();
 };
 
+exports['I don\'t want to get into inter-sport debate'] = function(test) {
+    test.deepEqual([['I', 'do', 'n\'t', 'want', 'to', 'get', 'into', 'inter-sport', 'debate']],
+            lexer.lex('I don\'t want to get into inter-sport debate'));
+    test.done();
+};
+
 // Commented tests for now, breaks others
 //  exports['It\'s good! 😋'] = function(test){
 //     test.deepEqual([['It', '\'s', 'good', '!', '😋']], 

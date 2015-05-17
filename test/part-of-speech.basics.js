@@ -347,6 +347,17 @@ exports['store is closed'] = function(test) {
     test.done();
 };
 
+exports['you\'re so dumb'] = function(test) {
+    var expected = [
+            ('PRP VBP RB JJ').split(' ')
+        ],
+        analysis = compendium.analyse('you\'re so dumb'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
 exports['stores are closed'] = function(test) {
     var expected = [
             ('NNS VBP JJ').split(' ')

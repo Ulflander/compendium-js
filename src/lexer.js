@@ -8,7 +8,7 @@
 
         word_boundaries = ' !?()[]{}"\'`%•.…:;,$€£¥\\/+=\*_–&',
 
-        contractions = ['s', 'm', 't', 'll', 've', 'd', 'em'],
+        contractions = ['s', 'm', 't', 'll', 've', 'd', 'em', 're'],
 
         encoder = compendium.punycode.ucs2,
 
@@ -23,16 +23,17 @@
         i, l = cpd.emots.length, emot,
 
         applyRegexps = function(restr, spotted, regexps) {
-            var i, re, curr;
+            var i, l, re, curr;
 
             for (i in regexps) {
                 if (regexps.hasOwnProperty(i)) {
                     re = new RegExp(regexps[i], 'gi');
                     while ((curr = re.exec(restr)) !== null) {
+                        l = curr[0].length;
                         spotted[curr.index] = {
                             content: curr[1],
                             type: i,
-                            length: curr[0].length - 1
+                            length: l - (l - curr[1].length)
                         }
                     }
                 }
@@ -42,8 +43,8 @@
     // Add regexps for emoticons
     for (i = 0; i < l * 2; i += 2) {
         emot = cpd.emots[i / 2];
-        r_emots['em_' + i] = '\\s(' + emot.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '+)';
-        r_emots['em_' + (i + 1)] = '[a-z0-9](' + emot.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '+)';
+        r_emots['em_' + i] = '\\s(' + emot.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '+)[^a-z]';
+        r_emots['em_' + (i + 1)] = '[a-z0-9](' + emot.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '+)[^a-z]';
     }
 
 
