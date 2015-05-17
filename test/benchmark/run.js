@@ -81,6 +81,12 @@ Result history:
     Full:       94.37% exact tags, 586/1546 exact sentences, 2.02ms av. per sentence
 
     > Yet another slight decrease, due to support of lot of new features in v0.0.11
+
+- May 17th: 
+    Minimal:    92.53% exact tags, 477/1822 exact sentences, 2.10ms av. per sentence
+    Full:       94.39% exact tags, 584/1546 exact sentences, 2.05ms av. per sentence
+
+    > A slight increase thanks to new rules.
 */
 
 var data = require("./penn_treebank").data,
@@ -156,6 +162,22 @@ for (var k in data) {
         } else 
         if (penn_pos[i] !== tags[i]) {
             failed = true;
+
+            if (tk.match(/ing$/g)) {
+                if (DIFFS.hasOwnProperty(tk)) {
+                    DIFFS[tk].c += 1;
+                    DIFFS[tk].is += ' ' + tags[i];
+                    DIFFS[tk].should_be += ' ' + penn_pos[i];
+                    DIFFS[tk].context += ' ' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1];
+                 } else {
+                    DIFFS[tk] = {
+                        c: 1,
+                        is: tags[i],
+                        should_be: penn_pos[i],
+                        context: penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1]
+                    };
+                }
+            }
         } else {
             cSuccessTags += 1;
         }
@@ -179,7 +201,10 @@ for (k in DIFFS) {
 
     diffs_arr.push({
         key: k,
-        score: DIFFS[k].c
+        score: DIFFS[k].c,
+        is: DIFFS[k].is,
+        should_be: DIFFS[k].should_be,
+        context: DIFFS[k].context
     });
 
 }

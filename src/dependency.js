@@ -23,6 +23,8 @@
             ['VBZ', 'VBP', 'VBD', 'VBG'],
             // Second ranked governors
             ['MD'],
+            // Third rank governors
+            ['NNP', 'NNPS', 'NN', 'NNS']
         ],
 
         default_type = 'unknown',
@@ -173,6 +175,7 @@
                 j, m = left2right.length,
                 changes = true,
                 governor = null,
+                rank = 0,
                 tag,
                 next,
                 token;
@@ -193,7 +196,7 @@
                 tag = token.pos;
 
                 //  Test first ranked governors
-                if (governors[0].indexOf(tag) > -1) {
+                if (governors[rank].indexOf(tag) > -1) {
                     // If no governor set, we found one!
                     if (governor === null) {
                         governor = i;
@@ -242,11 +245,11 @@
             }
 
             // If no governor
-            if (governor === null) {
-
+            while (governor === null && rank < 2) {
+                rank ++;
                 // Otherwise try second ranked governors
                 for (i = 0; i < l; i ++) {
-                    if (governors[1].indexOf(sentence.tags[i]) > -1) {
+                    if (governors[rank].indexOf(sentence.tags[i]) > -1) {
                         governor = i;
                         break;
                     }

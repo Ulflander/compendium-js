@@ -358,6 +358,17 @@ exports['stores are closed'] = function(test) {
     test.done();
 };
 
+exports['Genetically modified food'] = function(test) {
+    var expected = [
+            ('RB JJ NN').split(' ')
+        ],
+        analysis = compendium.analyse('Genetically modified food'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
 exports[':-)'] = function(test) {
     var expected = [
             ('EM').split(' ')

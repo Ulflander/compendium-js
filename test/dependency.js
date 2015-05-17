@@ -66,14 +66,16 @@ exports['I changed my mind'] = function(test) {
     test.done();
 };
 
-// exports['Genetically modified food'] = function(test) {
-//     var analysis = compendium.analyse('Genetically modified food')[0];
-//     test.equals(analysis.governor, 2, 'Sentence governor should be `food`');
-//     test.equals(analysis.tokens[2].deps.master, null, '`food` should be governor');
-//     test.equals(analysis.tokens[2].deps.governor, true, '`food` should be governor');
+exports['Genetically modified food'] = function(test) {
+    var analysis = compendium.analyse('Genetically modified food')[0];
+    test.equals(analysis.governor, 2, 'Sentence governor should be `food`');
+    test.equals(analysis.tokens[2].deps.master, null, '`food` should be governor');
+    test.equals(analysis.tokens[2].deps.governor, true, '`food` should be governor');
+    test.equals(analysis.tokens[1].deps.master, 2, '`food` should be master of `modified`');
+    test.equals(analysis.tokens[0].deps.master, 1, '`modified` should be master of `Genetically`');
 
-//     test.done();
-// };
+    test.done();
+};
 
 exports['where is the trick'] = function(test) {
     var analysis = compendium.analyse('where is the trick')[0];

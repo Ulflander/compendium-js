@@ -441,6 +441,17 @@
             // Finally apply Brill's rules
             pos.apply(sentence, tags);
 
+            // Last round of manual transformational rules
+            for (i = 0; i < l; i ++) {
+                token = sentence[i];
+                tag = tags[i];
+                previous = tags[i - 1] || '';
+                if (token.match(/ed$/g)) {
+                    if (tag === 'JJ' && (previous === 'VBZ' || previous === 'VBP') && tags[i + 1] === 'TO') {
+                        tags[i] = 'VBN';
+                    }
+                }
+            }
             return {
                 tags: tags,
                 confidence: confidence / l
