@@ -108,6 +108,13 @@ exports['whose one'] = function(test) {
     test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
     test.done();
 }
+// Thanks to dependency parsing, `do` should be governor,
+// leading to consider sentence as imperative
+exports['do something'] = function(test) {    
+    var analysis = compendium.analyse('do something');
+    test.notEqual(analysis[0].profile.types.indexOf('imperative'), -1);
+    test.done();
+}
 exports['yeah!!!!'] = function(test) {
     var analysis = compendium.analyse('yeah!!!!');
     test.notEqual(analysis[0].profile.types.indexOf('exclamatory'), -1);

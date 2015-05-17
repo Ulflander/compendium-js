@@ -25,6 +25,16 @@ exports['The quick brown fox jumps over the lazy dog.'] = function(test) {
 };
 
 
+exports['do something'] = function(test) {
+    var analysis = compendium.analyse('do something')[0];
+
+    test.equals(analysis.governor, 0, 'Sentence governor should be `do`');
+    test.equals(analysis.tokens[0].deps.master, null, '`do` should be governor');
+    test.equals(analysis.tokens[0].deps.governor, true, '`do` should be governor');
+    test.equals(analysis.tokens[1].deps.master, 0, '`do` should be master of `something`');
+    test.done();
+};
+
 exports['I love you'] = function(test) {
     var analysis = compendium.analyse('I love you')[0];
 

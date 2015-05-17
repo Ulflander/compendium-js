@@ -22,7 +22,7 @@
             // First ranked governors
             ['VBZ', 'VBP', 'VBD', 'VBG'],
             // Second ranked governors
-            ['MD'],
+            ['MD', 'VB'],
             // Third rank governors
             ['NNP', 'NNPS', 'NN', 'NNS']
         ],

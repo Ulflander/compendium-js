@@ -6,6 +6,7 @@
     detectors.add('s', function(sentence, index) {
         var l = sentence.length, 
             stats = sentence.stats,
+            governor = sentence.governor,
             types = sentence.profile.types,
             first = sentence.tokens[0],
             last = sentence.tokens[l - 1];
@@ -35,6 +36,14 @@
             // or starting with a particular tag, without breakpoint
             (questions_first_tags.indexOf(first.pos) > -1 && stats.breakpoints === 0)) {
             types.push('interrogative');
+        }
+
+        // Only if dependency parsing returned results
+        if (governor > -1) {
+            // Imperative
+            if (sentence.tags[governor] === 'VB') {
+                types.push('imperative')
+            }
         }
 
     });
