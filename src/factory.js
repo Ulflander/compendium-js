@@ -98,7 +98,8 @@
                 deps: {
                     master: null,
                     governor: false,
-                    type: 'unknown'
+                    type: 'unknown',
+                    dependencies: []
                 }
             };
         },

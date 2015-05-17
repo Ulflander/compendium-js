@@ -97,7 +97,15 @@ exports['why so'] = function(test) {
     var analysis = compendium.analyse('why so');
     test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
     test.done();
-}
+};
+// thanks to dependency analysis,
+// `why` being left dependency of master `are`
+// it should be interrogative
+exports['but why are you'] = function(test) {
+    var analysis = compendium.analyse('but why are you');
+    test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);
+    test.done();
+};
 exports['what the fuck'] = function(test) {    
     var analysis = compendium.analyse('what the fuck');
     test.notEqual(analysis[0].profile.types.indexOf('interrogative'), -1);

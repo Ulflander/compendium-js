@@ -27,6 +27,15 @@ exports['Eating eggplant. Why bother?'] = function(test) {
     test.done();
 };
 
+// Love is positive, but negated
+// However it's a question. Should be neutral
+exports['how can you not love Obama?'] = function(test) {
+    var analysis = compendium.analyse('how can you not love Obama?');
+
+    test.equal(analysis[0].profile.label, 'neutral');
+    test.done();
+};
+
 exports['Fuck yeah'] = function(test) {
     var analysis = compendium.analyse('Fuck yeah');
 

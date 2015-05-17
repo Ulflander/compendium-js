@@ -268,10 +268,18 @@
             // Last pass, any token that has no master
             // gets the governor as its master (i.e. any 
             // dependency issue should be solved BEFORE here)
+            // 
+            // This pass also creates the `dependencies` array 
+            // for each token.
             for (i = 0; i < l; i ++) {
                 token = sentence.tokens[i];
-                if (i !== governor && token.deps.master === null) {
-                    token.deps.master = governor;
+                if (i !== governor) {
+                    if (token.deps.master === null) {
+                        token.deps.master = governor;
+                    }
+                    if (token.deps.master !== null) {
+                        sentence.tokens[token.deps.master].deps.dependencies.push(i);
+                    }
                 }
             }
 
