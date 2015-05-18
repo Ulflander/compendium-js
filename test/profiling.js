@@ -86,6 +86,22 @@ exports['I\'m sad.'] = function(test) {
     test.done();
 };
 
+exports['"I hate you" vs "I really hate you"'] = function(test) {
+    var a1 = compendium.analyse('I hate you'),
+        a2 = compendium.analyse('I really hate you');
+
+    test.ok(a1[0].profile.sentiment > a2[0].profile.sentiment, '"I really hate you" should have a lower score than "I hate you"');
+    test.done();
+};
+
+exports['"I love you" vs "I really love you"'] = function(test) {
+    var a1 = compendium.analyse('I love you'),
+        a2 = compendium.analyse('I really love you');
+
+    test.ok(a1[0].profile.sentiment < a2[0].profile.sentiment, '"I really love you" should have a lower score than "I love you"');
+    test.done();
+};
+
 exports['I\'m not happy.'] = function(test) {
     var analysis = compendium.analyse('I\'m not happy.');
 

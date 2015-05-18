@@ -25,6 +25,7 @@
             'just kidding': 'j/k',
             'without': /w\/[to]/g,
             'with': 'w/',
+            ' out of ': /\soutta\s/gi
         };
 
     /**

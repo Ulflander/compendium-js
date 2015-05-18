@@ -3,6 +3,7 @@
     var replacements = {
         '2moro': 'tomorrow',
         '2nite': 'tonight',
+        '2day': 'today',
         'gr8': 'great',
         'l8r': 'later',
         'thx': 'thanks',

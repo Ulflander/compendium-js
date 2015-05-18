@@ -135,3 +135,34 @@ exports['When in Rome, do as the Romans.'] = function(test) {
     test.done();
 }
 
+
+// exports['Various approval test cases'] = function(test) {
+//     var cases = [
+//         'yes', 'yeah', 'yep', 'sure', 'ok', 'go',
+//         'do it', 'awesome', 'perfect'
+//     ], i, l, analysis;
+
+//     for (i = 0, l = cases.length; i < l; i += 1) {
+//         analysis = compendium.analyse(cases[i]);
+//         test.equal(analysis[0].profile.types.indexOf('approval'), -1);
+//     }
+
+//     test.done();
+// };
+
+// exports['Various refusal test cases'] = function(test) {
+//     var cases = [
+//         'no', 'nah', 'nope', 'n',
+//         'no way', 'don\'t do it', 'don\'t', 'do not'
+//     ], i, l, analysis;
+
+//     for (i = 0, l = cases.length; i < l; i += 1) {
+//         analysis = compendium.analyse(cases[i]);
+//         test.equal(analysis[0].profile.types.indexOf('refusal'), -1);
+//     }
+
+//     test.done();
+// };
+
+
+

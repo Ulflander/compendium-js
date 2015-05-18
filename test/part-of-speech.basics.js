@@ -425,3 +425,15 @@ exports['If you can\'t beat \'em, join \'em.'] = function(test) {
 };
 
 
+exports['let\'s go'] = function(test) {
+    var expected = [
+            ('VB POS VB').split(' ')
+        ],
+        analysis = compendium.analyse('let\'s go'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+

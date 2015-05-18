@@ -87,6 +87,16 @@ Result history:
     Full:       94.39% exact tags, 584/1546 exact sentences, 2.05ms av. per sentence
 
     > A slight increase thanks to new rules.
+
+- May 17th:
+    Minimal:    92.40% exact tags, 497/1978 exact sentences, 2.08ms av. per sentence
+    Full:       94.22% exact tags, 676/1914 exact sentences, 1.99ms av. per sentence
+
+    > Slight decrease but good news! Finally found why so much varying penn test sentences 
+    available: due to the way emoticons regexps were applied. Seems liked lexer fix in 
+    commit #0e8091 solved the issue, and now a lot more sentences are available for tests, 
+    in particular in full mode.
+
 */
 
 var data = require("./penn_treebank").data,
@@ -163,7 +173,7 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            if (tk.match(/ing$/g)) {
+            if (penn_pos[i] === 'POS') {
                 if (DIFFS.hasOwnProperty(tk)) {
                     DIFFS[tk].c += 1;
                     DIFFS[tk].is += ' ' + tags[i];
