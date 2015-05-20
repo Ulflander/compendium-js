@@ -1,4 +1,8 @@
 !function() {
+
+    // Punctuation PoS tags
+    var puncs = [',', '.', ':', '"', '(', ')'];
+
     // Factory for analysis objects
     extend(factory, {
         entity: function(token, index, type) {
@@ -26,6 +30,8 @@
                 // Those statistics are used by the 
                 // detectors (entity detection, quality evalution)
                 stats: {
+                    // Number of words, e.g. tokens that are not emoticons or punctuation
+                    words: 0,
                     // Confidence in PoS tagging
                     // - Can be used to spot foreign text as well as estimate text quality
                     confidence: 0,
@@ -93,7 +99,8 @@
                     is_noun: pos.indexOf('NN') === 0,
                     plural: null,
                     singular: null,
-                    entity: -1
+                    entity: -1,
+                    is_punc: puncs.indexOf(pos) > -1
                 },
                 deps: {
                     master: null,

@@ -22,6 +22,7 @@ exports['Im Lowercased'] = function(test){
 
     test.equal(Math.floor(analysis[0].stats.p_upper), 0);
     test.equal(analysis[0].stats.p_cap, 100);
+    test.equal(analysis[0].stats.words, 2);
     test.done();
 };
 exports['je suis le monstre'] = function(test){
@@ -35,5 +36,21 @@ exports['When in Rome, do as the Romans.'] = function(test) {
     var analysis = compendium.analyse('When in Rome, do as the Romans.');
 
     test.equal(analysis[0].stats.breakpoints, 1);
+    test.equal(analysis[0].stats.words, 7);
+    test.equal(analysis[0].tokens[0].attr.is_punc, false);
     test.done();
-}
+};
+
+exports['!!!'] = function(test) {
+    var analysis = compendium.analyse('!!!');
+    test.equal(analysis[0].stats.words, 0);
+    test.equal(analysis[0].tokens[0].attr.is_punc, true);
+    test.done();
+};
+
+exports[':)'] = function(test) {
+    var analysis = compendium.analyse(':)');
+    test.equal(analysis[0].stats.words, 0);
+    test.equal(analysis[0].tokens[0].attr.is_punc, false);
+    test.done();
+};

@@ -115,7 +115,7 @@
         amplitude = (max + (-min)) / l;
         score *= emphasis;
         score /= l;
-        if (p.types.indexOf('interrogative') > -1) {
+        if (p.types.indexOf(T_INTERROGATIVE) > -1) {
             score /= 2;
         }
         p.sentiment = score;

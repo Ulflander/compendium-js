@@ -42,8 +42,6 @@
         // For each sentence
         for (i = 0; i < l; i ++) {
             d = Date.now();
-            // Cleanup sentence by replacing some tokens
-            compendium.clean(sentences[i]);
 
             // Get part of speech
             pos = compendium.tag(sentences[i]);

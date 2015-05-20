@@ -81,6 +81,17 @@ exports['2 -1'] = function(test) {
     test.done();
 };
 
+exports['hell yeah'] = function(test) {
+    var expected = [
+            ('UH UH').split(' ')
+        ],
+        analysis = compendium.analyse('hell yeah'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
 
 exports['300,000 copies'] = function(test) {
     var expected = [
@@ -436,4 +447,32 @@ exports['let\'s go'] = function(test) {
     test.done();
 };
 
+
+exports['Time Warner\'s HD line up is crap.'] = function(test) {
+    var expected = [
+            ('NNP NNP POS NNP NN RB VBZ NN .').split(' ')
+        ],
+        analysis = compendium.analyse('Time Warner\'s HD line up is crap.'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+
+// Test that in minimal mode,
+// plural nouns (that are expunged from the lexicon) 
+// are solved using the inflector
+exports['My heroes are criteria for people.'] = function(test) {
+    var expected = [
+            ('PRP$ NNS VBP NNS IN NNS .').split(' ')
+        ],
+        analysis = compendium.analyse('My heroes are criteria for people.'),
+        actual = [
+            analysis[0].tags
+        ];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
 

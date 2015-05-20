@@ -24,7 +24,11 @@
             // Second ranked governors
             ['MD', 'VB'],
             // Third rank governors
-            ['NNP', 'NNPS', 'NN', 'NNS']
+            ['NNP', 'NNPS', 'NN', 'NNS'],
+            // Fourth rank
+            ['WP', 'WRB'],
+            // Fifth rank
+            ['UH']
         ],
 
         default_type = 'unknown',
@@ -184,6 +188,7 @@
             if (l === 1) {
                 token = sentence.tokens[0];
                 token.deps.governor = true;
+                sentence.governor = 0;
                 return;
             }
 
@@ -244,8 +249,10 @@
                 changes = this.expand(sentence);
             }
 
-            // If no governor
-            while (governor === null && rank < 2) {
+            // If no governor,
+            // loop over ranks and attempt to find one
+            m = governors.length - 1;
+            while (governor === null && rank < m) {
                 rank ++;
                 // Otherwise try second ranked governors
                 for (i = 0; i < l; i ++) {

@@ -113,7 +113,7 @@ var data = require("./penn_treebank").data,
         res.push('.');
         return res
     }, cleanup = function(txt) {
-        txt = txt.split(/[,:;]/g).join('');
+        txt = txt.split(/[,:;]/g).join('').split('\'s').join('');
         if (txt.indexOf('\'\' ') === 0) {
             txt = txt.slice(3);
         }
@@ -173,18 +173,18 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            if (penn_pos[i] === 'POS') {
+            if (i > 0) {
                 if (DIFFS.hasOwnProperty(tk)) {
                     DIFFS[tk].c += 1;
                     DIFFS[tk].is += ' ' + tags[i];
                     DIFFS[tk].should_be += ' ' + penn_pos[i];
-                    DIFFS[tk].context += ' ' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1];
+                    DIFFS[tk].context += ' | ' + cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1];
                  } else {
                     DIFFS[tk] = {
                         c: 1,
                         is: tags[i],
                         should_be: penn_pos[i],
-                        context: penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1]
+                        context: cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1]
                     };
                 }
             }

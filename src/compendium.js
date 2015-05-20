@@ -319,6 +319,24 @@
             exclusively: 'RB'
         },
 
+        approval: {
+            yes: 'UH',
+            ok: 'NN',
+            agreed: 'VBN',
+            agree: 'VBP',
+            affirmative: 'JJ',
+            approved: 'VBN',
+            sure: 'JJ',
+            roger: 'NN',
+            indeed: 'RB',
+            right: 'NN',
+            alright: 'JJ'
+        },
+
+        approval_verbs: [
+            'go', 'do'
+        ],
+
         // Breakpoints words
         breakpoints: {
             

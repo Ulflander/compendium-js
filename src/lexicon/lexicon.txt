@@ -67130,6 +67130,7 @@ mew VB
 mewed VBD
 mews NN
 mezzo NN JJ
+mh UH
 mg NN JJ
 mg. NN
 miasma NN
@@ -70598,6 +70599,7 @@ oily JJ
 oink UH
 ointment NN
 oiticica NN
+ok UH
 okay JJ RB VB UH
 oks VBZ
 ol JJ NN UH

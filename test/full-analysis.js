@@ -50,5 +50,6 @@ exports['Joe Carter went to the Toronto International Film Festival to go see In
     test.equal(analysis[0].entities[2].fromIndex, 12);
     test.equal(analysis[0].entities[2].toIndex, 12);
     test.equal(analysis[0].tokens[12].attr.entity, 2);
+
     test.done();
 };

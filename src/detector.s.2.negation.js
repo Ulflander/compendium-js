@@ -13,7 +13,7 @@
 
         for (i = 0; i < l; i ++) {
             token = sentence.tokens[i];
-            if (token.profile.breakpoint) {
+            if (token.profile.breakpoint || token.attr.is_punc) {
                 ll = 0;
                 negated = false;
             } else if (negations.indexOf(token.norm) > -1) {

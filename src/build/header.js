@@ -20,7 +20,16 @@
                 polite_threshold: 0.2,
                 dirty_threshold: 0.3
             }
-        };
+        },
+
+        // Various types
+        T_FOREIGN = 'foreign',
+        T_INTERROGATIVE = 'interrogative',
+        T_EXCLAMATORY = 'exclamatory',
+        T_HEADLINE = 'headline',
+        T_IMPERATIVE = 'imperative',
+        T_APPROVAL = 'approval',
+        T_REFUSAL = 'refusal';
 
 
     compendium.detect = detectors;

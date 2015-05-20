@@ -4483,7 +4483,6 @@ electricity
 permitted
 spectrum
 arrival
-okay
 pottery
 emphasis
 roger

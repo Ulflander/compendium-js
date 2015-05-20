@@ -46,9 +46,9 @@ exports['I shouldn\'t solely work, I should hard work'] = function(test){
     test.done();
 };
 
-exports['I\'m not happy'] = function(test){
+exports['I\'m not happy.'] = function(test){
     var expected = true,
-        analysis = compendium.analyse('I\'m not happy'),
+        analysis = compendium.analyse('I\'m not happy.'),
         actual = analysis[0].profile.negated;
 
     test.equal(actual, expected);
@@ -56,6 +56,45 @@ exports['I\'m not happy'] = function(test){
     test.equal(analysis[0].tokens[1].profile.negated, false);
     test.equal(analysis[0].tokens[2].profile.negated, true);
     test.equal(analysis[0].tokens[3].profile.negated, true);
+    test.equal(analysis[0].tokens[4].profile.negated, false);
+    test.done();
+};
+
+
+exports['are you not happy?'] = function(test){
+    var expected = true,
+        analysis = compendium.analyse('are you not happy?'),
+        actual = analysis[0].profile.negated;
+
+    test.equal(actual, expected);
+    test.equal(analysis[0].tokens[0].profile.negated, false);
+    test.equal(analysis[0].tokens[1].profile.negated, false);
+    test.equal(analysis[0].tokens[2].profile.negated, true);
+    test.equal(analysis[0].tokens[3].profile.negated, true);
+    test.equal(analysis[0].tokens[4].profile.negated, false);
+    test.done();
+};
+
+exports['no way'] = function(test){
+    var expected = true,
+        analysis = compendium.analyse('no way'),
+        actual = analysis[0].profile.negated;
+
+    test.equal(actual, expected);
+    test.equal(analysis[0].tokens[0].profile.negated, true);
+    test.equal(analysis[0].tokens[1].profile.negated, true);
+    test.done();
+};
+
+exports['well nope!'] = function(test){
+    var expected = true,
+        analysis = compendium.analyse('well nope!'),
+        actual = analysis[0].profile.negated;
+
+    test.equal(actual, expected);
+    test.equal(analysis[0].tokens[0].profile.negated, false);
+    test.equal(analysis[0].tokens[1].profile.negated, true);
+    test.equal(analysis[0].tokens[2].profile.negated, false);
     test.done();
 };
 

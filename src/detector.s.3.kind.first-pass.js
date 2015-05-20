@@ -2,7 +2,9 @@
 
     var interrogative_tags = ['WP', 'WP$', 'WRB'];
 
-    // Detect the type of sentence
+    // First pass to detect the type of sentence
+    // Types detected in this pass may be used by 
+    // sentiment analysis detector.
     detectors.add('s', function(sentence, index) {
         var l = sentence.length, 
             stats = sentence.stats,
@@ -10,6 +12,7 @@
             types = sentence.profile.types,
             first = sentence.tokens[0],
             last = sentence.tokens[l - 1],
+            tag,
             deps,
             i, m;
         
@@ -21,42 +24,49 @@
             // or if very low confidence
             stats.confidence <= 0.2)) {
             // then is foreign
-            types.push('foreign');
+            types.push(T_FOREIGN);
         }
 
-        // Headline type
+        // Headline type: use statistics
         if (stats.p_cap > 75 && stats.p_upper < 50 && l > 10) {
-            types.push('headline');
+            types.push(T_HEADLINE);
         }
         
         // Exclamatory, straightforward
         if (last.norm === '!') {
-            types.push('exclamatory');
+            types.push(T_EXCLAMATORY);
         } else 
         // Question, obviously with final "?"
         if (last.norm === '?' ||
             // or starting with a particular tag, without breakpoint
             (interrogative_tags.indexOf(first.pos) > -1 && stats.breakpoints === 0)) {
-            types.push('interrogative');
+            types.push(T_INTERROGATIVE);
         } else
 
         // Only if dependency parsing returned results
         if (governor > -1) {
+            tag = sentence.tags[governor];
             // Interrogative
+            // Governor is an interrogative tag
+            if (interrogative_tags.indexOf(tag) > -1) {
+                types.push(T_INTERROGATIVE);
+            } else
             // Loop onto governor dependencies and check for 
             // left dependent interrogative tags
             // Requires VB governor + no final `.`
-            if (last.pos !== '.' && sentence.tags[governor].indexOf('VB') === 0) {
+            if (last.pos !== '.' && tag.indexOf('VB') === 0) {
                 for (deps = sentence.tokens[governor].deps.dependencies, i = 0, m = deps.length; i < m; i ++) {
                     if (interrogative_tags.indexOf(sentence.tags[deps[i]]) > -1) {
-                        types.push('interrogative');
+                        types.push(T_INTERROGATIVE);
                     }
                 }
             }
-            
+        }
+
+        if (governor > -1 && types.indexOf(T_INTERROGATIVE) === -1) {
             // Imperative
             if (sentence.tags[governor] === 'VB') {
-                types.push('imperative');
+                types.push(T_IMPERATIVE);
             }
         }
 
