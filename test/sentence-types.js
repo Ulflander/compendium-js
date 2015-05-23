@@ -158,23 +158,23 @@ exports['Various non approval test cases'] = function(test) {
     test.done();
 };
 
-// exports['Various refusal test cases'] = function(test) {
-//     var cases = [
-//         'no', 'nah', 'nope', 'n', 
-//         'no way', 'don\'t do it', 
-//         'don\'t', 'do not', 
-//         'hell no'
-//     ], i, l, analysis;
+exports['Various refusal test cases'] = function(test) {
+    var cases = [
+        'no', 'nah', 'nope', 'n', 
+        'no way', 'don\'t do it', 
+        'don\'t', 'do not', 
+        'hell no'
+    ], i, l, analysis;
 
-//     for (i = 0, l = cases.length; i < l; i += 1) {
-//         analysis = compendium.analyse(cases[i]);
-//         test.notEqual(analysis[0].profile.types.indexOf('refusal'), -1, '"' + cases[i] + '" should be typed `refusal`');
-//         analysis = compendium.analyse(cases[i] + '!');
-//         test.notEqual(analysis[0].profile.types.indexOf('refusal'), -1, '"' + cases[i] + '!" should be typed `refusal`');
-//     }
+    for (i = 0, l = cases.length; i < l; i += 1) {
+        analysis = compendium.analyse(cases[i]);
+        test.notEqual(analysis[0].profile.types.indexOf('refusal'), -1, '"' + cases[i] + '" should be typed `refusal`');
+        analysis = compendium.analyse(cases[i] + '!');
+        test.notEqual(analysis[0].profile.types.indexOf('refusal'), -1, '"' + cases[i] + '!" should be typed `refusal`');
+    }
 
-//     test.done();
-// };
+    test.done();
+};
 
 // exports['Various non refusal test cases'] = function(test) {
 //     var cases = [

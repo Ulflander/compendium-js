@@ -24,9 +24,13 @@ exports['This is not the I.C.U.'] = function(test){
 exports['I shouldn\'t work, I should rest'] = function(test){
     var analysis = compendium.analyse('I shouldn\'t work, I should rest');
     test.equal(analysis[0].profile.negated, true);
+    test.equal(analysis[0].tokens[0].profile.negated, false);
+    test.equal(analysis[0].tokens[1].profile.negated, true);
     test.equal(analysis[0].tokens[2].profile.negated, true);
     test.equal(analysis[0].tokens[3].profile.negated, true);
     test.equal(analysis[0].tokens[4].profile.negated, false);
+    test.equal(analysis[0].tokens[5].profile.negated, false);
+    test.equal(analysis[0].tokens[6].profile.negated, false);
     test.equal(analysis[0].tokens[7].profile.negated, false);
     test.done();
 };
@@ -52,11 +56,11 @@ exports['I\'m not happy.'] = function(test){
         actual = analysis[0].profile.negated;
 
     test.equal(actual, expected);
-    test.equal(analysis[0].tokens[0].profile.negated, false);
-    test.equal(analysis[0].tokens[1].profile.negated, false);
-    test.equal(analysis[0].tokens[2].profile.negated, true);
-    test.equal(analysis[0].tokens[3].profile.negated, true);
-    test.equal(analysis[0].tokens[4].profile.negated, false);
+    test.equal(analysis[0].tokens[0].profile.negated, false, '"I" should not be negated');
+    test.equal(analysis[0].tokens[1].profile.negated, true, '"\'m" should be negated');
+    test.equal(analysis[0].tokens[2].profile.negated, true, '"not" should be negated');
+    test.equal(analysis[0].tokens[3].profile.negated, true, '"happy" should be negated');
+    test.equal(analysis[0].tokens[4].profile.negated, false, '"." should not be negated');
     test.done();
 };
 
@@ -95,6 +99,17 @@ exports['well nope!'] = function(test){
     test.equal(analysis[0].tokens[0].profile.negated, false);
     test.equal(analysis[0].tokens[1].profile.negated, true);
     test.equal(analysis[0].tokens[2].profile.negated, false);
+    test.done();
+};
+
+exports['can\'t'] = function(test){
+    var expected = true,
+        analysis = compendium.analyse('can\'t'),
+        actual = analysis[0].profile.negated;
+
+    test.equal(actual, expected);
+    test.equal(analysis[0].tokens[0].profile.negated, true);
+    test.equal(analysis[0].tokens[1].profile.negated, true);
     test.done();
 };
 

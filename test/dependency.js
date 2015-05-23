@@ -53,6 +53,17 @@ exports['well why'] = function(test) {
     test.done();
 };
 
+
+exports['hell no'] = function(test) {
+    var analysis = compendium.analyse('hell no')[0];
+
+    test.equal(analysis.governor, 0, 'Sentence governor should be `hell`');
+    test.equal(analysis.tokens[0].deps.master, null, '`hell` should be governor');
+    test.equal(analysis.tokens[0].deps.governor, true, '`hell` should be governor');
+    test.equal(analysis.tokens[1].deps.master, 0, '`hell` should be master of `no`');
+    test.done();
+};
+
 exports['do something'] = function(test) {
     var analysis = compendium.analyse('do something')[0];
 

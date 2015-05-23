@@ -286,13 +286,6 @@
 
         // Negation marks
         neg: {
-            not: 'RB',
-            'n\'t':  'RB',
-            '\'t':  'RB',
-            no: 'RB',
-            neither: 'DT',
-            nor: 'DT',
-            never: 'RB',
             without: 'IN',
             except: 'IN',
             absent: 'JJ',
@@ -319,6 +312,18 @@
             exclusively: 'RB'
         },
 
+        // Refusal keywords, also use as negation marks
+        refusal: {
+            not: 'RB',
+            'n\'t':  'RB',
+            '\'t':  'RB',
+            no: 'RB',
+            neither: 'DT',
+            nor: 'DT',
+            never: 'RB'
+        },
+
+        // Approval keyword
         approval: {
             yes: 'UH',
             ok: 'NN',
