@@ -52,7 +52,6 @@
             }
         }
 
-console.log(sentence.raw, types.indexOf(T_REFUSAL));
         if (types.indexOf(T_REFUSAL) > -1) {
             return;
         }
