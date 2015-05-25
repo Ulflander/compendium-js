@@ -9,6 +9,7 @@ ize VB
 ify VB
 ifies VBZ
 ising VBG
+ism NN
 able JJ
 ible JJ
 ical JJ

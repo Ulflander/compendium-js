@@ -123,7 +123,9 @@
         p.amplitude = amplitude;
         p.dirtiness = dirtiness / l;
         p.politeness = politeness / l;
-        if (score < config.profile.negative_threshold) {
+        if (Math.abs(amplitude) > 0.5 && Math.abs(score) < 0.5 && Math.abs(amplitude) > Math.abs(score)) {
+            p.label = 'mixed';
+        } else if (score < config.profile.negative_threshold) {
             p.label = 'negative';
         } else if (score > config.profile.positive_threshold) {
             p.label = 'positive';

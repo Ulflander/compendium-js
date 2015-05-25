@@ -44,6 +44,14 @@ exports['Fuck yeah'] = function(test) {
     test.done();
 };
 
+// Amplitude bigger than sentiment, should be mixed
+exports['pretty crazy movie..'] = function(test) {
+    var analysis = compendium.analyse('pretty crazy movie..');
+
+    test.equal(analysis[0].profile.label, 'mixed');
+    test.done();
+};
+
 exports['Yes please'] = function(test) {
     var analysis = compendium.analyse('Yes please');
 

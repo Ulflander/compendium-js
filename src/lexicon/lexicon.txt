@@ -19,8 +19,6 @@ Samuel NNP
 Yr. NN
 aminometha NN
 axis NN
--ing JJ
--ism NN
 . .
 / NN JJ
 : :
@@ -37936,16 +37934,6 @@ Zwiren NNP
 Zworykin NNP
 Zycher NNP
 Zygmunt NNP
-[ (
-\* SYM LS NN
-\*\* SYM NN
-\*\*\* SYM
-] )
-]* NN DT JJ RB UH NNP NNS NN|POS , VBG VBP
-` ``
-`` ``
-``... :
-``` NN VB
 a DT VB , VBN NNP FW JJ LS NN
 a-Average JJ LS|JJ
 a-Discounted JJ VBN LS|JJ

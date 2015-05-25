@@ -347,6 +347,12 @@
             
         },
 
+        citations: {
+            '"': '"',
+            '\'': '"',
+            '`': '"'
+        },
+
         // Personal pronouns
         // filtered in lexicon (y?)
         p: {

@@ -217,19 +217,6 @@
                     continue;
                 }
 
-                // If any punc mark or not a letter
-                if (tok.match(/^\W+$/gi)) {
-                    in_acronym = false;
-                    // If same than previous one, merge back
-                    if (tok === previous[0]) {
-                        result[count - 1] += tok;
-                        continue;
-                    }
-                // Else if single letter and in acronym, merge back
-                } else if (tok.match(/^[A-Za-z]{1}$/g) && i < l - 1 && next === '.') {
-                    in_acronym = true;
-                }
-
                 // If token is ' check for contraction.
                 // If is contraction, merge forward
                 if (tok === '\'' && contractions.indexOf(next) > -1) {
@@ -243,6 +230,19 @@
                     }
 
                     continue;
+                }
+
+                // If any punc mark or not a letter
+                if (tok.match(/^\W+$/gi)) {
+                    in_acronym = false;
+                    // If same than previous one, merge back
+                    if (tok === previous[previous.length - 1]) {
+                        result[count - 1] += tok;
+                        continue;
+                    }
+                // Else if single letter and in acronym, merge back
+                } else if (tok.match(/^[A-Za-z]{1}$/g) && i < l - 1 && next === '.') {
+                    in_acronym = true;
                 }
 
                 // TODO: refactor

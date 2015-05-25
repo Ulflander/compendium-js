@@ -91,6 +91,11 @@ exports['Hi there Dr. Joe, the price is 4.59 for N.A.S.A. Ph.Ds.! I hope that\'s
     test.done();
 };
 
+exports['I\'m \'saudi\''] = function(test) {
+    test.deepEqual([['I', '\'m', '\'', 'saudi', '\'']], lexer.lex('I\'m \'saudi\''));
+    test.done();
+};
+
 // Test smartquotes replacement + entity detection between quotes
 // https://github.com/Ulflander/compendium-js/issues/1
 exports['I just started using a package called \"Compendium\" and find that it works quite well.'] = function(test){
@@ -117,6 +122,7 @@ exports['I just started using a package called ‘Compendium’ and find that it
     test.equal(analysis[0].tokens[9].raw, "'");
     test.done();
 };
+
 
 // ill is at the end of the sentence, it's not an abbr
 exports['He was ill.'] = function(test) {

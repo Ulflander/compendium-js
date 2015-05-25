@@ -20,6 +20,21 @@ exports['I\'m saudi'] = function(test) {
     test.done();
 };
 
+exports['I\'m "saudi"'] = function(test) {
+    test.deepEqual(['PRP', 'VBP', '"', 'JJ', '"'], compendium.analyse('I\'m "saudi"')[0].tags);
+    test.done();
+};
+
+exports['I\'m \'saudi\''] = function(test) {
+    test.deepEqual(['PRP', 'VBP', '"', 'JJ', '"'], compendium.analyse('I\'m \'saudi\'')[0].tags);
+    test.done();
+};
+
+exports['I\'m `saudi`'] = function(test) {
+    test.deepEqual(['PRP', 'VBP', '"', 'JJ', '"'], compendium.analyse('I\'m `saudi`')[0].tags);
+    test.done();
+};
+
 
 // *eed tokens should not be VBN
 // TO try should be VB
