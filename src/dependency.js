@@ -35,6 +35,7 @@
         
         // Left to right rules
         left2right = [
+            ['NNP', 'NNP', 'compound'],
             ['PRP', 'VBZ', 'subj'],
             ['PRP', 'VBP', 'subj'],
             ['PRP', 'VBD', 'subj'],
@@ -43,15 +44,20 @@
             ['WRB', 'VBD', 'attr'],
             ['VBG', 'VBP'],
             ['TO', 'VB'],
-            ['DT', 'NN'],
-            ['DT', 'NN'],
+            ['DT', 'NN', 'det'],
+            ['DT', 'NNP', 'det'],
             ['PRP$', 'NN', 'poss'],
             ['RB', 'JJ', 'advmod'],
             ['JJ', 'NN', 'amod'],
             ['JJ', 'NNP', 'amod'],
             ['NN', 'VBZ', 'subj'],
             ['NN', 'VBP', 'subj'],
-            ['NN', 'VB', 'subj']
+            ['NN', 'VBD', 'subj'],
+            ['NN', 'VB', 'subj'],
+            ['NNP', 'VBZ', 'subj'],
+            ['NNP', 'VBP', 'subj'],
+            ['NNP', 'VBD', 'subj'],
+            ['NNP', 'VB', 'subj']
         ],
         right2left = [
             ['PRP', 'VBZ', 'obj'],
@@ -65,7 +71,9 @@
             ['JJ', 'VBP', 'acomp'],
             ['JJ', 'VBZ', 'acomp'],
             ['IN', 'VB'],
-            ['NN', 'IN', 'obj']
+            ['NN', 'IN', 'obj'],
+            ['NNP', 'VB', 'obj'],
+            ['VB', 'VB', 'xcomp']
         ];
 
     extend(dependencies, {
@@ -179,9 +187,11 @@
                 j, m = left2right.length,
                 changes = true,
                 governor = null,
+                lastFirstRank = null,
                 rank = 0,
                 tag,
                 next,
+                compound = 0,
                 token;
 
             // Handle special case of only one token in the sentence
@@ -205,6 +215,7 @@
                     // If no governor set, we found one!
                     if (governor === null) {
                         governor = i;
+                        lastFirstRank = i;
                     // Otherwise, governor is master of this token
                     } else {
                         token.deps.master = governor;
@@ -220,6 +231,28 @@
                         token.deps.type = left2right[j][2] || default_type;
                         break;
                     } 
+                }
+            }
+
+            // Reinforce compounds
+            for (i = l - 1; i >= 0; i --) {
+                token = sentence.tokens[i];
+                next = sentence.tokens[i + 1];
+                if (i !== governor) {
+                    // Aggregate compounds, compound means we necessarily have the right token
+                    if (token.deps.type === 'compound' || token.deps.type === 'det') {
+                        // We found a governor before
+                        if (governor !== null && governor < i && typeof next.deps.master !== 'number') {
+                            next.deps.master = governor;
+                            next.deps.type = 'obj';
+                        }
+                        compound += 1;
+                        if (compound > 1) {
+                            token.deps.master = next.deps.master;
+                        }
+                    } else {
+                        compound = 0;
+                    }
                 }
             }
 
@@ -272,6 +305,7 @@
             // governed tokens
             this.reconnect(sentence);
 
+
             // Last pass, any token that has no master
             // gets the governor as its master (i.e. any 
             // dependency issue should be solved BEFORE here)
@@ -281,7 +315,7 @@
             for (i = 0; i < l; i ++) {
                 token = sentence.tokens[i];
                 if (i !== governor) {
-                    if (token.deps.master === null) {
+                    if (token.deps.master === null || token.deps.master === i) {
                         token.deps.master = governor;
                     }
                     if (token.deps.master !== null) {
@@ -289,6 +323,7 @@
                     }
                 }
             }
+
 
         },
 
@@ -309,6 +344,7 @@
 
             for (i = l - 1; i >= 0; i --) {
                 token = sentence.tokens[i];
+
                 // Skip if already set
                 if (token.deps.governor === true || typeof token.deps.master === 'number') {
                     continue;
