@@ -1,6 +1,7 @@
 
 var compendium = require('../dist/compendium.minimal.js');
 
+
 exports['Joe Carter went to the Toronto International Film Festival to go see Inception.'] = function(test) {
     var expectedPoS = [
             ('NNP NNP VBD TO DT NNP NNP NNP NNP TO VB VB NNP .').split(' ')
@@ -85,3 +86,15 @@ exports['Joe Carter went to the Toronto International Film Festival to go see In
 
     test.done();
 };
+
+exports['Say hello to the Great John, ugh :('] = function(test) {
+    var analysis = compendium.analyse('Say hello to the Great John, ugh :(')[0];
+
+    test.equal(analysis.length, 9);
+    test.deepEqual([analysis.tags], [('VB UH TO DT NNP NNP , UH EM').split(' ')]);
+    test.equal(analysis.profile.label, 'negative');
+    test.notEqual(analysis.profile.types.indexOf('imperative'), -1, 'Sentence should be imperative');
+    
+    test.done();
+};
+

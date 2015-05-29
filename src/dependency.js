@@ -39,17 +39,23 @@
             ['PRP', 'VBZ', 'subj'],
             ['PRP', 'VBP', 'subj'],
             ['PRP', 'VBD', 'subj'],
+            ['DT', 'VBZ', 'subj'],
+            ['DT', 'VBP', 'subj'],
+            ['DT', 'VBD', 'subj'],
             ['WRB', 'VBP', 'attr'],
             ['WRB', 'VBZ', 'attr'],
             ['WRB', 'VBD', 'attr'],
             ['VBG', 'VBP'],
             ['TO', 'VB'],
+            ['TO', 'NN'],
+            ['TO', 'NNS'],
             ['DT', 'NN', 'det'],
             ['DT', 'NNP', 'det'],
             ['PRP$', 'NN', 'poss'],
             ['RB', 'JJ', 'advmod'],
             ['JJ', 'NN', 'amod'],
             ['JJ', 'NNP', 'amod'],
+            ['VBG', 'JJ'],
             ['NN', 'VBZ', 'subj'],
             ['NN', 'VBP', 'subj'],
             ['NN', 'VBD', 'subj'],
@@ -59,6 +65,9 @@
             ['NNP', 'VBD', 'subj'],
             ['NNP', 'VB', 'subj']
         ],
+
+
+
         right2left = [
             ['PRP', 'VBZ', 'obj'],
             ['PRP', 'VBP', 'obj'],
@@ -71,10 +80,13 @@
             ['JJ', 'VBP', 'acomp'],
             ['JJ', 'VBZ', 'acomp'],
             ['IN', 'VB'],
+            ['CC', 'JJ'],
             ['NN', 'IN', 'obj'],
             ['NNP', 'VB', 'obj'],
             ['VB', 'VB', 'xcomp']
-        ];
+        ],
+
+        REC_LIMIT = 20;
 
     extend(dependencies, {
 
@@ -106,9 +118,10 @@
          * @return {Boolean} Value `true` if some changes have been applied, false 
          * otherwise
          */
-        expand: function(sentence) {
+        expand: function(sentence, diff) {
             var i, l = sentence.length,
                 j, m = left2right.length,
+                r,
                 tag,
                 next,
                 master,
@@ -116,13 +129,13 @@
                 token;
 
             // First expand from left to right
-            for (i = 0; i < l - 1; i ++) {
+            for (i = 0; i < l - diff; i ++, r = 0) {
                 token = sentence.tokens[i];
                 if (typeof token.deps.master === 'number') {
                     continue;
                 }
 
-                next = sentence.tokens[i + 1];
+                next = sentence.tokens[i + diff];
 
                 // If master already set
                 if (token.deps.master === next.deps.master || 
@@ -133,29 +146,39 @@
                 }
 
                 // Gather next token master
-                master = sentence.tokens[next.deps.master];
-                tag = token.pos;
-
-                // And attempt to apply a rule to this combo (current token + next token master)
-                for (j = 0; j < m; j ++) {
-                    if (tag === left2right[j][0] && master.pos === left2right[j][1]) {
-                        token.deps.master = next.deps.master;
-                        token.deps.type = left2right[j][2] || default_type;
-                        // If a change is done, set the flag to true
-                        changes = true;
+                while ((master = sentence.tokens[next.deps.master]) && next !== master && next.deps.master && token.deps.master !== next.deps.master) {
+                    r ++;
+                    if (r > REC_LIMIT) {
                         break;
                     }
+
+                    tag = token.pos;
+
+                    // And attempt to apply a rule to this combo (current token + next token master)
+                    for (j = 0; j < m; j ++) {
+                        if (tag === left2right[j][0] && master.pos === left2right[j][1]) {
+                            token.deps.master = next.deps.master;
+                            token.deps.type = left2right[j][2] || default_type;
+                            // If a change is done, set the flag to true
+                            changes = true;
+                            break;
+                        }
+                    }
+                    if (changes) {
+                        break;
+                    }
+                    next = master;
                 }
             }
 
             // And do the same backward
-            for (i = l - 1, m = right2left.length; i > 0; i --) {
+            for (i = l - 1, m = right2left.length; i > diff; i --) {
                 token = sentence.tokens[i];
                 if (typeof token.deps.master === 'number') {
                     continue;
                 }
 
-                next = sentence.tokens[i - 1];
+                next = sentence.tokens[i - diff];
                 if (typeof next.deps.master !== 'number' || token.deps.master === next.deps.master) {
                     continue;
                 }
@@ -185,6 +208,7 @@
         parse: function(sentence) {
             var i, l = sentence.length,
                 j, m = left2right.length,
+                r = 0,
                 changes = true,
                 governor = null,
                 lastFirstRank = null,
@@ -278,8 +302,12 @@
             // Third pass, expand the relationships,
             // given the existing masters,
             // both from left to right and right to left.
-            while (changes) {
-                changes = this.expand(sentence);
+            while (changes && r < REC_LIMIT) {
+                changes = false;
+                for (i = 1; i < 5; i += 1) {
+                    changes = this.expand(sentence, i) || changes;
+                }
+                r += 1;
             }
 
             // If no governor,
@@ -304,7 +332,6 @@
             // Fourth pass, right to left reconnection, skipping
             // governed tokens
             this.reconnect(sentence);
-
 
             // Last pass, any token that has no master
             // gets the governor as its master (i.e. any 

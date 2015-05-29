@@ -72,6 +72,13 @@ function lexicon(level) {
 
         // If token has a sentiment score, add it
         if (idx > -1) {
+
+            // If is plural
+            if (line[1] === 'NNS') {
+                skipped += 1;
+                continue;
+            }
+
             lex[i] += ' ' + sentiments[idx][1];
 
         // otherwise check for minimal mode skipped tokens

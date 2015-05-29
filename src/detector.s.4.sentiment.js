@@ -4,7 +4,29 @@
         polite = cpd.polite,
         emphasis_adverbs = cpd.emphasis,
 
-        future_modals = ['wo', '\'ll', 'will'];
+        future_modals = ['wo', '\'ll', 'will'],
+
+        // Recursive function that takes all the dependencies scores and 
+        // compute a token final score
+        scoreDependencies = function (sentence, token) {
+            var deps = token.deps.dependencies, i, l = deps.length, s = 0, t;
+            // If no dependencies
+            if (l === 0) {
+                return;
+            }
+
+            // Loop over dependencies
+            for (i = 0; i < l; i += 1) {
+                t = sentence.tokens[deps[i]];
+                // First recursively score their own dependencies
+                scoreDependencies(sentence, t);
+                // Add score
+                s += t.profile.sentiment;
+            }
+
+            // Score is divided by the number of dependencies
+            token.profile.sentiment += parseInt((s / l) * 100) / 100;
+        };
 
     // Set profile
     detectors.add('s', function(sentence, index, sentences) {
@@ -28,9 +50,13 @@
             gov = sentence.governor,
             p = sentence.profile;
 
-        // Main tense
+        // Main tense + experimental dependency scoring
         if (gov > -1) {
             token = sentence.tokens[gov];
+            // Experimental recursive dependency scoring
+            scoreDependencies(sentence, token);
+
+            // Main tense detection
             pos = token.pos;
             if (token.attr.is_verb) {
                 p.main_tense = (pos === 'VBD' ? 'past' : 'present');
@@ -47,6 +73,8 @@
         }
 
         // Loop on tokens
+        // and set emphasis
+        // and initial score
         for (i = 0; i < l; i ++) {
             profile = sentence.tokens[i].profile;
             pos = sentence.tokens[i].pos;

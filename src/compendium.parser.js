@@ -11,7 +11,7 @@
                 arr = lexicon.split('\t'),
                 i, j,
                 l,
-                vbz,
+                tmp,
                 pt, // PoS tag
                 s, // score
                 c, // score pos condition
@@ -36,8 +36,8 @@
                     c = item[m].split('/')[0];
                     s = item[m].split('/')[1];
                 // Simple score
-                } else if (item[m].match(/^[0-9\-]+$/g)) {
-                    s = parseInt(item[m], 10);
+                } else if (item[m].match(/^[0-9\-]+$/g) || item[m].match(/^\-{0,1}[0-4]\.[0-9]$/g)) {
+                    s = item[m].indexOf('.') > 0 ? parseFloat(item[m]) : parseInt(item[m], 10);
                 }
                 if (pt === 'EM' && compendium.punycode.ucs2.decode(item[0]).length > 1) {
                     emots.push(item[0]);
@@ -91,42 +91,46 @@
             for (i = 0, l = cpd.verbs.length; i < l; i ++, s = 0) {
                 item = cpd.verbs[i];
 
-                vbz = inflector.conjugate(item, 'VBZ');
-                if (!vbz) {
-                    //console.log(item, s, inflector.conjugate(item, 'VBZ'));
+                tmp = inflector.conjugate(item, 'VBZ');
+                if (!tmp) {
                     continue;
                 }
 
+
                 if (result.hasOwnProperty(item)) {
                     s = result[item].sentiment;
-                } else {
-                    // result[item] = {
-                    //     pos: 'VB',
-                    //     sentiment: s,
-                    //     condition: null
-                    // };
                 }
-                result[vbz] = {
+
+                result[tmp] = {
                     pos: 'VBZ',
                     sentiment: s,
                     condition: null,
                     infinitive: item
                 };
 
-                result[inflector.conjugate(item, 'VBN')] = {
-                    pos: 'VBN',
-                    sentiment: s,
-                    condition: null,
-                    infinitive: item
-                };
+                tmp = inflector.conjugate(item, 'VBN');
+                if (!result.hasOwnProperty(tmp)) {
+                    result[tmp] = {
+                        pos: 'VBN',
+                        sentiment: s,
+                        condition: null,
+                        infinitive: item
+                    };
+                } else {
+                    result[tmp].infinitive = item;
+                }
 
-                result[inflector.conjugate(item, 'VBG')] = {
-                    pos: 'VBG',
-                    sentiment: s,
-                    condition: null,
-                    infinitive: item
-                };
-
+                tmp = inflector.conjugate(item, 'VBG');
+                if (!result.hasOwnProperty(tmp)) {
+                    result[tmp] = {
+                        pos: 'VBG',
+                        sentiment: s,
+                        condition: null,
+                        infinitive: item
+                    };
+                } else {
+                    result[tmp].infinitive = item;
+                }
             }
 
             // Prepopulate lexion with irregular verbs

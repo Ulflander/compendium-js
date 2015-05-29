@@ -27,6 +27,15 @@ exports['Eating eggplant. Why bother?'] = function(test) {
     test.done();
 };
 
+// Bug fix test: satisfied is in sentiment lexicon, should have 
+// positive token score
+exports['I am very satisfied.'] = function(test) {
+    var analysis = compendium.analyse('I am very satisfied.');
+
+    test.notEqual(analysis[0].tokens[3].profile.sentiment, 0, '"satisfied" should have a positive score as it is part of sentiment lexicon');
+    test.done();
+};
+
 // Love is positive, but negated
 // However it's a question. Should be neutral
 exports['how can you not love Obama?'] = function(test) {

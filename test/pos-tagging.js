@@ -35,6 +35,10 @@ exports['I\'m `saudi`'] = function(test) {
     test.done();
 };
 
+exports['this is a really good, freaking awesome day'] = function(test) {
+    test.deepEqual('DT VBZ DT RB JJ , JJ JJ NN'.split(' '), compendium.analyse('this is a really good, freaking awesome day')[0].tags);
+    test.done();
+};
 
 // *eed tokens should not be VBN
 // TO try should be VB

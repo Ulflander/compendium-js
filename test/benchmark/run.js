@@ -144,8 +144,9 @@ for (var k in data) {
     // (also add final punc sign)
     var penn_pos = toPoSArray(data[k].pos),
         text = cleanup(data[k].text),
-        cpd_pos = compendium.analyse(text)[0];
-    
+        cpd_pos;
+        
+    cpd_pos = compendium.analyse(text)[0];
     cTotalConfidence += cpd_pos.confidence;
     cTotalTime += cpd_pos.time;
 

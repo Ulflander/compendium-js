@@ -123,6 +123,30 @@ exports['I\'m really not happy'] = function(test){
     test.done();
 };
 
+
+exports['nothing is good'] = function(test){
+    var expected = true,
+        analysis = compendium.analyse('nothing is good'),
+        actual = analysis[0].profile.negated;
+
+    test.equal(actual, expected);
+    test.done();
+};
+
+exports['remember these are not designed to be speed demons but to be portable.'] = function(test){
+    var analysis = compendium.analyse('remember these are not designed to be speed demons but to be portable.');
+
+    test.equal(analysis[0].tokens[0].profile.negated, false);
+    test.equal(analysis[0].tokens[1].profile.negated, false);
+    test.equal(analysis[0].tokens[2].profile.negated, true);
+    test.equal(analysis[0].tokens[3].profile.negated, true);
+    test.equal(analysis[0].tokens[6].profile.negated, true);
+    test.equal(analysis[0].tokens[10].profile.negated, false);
+    test.equal(analysis[0].tokens[11].profile.negated, false);
+    test.equal(analysis[0].tokens[12].profile.negated, false);
+    test.done();
+};
+
 exports['I\'m not just happy, I\’m amazed'] = function(test){
     var expected = false,
         analysis = compendium.analyse('I\'m not just happy, I\’m amazed'),

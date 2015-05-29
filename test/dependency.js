@@ -153,8 +153,129 @@ exports['but where is the trick'] = function(test) {
     test.done();
 };
 
+exports['this is a good day'] = function(test) {
+    var analysis = compendium.analyse('this is a good day')[0];
+    test.equal(analysis.governor, 1, 'Sentence governor should be `is`');
+    test.equal(analysis.tokens[1].deps.master, null, '`is` should be governor');
+    test.equal(analysis.tokens[1].deps.governor, true, '`is` should be governor');
+    test.equal(analysis.tokens[0].deps.master, 1, '`this` should have `is` as master');
+    test.equal(analysis.tokens[2].deps.master, 4, '`a` should have `day` as master');
+    test.equal(analysis.tokens[3].deps.master, 4, '`good` should have `day` as master');
+    test.equal(analysis.tokens[4].deps.master, 1, '`day` should have `is` as master');
+
+    test.done();
+};
 
 
 
+exports['this is a really good day'] = function(test) {
+    var analysis = compendium.analyse('this is a really good day')[0];
+    test.equal(analysis.governor, 1, 'Sentence governor should be `is`');
+    test.equal(analysis.tokens[1].deps.master, null, '`is` should be governor');
+    test.equal(analysis.tokens[1].deps.governor, true, '`is` should be governor');
+    test.equal(analysis.tokens[0].deps.master, 1, '`this` should have `is` as master');
+    test.equal(analysis.tokens[2].deps.master, 5, '`a` should have `day` as master');
+    test.equal(analysis.tokens[3].deps.master, 4, '`really` should have `good` as master');
+    test.equal(analysis.tokens[4].deps.master, 5, '`good` should have `day` as master');
+    test.equal(analysis.tokens[5].deps.master, 1, '`day` should have `is` as master');
+
+    test.done();
+};
 
 
+
+exports['this is a really really good day'] = function(test) {
+    var analysis = compendium.analyse('this is a really really good day')[0];
+    test.equal(analysis.governor, 1, 'Sentence governor should be `is`');
+    test.equal(analysis.tokens[1].deps.master, null, '`is` should be governor');
+    test.equal(analysis.tokens[1].deps.governor, true, '`is` should be governor');
+    test.equal(analysis.tokens[0].deps.master, 1, '`this` should have `is` as master');
+    test.equal(analysis.tokens[2].deps.master, 6, '`a` should have `day` as master');
+    test.equal(analysis.tokens[3].deps.master, 5, '`really` should have `good` as master');
+    test.equal(analysis.tokens[4].deps.master, 5, '`really` should have `good` as master');
+    test.equal(analysis.tokens[5].deps.master, 6, '`good` should have `day` as master');
+    test.equal(analysis.tokens[6].deps.master, 1, '`day` should have `is` as master');
+
+    test.done();
+};
+
+
+exports['this is a really, really good day'] = function(test) {
+    var analysis = compendium.analyse('this is a really, really good day')[0];
+    test.equal(analysis.governor, 1, 'Sentence governor should be `is`');
+    test.equal(analysis.tokens[1].deps.master, null, '`is` should be governor');
+    test.equal(analysis.tokens[1].deps.governor, true, '`is` should be governor');
+    test.equal(analysis.tokens[0].deps.master, 1, '`this` should have `is` as master');
+    test.equal(analysis.tokens[2].deps.master, 7, '`a` should have `day` as master');
+    test.equal(analysis.tokens[3].deps.master, 6, '`really` should have `good` as master');
+    test.equal(analysis.tokens[4].deps.master, 1, '`,` should have `is` as master');
+    test.equal(analysis.tokens[5].deps.master, 6, '`really` should have `good` as master');
+    test.equal(analysis.tokens[6].deps.master, 7, '`good` should have `day` as master');
+    test.equal(analysis.tokens[7].deps.master, 1, '`day` should have `is` as master');
+
+    test.done();
+};
+
+exports['this is a good and awesome day'] = function(test) {
+    var analysis = compendium.analyse('this is a good and awesome day')[0];
+
+    test.equal(analysis.governor, 1, 'Sentence governor should be `is`');
+    test.equal(analysis.tokens[1].deps.master, null, '`is` should be governor');
+    test.equal(analysis.tokens[1].deps.governor, true, '`is` should be governor');
+    test.equal(analysis.tokens[0].deps.master, 1, '`this` should have `is` as master');
+    test.equal(analysis.tokens[2].deps.master, 6, '`a` should have `day` as master');
+    test.equal(analysis.tokens[3].deps.master, 6, '`good` should have `day` as master');
+    test.equal(analysis.tokens[4].deps.master, 3, '`and` should have `good` as master');
+    test.equal(analysis.tokens[5].deps.master, 6, '`awesome` should have `day` as master');
+    test.equal(analysis.tokens[6].deps.master, 1, '`day` should have `is` as master');
+
+    test.done();
+};
+
+
+exports['this is a really good, freaking awesome day'] = function(test) {
+    var analysis = compendium.analyse('this is a really good, freaking awesome day')[0];
+
+    test.equal(analysis.governor, 1, 'Sentence governor should be `is`');
+    test.equal(analysis.tokens[1].deps.master, null, '`is` should be governor');
+    test.equal(analysis.tokens[1].deps.governor, true, '`is` should be governor');
+    
+    test.equal(analysis.tokens[0].deps.master, 1, '`this` should have `is` as master');
+
+    test.equal(analysis.tokens[2].deps.master, 8, '`a` should have `day` as master');
+    test.equal(analysis.tokens[3].deps.master, 4, '`really` should have `good` as master');
+    test.equal(analysis.tokens[4].deps.master, 8, '`good` should have `day` as master');
+
+    // Here is an ambiguous one
+    // Freaking is so farin this context tagged as JJ
+    // JJ is a direct dependency of NN so day is master.
+    // One could argue that freaking is, in this precise example, a dependency of
+    // awesome. This corner case is not yet handled by Compendium.
+    test.equal(analysis.tokens[6].deps.master, 8, '`freaking` should have `day` as master');
+
+    test.equal(analysis.tokens[7].deps.master, 8, '`awesome` should have `day` as master');
+    test.equal(analysis.tokens[8].deps.master, 1, '`day` should have `is` as master');
+
+    test.done();
+};
+
+
+
+// exports['I, too, am horribly allergic to bullets'] = function(test) {
+//     var analysis = compendium.analyse('I, too, am horribly allergic to bullets')[0];
+
+//     test.equal(analysis.governor, 4, 'Sentence governor should be `am`');
+//     test.equal(analysis.tokens[4].deps.master, null, '`am` should be governor');
+//     test.equal(analysis.tokens[4].deps.governor, true, '`am` should be governor');
+
+//     test.equal(analysis.tokens[0].deps.master, 4, '`I` should have `am` as master');
+//     test.equal(analysis.tokens[0].deps.type, 'subj', '`I` should be subject of `am`');
+
+//     test.equal(analysis.tokens[2].deps.master, 0, '`too` should have `I` as master');
+    
+//     test.equal(analysis.tokens[5].deps.master, 6, '`horribly` should have `allergic` as master');
+//     test.equal(analysis.tokens[6].deps.master, 8, '`allergic` should have `bullets` as master');
+//     test.equal(analysis.tokens[7].deps.master, 8, '`to` should have `bullets` as master');
+
+//     test.done();
+// };

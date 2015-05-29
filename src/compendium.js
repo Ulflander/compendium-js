@@ -47,7 +47,8 @@
             'quite',
             'pretty',
             'seriously',
-            'very'
+            'very',
+            'horribly'
         ],
 
         // Thanks to https://github.com/spencermountain/nlp_compromise
@@ -300,7 +301,8 @@
             exclude: 'VB',
             lack: 'NN',
             absence: 'NN',
-            none: 'NN'
+            none: 'NN',
+            nothing: 'NN'
         },
 
         // Counter negation marks
