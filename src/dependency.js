@@ -121,7 +121,7 @@
         expand: function(sentence, diff) {
             var i, l = sentence.length,
                 j, m = left2right.length,
-                r,
+                r = 0,
                 tag,
                 next,
                 master,

@@ -97,6 +97,14 @@ Result history:
     commit #0e8091 solved the issue, and now a lot more sentences are available for tests, 
     in particular in full mode.
 
+- May 29th:
+    Minimal:    92.54% exact tags, 597/2455 exact sentences, 2.10ms av. per sentence
+    Full:       94.55% exact tags, 852/2370 exact sentences, 2.39ms av. per sentence
+
+    > Last rounds of improvements were not focused at all on PoS tagging, however 
+    new rules introduced for other purpose led to a slight improvement in statistics 
+    PoS tagging stats.
+
 */
 
 var data = require("./penn_treebank").data,
@@ -145,7 +153,7 @@ for (var k in data) {
     var penn_pos = toPoSArray(data[k].pos),
         text = cleanup(data[k].text),
         cpd_pos;
-        
+    //console.log(text);
     cpd_pos = compendium.analyse(text)[0];
     cTotalConfidence += cpd_pos.confidence;
     cTotalTime += cpd_pos.time;
