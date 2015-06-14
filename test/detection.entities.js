@@ -15,6 +15,13 @@ exports['My invalid IP is 222.22.22.199'] = function(test) {
     test.done();
 };
 
+exports['Jean-Claud Van Damme or Steven Segal'] = function(test) {
+    var analysis = compendium.analyse('Jean-Claud Van Damme or Steven Segal');
+    
+    test.notEqual(analysis[0].tokens[0].attr.entity, analysis[0].tokens[4].attr.entity);
+    test.done();
+};
+
 exports['The machines are coming for your job @zeynep @nytimes http://www.nytimes.com/2015/04/19/opinion/sunday/the-machines-are-coming.html?ref=opinion&_r=0… #RiseoftheRobots'] = function(test){
     var analysis = compendium.analyse('The machines are coming for your job @zeynep @nytimes http://www.nytimes.com/2015/04/19/opinion/sunday/the-machines-are-coming.html?ref=opinion&_r=0… #RiseoftheRobots');
 

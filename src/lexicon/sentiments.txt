@@ -2459,7 +2459,6 @@ wtf -4
 yeah 1
 yearning 1
 yeees 2
-yes 1
 youthful 2
 yucky -2
 yummy 3

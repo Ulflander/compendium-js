@@ -18,9 +18,13 @@
             if (regexps.hasOwnProperty(k) && raw.match(regexps[k])) {
                 entity = factory.entity(token, index, k);
                 token.attr.entity = sentence.entities.push(entity) - 1;
+                if (entity.type === 'username') {
+                    token.pos = 'NNP';
+                    sentence.tags[index] = 'NNP';
+                }
 
                 // Correct sentence confidence
-                sentence.stats.confidence ++ / sentence.length;
+                sentence.stats.confidence += 1 / sentence.length;
 
                 // Let's be kind and normalize this journo thingie
                 if (k === 'pl') {

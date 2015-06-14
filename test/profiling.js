@@ -63,7 +63,7 @@ exports['pretty crazy movie..'] = function(test) {
 
 exports['Yes please'] = function(test) {
     var analysis = compendium.analyse('Yes please');
-
+    
     test.notEqual(analysis[0].profile.politeness, 0);
     test.equal(analysis[0].profile.dirtiness, 0);
     test.done();

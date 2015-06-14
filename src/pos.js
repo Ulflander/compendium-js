@@ -4,6 +4,7 @@
     var isPlural = compendium.inflector.isPlural,
 
         // Brill's conditions
+        STARTWORD = 0,
         PREV1OR2TAG = 1,
         PREVTAG = 2,
         NEXTTAG = 3,
@@ -46,9 +47,17 @@
             var type = rule.type,
                 tmp,
                 tmp2;
+            // Start word rule is case sensitive
+            if (type === STARTWORD) {
+                if (index === 0 && token === rule.c1) {
+                    tags[index] = rule.to;
+                    return;
+                }
+                return;
+            }
+
 
             token = token.toLowerCase();
-            
             if (type === PREVTAG) {
                 if (index > 0 && tags[index - 1] === rule.c1) {
                     tags[index] = rule.to;
@@ -422,7 +431,7 @@
                         // of first word of sentence, that is capitalized.
                         // Put in other words, an initial NN or JJ is converted into NNP
                         // only if second word is also an NNP.
-                        if (i === 1 && (previous === 'NN' || previous === 'JJ' || previous === 'VB') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
+                        if (i === 1 && (previous === 'NN' || previous === 'NNS' || previous === 'JJ' || previous === 'VB') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
                             tags[i - 1] = 'NNP';
                         }
                         

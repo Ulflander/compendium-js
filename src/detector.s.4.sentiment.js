@@ -50,6 +50,33 @@
             gov = sentence.governor,
             p = sentence.profile;
 
+        // First take in account negation for token scoring
+        for (i = 0; i < l; i ++) {
+            profile = sentence.tokens[i].profile;
+            pos = sentence.tokens[i].pos;
+            norm = sentence.tokens[i].norm;
+            isDirty = dirty.indexOf(norm) > -1;
+            isPolite = polite.indexOf(norm) > -1;
+
+            if (isDirty) {
+                dirtiness ++;
+            } else if (isPolite) {
+                politeness ++;
+            }
+
+            // Handles negation, update token profile with according sentiment score
+            if (profile.negated && pos !== '.' && pos !== 'EM') {
+                // If negative but dirty word, doesn't invert score
+                if (isDirty) {
+                    profile.sentiment = profile.sentiment / 2;
+                // Normal negation: score inverted and reduced
+                } else {
+                    profile.sentiment = -profile.sentiment / 2;
+                }
+            }
+        }
+        
+
         // Main tense + experimental dependency scoring
         if (gov > -1) {
             token = sentence.tokens[gov];
@@ -79,28 +106,9 @@
             profile = sentence.tokens[i].profile;
             pos = sentence.tokens[i].pos;
             norm = sentence.tokens[i].norm;
-            isDirty = dirty.indexOf(norm) > -1;
-            isPolite = polite.indexOf(norm) > -1;
-
-            if (isDirty) {
-                dirtiness ++;
-            } else if (isPolite) {
-                politeness ++;
-            }
 
             // Get token base emphasis and multiply it with global emphasis
             emphasis *= profile.emphasis;
-
-            // Handles negation, update token profile with according sentiment score
-            if (profile.negated && pos !== '.' && pos !== 'EM') {
-                // If negative but dirty word, doesn't invert score
-                if (isDirty) {
-                    profile.sentiment = profile.sentiment / 2;
-                // Normal negation: score inverted and reduced
-                } else {
-                    profile.sentiment = -profile.sentiment / 2;
-                }
-            }
 
             // Check if token is a local emphasis 
             // Note: local emphasis is NOT used by the final sentence sentiment score,
@@ -153,11 +161,11 @@
         p.politeness = politeness / l;
         if (Math.abs(amplitude) > 0.5 && Math.abs(score) < 0.5 && Math.abs(amplitude) > Math.abs(score)) {
             p.label = 'mixed';
-        } else if (score < config.profile.negative_threshold) {
+        } else if (score <= config.profile.negative_threshold) {
             p.label = 'negative';
-        } else if (score > config.profile.positive_threshold) {
+        } else if (score >= config.profile.positive_threshold) {
             p.label = 'positive';
-        } else if (amplitude > config.profile.amplitude_threshold) {
+        } else if (amplitude >= config.profile.amplitude_threshold) {
             p.label = 'mixed';
         }
     });

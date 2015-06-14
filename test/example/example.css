@@ -49,6 +49,15 @@ body {
     font-weight: bold;
 }
 
+.entity-block {
+    position: relative;
+    background: #f2f2f2;
+    border-radius: 5px;
+    padding: 0 5px;
+    margin-right: 1px;
+    float: left;
+}
+
 .types {
     position: absolute;
     right: 0;

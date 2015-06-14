@@ -6,7 +6,10 @@
         }
         var next = sentence.tags[index + 1];
         return next === 'NNP' || next == 'NNPS';
-    };
+    }, 
+        isSuitableToken = function(tag, norm) {
+            return (tag === '&' || tag === 'TO') || (tag === 'CC' && norm !== 'or');
+        };
 
     // Entity detection at the sentence level: 
     // consolidate NNP and NNPS 
@@ -15,6 +18,7 @@
             stats = sentence.stats,
             tag,
             token,
+            norm,
             lastIndex,
             entity;
 
@@ -26,12 +30,13 @@
         for (i = 0; i < l; i ++) {
             tag = sentence.tags[i];
             token = sentence.tokens[i];
+            norm = token.norm;
             if (token.attr.entity > - 1) {
                 entity = null;
             } else if (tag === 'NN') {
                 entity = null;
             } else if (tag === 'NNP' || tag === 'NNPS' || 
-                (!!entity && (tag === '&' || tag === 'CC' || tag === 'TO') && isBeforeProperNoun(sentence, i))) {
+                (!!entity && isSuitableToken(tag, norm) && isBeforeProperNoun(sentence, i))) {
                 if (!!entity) {
                     entity.raw += ' ' + token.raw,
                     entity.norm += ' ' + token.norm,

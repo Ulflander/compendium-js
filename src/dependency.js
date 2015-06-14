@@ -54,6 +54,7 @@
             ['PRP$', 'NN', 'poss'],
             ['RB', 'JJ', 'advmod'],
             ['JJ', 'NN', 'amod'],
+            ['JJ', 'NNS', 'amod'],
             ['JJ', 'NNP', 'amod'],
             ['VBG', 'JJ'],
             ['NN', 'VBZ', 'subj'],
@@ -72,6 +73,7 @@
             ['PRP', 'VBZ', 'obj'],
             ['PRP', 'VBP', 'obj'],
             ['PRP', 'VBD', 'obj'],
+            ['NN', 'IN', 'obj'],
             ['IN', 'VBZ'],
             ['IN', 'VBP'],
             ['IN', 'VBD'],
@@ -81,8 +83,8 @@
             ['JJ', 'VBZ', 'acomp'],
             ['IN', 'VB'],
             ['CC', 'JJ'],
-            ['NN', 'IN', 'obj'],
             ['NNP', 'VB', 'obj'],
+            ['NN', 'VB', 'obj'],
             ['VB', 'VB', 'xcomp']
         ],
 
@@ -338,7 +340,7 @@
             // dependency issue should be solved BEFORE here)
             // 
             // This pass also creates the `dependencies` array 
-            // for each token.
+            // for each token and collect subjects/objects...
             for (i = 0; i < l; i ++) {
                 token = sentence.tokens[i];
                 if (i !== governor) {
@@ -347,6 +349,11 @@
                     }
                     if (token.deps.master !== null) {
                         sentence.tokens[token.deps.master].deps.dependencies.push(i);
+                    }
+                    if (token.deps.type === 'subj') {
+                        sentence.deps.subjects.push(i);
+                    } else if (token.deps.type === 'obj') {
+                        sentence.deps.objects.push(i);
                     }
                 }
             }

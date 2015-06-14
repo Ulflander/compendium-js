@@ -11,6 +11,7 @@ exports['The quick brown fox jumps over the lazy dog.'] = function(test) {
 
     test.equal(analysis.tokens[3].deps.master, 4, '`Fox` should have `jumps` as master');
     test.equal(analysis.tokens[3].deps.type, 'subj', '`Fox` should be subject');
+    test.notEqual(analysis.deps.subjects.indexOf(3), -1, '`Fox` should be in the subjects array');
     
     test.equal(analysis.tokens[1].deps.master, 3, '`quick` should have `fox` as master');
     test.equal(analysis.tokens[1].deps.type, 'amod', '`quick` should be an `amod`: adjectival modifier');
@@ -27,6 +28,7 @@ exports['The quick brown fox jumps over the lazy dog.'] = function(test) {
     
     test.equal(analysis.tokens[8].deps.master, 5, '`dog` should have `over` as master');
     test.equal(analysis.tokens[8].deps.type, 'obj', '`dog` should be object');
+    test.notEqual(analysis.deps.objects.indexOf(8), -1, '`dog` should be in the objects array');
     
     test.equal(analysis.tokens[5].deps.master, 4, '`over` should have `jumps` as master');
     
@@ -71,6 +73,17 @@ exports['do something'] = function(test) {
     test.equal(analysis.tokens[0].deps.master, null, '`do` should be governor');
     test.equal(analysis.tokens[0].deps.governor, true, '`do` should be governor');
     test.equal(analysis.tokens[1].deps.master, 0, '`do` should be master of `something`');
+    test.done();
+};
+exports['this is something'] = function(test) {
+    var analysis = compendium.analyse('this is something')[0];
+
+    test.equal(analysis.governor, 1, 'Sentence governor should be `is`');
+    test.equal(analysis.tokens[1].deps.master, null, '`is` should be governor');
+    test.equal(analysis.tokens[1].deps.governor, true, '`is` should be governor');
+    test.equal(analysis.tokens[0].deps.master, 1, '`this` should have `is` as master');
+    test.equal(analysis.tokens[0].deps.type, 'subj', '`this` should be subject of `is`');
+    test.equal(analysis.tokens[2].deps.master, 1, '`something` should have `is` as master');
     test.done();
 };
 

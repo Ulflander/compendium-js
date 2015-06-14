@@ -97,4 +97,15 @@ exports['Say hello to the Great John, ugh :('] = function(test) {
     
     test.done();
 };
+exports['RT @designplay Goodby, Silverstein\'s new site: http://www.goodbysilverstein.com/ I enjoy it.'] = function(test) {
+    var analysis = compendium.analyse('RT @designplay Goodby, Silverstein\'s new site: http://www.goodbysilverstein.com/ I enjoy it.')[0];
+
+    test.equal(analysis.length, 14);
+    test.deepEqual([analysis.tags], [('UH NNP NNP , NNP POS JJ NN : NN PRP VBP PRP .').split(' ')]);
+    test.equal(analysis.profile.label, 'positive');
+    test.equal(analysis.profile.types.indexOf('imperative'), -1, 'Sentence shouldnt be imperative');
+    test.equal(analysis.profile.types.indexOf('interrogative'), -1, 'Sentence shouldnt be interrogative');
+    test.equal(analysis.tokens[0].attr.entity, -1, 'Initial "RT" is not an entity');
+    test.done();
+};
 

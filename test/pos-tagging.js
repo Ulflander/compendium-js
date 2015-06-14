@@ -10,6 +10,11 @@ exports['None of the money was missing'] = function(test) {
     test.deepEqual(['NN', 'IN', 'DT', 'NN', 'VBD', 'VBG'], compendium.analyse('None of the money was missing')[0].tags);
     test.done();
 };
+exports['Charles Bradford, an analyst'] = function(test) {
+    test.deepEqual(['NNP', 'NNP', ',', 'DT', 'NN'], compendium.analyse('Charles Bradford, an analyst')[0].tags);
+    test.done();
+};
+
 exports['I am saudi'] = function(test) {
     test.deepEqual(['PRP', 'VBP', 'JJ'], compendium.analyse('I am saudi')[0].tags);
     test.done();

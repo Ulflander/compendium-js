@@ -73,7 +73,10 @@
                 },
                 has_negation: false,
                 entities: [],
-                //dependencies: null,
+                deps: {
+                    subjects: [],
+                    objects: []
+                },
                 tokens: [],
                 tags: []
             };

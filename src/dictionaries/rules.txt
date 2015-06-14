@@ -135,7 +135,8 @@ RBR JJR 81 year earlier
 RBR JJR 81 years earlier
 NN VB 17 NN TO
 VBG NN 2 JJR
-CD NN 12 one VBZ
+CD NN 8 DT one
+CD PRP 12 one VBZ
 VBZ NNS 2 PRP$
 VBZ NNS 2 WP$
 VBZ NNS 2 VBZ
@@ -189,9 +190,15 @@ IN RP 8 VBZ out
 IN RP 8 VBG out
 IN RP 8 VBN out
 IN RP 8 VBP out
+IN RP 8 VB off
+IN RP 8 VBZ off
+IN RP 8 VBG off
+IN RP 8 VBN off
+IN RP 8 VBP off
 NN VB 5 will
 JJ VB 5 will
 NN NNP 5 mr.
+NNS VBZ 6 has
 VB NN 5 the
 VBD VBN 15 with
 VBN VBD 6 was
@@ -202,3 +209,5 @@ VBG JJ 14 , JJ
 VBG JJ 14 DT JJ
 VBG JJ 14 , NN
 VBG JJ 14 DT NN
+NNP UH 0 RT
+NNP UH 0 MT
