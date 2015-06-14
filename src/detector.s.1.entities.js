@@ -1,12 +1,12 @@
 !function() {
 
     var isBeforeProperNoun = function (sentence, index) {
-        if (index >= sentence.length) {
-            return false;
-        }
-        var next = sentence.tags[index + 1];
-        return next === 'NNP' || next == 'NNPS';
-    }, 
+            if (index >= sentence.length) {
+                return false;
+            }
+            var next = sentence.tags[index + 1];
+            return next === 'NNP' || next == 'NNPS';
+        }, 
         isSuitableToken = function(tag, norm) {
             return (tag === '&' || tag === 'TO') || (tag === 'CC' && norm !== 'or');
         };
@@ -23,7 +23,7 @@
             entity;
 
         // If sentence is mainly uppercased or capitalized, this strategy cant work
-        if (stats.p_upper > 75 || stats.p_cap > 75) {
+        if (stats.p_upper > 75 || stats.p_cap > 85) {
             return;
         }
 

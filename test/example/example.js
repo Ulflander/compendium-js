@@ -89,7 +89,7 @@
         characteristics.sort(function(a, b) {
             return b.qualifiers.length - a.qualifiers.length;
         })
-        console.log(characteristics);
+        //console.log(characteristics);
 
         for (i = 0, l = sentences.length; i < l; i += 1) {
             sentenceSpan = d.createElement('div');
@@ -132,7 +132,6 @@
             tokenContainer = sentenceSpan;
             for (j = 0, m = sentences[i].tokens.length; j < m; j += 1) {
                 token = sentences[i].tokens[j];
-
                 if (token.attr.entity > -1) {
                     if (inEntity === false || inEntity !== token.attr.entity) {
                         if (inEntity !== false && inEntity !== token.attr.entity) {
@@ -145,6 +144,7 @@
                 } else if (inEntity !== false) {
                     inEntity = false;
                     sentenceSpan.appendChild(tokenContainer);
+                    p.appendChild(sentenceSpan);
                     tokenContainer = sentenceSpan;
                 }
 

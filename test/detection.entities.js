@@ -18,6 +18,18 @@ exports['My invalid IP is 222.22.22.199'] = function(test) {
 exports['Jean-Claud Van Damme or Steven Segal'] = function(test) {
     var analysis = compendium.analyse('Jean-Claud Van Damme or Steven Segal');
     
+    test.notEqual(analysis[0].tokens[0].attr.entity, -1);
+    test.equals(analysis[0].tokens[3].attr.entity, -1);
+    test.notEqual(analysis[0].tokens[4].attr.entity, -1);
+    test.notEqual(analysis[0].tokens[0].attr.entity, analysis[0].tokens[4].attr.entity);
+    test.done();
+};
+exports['Jean Van Damme or Steven Segal'] = function(test) {
+    var analysis = compendium.analyse('Jean Van Damme or Steven Segal');
+    
+    test.notEqual(analysis[0].tokens[0].attr.entity, -1);
+    test.equals(analysis[0].tokens[3].attr.entity, -1);
+    test.notEqual(analysis[0].tokens[4].attr.entity, -1);
     test.notEqual(analysis[0].tokens[0].attr.entity, analysis[0].tokens[4].attr.entity);
     test.done();
 };
