@@ -7,10 +7,6 @@ English NLP for Node.js and the browser.
 
 35k gzipped, Part-of-Speech tagging (92% on Penn treebank), entity recognition, sentiment analysis and more, MIT licensed.
 
-[![Compendium demo](http://laumonier.co/compendium-js/test/example/compendium.png)](http://laumonier.co/compendium-js/test/example/example.html)
-
-Test the interactive demo [here](http://laumonier.co/compendium-js/test/example/example.html).
-
 ##### Summary
 
 - [Client-side install](#client-side-install)
