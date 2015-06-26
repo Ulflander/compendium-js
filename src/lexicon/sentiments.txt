@@ -33,6 +33,7 @@ accidents -2
 accomplish 2
 accomplished 2
 accomplishes 2
+accurate 1
 accusation -2
 accusations -2
 accuse -2

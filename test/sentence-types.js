@@ -126,7 +126,7 @@ exports['Various imperative test cases'] = function(test) {
 
 exports['Various approval test cases'] = function(test) {
     var cases = [
-        'yes', 'yeah', 'yep', 'sure', 'ok', 'go',
+        'yes', 'yeah', 'yep', 'sure', 'ok', 'go', 'aye',
         'do it', 'awesome', 'perfect', 'well yup', 
         'roger that', 'indeed', 'hell yeah', '(y)',
         'sure thing', 'oki doki', 'alright', 'all right',

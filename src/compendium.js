@@ -49,7 +49,9 @@
             'seriously',
             'very',
             'horribly',
-            'even'
+            'even',
+            'overly',
+            'extremely'
         ],
 
         // Thanks to https://github.com/spencermountain/nlp_compromise

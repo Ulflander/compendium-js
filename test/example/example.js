@@ -30,6 +30,9 @@
             label,
             html,
             tmp,
+            tmp2,
+            deps2,
+            tmp3,
             things = {},
             characteristics = [],
             norm,
@@ -72,10 +75,25 @@
                     }
                     tmp2 = sentences[i].tokens[tmp.deps.master];
                     if (tmp2 && tmp2.pos.indexOf('VB') === 0 && tmp2.profile.sentiment !== 0) {
-                        things[norm].qualifiers.push(tmp2.norm);
-                        things[norm].total += 1;
-                        things[norm].sentiment += tmp2.profile.sentiment;
-                        things[norm].score = things[norm].sentiment / things[norm].total;
+                        console.log(tmp2);
+                        if (tmp2.attr.infinitive === 'be') {
+                            for (k = 0, n = tmp2.deps.dependencies.length; k < n; k += 1) {
+                                if (tmp2.deps.dependencies[k] !== j) {
+                                    tmp3 = sentences[i].tokens[tmp2.deps.dependencies[k]];
+                                    if (tmp3.deps.type === 'acomp' || tmp3.deps.type === 'obj') {
+                                        things[norm].qualifiers.push((tmp3.profile.negated ? 'not ' : '') + tmp3.norm);
+                                        things[norm].total += 1;
+                                        things[norm].sentiment += tmp3.profile.sentiment;
+                                        things[norm].score = things[norm].sentiment / things[norm].total;
+                                    }
+                                }
+                            }
+                        } else {
+                            things[norm].qualifiers.push((tmp2.profile.negated ? 'not ' : '') + tmp2.norm);
+                            things[norm].total += 1;
+                            things[norm].sentiment += tmp2.profile.sentiment;
+                            things[norm].score = things[norm].sentiment / things[norm].total;
+                        }
                     }
                 }
             }
@@ -89,7 +107,7 @@
         characteristics.sort(function(a, b) {
             return b.qualifiers.length - a.qualifiers.length;
         })
-        //console.log(characteristics);
+        console.log(characteristics);
 
         for (i = 0, l = sentences.length; i < l; i += 1) {
             sentenceSpan = d.createElement('div');
@@ -143,7 +161,6 @@
                     }
                 } else if (inEntity !== false) {
                     inEntity = false;
-                    sentenceSpan.appendChild(tokenContainer);
                     p.appendChild(sentenceSpan);
                     tokenContainer = sentenceSpan;
                 }

@@ -260,7 +260,7 @@ exports['this is a really good, freaking awesome day'] = function(test) {
     test.equal(analysis.tokens[4].deps.master, 8, '`good` should have `day` as master');
 
     // Here is an ambiguous one
-    // Freaking is so farin this context tagged as JJ
+    // Freaking is so far in this context tagged as JJ
     // JJ is a direct dependency of NN so day is master.
     // One could argue that freaking is, in this precise example, a dependency of
     // awesome. This corner case is not yet handled by Compendium.
