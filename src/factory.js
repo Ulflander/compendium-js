@@ -15,19 +15,21 @@
                 meta: {}
             };
         },
-        sentence: function(str) {
+        sentence: function(str, language) {
             return {
-                // Time spent for sentence analysis 
+                // Language
+                language: language,
+                // Time spent for sentence analysis
                 // (bullshit because some detectors are not taken in account).
                 time: 0,
                 // Count of tokens in the sentence
                 length: 0,
-                // Governor of the sentence 
+                // Governor of the sentence
                 // (dependency parsing)
                 governor: -1,
                 // Raw sentence string
                 raw: str,
-                // Those statistics are used by the 
+                // Those statistics are used by the
                 // detectors (entity detection, quality evalution)
                 stats: {
                     // Number of words, e.g. tokens that are not emoticons or punctuation
@@ -61,11 +63,11 @@
                     // Types. A sentence can have many types:
                     // (e.g. `imperative` + `refusal` for `don't do it` or
                     // `foreign` + `interrogative` for `Suis-je le monstre?`)
-                    // `imperative`, 
-                    // `declarative`, 
-                    // `approval`, 
-                    // `refusal`, 
-                    // `interrogative`, 
+                    // `imperative`,
+                    // `declarative`,
+                    // `approval`,
+                    // `refusal`,
+                    // `interrogative`,
                     // `headline`
                     // `foreign`
                     types: [],
@@ -80,7 +82,7 @@
                 tokens: [],
                 tags: []
             };
-        }, 
+        },
         token: function(raw, pos) {
             var norm = raw.toLowerCase();
             return {

@@ -6,13 +6,13 @@
             }
             var next = sentence.tags[index + 1];
             return next === 'NNP' || next == 'NNPS';
-        }, 
+        },
         isSuitableToken = function(tag, norm) {
             return (tag === '&' || tag === 'TO') || (tag === 'CC' && norm !== 'or');
         };
 
-    // Entity detection at the sentence level: 
-    // consolidate NNP and NNPS 
+    // Entity detection at the sentence level:
+    // consolidate NNP and NNPS
     detectors.add('s', function(sentence, index, sentences) {
         var i, l = sentence.length,
             stats = sentence.stats,
@@ -35,7 +35,7 @@
                 entity = null;
             } else if (tag === 'NN') {
                 entity = null;
-            } else if (tag === 'NNP' || tag === 'NNPS' || 
+            } else if (tag === 'NNP' || tag === 'NNPS' ||
                 (!!entity && isSuitableToken(tag, norm) && isBeforeProperNoun(sentence, i))) {
                 if (!!entity) {
                     entity.raw += ' ' + token.raw,

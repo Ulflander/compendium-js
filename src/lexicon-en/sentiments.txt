@@ -1447,7 +1447,6 @@ loathe -3
 loathed -3
 loathes -3
 loathing -3
-lobby -2
 lobbying -2
 lol 3
 lonely -2

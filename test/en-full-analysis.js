@@ -3,15 +3,19 @@ var compendium = require('../dist/compendium.minimal.js');
 
 
 exports['Joe Carter went to the Toronto International Film Festival to go see Inception.'] = function(test) {
-    var expectedPoS = [
+    var str = 'Joe Carter went to the Toronto International Film Festival to go see Inception.',
+        expectedPoS = [
             ('NNP NNP VBD TO DT NNP NNP NNP NNP TO VB VB NNP .').split(' ')
         ],
-        analysis = compendium.analyse('Joe Carter went to the Toronto International Film Festival to go see Inception.')[0];
+        analysis = compendium.analyse(str)[0];
+
+    // Expect returned raw string to be the same as the sentence
+    test.equal(analysis.raw, 'Joe Carter went to the Toronto International Film Festival to go see Inception.');
 
     // Check tokenization + PoS
     test.equal(analysis.length, 14);
     test.deepEqual([analysis.tags], expectedPoS);
-    
+
     // Check token flags
     test.equal(analysis.tokens[1].attr.is_verb, false);
     test.equal(analysis.tokens[1].attr.is_noun, true);
@@ -30,7 +34,7 @@ exports['Joe Carter went to the Toronto International Film Festival to go see In
     test.equal(analysis.profile.label, 'neutral');
     test.equal(analysis.profile.politeness, 0);
     test.equal(analysis.profile.dirtiness, 0);
-    
+
     // Check entity details
     test.equal(analysis.entities.length, 3);
     test.equal(analysis.entities[0].raw, 'Joe Carter');
@@ -94,7 +98,7 @@ exports['Say hello to the Great John, ugh :('] = function(test) {
     test.deepEqual([analysis.tags], [('VB UH TO DT NNP NNP , UH EM').split(' ')]);
     test.equal(analysis.profile.label, 'negative');
     test.notEqual(analysis.profile.types.indexOf('imperative'), -1, 'Sentence should be imperative');
-    
+
     test.done();
 };
 exports['RT @designplay Goodby, Silverstein\'s new site: http://www.goodbysilverstein.com/ I enjoy it.'] = function(test) {

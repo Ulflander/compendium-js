@@ -1,9 +1,9 @@
-[![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) [![npm version](https://badge.fury.io/js/compendium-js.svg)](http://badge.fury.io/js/compendium-js) 
+[![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) [![npm version](https://badge.fury.io/js/compendium-js.svg)](http://badge.fury.io/js/compendium-js)
 [![Project chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ulflander/compendium-js)
 
 # Compendium
 
-English NLP for Node.js and the browser. 
+English NLP for Node.js and the browser.
 
 35k gzipped, Part-of-Speech tagging (92% on Penn treebank), entity recognition, sentiment analysis and more, MIT licensed.
 
@@ -30,12 +30,12 @@ Or clone this repo and copy the `dist/compendium.minimal.js` file into your proj
 
 ##### Step 2: include the lib in your HTML page
 
-    <script type="text/javascript" 
+    <script type="text/javascript"
         src="path/to/compendium/dist/compendium.minimal.js"></script>
 
 **In order to ensure that Compendium will work as intended, you must specify the encoding of the HTML page as UTF-8.**
 
-##### Step 3: enjoy     
+##### Step 3: enjoy
 
 Call the `compendium.analyse` function with a string as parameter, and get a complete analysis of the text.
 
@@ -50,13 +50,13 @@ Call the `compendium.analyse` function with a string as parameter, and get a com
 ##### Step 2: enjoy
 
     var compendium = require('compendium-js');
-        
+
     console.log(compendium.analyse('Hello world :)'));
 
 
 ## API
 
-The main function to call is `analyse`. 
+The main function to call is `analyse`.
 
 It takes a string as unique argument, and returns an array containing an analysis for each sentence. For example, calling:
 
@@ -73,7 +73,7 @@ will return an array like this one:
            p_upper: 0,                  // Percentage of uppercased tokens, e.g. `HELLO`
            p_cap: 50,                   // Percentage of capitalized tokens, e.g. `Hello`
            avg_length: 3 },             // Average token length
-        profile:                        
+        profile:
          { label: 'neutral',            // Sentiment: `negative`, `neutral`, `positive`, `mixed`
            sentiment: 0,                // Sentiment score
            amplitude: 0,                // Sentiment amplitude
@@ -93,7 +93,7 @@ will return an array like this one:
          [ { raw: 'My',                 // Raw token
             norm: 'my',                 // Normalized
             pos: 'PRP$',                // PoS tag
-            profile:                    
+            profile:
              { sentiment: 0,            // Sentiment score
                emphasis: 1,             // Emphasis multiplier
                negated: false,          // Is negated
@@ -108,6 +108,7 @@ will return an array like this one:
             // ... Other tokens
             //
        ] } ]
+
 
 ## Part-of-Speech tags definition
 

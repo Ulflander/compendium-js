@@ -27,7 +27,7 @@
             for (i = 0, l = arr.length; i < l; i ++) {
                 item = arr[i].split(' ');
                 m = item.length - 1;
-                pt = item[1].trim(),
+                pt = m > 0 ? item[1].trim() : '',
                 s = 0;
                 c = null;
 
@@ -50,9 +50,9 @@
                 };
             }
 
-            // Loop over compendium content 
+            // Loop over compendium content
             // and augment lexicon when possible:
-            // works only with objects whose keys are the words 
+            // works only with objects whose keys are the words
             // and values are either a part of speech tag
             // or an integer (POS tag `CD`)
             for (i in cpd) {
@@ -95,7 +95,6 @@
                 if (!tmp) {
                     continue;
                 }
-
 
                 if (result.hasOwnProperty(item)) {
                     s = result[item].sentiment;
@@ -140,6 +139,7 @@
                     s = result[item].sentiment;
                 }
                 m = item[0];
+
                 for (j = 0; j < 5; j ++) {
                     item[j].split('/').map(function(o) {
                         if (!result.hasOwnProperty(o)) {
@@ -149,11 +149,14 @@
                                 condition: null,
                                 infinitive: m
                             }
+                        } else if (!result[o].infinitive) {
+                            result[o].infinitive = m;
+                            result[o].sentiment = s;
                         }
                     });
                 }
             }
-            
+
 
             // Register emoticons in compendium for further use by lexer
             cpd.emots = emots;
@@ -214,7 +217,7 @@
                     res.push(arr[i]);
                 } else {
                     rplt.push(arr[i]);
-                } 
+                }
             }
             cpd.abbrs = res;
             cpd.abbrs_rplt = rplt;
@@ -237,12 +240,12 @@
             }
             cpd.synonyms = result;
         };
-   
+
     brills(cpd.rules);
     suffixes(cpd.suffixes);
     abbrs(cpd.abbrs);
     dirty(cpd.dirty);
     synonyms(cpd.synonyms);
     nationalities(cpd.nationalities);
-    compendium.lexicon = parse("@@lexicon"); 
+    compendium.lexicon = parse("@@lexicon");
 }();

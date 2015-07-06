@@ -49,7 +49,7 @@
 
 
     extend(compendium.lexer, {
-        
+
         // Entities regexps
         regexps: {
             email: '\\s([^\\s]+@[^\\s]+\.[a-z]+)',
@@ -58,7 +58,7 @@
             hashtag: '\\s(#[a-z0-9_]+)',
             url: '\\s((https?|ftp):\/\/[\-a-z0-9+&@#\/%\?=~_|!:,\.;]*[\-a-z0-9+&@#\/%=~_|])',
             ip: '\\s(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5]))\\s',
-            // Political affiliation
+            // Political affiliation, english only
             pl: '\\s([rd]-([a-z]+\\.{0,1})+)'
         },
 
@@ -71,12 +71,12 @@
                 s,
                 sentences = [];
 
-            // Loop onto result 
+            // Loop onto result
             // - merge forward when necessary
             // - cleanup
             for (i = 0; i < l; i ++) {
                 s = arr[i].trim();
-                
+
                 // If an abreviation or acronym, merge forward
                 if (s.match(abbrev_regexp) || s.match(/[ |\.][A-Za-z]\.?$/)) {
                     // If next token is not a letter
@@ -93,14 +93,14 @@
             return sentences;
         },
 
-        // UTF-8 compliant tokens splitter: parses sentence char by char after having applied general utility 
+        // UTF-8 compliant tokens splitter: parses sentence char by char after having applied general utility
         // regexps. Will seperate emojis into tokens.
         splitTokens: function(str) {
-            var i, 
-                l = str.length, 
+            var i,
+                l = str.length,
                 curr,
                 // result
-                res = [], 
+                res = [],
                 // trick for testing on simpler regexps
                 restr = ' ' + str + ' ',
                 // trick
@@ -142,7 +142,7 @@
                 if (spotted.hasOwnProperty(i)) {
                     push(curr, spotted[i].content);
                     i += spotted[i].length - 1;
-                } else 
+                } else
                 // TODO: benchmark if word_boundaries.indexOf more perf than str.match(regexp)
                 if (word_boundaries.indexOf(str[i]) > -1) {
                     push(curr, str[i]);
@@ -157,10 +157,10 @@
         },
 
         // Parse each token
-        tokens: function(sentence) {
-            var arr = lexer.splitTokens(sentence), 
-                i, 
-                l = arr.length, 
+        tokens: function(sentence, language) {
+            var arr = lexer.splitTokens(sentence),
+                i,
+                l = arr.length,
                 tok,
                 in_acronym = false,
                 result = [],
@@ -168,12 +168,12 @@
                 next = '',
                 count = 0;
 
-            // Loop onto result 
+            // Loop onto result
             // - cleanup
             // - merge back when necessary:
             //      * Floats
             //      * Acronyms
-            //      * Simmilar 
+            //      * Simmilar
             for (i = 0; i < l; i ++) {
                 // Cleanup
                 tok = arr[i].trim();
@@ -194,8 +194,8 @@
                 } else {
                     next = '';
                 }
-                
-                // If dot in float or full float or thousands
+
+                // If dot in float or full float or thousands - multilingual
                 if (((tok === '.' || tok === ',') && previous.match(cd) && next.match(acd)) ||
                     (tok.match(cd) && previous.match(cdf))) {
                     in_acronym = false;
@@ -204,35 +204,20 @@
                 }
 
                 // If abbreviation, merge back .
-                // only if . is not last char of the sentence
+                // only if . is not last char of the sentence - multilingual (form compendium.compendium)
                 if (tok === '.' && i < l - 1 && count > 0 && abbreviations.indexOf(previous.toLowerCase()) > -1) {
                     in_acronym = false;
                     result[count - 1] += tok;
                     continue;
                 }
 
-                // If a dot and in acronym, merge back
+                // If a dot and in acronym, merge back - multilingual
                 if (in_acronym && i < l -1 && tok.length === 1) {
                     result[count - 1] += tok;
                     continue;
                 }
 
-                // If token is ' check for contraction.
-                // If is contraction, merge forward
-                if (tok === '\'' && contractions.indexOf(next) > -1) {
-                    
-                    // If t, check for 'n' in previous
-                    if (next === 't' && previous.lastIndexOf('n') === previous.length - 1) {
-                        arr[i + 1] = 'n' + tok + next;
-                        result[result.length - 1] = previous.slice(0, -1);
-                    } else {
-                        arr[i + 1] = tok + next;
-                    }
-
-                    continue;
-                }
-
-                // If any punc mark or not a letter
+                // If any punc mark or not a letter - multilingual
                 if (tok.match(/^\W+$/gi)) {
                     in_acronym = false;
                     // If same than previous one, merge back
@@ -240,32 +225,19 @@
                         result[count - 1] += tok;
                         continue;
                     }
-                // Else if single letter and in acronym, merge back
+                // Else if single letter and in acronym, merge back - multilingual
                 } else if (tok.match(/^[A-Za-z]{1}$/g) && i < l - 1 && next === '.') {
                     in_acronym = true;
                 }
 
-                // TODO: refactor
-                // Special tokens
-                if (tok === 'cant') {
-                    // Default case: add token
-                    result.push('can', 'n\'t');
-                    count += 2;
-                } else if (tok === 'cannot') {
-                    // Default case: add token
-                    result.push('can', 'not');
-                    count += 2;
-                } else if (tok === 'gonna') {
-                    // Default case: add token
-                    result.push('gon', 'na');
-                    count += 2;
-                } else if (!!tok) {
+                if (!!tok) {
                     result.push(tok);
                     count ++;
                 }
             }
-            
-            return result;
+
+            // Post process result befor returning it
+            return lexer.postprocess(result);
         },
 
         // Parse a string into arrays of tokens in an array of sentences.
@@ -274,17 +246,23 @@
          *
          * @memberOf compendium.lexer
          * @param  {String} str A string to be tokenized
+         * @param  {String} language Language to be used
+         * @param  {Boolean} sentenceOnly If `true`, won't lex tokens
          * @return {Array}      A matrix of tokens per sentences.
          */
-        lex: function(str) {
+        lex: function(str, language, sentenceOnly) {
             var sentences = lexer.sentences(str), i, l = sentences.length;
+            if (!!sentenceOnly) {
+                return sentences;
+            }
+
             for (i = 0; i < l; i ++) {
-                sentences[i] = lexer.tokens(sentences[i]);
+                sentences[i] = lexer.tokens(sentences[i], language);
             }
             return sentences;
         }
     });
-    
+
 
     /**
      * Parse a string into a matrix of tokens per sentences. Alias of {@link compendium.lexer.lex}.
