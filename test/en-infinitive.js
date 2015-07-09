@@ -9,3 +9,9 @@ exports['This is good'] = function(test) {
     test.equal(analysis.tokens[1].attr.infinitive, 'be');
     test.done();
 };
+
+exports['tell me a joke'] = function(test) {
+    var analysis = compendium.analyse('tell me a joke')[0];
+    test.equal(analysis.tokens[0].attr.infinitive, 'tell');
+    test.done();
+};

@@ -17,9 +17,9 @@
 
         lc = raw.toLowerCase();
         l = lc.length;
-     
+
         // Test abbreviation
-        if (l > 1 && 
+        if (l > 1 &&
             (raw.indexOf('.') === l - 1 && (i = cpd.abbrs.indexOf(lc.slice(0, l - 1))) > -1)) {
             token.attr.abbr = true;
             norm = cpd.abbrs_rplt[i];
@@ -47,7 +47,7 @@
             emphasis = 1.2;
         } else if (pos === 'UH') {
             emphasis = 1.1;
-        } else if (pos.length === 3 && pos.indexOf('VB') === 0) {
+        } else if (pos.indexOf('VB') === 0) {
             token.attr.infinitive = inflector.infinitive(norm);
         }
 
