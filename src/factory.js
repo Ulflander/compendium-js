@@ -84,7 +84,18 @@
             };
         },
         token: function(raw, pos) {
-            var norm = raw.toLowerCase();
+            var norm = raw.toLowerCase(),
+                tense = null,
+                verb = pos.indexOf('VB') === 0;
+
+            if (pos === 'VBD' || pos === 'VBN') {
+                tense = 'past';
+            } else if (pos === 'VBG') {
+                tense = 'gerund';
+            } else {
+                tense = 'present';
+            }
+
             return {
                 raw: raw,
                 norm: norm,
@@ -99,7 +110,8 @@
                 attr: {
                     acronym: false,
                     abbr: false,
-                    is_verb: pos.indexOf('VB') === 0,
+                    is_verb: verb,
+                    tense: tense,
                     infinitive: null,
                     is_noun: pos.indexOf('NN') === 0,
                     plural: null,

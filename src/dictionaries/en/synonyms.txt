@@ -14,3 +14,5 @@ today 2day
 great gr8
 later l8r
 thanks thx thks tx
+are \'re
+am \'m

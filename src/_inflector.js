@@ -5,7 +5,7 @@
 
     /*
         The following singularization/pluralization regexp rules have
-        been extracted from http://code.google.com/p/inflection-js/ 
+        been extracted from http://code.google.com/p/inflection-js/
         and then improved given test unit results.
      */
 
@@ -132,7 +132,7 @@
         /*
             Conjugation methods. Following methods are experimental for now.
         */
-   
+
         VBZ = 'VBZ',
         VBG = 'VBG',
         VBN = 'VBN',
@@ -322,7 +322,7 @@
 
 
         /**
-         * Conjugate a verb from its infinitive to past tense. 
+         * Conjugate a verb from its infinitive to past tense.
          * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBN');`.
          *
          * @memberOf compendium.inflector
@@ -335,7 +335,7 @@
 
 
         /**
-         * Conjugate a verb from its infinitive to its gerund. 
+         * Conjugate a verb from its infinitive to its gerund.
          * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBG');`.
          *
          * @memberOf compendium.inflector
@@ -347,7 +347,7 @@
         },
 
         /**
-         * Conjugate a verb from its infinitive to the third-person present tense. 
+         * Conjugate a verb from its infinitive to the third-person present tense.
          * This function is a shortcut for `compendium.inflector.conjugate(vb, 'VBZ');`.
          *
          * @memberOf compendium.inflector
@@ -369,7 +369,11 @@
             if (!!item && item.hasOwnProperty('infinitive')) {
                 return item['infinitive'];
             }
-            
+
+            if (vb === 'are' || vb === 'am' || vb === '\'s') {
+                return 'be';
+            }
+
             // Otherwise return null
             return null;
         }
