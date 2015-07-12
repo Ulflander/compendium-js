@@ -178,6 +178,7 @@ VBP IN 8 RBR like
 VBP IN 8 VBD like
 VBP IN 8 VBN like
 VBP IN 8 RB like
+VBP IN 8 VBZ like
 IN WDT 12 that VBP
 IN WDT 12 that VBZ
 WDT IN 12 that DT

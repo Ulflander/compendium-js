@@ -27,7 +27,7 @@ exports['Eating eggplant. Why bother?'] = function(test) {
     test.done();
 };
 
-// Bug fix test: satisfied is in sentiment lexicon, should have 
+// Bug fix test: satisfied is in sentiment lexicon, should have
 // positive token score
 exports['I am very satisfied.'] = function(test) {
     var analysis = compendium.analyse('I am very satisfied.');
@@ -63,12 +63,20 @@ exports['pretty crazy movie..'] = function(test) {
 
 exports['Yes please'] = function(test) {
     var analysis = compendium.analyse('Yes please');
-    
+
     test.notEqual(analysis[0].profile.politeness, 0);
     test.equal(analysis[0].profile.dirtiness, 0);
     test.done();
 };
 
+exports['"I like that" vs "It\'s like that".'] = function(test) {
+    var a1 = compendium.analyse('I like that'),
+        a2 = compendium.analyse('It\'s like that');
+
+    test.equal(a1[0].profile.label, 'positive');
+    test.equal(a2[0].profile.label, 'neutral');
+    test.done();
+};
 exports['I\'m happy.'] = function(test) {
     var analysis = compendium.analyse('I\'m happy.');
 

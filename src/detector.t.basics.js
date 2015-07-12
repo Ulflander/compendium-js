@@ -53,7 +53,8 @@
 
         // Sentiment score
         // Only if not NNP or NNPS ("Dick Cheney" is not about a dick)
-        if (pos !== 'NNP' && pos !== 'NNPS') {
+        // also not if preposition ("it's like I can" - like is IN, no sentiment attached)
+        if (pos !== 'NNP' && pos !== 'NNPS' && pos !== 'IN') {
             // Get one from lexicon
             if (lexicon.hasOwnProperty(norm)) {
                 i = lexicon[norm];
