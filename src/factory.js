@@ -129,9 +129,10 @@
         },
 
         // Internal, used by PoS tagger to represent a tag probability
-        tag: function(tag, confidence) {
+        tag: function(tag, confidence, norm) {
             return {
                 tag: tag || 'NN',
+                norm: norm,
                 confidence: confidence || 0
             }
         }

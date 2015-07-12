@@ -4,8 +4,8 @@ Run PoS test against penn treebank
 
 JSON file took from nlp_compromise (thanks a bunch!).
 
-It's good to note that some of the Penn Treebank dataset sentences are not perfectly tagged, so measure 
-of deviation from Penn Treebank is quite subjective, as Compendium may be good where Penn is wrong 
+It's good to note that some of the Penn Treebank dataset sentences are not perfectly tagged, so measure
+of deviation from Penn Treebank is quite subjective, as Compendium may be good where Penn is wrong
 (in a VERY LITTLE proportion.. 0.1 to 0.3% probably on used test set). Examples of Penn errors:
 
 - Too much money is at stake for program traders to give up. - give/VB up/IN where it should be give/VB up/RP
@@ -22,29 +22,29 @@ Result history:
         > makes sense but interesting: new brill rules provided a great improvement in minimal
         mode but a slight decline in full mode - this is the limit of rules over a lexicon
 
-- April 17th, 1959 sentences: 
+- April 17th, 1959 sentences:
     Minimal:    90.65% exact tags, 352 exact sentences, 0.72ms av. per sentence
     Full:       92.74% exact tags, 518 exact sentences, 0.36ms av. per sentence
 
         > would be worth the check why the full mode is a lot more fast - instinct says because
-        likely initial lexicon search is successful, so it doesn't search for variations. Trie 
+        likely initial lexicon search is successful, so it doesn't search for variations. Trie
         lexicon will probably make both modes faster.
 
-- April 19th, 1947 sentences: 
+- April 19th, 1947 sentences:
     Minimal:    90.68% exact tags, 355 exact sentences, 0.75ms av. per sentence
     Full:       93.14% exact tags, 565 exact sentences, 0.36ms av. per sentence
 
         > Lexer improvements made an appreciable difference in full mode: +0.4%.
 
-- April 19th: 
+- April 19th:
     Minimal:    91.74% exact tags, 434/1949 exact sentences, 1.04ms av. per sentence
     Full:       94.35% exact tags, 562/1523 exact sentences, 0.83ms av. per sentence
 
-        > Whole set of new rules and vocabulary in compendium, more granularity on existing 
+        > Whole set of new rules and vocabulary in compendium, more granularity on existing
         rules (verbs inference, less suffixes...)
         > Lighter embedded lexicons in both modes
 
-- April 23th: 
+- April 23th:
     Minimal:    91.77% exact tags, 435/1949 exact sentences, 1.38ms av. per sentence
     Full:       94.37% exact tags, 564/1523 exact sentences, 1.15ms av. per sentence
 
@@ -53,36 +53,36 @@ Result history:
     Full:       94.13% exact tags, 551/1523 exact sentences, 1.57ms av. per sentence
 
         > Slight decrease for the last week, but on the other hand, Compendium gained a lot
-        of features (verbs inflection, synonyms...). Will regain a lot on next round of 
+        of features (verbs inflection, synonyms...). Will regain a lot on next round of
         new rules
 
 - May 8th:
     Minimal:    92.32% exact tags, 480/1949 exact sentences, 1.90ms av. per sentence
     Full:       94.37% exact tags, 772/1546 exact sentences, 1.57ms av. per sentence
 
-        > New increase! A 0.80% gain in minimal mode, only by using simpler inferences 
+        > New increase! A 0.80% gain in minimal mode, only by using simpler inferences
         on composed words. Almost no change in full mode.
 
 - May 10th:
     Minimal:    92.52% exact tags, 506/1949 exact sentences, 1.79ms av. per sentence
     Full:       94.58% exact tags, 611/1546 exact sentences, 2.58ms av. per sentence
 
-        > Ok, contrasted results after insertion of irregular verbs. First a decrease to 91%, 
-        then has been hard to reach again the previous score - lot of new rules to solve 
+        > Ok, contrasted results after insertion of irregular verbs. First a decrease to 91%,
+        then has been hard to reach again the previous score - lot of new rules to solve
         newly found issues.
 
-        The decrease following addition of verbs was due to the fact that new automated verbs 
-        inflections to populate the lexicon replaced some original lexicon terms, whose 
-        statistical tag was not a verb-related one, but rather noun or adjective. Here is again 
+        The decrease following addition of verbs was due to the fact that new automated verbs
+        inflections to populate the lexicon replaced some original lexicon terms, whose
+        statistical tag was not a verb-related one, but rather noun or adjective. Here is again
         a limit of rule-based processors versus machine learning based one.
 
-- May 16th: 
+- May 16th:
     Minimal:    92.36% exact tags, 499/1949 exact sentences, 1.90ms av. per sentence
     Full:       94.37% exact tags, 586/1546 exact sentences, 2.02ms av. per sentence
 
     > Yet another slight decrease, due to support of lot of new features in v0.0.11
 
-- May 17th: 
+- May 17th:
     Minimal:    92.53% exact tags, 477/1822 exact sentences, 2.10ms av. per sentence
     Full:       94.39% exact tags, 584/1546 exact sentences, 2.05ms av. per sentence
 
@@ -92,23 +92,29 @@ Result history:
     Minimal:    92.40% exact tags, 497/1978 exact sentences, 2.08ms av. per sentence
     Full:       94.22% exact tags, 676/1914 exact sentences, 1.99ms av. per sentence
 
-    > Slight decrease but good news! Finally found why so much varying penn test sentences 
-    available: due to the way emoticons regexps were applied. Seems liked lexer fix in 
-    commit #0e8091 solved the issue, and now a lot more sentences are available for tests, 
+    > Slight decrease but good news! Finally found why so much varying penn test sentences
+    available: due to the way emoticons regexps were applied. Seems liked lexer fix in
+    commit #0e8091 solved the issue, and now a lot more sentences are available for tests,
     in particular in full mode.
 
 - May 29th:
     Minimal:    92.54% exact tags, 597/2455 exact sentences, 2.10ms av. per sentence
     Full:       94.55% exact tags, 852/2370 exact sentences, 2.39ms av. per sentence
 
-    > Last rounds of improvements were not focused at all on PoS tagging, however 
-    new rules introduced for other purpose led to a slight improvement in statistics 
+    > Last rounds of improvements were not focused at all on PoS tagging, however
+    new rules introduced for other purpose led to a slight improvement in statistics
     PoS tagging stats.
+
+- July 12th:
+    Minimal:    92.57% exact tags, 600/2455 exact sentences, 2.92ms av. per sentence
+    Full:       94.56% exact tags, 852/2370 exact sentences, 3.33ms av. per sentence
+
+    > Regular check before multilingual mode change and multichar reduction.
 
 */
 
 var data = require("./penn_treebank").data,
-    compendium = require('../../build/compendium.minimal.js'),
+    compendium = require('../../build/compendium.js'),
     toPoSArray = function(arr) {
         var res = [], i, l = arr.length;
         for (i = 0; i < l; i += 1) {
@@ -159,7 +165,7 @@ for (var k in data) {
     cTotalTime += cpd_pos.time;
 
     var i, j, m = penn_pos.length, tags = cpd_pos.tags, n = tags.length, failed = false;
-    
+
     if (m !== n) {
         cFailed += 1;
         failures.len += 1;
@@ -178,7 +184,7 @@ for (var k in data) {
         if ((tags[i] === '$' && penn_pos[i] === 'CD') ||
             (tags[i] === 'SYM' && tk === '%')) {
             cSuccessTags += 1;
-        } else 
+        } else
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
@@ -239,7 +245,7 @@ for (i = 0; i < 50; i += 1) {
 }
 
 
-// Final 
+// Final
 console.log('Tags recognized: ', (cSuccessTags * 100 / cTotalTags) + '% on ', cTotal - failures.len ,' sentences (', cSuccess , ' fully good)');
 console.log('Average time: ', cTotalTime / cTotal);
 

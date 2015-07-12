@@ -36,9 +36,24 @@
         rules = cpd.rules,
         rulesLength = rules.length,
         suffixes = cpd.suffixes,
-        suffixesLength = suffixes.length;
+        suffixesLength = suffixes.length,
+
+
+        removeRepetitiveChars = function(token) {
+            var str = token.replace(/(.)\1{2,}/g, "$1$1");
+            if (compendium.lexicon.hasOwnProperty(str)) {
+                return str;
+            }
+            str = token.replace(/(.)\1{1,}/g, "$1");
+            if (compendium.lexicon.hasOwnProperty(str)) {
+                return str;
+            }
+
+            return null;
+        };
 
     extend(pos, {
+
 
         applyRule: function(rule, token, tag, index, tokens, tags) {
             if (rule.from !== tag) {
@@ -231,7 +246,9 @@
                 tl,
                 lower,
                 tmp;
-            
+
+            tagObject.norm = token;
+
             if (token.length > 1) {
                 tag = null;
                 for (j = 0, tl = emots.length; j < tl; j ++) {
@@ -261,6 +278,19 @@
                 if (!!tag && tag !== '-') {
                     tagObject.tag = tag;
                     tagObject.confidence = 0.80;
+                    return tagObject;
+                }
+            }
+
+            // Test multichar
+            if (lower.match(/(\w)\1+/g)) {
+                tmp = removeRepetitiveChars(lower);
+                if (!!tmp) {
+                    tagObject.norm = tmp;
+                    tag = compendium.lexicon[tmp];
+
+                    tagObject.tag = tag;
+                    tagObject.confidence = 0.7;
                     return tagObject;
                 }
             }
@@ -309,6 +339,7 @@
         // 3. Apply Brill's conditions from `rules.txt`
         tag: function(sentence) {
             var tags = [],
+                norms = [],
                 token,
                 tag,
                 i,
@@ -326,11 +357,12 @@
                     confidence += c;
                 };
 
-            // Basic tagging based on lexicon and 
+            // Basic tagging based on lexicon and
             // suffixes
             for (i = 0; i < l; i ++) {
                 tmp = pos.getTag(sentence[i]);
                 append(tmp.tag, tmp.confidence);
+                norms[i] = tmp.norm;
             }
 
             // Manual transformational rules
@@ -382,9 +414,9 @@
                     tags[i] = '.';
                     continue;
                 }
-                
+
                 // Convert a noun to a past participle if token ends with 'ed'
-                if (tl > 3 && token.match(/[^e]ed$/gi) && 
+                if (tl > 3 && token.match(/[^e]ed$/gi) &&
                     (tag.indexOf('N') === 0) &&
                     (i === 0 || !token.match(/^[A-Z][a-z]+/g))) {
                     tags[i] = 'VBN';
@@ -392,9 +424,9 @@
                 }
 
                 // Convert a common noun to a present participle verb (i.e., a gerund)
-                if (tl > 4 && token.lastIndexOf('ing') === tl - 3 && 
+                if (tl > 4 && token.lastIndexOf('ing') === tl - 3 &&
                     cpd.ing_excpt.indexOf(lower) === -1 &&
-                    (tag.indexOf('N') === 0 || tag === 'MD') && 
+                    (tag.indexOf('N') === 0 || tag === 'MD') &&
                     (i === 0 || !token.match(/^[A-Z][a-z]+/g)) &&
                     previous !== 'NN' && previous !== 'JJ' && previous !== 'DT' && previous !== 'VBG') {
                     tags[i] = 'VBG';
@@ -418,8 +450,8 @@
                 }
 
                 // Proper noun inference
-                if (tag === 'NN' || 
-                        tag === 'VB' || 
+                if (tag === 'NN' ||
+                        tag === 'VB' ||
                         (tag === 'JJ' && cpd.nationalities.hasOwnProperty(lower) === false)) {
                     // All uppercased or an acronym, probably NNP
                     if (token.match(/^[A-Z]+$/g) || token.match(/^([a-z]{1}\.)+/gi)) {
@@ -427,14 +459,14 @@
 
                     // Capitalized words. First sentence is skipped here
                     } else if (i > 0 && token.match(/^[A-Z][a-z\.]+$/g)) {
-                        // And handled here, avoiding most false positives 
+                        // And handled here, avoiding most false positives
                         // of first word of sentence, that is capitalized.
                         // Put in other words, an initial NN or JJ is converted into NNP
                         // only if second word is also an NNP.
                         if (i === 1 && (previous === 'NN' || previous === 'NNS' || previous === 'JJ' || previous === 'VB') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
                             tags[i - 1] = 'NNP';
                         }
-                        
+
                         tag = 'NNP';
                     }
                 }
@@ -443,7 +475,7 @@
                 if (tag === 'NN' && isPlural(token)) {
                     tag = 'NNS';
                 }
-                
+
                 tags[i] = tag;
             }
 
@@ -463,12 +495,13 @@
             }
             return {
                 tags: tags,
+                norms: norms,
                 confidence: confidence / l
             };
         }
 
     });
-       
+
     compendium.tag = pos.tag;
 
 }();
