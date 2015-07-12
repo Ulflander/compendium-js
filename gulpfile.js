@@ -57,7 +57,11 @@ function lexicon(level) {
 
     for (j = 0, m = sentiments.length; j < m; j += 1) {
         sentiments[j] = sentiments[j].split(' ');
-        sts.push(sentiments[j][0]);
+        if (sts.indexOf(sentiments[j][0]) === -1) {
+            sts.push(sentiments[j][0]);
+        } else {
+            sts.push('--');
+        }
     }
 
 
@@ -65,16 +69,15 @@ function lexicon(level) {
         line = lex[i].split(' ');
         token = line[0].trim();
         idx = sts.indexOf(token);
-        sts[idx] = '--';
 
 
         // If no sentiment, and already contained in compendium, skip it
-        if (compendiumTokens.indexOf(token) > -1 && idx === -1) {
+        if (compendiumTokens.indexOf(token) > -1 && (idx === -1 || sts[idx] === '--')) {
             skipped += 1;
             continue;
         }
 
-
+        sts[idx] = '--';
         lex[i] = token + ' ' + (line[1] || 'NN');
 
         // If token has a sentiment score, add it
@@ -148,8 +151,8 @@ function lexicon(level) {
             }
 
             // Taken in account by suffixes
-            // no need either, whatever the build
-            if (compendium.pos.testSuffixes(token) === line[1]) {
+            // no need either
+            if (level > 0 && compendium.pos.testSuffixes(token) === line[1]) {
                 skipped += 1;
                 continue;
             }

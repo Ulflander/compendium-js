@@ -5,7 +5,7 @@ var compendium = require('../dist/compendium.minimal.js');
 // via http://nlp.stanford.edu:8080/parser/index.jsp
 // and in some case verified (and, rarely, fixed) using this other, purely machine learning based tagger:
 // http://nlpdotnet.com/services/Tagger.aspx
-// 
+//
 exports['None of the money was missing'] = function(test) {
     test.deepEqual(['NN', 'IN', 'DT', 'NN', 'VBD', 'VBG'], compendium.analyse('None of the money was missing')[0].tags);
     test.done();
@@ -55,6 +55,11 @@ exports['The most certain way to succeed is always to try just one more time.'] 
 
 exports['sh*t was hilarious...LMAO!!!'] = function(test) {
     test.deepEqual(['NN', 'VBD', 'JJ', '.', 'UH', '.'], compendium.analyse('sh*t was hilarious...LMAO!!!')[0].tags);
+    test.done();
+};
+
+exports['ah ahhhhhhh lol looool'] = function(test) {
+    test.deepEqual(['UH', 'UH', 'UH', 'UH'], compendium.analyse('ah ahhhhhhh lol looool')[0].tags);
     test.done();
 };
 
@@ -490,7 +495,7 @@ exports['Time Warner\'s HD line up is crap.'] = function(test) {
 
 
 // Test that in minimal mode,
-// plural nouns (that are expunged from the lexicon) 
+// plural nouns (that are expunged from the lexicon)
 // are solved using the inflector
 exports['My heroes are criteria for people.'] = function(test) {
     var expected = [

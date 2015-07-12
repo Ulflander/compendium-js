@@ -360,6 +360,31 @@
             // Basic tagging based on lexicon and
             // suffixes
             for (i = 0; i < l; i ++) {
+                token = sentence[i];
+                norms[i] = token;
+
+                // Symbols
+                if (token.match(/^[%\+\-\/@]$/g)) {
+                    append('SYM', 1);
+                    continue;
+                }
+
+                // Punc signs
+                if (token.match(/^(\?|\!|\.){1,}$/g)) {
+                    append('.', 1);
+                    continue;
+                }
+
+                // Numbers
+                if (token.match(/^-?[0-9]+([\.,][0-9]+)?$/g) ||
+                    // years
+                    token.match(/^([0-9]{2}|[0-9]{4})s$/g) ||
+                    //range
+                    token.match(/^[0-9]{2,4}-[0-9]{2,4}$/g)) {
+                    append('CD', 1);
+                    continue;
+                }
+
                 tmp = pos.getTag(sentence[i]);
                 append(tmp.tag, tmp.confidence);
                 norms[i] = tmp.norm;
@@ -367,10 +392,15 @@
 
             // Manual transformational rules
             for (i = 0; i < l; i ++) {
+                tag = tags[i];
+
+                if (tag === 'CD' || tag === 'SYM' || tag === '.') {
+                    continue;
+                }
+
                 token = sentence[i];
                 lower = token.toLowerCase();
                 tl = token.length;
-                tag = tags[i];
                 previous = (i === 0 ? '' : tags[i - 1]);
 
                 // First position rules
@@ -388,31 +418,6 @@
                         confidence ++;
                         continue;
                     }
-                }
-
-                // Numbers
-                if (token.match(/^-?[0-9]+([\.,][0-9]+)?$/g) ||
-                    // years
-                    token.match(/^([0-9]{2}|[0-9]{4})s$/g) ||
-                    //range
-                    token.match(/^[0-9]{2,4}-[0-9]{2,4}$/g)) {
-                    tags[i] = 'CD';
-                    confidence ++;
-                    continue;
-                }
-
-                // Symbols
-                if (token.match(/^[%\+\-\/@]$/g)) {
-                    confidence ++;
-                    tags[i] = 'SYM';
-                    continue;
-                }
-
-                // Punc signs
-                if (token.match(/^(\?|\!|\.){1,}$/g)) {
-                    confidence ++;
-                    tags[i] = '.';
-                    continue;
                 }
 
                 // Convert a noun to a past participle if token ends with 'ed'

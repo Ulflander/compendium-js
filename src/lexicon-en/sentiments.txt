@@ -2903,7 +2903,6 @@ cya 0
 dbeyr -1
 ily 2
 lmao 2
-lol 2
 np 0
 oic 0
 omg 0
