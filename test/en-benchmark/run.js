@@ -102,14 +102,20 @@ Result history:
     Full:       94.55% exact tags, 852/2370 exact sentences, 2.39ms av. per sentence
 
     > Last rounds of improvements were not focused at all on PoS tagging, however
-    new rules introduced for other purpose led to a slight improvement in statistics
+    new rules introduced for other purpose led to a slight improvement in
     PoS tagging stats.
 
 - July 12th:
     Minimal:    92.57% exact tags, 600/2455 exact sentences, 2.92ms av. per sentence
     Full:       94.56% exact tags, 852/2370 exact sentences, 3.33ms av. per sentence
 
-    > Regular check before multilingual mode change and multichar reduction.
+    > Regular check before multichar reduction, roman numerals.
+
+- July 12th:
+    Minimal:    92.61% exact tags, 606/2455 exact sentences, 2.92ms av. per sentence
+    Full:       94.56% exact tags, 852/2370 exact sentences, 3.33ms av. per sentence
+
+    >
 
 */
 
@@ -188,8 +194,7 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            if (i > 0 && tk.match(/^[IVXLCDM]+$/)) {
-                console.log(text);
+            if (i > 0) {
                 if (DIFFS.hasOwnProperty(tk)) {
                     DIFFS[tk].c += 1;
                     DIFFS[tk].is += ' ' + tags[i];
@@ -239,7 +244,7 @@ diffs_arr.sort(function(a, b) {
     return b.score - a.score;
 });
 
-for (i = 0; i < 50; i += 1) {
+for (i = 0; i < 5; i += 1) {
     if (!!diffs_arr[i]) {
         console.log(diffs_arr[i]);
     }

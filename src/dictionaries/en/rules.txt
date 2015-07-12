@@ -173,6 +173,11 @@ VB VBP 8 EX have
 VB VBP 8 RB have
 VB VBP 8 RBR have
 IN WDT 8 NNS that
+VBP IN 8 JJR like
+VBP IN 8 RBR like
+VBP IN 8 VBD like
+VBP IN 8 VBN like
+VBP IN 8 RB like
 IN WDT 12 that VBP
 IN WDT 12 that VBZ
 WDT IN 12 that DT
@@ -203,6 +208,8 @@ VB NN 5 the
 VBD VBN 15 with
 VBN VBD 6 was
 NNS VBZ 6 is
+NN VBP 6 have
+VBD VBP 6 have
 CD NN 81 no one
 VBD NNP 2 DT
 VBG JJ 14 , JJ
