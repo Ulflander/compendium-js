@@ -349,6 +349,7 @@
                 lower,
                 tmp,
                 previous,
+                inNNP = false,
                 confidence = 0,
 
                 append = function(tag, c) {
@@ -385,6 +386,7 @@
                     continue;
                 }
 
+
                 tmp = pos.getTag(sentence[i]);
                 append(tmp.tag, tmp.confidence);
                 norms[i] = tmp.norm;
@@ -394,7 +396,7 @@
             for (i = 0; i < l; i ++) {
                 tag = tags[i];
 
-                if (tag === 'CD' || tag === 'SYM' || tag === '.') {
+                if (tag === 'SYM' || tag === '.') {
                     continue;
                 }
 
@@ -454,26 +456,42 @@
                     tag = 'VB';
                 }
 
+                // Roman numerals, except for I (handled by some brill rules)
+                if (previous !== 'DT' && token.match(/^[IVXLCDM]+$/g) && token !== 'I') {
+                    tag = 'CD';
+                }
+
                 // Proper noun inference
                 if (tag === 'NN' ||
-                        tag === 'VB' ||
-                        (tag === 'JJ' && cpd.nationalities.hasOwnProperty(lower) === false)) {
+                    tag === 'VB' ||
+                    (tag === 'JJ' && cpd.nationalities.hasOwnProperty(lower) === false)) {
+
+
                     // All uppercased or an acronym, probably NNP
                     if (token.match(/^[A-Z]+$/g) || token.match(/^([a-z]{1}\.)+/gi)) {
                         tag = 'NNP';
-
-                    // Capitalized words. First sentence is skipped here
+                        inNNP = true;
+                    // Capitalized words. First token is skipped for this test
                     } else if (i > 0 && token.match(/^[A-Z][a-z\.]+$/g)) {
-                        // And handled here, avoiding most false positives
+                        tag = 'NNP';
+                        inNNP = true;
+
+                        // First token handled here, avoiding most false positives
                         // of first word of sentence, that is capitalized.
                         // Put in other words, an initial NN or JJ is converted into NNP
                         // only if second word is also an NNP.
                         if (i === 1 && (previous === 'NN' || previous === 'NNS' || previous === 'JJ' || previous === 'VB') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
                             tags[i - 1] = 'NNP';
                         }
-
-                        tag = 'NNP';
+                    } else {
+                        inNNP = false;
                     }
+
+                // Add Roman numeral to proper nouns
+                } else if (inNNP && ((tag === 'CD' && token.match(/^[IVXLCDM]+$/g)) || token === 'I')) {
+                    tag = 'NNP';
+                } else {
+                    inNNP = false;
                 }
 
                 // Use inflector to detect plural nouns

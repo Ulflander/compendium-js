@@ -188,7 +188,8 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            if (i > 0) {
+            if (i > 0 && tk.match(/^[IVXLCDM]+$/)) {
+                console.log(text);
                 if (DIFFS.hasOwnProperty(tk)) {
                     DIFFS[tk].c += 1;
                     DIFFS[tk].is += ' ' + tags[i];

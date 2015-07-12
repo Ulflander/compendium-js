@@ -104,6 +104,42 @@ exports['A form of asbestos once used to make Kent cigarette filters has caused 
 };
 
 
+exports['the executives joined Mayor William H. Hudnut III for an evening'] = function(test) {
+    var expected = [
+            ('DT NNS VBD NNP NNP NNP NNP NNP IN DT NN').split(' ')
+        ],
+        analysis = compendium.analyse('the executives joined Mayor William H. Hudnut III for an evening'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+
+exports['Chapter IV'] = function(test) {
+    var expected = [
+            ('NN CD').split(' ')
+        ],
+        analysis = compendium.analyse('Chapter IV'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+
+exports['I love my Apple II'] = function(test) {
+    var expected = [
+            ('PRP VBP PRP$ NNP NNP').split(' ')
+        ],
+        analysis = compendium.analyse('I love my Apple II'),
+        actual = [analysis[0].tags];
+
+    test.deepEqual(actual, expected);
+    test.done();
+};
+
+
 exports['2 -1'] = function(test) {
     var expected = [
             ('CD CD').split(' ')
