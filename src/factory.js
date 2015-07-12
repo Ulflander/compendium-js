@@ -83,10 +83,11 @@
                 tags: []
             };
         },
-        token: function(raw, pos) {
-            var norm = raw.toLowerCase(),
-                tense = null,
+        token: function(raw, norm, pos) {
+            var tense = null,
                 verb = pos.indexOf('VB') === 0;
+
+            norm = norm.toLowerCase();
 
             if (pos === 'VBD' || pos === 'VBN') {
                 tense = 'past';

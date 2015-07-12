@@ -29,7 +29,7 @@
         s.tags = pos.tags;
         s.stats.confidence = pos.confidence;
         for (i = 0, l = lexed.length; i < l; i ++) {
-            s.tokens.push(factory.token(pos.norms[i], pos.tags[i]));
+            s.tokens.push(factory.token(lexed[i], pos.norms[i], pos.tags[i]));
         }
         s.length = l;
         return s;
