@@ -6,7 +6,7 @@
 
         abbrev_regexp = new RegExp("(^| |\\\(|\\\[|\{)(" + abbreviations.join("|") + ")[\.!\?] ?$", "i"),
 
-        word_boundaries = ' !?()[]{}"\'`%•.…:;,$€£¥\\/+=\*_–&',
+        word_boundaries = ' !?()[]{}"\'`%•.…:;,$€£¥\\/+=\*_–',
 
         contractions = ['s', 'm', 't', 'll', 've', 'd', 'em', 're'],
 
@@ -53,6 +53,7 @@
         // Entities regexps
         regexps: {
             email: '\\s([^\\s]+@[^\\s]+\.[a-z]+)',
+            composite: '\\s([a-z]&[a-z])',
             username: '\\s(@[a-z0-9_]+)',
             html_char: '\\s(&[a-z0-9]{2,4};)',
             hashtag: '\\s(#[a-z0-9_]+)',

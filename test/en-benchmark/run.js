@@ -112,15 +112,15 @@ Result history:
     > Regular check before multichar reduction, roman numerals.
 
 - July 12th:
-    Minimal:    92.61% exact tags, 606/2455 exact sentences, 2.92ms av. per sentence
-    Full:       94.56% exact tags, 852/2370 exact sentences, 3.33ms av. per sentence
+    Minimal:    92.66% exact tags, 614/2480 exact sentences, 3.21ms av. per sentence
+    Full:       94.54% exact tags, 856/2394 exact sentences, 3.11ms av. per sentence
 
     >
 
 */
 
 var data = require("./penn_treebank").data,
-    compendium = require('../../build/compendium.minimal.js'),
+    compendium = require('../../build/compendium.js'),
     toPoSArray = function(arr) {
         var res = [], i, l = arr.length;
         for (i = 0; i < l; i += 1) {
@@ -199,13 +199,13 @@ for (var k in data) {
                     DIFFS[tk].c += 1;
                     DIFFS[tk].is += ' ' + tags[i];
                     DIFFS[tk].should_be += ' ' + penn_pos[i];
-                    DIFFS[tk].context += ' | ' + cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1];
+                    DIFFS[tk].context += ' | ' + cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1] + ',' + cpd_pos.tokens[i+1].raw;
                  } else {
                     DIFFS[tk] = {
                         c: 1,
                         is: tags[i],
                         should_be: penn_pos[i],
-                        context: cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1]
+                        context: cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1] + ',' + cpd_pos.tokens[i+1].raw
                     };
                 }
             }

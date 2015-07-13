@@ -130,6 +130,9 @@ RB NNP 12 south NNP
 RB NNP 12 east NNP
 RB NNP 12 west NNP
 RB NNP 12 north NNP
+FW NNP 12 la NNP
+JJ NNP 12 american NNP
+VBN NNP 12 united NNP
 WRB RB 12 when PRP
 RBR JJR 81 year earlier
 RBR JJR 81 years earlier

@@ -40,6 +40,12 @@ exports['I don\'t want to get into inter-sport debate'] = function(test) {
 //     test.done();
 // };
 
+exports['S&P 500'] = function(test) {
+    test.deepEqual([['S&P', '500']],
+                    lexer.lex('S&P 500'))
+    test.done()
+};
+
 exports['Hey :))))'] = function(test) {
     test.deepEqual([['Hey', ':))))']],
                     lexer.lex('Hey :))))'))

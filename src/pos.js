@@ -480,14 +480,16 @@
                         // of first word of sentence, that is capitalized.
                         // Put in other words, an initial NN or JJ is converted into NNP
                         // only if second word is also an NNP.
-                        if (i === 1 && (previous === 'NN' || previous === 'NNS' || previous === 'JJ' || previous === 'VB') && sentence[i - 1].match(/^[A-Z][a-z\.]+$/g)) {
+                        tmp = sentence[i - 1];
+                        if (i === 1 && (previous === 'NN' || previous === 'NNS' || previous === 'JJ' || previous === 'VB') &&
+                            (tmp.match(/^[A-Z][a-z\.]+$/g) || tmp.match(/^[A-Z][a-z]+[A-Z][a-z]+$/g))) {
                             tags[i - 1] = 'NNP';
                         }
                     } else {
                         inNNP = false;
                     }
 
-                // Add Roman numeral to proper nouns
+                // Add Roman numeral to proper nouns if we're currently in an NNP
                 } else if (inNNP && ((tag === 'CD' && token.match(/^[IVXLCDM]+$/g)) || token === 'I')) {
                     tag = 'NNP';
                 } else {

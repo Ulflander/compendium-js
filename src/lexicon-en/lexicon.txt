@@ -79498,7 +79498,7 @@ ruthlessness NN
 ruts NNS
 rutted JJ
 rye NN
-s PRP NN
+s NN
 s-values NNS
 s.r.l. NNP
 sabbatical NN JJ

@@ -275,6 +275,13 @@ exports['Mark Johns Jr., (sen. Al.)'] = function(test) {
     test.done();
 };
 
+
+exports['PaineWebber Inc., for instance, is forecasting growth in S&P 500 dividends'] = function(test) {
+    var analysis = compendium.analyse('PaineWebber Inc., for instance, is forecasting growth in S&P 500 dividends');
+    test.deepEqual([analysis[0].tags], [('NNP NNP , IN NN , VBZ VBG NN IN NNP CD NNS').split(' ')]);
+    test.done();
+};
+
 exports['I would lack some skills'] = function(test) {
     var expected = [
             ('PRP MD VB DT NNS').split(' ')

@@ -18,7 +18,7 @@
             if (regexps.hasOwnProperty(k) && raw.match(regexps[k])) {
                 entity = factory.entity(token, index, k);
                 token.attr.entity = sentence.entities.push(entity) - 1;
-                if (entity.type === 'username') {
+                if (entity.type === 'username' || k === 'composite') {
                     token.pos = 'NNP';
                     sentence.tags[index] = 'NNP';
                 }
@@ -36,7 +36,7 @@
                     } else {
                         entity.meta.party = 'republican';
                     }
-                    
+
                     if (norm[1][l - 1] === '.') {
                         i = cpd.abbrs.indexOf(norm[1].slice(0, l-1));
                         if (i > -1) {
@@ -45,8 +45,8 @@
                     }
                     token.norm = entity.meta.party + ', ' + norm[1];
                 }
-                
+
             }
-        } 
+        }
     });
 }();
