@@ -111,16 +111,17 @@ Result history:
 
     > Regular check before multichar reduction, roman numerals.
 
-- July 12th:
-    Minimal:    92.66% exact tags, 614/2480 exact sentences, 3.21ms av. per sentence
+- July 13th:
+    Minimal:    92.72% exact tags, 618/2480 exact sentences, 2.99ms av. per sentence
     Full:       94.54% exact tags, 856/2394 exact sentences, 3.11ms av. per sentence
 
-    >
+    > Multiple char reduction ("gooooood" to "good" or "noooooo" to "no"), roman numerals,
+    improved NER, new Brill's rules for "have" and "like" edge cases.
 
 */
 
 var data = require("./penn_treebank").data,
-    compendium = require('../../build/compendium.minimal.js'),
+    compendium = require('../../build/compendium.js'),
     toPoSArray = function(arr) {
         var res = [], i, l = arr.length;
         for (i = 0; i < l; i += 1) {
