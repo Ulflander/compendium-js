@@ -50,6 +50,10 @@
             }
 
             return null;
+        },
+
+        matchPotentialProperNound = function(token) {
+            return token.match(/^[A-Z][a-z\.]+$/g) || token.match(/^[A-Z]+[0-9]+$/g) || token.match(/^[A-Z][a-z]+[A-Z][a-z]+$/g);
         };
 
     extend(pos, {
@@ -472,7 +476,7 @@
                         tag = 'NNP';
                         inNNP = true;
                     // Capitalized words. First token is skipped for this test
-                    } else if (i > 0 && token.match(/^[A-Z][a-z\.]+$/g)) {
+                    } else if (i > 0 && matchPotentialProperNound(token)) {
                         tag = 'NNP';
                         inNNP = true;
 
@@ -482,7 +486,7 @@
                         // only if second word is also an NNP.
                         tmp = sentence[i - 1];
                         if (i === 1 && (previous === 'NN' || previous === 'NNS' || previous === 'JJ' || previous === 'VB') &&
-                            (tmp.match(/^[A-Z][a-z\.]+$/g) || tmp.match(/^[A-Z][a-z]+[A-Z][a-z]+$/g))) {
+                            matchPotentialProperNound(tmp)) {
                             tags[i - 1] = 'NNP';
                         }
                     } else {

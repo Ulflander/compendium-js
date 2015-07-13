@@ -282,6 +282,12 @@ exports['PaineWebber Inc., for instance, is forecasting growth in S&P 500 divide
     test.done();
 };
 
+exports['Lots of buzz from IO2009 but how lucky are they, a free G2!'] = function(test) {
+    var analysis = compendium.analyse('Lots of buzz from IO2009 but how lucky are they, a free G2!');
+    test.deepEqual([analysis[0].tags], [('NNS IN NN IN NNP CC WRB JJ VBP PRP , DT JJ NNP .').split(' ')]);
+    test.done();
+};
+
 exports['I would lack some skills'] = function(test) {
     var expected = [
             ('PRP MD VB DT NNS').split(' ')
