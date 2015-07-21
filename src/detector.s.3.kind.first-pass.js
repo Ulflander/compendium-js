@@ -56,7 +56,6 @@
             // Requires VB governor + no final `.`
             if (last.pos !== '.' && tag.indexOf('VB') === 0) {
                 for (deps = sentence.tokens[governor].deps.dependencies, i = 0, m = deps.length; i < m; i ++) {
-                    console.log(sentence.tags[deps[i] - 1], sentence.tags[deps[i] - 1] ? sentence.tokens[deps[i] - 1].norm : '')
                     // Is interrogative tag
                     if (interrogative_tags.indexOf(sentence.tags[deps[i]]) > -1 &&
                         // AND no verb right before ("this is why" is not a question)
