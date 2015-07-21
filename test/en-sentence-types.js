@@ -67,7 +67,11 @@ exports['Various interrogative test cases'] = function(test) {
         // `why` being left dependency of master `are`
         // it should be interrogative
         'but why are you',
-        'well why'
+        'well why',
+        // [be|do|MD] PRP [VB]
+        'are you going',
+        'do i do well',
+        'can you go please'
     ], i, l, analysis;
 
     for (i = 0, l = cases.length; i < l; i += 1) {
@@ -97,7 +101,8 @@ exports['Various non interrogative test cases'] = function(test) {
     var cases = [
         // Following should fail because of a breakpoint and no "?"
         'When in Rome, do as the Romans.',
-        'you\'re awesome, that\'s what I mean :)'
+        'you\'re awesome, that\'s what I mean :)',
+        'I sue you'
     ], i, l, analysis;
 
     for (i = 0, l = cases.length; i < l; i += 1) {

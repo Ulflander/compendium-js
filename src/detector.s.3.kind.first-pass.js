@@ -51,16 +51,27 @@
             if (interrogative_tags.indexOf(tag) > -1) {
                 types.push(T_INTERROGATIVE);
             } else
-            // Loop onto governor dependencies and check for
-            // left dependent interrogative tags
+            // Loop onto governor dependencies
             // Requires VB governor + no final `.`
             if (last.pos !== '.' && tag.indexOf('VB') === 0) {
-                for (deps = sentence.tokens[governor].deps.dependencies, i = 0, m = deps.length; i < m; i ++) {
-                    // Is interrogative tag
-                    if (interrogative_tags.indexOf(sentence.tags[deps[i]]) > -1 &&
-                        // AND no verb right before ("this is why" is not a question)
-                        (sentence.tags[deps[i] - 1] || '').indexOf('VB') < 0) {
-                        types.push(T_INTERROGATIVE);
+                // check for "do i do" or "are you going"
+                 if (sentence.tags[governor + 1] === 'PRP' && (sentence.tags[governor + 2] || '').indexOf('VB') === 0) {
+                    types.push(T_INTERROGATIVE);
+                } if (governor > 1 && sentence.tags[governor - 1] === 'PRP' && sentence.tags[governor - 2].indexOf('VB') === 0) {
+                    types.push(T_INTERROGATIVE);
+                // check for "can i go"
+                } else if (sentence.tags[governor - 1] === 'PRP' && sentence.tags[governor - 2] === 'MD') {
+                    types.push(T_INTERROGATIVE);
+                } else {
+
+                    for (deps = sentence.tokens[governor].deps.dependencies, i = 0, m = deps.length; i < m; i ++) {
+                        // check for left dependent interrogative tags
+                        // Is interrogative tag
+                        if (interrogative_tags.indexOf(sentence.tags[deps[i]]) > -1 &&
+                            // AND no verb right before ("this is why" is not a question)
+                            (sentence.tags[deps[i] - 1] || '').indexOf('VB') < 0) {
+                            types.push(T_INTERROGATIVE);
+                        }
                     }
                 }
             }
