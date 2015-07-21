@@ -3,10 +3,10 @@
     var interrogative_tags = ['WP', 'WP$', 'WRB'];
 
     // First pass to detect the type of sentence
-    // Types detected in this pass may be used by 
+    // Types detected in this pass may be used by
     // sentiment analysis detector.
     detectors.add('s', function(sentence, index) {
-        var l = sentence.length, 
+        var l = sentence.length,
             stats = sentence.stats,
             governor = sentence.governor,
             types = sentence.profile.types,
@@ -15,12 +15,12 @@
             tag,
             deps,
             i, m;
-        
+
         // First type: foreign sentence
         // can only work with at least a few tokens
         if (l > 2 &&
             // if more than 10% foreign words and a somewhat low confidence
-            ((stats.p_foreign >= 10 && stats.confidence < 0.5) || 
+            ((stats.p_foreign >= 10 && stats.confidence < 0.5) ||
             // or if very low confidence
             stats.confidence <= 0.2)) {
             // then is foreign
@@ -31,11 +31,11 @@
         if (stats.p_cap > 75 && stats.p_upper < 50 && l > 10) {
             types.push(T_HEADLINE);
         }
-        
+
         // Exclamatory, straightforward
         if (last.norm === '!') {
             types.push(T_EXCLAMATORY);
-        } else 
+        } else
         // Question, obviously with final "?"
         if (last.norm === '?' ||
             // or starting with a particular tag, without breakpoint
@@ -51,12 +51,16 @@
             if (interrogative_tags.indexOf(tag) > -1) {
                 types.push(T_INTERROGATIVE);
             } else
-            // Loop onto governor dependencies and check for 
+            // Loop onto governor dependencies and check for
             // left dependent interrogative tags
             // Requires VB governor + no final `.`
             if (last.pos !== '.' && tag.indexOf('VB') === 0) {
                 for (deps = sentence.tokens[governor].deps.dependencies, i = 0, m = deps.length; i < m; i ++) {
-                    if (interrogative_tags.indexOf(sentence.tags[deps[i]]) > -1) {
+                    console.log(sentence.tags[deps[i] - 1], sentence.tags[deps[i] - 1] ? sentence.tokens[deps[i] - 1].norm : '')
+                    // Is interrogative tag
+                    if (interrogative_tags.indexOf(sentence.tags[deps[i]]) > -1 &&
+                        // AND no verb right before ("this is why" is not a question)
+                        (sentence.tags[deps[i] - 1] || '').indexOf('VB') < 0) {
                         types.push(T_INTERROGATIVE);
                     }
                 }

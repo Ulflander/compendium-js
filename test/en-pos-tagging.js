@@ -14,6 +14,15 @@ exports['Charles Bradford, an analyst'] = function(test) {
     test.deepEqual(['NNP', 'NNP', ',', 'DT', 'NN'], compendium.analyse('Charles Bradford, an analyst')[0].tags);
     test.done();
 };
+exports['that\'s what I mean'] = function(test) {
+    test.deepEqual(['DT', 'VBZ', 'WP', 'PRP', 'VBP'], compendium.analyse('that\'s what I mean')[0].tags);
+    test.done();
+};
+
+exports['you\'re awesome, that\'s what I mean'] = function(test) {
+    test.deepEqual(['PRP', 'VBP', 'JJ', ',', 'IN', 'VBZ', 'WP', 'PRP', 'VBP'], compendium.analyse('you\'re awesome, that\'s what I mean')[0].tags);
+    test.done();
+};
 
 exports['I am saudi'] = function(test) {
     test.deepEqual(['PRP', 'VBP', 'JJ'], compendium.analyse('I am saudi')[0].tags);

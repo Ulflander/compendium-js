@@ -23,7 +23,7 @@ exports['Various foreign test cases'] = function(test) {
 exports['Various non foreign test cases'] = function(test) {
     var cases = [
         'Hello world.',
-        // A sentence with one foreign word but good confidence 
+        // A sentence with one foreign word but good confidence
         // in PoS tagging should not account as foreign
         'I hate aig and their non loan given asses.',
         // URLs, hashtags... should not account as foreign
@@ -96,7 +96,8 @@ exports['Various exclamatory test cases'] = function(test) {
 exports['Various non interrogative test cases'] = function(test) {
     var cases = [
         // Following should fail because of a breakpoint and no "?"
-        'When in Rome, do as the Romans.'
+        'When in Rome, do as the Romans.',
+        'you\'re awesome, that\'s what I mean :)'
     ], i, l, analysis;
 
     for (i = 0, l = cases.length; i < l; i += 1) {
@@ -127,7 +128,7 @@ exports['Various imperative test cases'] = function(test) {
 exports['Various approval test cases'] = function(test) {
     var cases = [
         'yes', 'yeah', 'yep', 'sure', 'ok', 'go', 'aye',
-        'do it', 'awesome', 'perfect', 'well yup', 
+        'do it', 'awesome', 'perfect', 'well yup',
         'roger that', 'indeed', 'hell yeah', '(y)',
         'sure thing', 'oki doki', 'alright', 'all right',
         'affirmative', 'sure', 'mh yes', 'ah ok', 'ah okay',
@@ -160,9 +161,9 @@ exports['Various non approval test cases'] = function(test) {
 
 exports['Various refusal test cases'] = function(test) {
     var cases = [
-        'no', 'nah', 'nope', 'n', 
-        'no way', 'don\'t do it', 
-        'don\'t', 'do not', 
+        'no', 'nah', 'nope', 'n',
+        'no way', 'don\'t do it',
+        'don\'t', 'do not',
         'hell no'
     ], i, l, analysis;
 
