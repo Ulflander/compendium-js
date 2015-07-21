@@ -50,6 +50,7 @@
             s,
             pos,
             j,
+            context,
             m;
 
         // For each sentence
@@ -65,17 +66,27 @@
             // Generate statistics
             compendium.stat(s);
 
+
+            // Apply token level detection before dep parsing
+            for (j = 0, m = s.tokens.length; j < m; j ++) {
+                detectors.apply('t', true, s.tokens[j], j, s, context);
+            }
+
+            detectors.apply('s', true, s, i, res, context);
+
             // Create dependency tree
             dependencies.parse(s);
 
+            context = detectors.context();
+
             // Apply token level detection
             for (j = 0, m = s.tokens.length; j < m; j ++) {
-                detectors.apply('t', s.tokens[j], j, s);
+                detectors.apply('t', false, s.tokens[j], j, s, context);
             }
 
             res.push(s);
 
-            detectors.apply('s', s, i, res);
+            detectors.apply('s', false, s, i, res, context);
 
             s.time = Date.now() - d;
         }
@@ -108,7 +119,7 @@
         }
 
         result = analyser.analyse(o, language);
-        detectors.apply('p', result);
+        detectors.apply('p', false, result);
 
         return result;
     };
