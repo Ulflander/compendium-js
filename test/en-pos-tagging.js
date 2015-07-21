@@ -24,6 +24,11 @@ exports['you\'re awesome, that\'s what I mean'] = function(test) {
     test.done();
 };
 
+exports['Here are 5,270.87 bucks'] = function(test) {
+    test.deepEqual(['RB', 'VBP', 'CD', 'NNS'], compendium.analyse('Here are 5,270.87 bucks')[0].tags);
+    test.done();
+};
+
 exports['I am saudi'] = function(test) {
     test.deepEqual(['PRP', 'VBP', 'JJ'], compendium.analyse('I am saudi')[0].tags);
     test.done();

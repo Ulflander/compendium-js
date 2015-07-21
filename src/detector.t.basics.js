@@ -54,9 +54,11 @@
             token.attr.infinitive = inflector.infinitive(norm);
 
         // Singularization
-        } else if (pos === 'NNS') {
+        } else if (pos === 'NNS' || pos === 'CD') {
            singular = inflector.singularize(norm);
            token.attr.singular = singular;
+        } else if (pos === 'NN') {
+           token.attr.singular = norm;
         }
 
         // Sentiment score

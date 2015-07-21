@@ -15,6 +15,12 @@ exports['If you can\'t beat \'em, join \'em.'] = function(test) {
     test.done();
 };
 
+exports['Here are 5,270.87 bucks'] = function(test){
+    test.deepEqual([['Here', 'are', '5,270.87', 'bucks']],
+                    lexer.lex('Here are 5,270.87 bucks', 'en'));
+    test.done();
+};
+
 exports['It\'s good'] = function(test){
     test.deepEqual([['It', '\'s', 'good']],
                     lexer.lex('It\'s good', 'en'));

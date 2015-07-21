@@ -12,10 +12,19 @@
 
         encoder = compendium.punycode.ucs2,
 
+        floatChar = cpd.floatChar,
+
+        thousandChar = cpd.thousandChar,
+
         // Use to determinate float parts
         cd = /^-?[0-9]+$/,
         acd = /^[0-9]+$/,
-        cdf = /^-?[0-9]+[\.,]$/,
+        cdf = new RegExp('^-?[0-9]+[\.,]$'),
+
+        // Regexps that catcj complex floats,
+        numbers = {
+            complexFloat: '\\s(-?[0-9]+([\\' + thousandChar + '][0-9]+){1,}(\\' + floatChar + '[0-9]+))',
+        },
 
         // Regexps that catch emoticons
         r_emots = {},
@@ -43,8 +52,8 @@
     // Add regexps for emoticons
     for (i = 0; i < l * 2; i += 2) {
         emot = cpd.emots[i / 2];
-        r_emots['em_' + i] = '\\s(' + emot.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '+)[^a-z]';
-        r_emots['em_' + (i + 1)] = '[a-z0-9](' + emot.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, "\\$&") + '+)[^a-z]';
+        r_emots['em_' + i] = '\\s(' + regexpEscape(emot) + '+)[^a-z]';
+        r_emots['em_' + (i + 1)] = '[a-z0-9](' + regexpEscape(emot) + '+)[^a-z]';
     }
 
 
@@ -137,6 +146,7 @@
             // First run some general regexps onto the texts and aggregate the indexes
             applyRegexps(restr, spotted, lexer.regexps);
             applyRegexps(restr, spotted, r_emots);
+            applyRegexps(restr, spotted, numbers);
 
             for (curr = '', i = 0; i < l; i ++) {
                 // If spotted by regexp, simply append result

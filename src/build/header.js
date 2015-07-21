@@ -50,3 +50,8 @@
         };
     };
 
+    // escape regexp specific chars from a string
+    function regexpEscape(str) {
+        return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|]/g, '\\$&');
+    }
+

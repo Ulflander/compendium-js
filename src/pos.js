@@ -38,6 +38,7 @@
         suffixes = cpd.suffixes,
         suffixesLength = suffixes.length,
 
+        complexFloat = new RegExp('^-?[0-9]+([\\' + cpd.thousandChar + '][0-9]+){1,}(\\' + cpd.floatChar + '[0-9]+)$'),
 
         removeRepetitiveChars = function(token) {
             var str = token.replace(/(.)\1{2,}/g, "$1$1");
@@ -382,6 +383,7 @@
 
                 // Numbers
                 if (token.match(/^-?[0-9]+([\.,][0-9]+)?$/g) ||
+                    token.match(complexFloat) ||
                     // years
                     token.match(/^([0-9]{2}|[0-9]{4})s$/g) ||
                     //range

@@ -221,6 +221,8 @@
         // Thousands char
         thousandChar: '.',
 
+        multipliers: ['cent', 'mille', 'million', 'milliard', 'billion'],
+
         // Numbers and their value
         // (PoS tag `CD`)
         numbers: {
