@@ -6,10 +6,10 @@
     // Second pass for type of sentence detection:
     // - Refusal
     // - Approval
-    // 
+    //
     // Uses sentiment detection in some specific cases,
     // thus why it runs after sentiment analysis detector.
-    detectors.add('s', function(sentence, index) {
+    detectors.after('s', function(sentence, index) {
         var token = sentence.tokens[0],
             token2,
             i, l,
@@ -19,7 +19,7 @@
             words_count = sentence.stats.words,
             types = profile.types;
 
-        // Any interrogative form can't be 
+        // Any interrogative form can't be
         // a refusal nor an approval
         if (types.indexOf(T_INTERROGATIVE) > -1) {
             return;
@@ -65,7 +65,7 @@
             types.push(T_APPROVAL);
         // Let's try some cases for short sentences, depends on dependency parsing
         } else if (!!governor && words_count <= 3) {
-            
+
             // Governor is approval token
             if (approval_tokens.indexOf(governor.norm) > -1) {
                 types.push(T_APPROVAL);

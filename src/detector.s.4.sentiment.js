@@ -6,7 +6,7 @@
 
         future_modals = ['wo', '\'ll', 'will'],
 
-        // Recursive function that takes all the dependencies scores and 
+        // Recursive function that takes all the dependencies scores and
         // compute a token final score
         scoreDependencies = function (sentence, token) {
             var deps = token.deps.dependencies, i, l = deps.length, s = 0, t;
@@ -29,7 +29,7 @@
         };
 
     // Set profile
-    detectors.add('s', function(sentence, index, sentences) {
+    detectors.after('s', function(sentence, index, sentences) {
         var i,
             l = sentence.length,
             profile,
@@ -75,7 +75,7 @@
                 }
             }
         }
-        
+
 
         // Main tense + experimental dependency scoring
         if (gov > -1) {
@@ -93,7 +93,7 @@
         }
 
         // Sentiment analysis calculation
-        
+
         // If moslty uppercased, give an emphasis bonus
         if (sentence.stats.p_upper > 70) {
             emphasis = 1.2;
@@ -110,7 +110,7 @@
             // Get token base emphasis and multiply it with global emphasis
             emphasis *= profile.emphasis;
 
-            // Check if token is a local emphasis 
+            // Check if token is a local emphasis
             // Note: local emphasis is NOT used by the final sentence sentiment score,
             // but only to compute the score of individuals tokens.
             if (pos === 'JJS' || (pos === 'RB' && emphasis_adverbs.indexOf(norm) > -1)) {

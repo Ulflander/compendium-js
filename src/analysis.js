@@ -66,6 +66,8 @@
             // Generate statistics
             compendium.stat(s);
 
+            // Create detectors context
+            context = detectors.context();
 
             // Apply token level detection before dep parsing
             for (j = 0, m = s.tokens.length; j < m; j ++) {
@@ -76,8 +78,6 @@
 
             // Create dependency tree
             dependencies.parse(s);
-
-            context = detectors.context();
 
             // Apply token level detection
             for (j = 0, m = s.tokens.length; j < m; j ++) {

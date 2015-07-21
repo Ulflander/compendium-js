@@ -4,7 +4,7 @@
 
     // This detector runs on each token
     // and set basic properties (acronyms...)
-    detectors.add('t', function(token, index, sentence) {
+    detectors.before('t', function(token, index, sentence) {
         var raw = token.raw,
             norm = token.norm,
             stem = token.stem,

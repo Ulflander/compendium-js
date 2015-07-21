@@ -4,7 +4,7 @@
         raw_breakpoints = ['-', '—', '/'];
 
 	// Flag breakpoints at the token level
-    detectors.add('t', function(token, index, sentence) {
+    detectors.before('t', function(token, index, sentence) {
         var raw = token.raw,
             pos = token.pos;
 
