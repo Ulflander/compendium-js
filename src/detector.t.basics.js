@@ -11,6 +11,7 @@
             pos = token.pos,
             sentiment = 0,
             emphasis = 1,
+            singular,
             lc,
             l,
             i;
@@ -47,8 +48,15 @@
             emphasis = 1.2;
         } else if (pos === 'UH') {
             emphasis = 1.1;
+
+        // Verbs infinitive forms
         } else if (pos.indexOf('VB') === 0) {
             token.attr.infinitive = inflector.infinitive(norm);
+
+        // Singularization
+        } else if (pos === 'NNS') {
+           singular = inflector.singularize(norm);
+           token.attr.singular = singular;
         }
 
         // Sentiment score
@@ -62,8 +70,8 @@
                     sentiment = i.sentiment;
                 }
             // If not found, test singular
-            } else if (pos === 'NNS' && lexicon.hasOwnProperty(inflector.singularize(norm))) {
-                i = lexicon[inflector.singularize(norm)];
+            } else if (pos === 'NNS' && lexicon.hasOwnProperty(singular)) {
+                i = lexicon[singular];
                 if (!i.condition || pos === i.condition) {
                     sentiment = i.sentiment / 2;
                 }
