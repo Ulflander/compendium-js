@@ -216,6 +216,11 @@
         // Raw emoticons, populated by compendium.parser.js
         emots: [],
 
+        // Float char
+        floatChar: ',',
+        // Thousands char
+        thousandChar: '.',
+
         // Numbers and their value
         // (PoS tag `CD`)
         numbers: {

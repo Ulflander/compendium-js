@@ -109,6 +109,8 @@
                     breakpoint: false
                 },
                 attr: {
+                    // Numeric value
+                    value: null,
                     acronym: false,
                     abbr: false,
                     is_verb: verb,

@@ -10,7 +10,7 @@
         // Regular verbs
         // Conjugated and expanded in compendium.parser.js
         verbs: '@@verbs'.split(' '),
-        
+
         // Irregular verbs
         irregular: '@@iverbs'.split('\t').map(function(o){return o.split(' ')}),
 
@@ -25,10 +25,10 @@
             'nothing'
         ],
 
-        // All verbs ending 
+        // All verbs ending
         ing_test: [],
 
-        // Adverbs 
+        // Adverbs
         emphasis: [
             'totally',
             'fully',
@@ -58,7 +58,7 @@
         // for initial abbreviations list.
         // Odd entries are abbreviations, even entries are replacement.
         // Potentially ambiguous abbrvs have no replacement.
-        // Replacements are extracted from this array and 
+        // Replacements are extracted from this array and
         // added in `abbrs_rplt` when lexicon is parsed (see lexicon.js).
         abbrs: [
             //honourifics
@@ -159,7 +159,7 @@
             'id', 'idaho',
             'ill', 'illinois',
             'ind', 'indiana',
-            'ia', 'iowa', 
+            'ia', 'iowa',
             'kan', 'kansas',
             'kans', 'kansas',
             'ken', 'kentuky',
@@ -230,12 +230,12 @@
 
         //proper nouns with exclamation marks
         exclamations: [
-            'yahoo', 
-            'joomla', 
+            'yahoo',
+            'joomla',
             'jeopardy'
         ],
 
-        // Rules from `rules.txt`, 
+        // Rules from `rules.txt`,
         // populated by gulpfile and parsed by compendium.parser.js
         rules: '@@rules',
 
@@ -245,6 +245,11 @@
 
         // Raw emoticons, populated by compendium.parser.js
         emots: [],
+
+        // Float char
+        floatChar: '.',
+        // Thousands char
+        thousandChar: ',',
 
         // Numbers and their value
         // (PoS tag `CD`)
@@ -349,7 +354,7 @@
 
         // Breakpoints words
         breakpoints: {
-            
+
         },
 
         citations: {
