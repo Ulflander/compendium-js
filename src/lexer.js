@@ -31,7 +31,17 @@
 
         i, l = cpd.emots.length, emot,
 
-        applyRegexps = function(restr, spotted, regexps) {
+        isOnlyEmots = function(meta) {
+            var i = 0, l = meta.length;
+            for (i = 0; i < l; i += 1) {
+                if (meta[i] === null || meta[i].group !== 'emoticon') {
+                    return false;
+                }
+            }
+            return true;
+        },
+
+        applyRegexps = function(restr, spotted, regexps, groupName) {
             var i, l, re, curr;
 
             for (i in regexps) {
@@ -42,6 +52,7 @@
                         spotted[curr.index] = {
                             content: curr[1],
                             type: i,
+                            group: groupName,
                             length: l - (l - curr[1].length)
                         }
                     }
@@ -70,6 +81,23 @@
             ip: '\\s(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5]))\\s',
             // Political affiliation, english only
             pl: '\\s([rd]-([a-z]+\\.{0,1})+)'
+        },
+
+        // Consolidate sentences:
+        // merge back sentences containing only emoticons
+        consolidate: function(sentences, meta,  raws) {
+            for (var i = 1, l = sentences.length; i < l; i += 1) {
+                if (isOnlyEmots(meta[i])) {
+                    sentences[i - 1] = sentences[i - 1].concat(sentences[i]);
+                    raws[i - 1] += ' ' + raws[i];
+                    sentences.splice(i, 1);
+                    meta.splice(i, 1);
+                    raws.splice(i, 1);
+                    i -= 1;
+                    l -= 1;
+                }
+            }
+            return sentences;
         },
 
         // Parse into sentences
@@ -111,6 +139,9 @@
                 curr,
                 // result
                 res = [],
+                // meta
+                meta = [],
+                metaObject = null,
                 // trick for testing on simpler regexps
                 restr = ' ' + str + ' ',
                 // trick
@@ -120,13 +151,21 @@
                     if (!w) {
                         return;
                     }
+                    if (typeof w === 'object') {
+                        metaObject = w;
+                        w = w.content;
+                    }
                     decoded = encoder.decode(w);
                     var i, l = decoded.length, curr = '';
                     for (i = 0; i < l; i ++) {
                         if (decoded[i] >= 0x1f5ff) {
                             if (!!curr) {
+                                meta.push(metaObject);
                                 res.push(curr);
                             }
+                            meta.push({
+                                group: 'emoticon'
+                            });
                             res.push(encoder.encode([decoded[i]]));
                             curr = '';
                         } else {
@@ -134,6 +173,7 @@
                         }
                     }
                     if (!!curr) {
+                        meta.push(metaObject);
                         res.push(curr);
                     }
                 },
@@ -144,14 +184,14 @@
                 };
 
             // First run some general regexps onto the texts and aggregate the indexes
-            applyRegexps(restr, spotted, lexer.regexps);
-            applyRegexps(restr, spotted, r_emots);
-            applyRegexps(restr, spotted, numbers);
+            applyRegexps(restr, spotted, lexer.regexps, 'entity');
+            applyRegexps(restr, spotted, r_emots, 'emoticon');
+            applyRegexps(restr, spotted, numbers, 'number');
 
             for (curr = '', i = 0; i < l; i ++) {
                 // If spotted by regexp, simply append result
                 if (spotted.hasOwnProperty(i)) {
-                    push(curr, spotted[i].content);
+                    push(curr, spotted[i]);
                     i += spotted[i].length - 1;
                 } else
                 // TODO: benchmark if word_boundaries.indexOf more perf than str.match(regexp)
@@ -164,17 +204,23 @@
 
             push(curr);
 
-            return res;
+            return {
+                tokens: res,
+                meta: meta
+            }
         },
 
         // Parse each token
         tokens: function(sentence, language) {
-            var arr = lexer.splitTokens(sentence),
+            var split = lexer.splitTokens(sentence),
+                arr = split.tokens,
+                meta = split.meta,
                 i,
                 l = arr.length,
                 tok,
                 in_acronym = false,
                 result = [],
+                metaResult = [],
                 previous = '',
                 next = '',
                 count = 0;
@@ -243,12 +289,16 @@
 
                 if (!!tok) {
                     result.push(tok);
+                    metaResult.push(meta[i]);
                     count ++;
                 }
             }
 
-            // Post process result befor returning it
-            return lexer.postprocess(result);
+            // Post process result before returning it
+            return {
+                result: lexer.postprocess(result, metaResult),
+                meta: metaResult
+            };
         },
 
         // Parse a string into arrays of tokens in an array of sentences.
@@ -261,17 +311,35 @@
          * @param  {Boolean} sentenceOnly If `true`, won't lex tokens
          * @return {Array}      A matrix of tokens per sentences.
          */
-        lex: function(str, language, sentenceOnly) {
-            var sentences = lexer.sentences(str), i, l = sentences.length;
+        advanced: function(str, language, sentenceOnly) {
+            var sentences = lexer.sentences(str), i, l = sentences.length, lexed, meta = [], raws = [];
+
             if (!!sentenceOnly) {
-                return sentences;
+                return {
+                    sentences: sentences,
+                    raws: null,
+                    meta: null
+                };
             }
 
             for (i = 0; i < l; i ++) {
-                sentences[i] = lexer.tokens(sentences[i], language);
+                raws.push(sentences[i]);
+                lexed = lexer.tokens(sentences[i], language);
+                meta[i] = lexed.meta;
+                sentences[i] = lexed.result;
             }
-            return sentences;
+            lexer.consolidate(sentences, meta, raws);
+            return {
+                raws: raws,
+                sentences: sentences,
+                meta: meta
+            };
+        },
+
+        lex: function(str, language, sentenceOnly) {
+            return lexer.advanced(str, language, sentenceOnly).sentences;
         }
+
     });
 
 

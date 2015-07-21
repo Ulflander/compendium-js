@@ -6,7 +6,7 @@
     extend(compendium.lexer, {
 
         // Post process is a the sentence level, is given an array of tokens
-        postprocess:  function(tokens) {
+        postprocess:  function(tokens, metas) {
             // Split with base regexp
             var i,
                 l = tokens.length,

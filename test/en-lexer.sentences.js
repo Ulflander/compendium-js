@@ -4,29 +4,29 @@ var compendium = require('../dist/compendium.minimal.js'),
 
 
 exports['The quick brown fox jumps over the lazy dog.'] = function(test){
-    test.deepEqual(['The quick brown fox jumps over the lazy dog.'], 
+    test.deepEqual(['The quick brown fox jumps over the lazy dog.'],
                     lexer.sentences('The quick brown fox jumps over the lazy dog.'));
     test.done();
 };
 
 exports['This is my sentence. This is another sentence.'] = function(test){
-    test.deepEqual(['This is my sentence.', 'This is another sentence.'], 
+    test.deepEqual(['This is my sentence.', 'This is another sentence.'],
                     lexer.sentences('This is my sentence. This is another sentence.'));
     test.done();
 };
 
 exports['I am so happy!!! This is an awesome day!!!?!!'] = function(test){
-    test.deepEqual(['I am so happy!!!', 'This is an awesome day!!!?!!'], 
+    test.deepEqual(['I am so happy!!!', 'This is an awesome day!!!?!!'],
                     lexer.sentences('I am so happy!!! This is an awesome day!!!?!!'));
     test.done();
 };
 
 exports['This is my sentence! This is another sentence? ' +
         'This is a third sentence... And fourth one.'] = function(test){
-    test.deepEqual(['This is my sentence!', 
-                    'This is another sentence?', 
-                    'This is a third sentence...', 
-                    'And fourth one.'], 
+    test.deepEqual(['This is my sentence!',
+                    'This is another sentence?',
+                    'This is a third sentence...',
+                    'And fourth one.'],
 
         lexer.sentences('This is my sentence! This is another sentence? ' +
                         'This is a third sentence... And fourth one.'));
@@ -34,26 +34,26 @@ exports['This is my sentence! This is another sentence? ' +
 };
 
 exports['I\'m Dr. Jekyll'] = function(test){
-    test.deepEqual(['I\'m Dr. Jekyll'], 
+    test.deepEqual(['I\'m Dr. Jekyll'],
                     lexer.sentences('I\'m Dr. Jekyll'));
     test.done();
 };
 
 exports['Mark Johns Jr., (sen. Al.)'] = function(test){
-    test.deepEqual([['Mark', 'Johns', 'Jr.', ',', '(', 'sen.', 'Al.', ')']], 
+    test.deepEqual([['Mark', 'Johns', 'Jr.', ',', '(', 'sen.', 'Al.', ')']],
                     lexer.lex('Mark Johns Jr., (sen. Al.)'));
     test.done();
 };
 
 
 exports['Another ex-Golden Stater, Paul [...]'] = function(test){
-    test.deepEqual(['Another ex-Golden Stater, Paul Stankowski from Oxnard, is contending for a berth on the U.S. Ryder Cup team after winning his first PGA Tour event last year and staying within three strokes of the lead through three rounds of last month\'s U.S. Open.', 
+    test.deepEqual(['Another ex-Golden Stater, Paul Stankowski from Oxnard, is contending for a berth on the U.S. Ryder Cup team after winning his first PGA Tour event last year and staying within three strokes of the lead through three rounds of last month\'s U.S. Open.',
             'H.J. Heinz Company said it completed the sale of its Ore-Ida frozen-food business catering to the service industry to McCain Foods Ltd. for about $500 million.',
             'It\'s the first group action of its kind in Britain and one of only a handful of lawsuits against tobacco companies outside the U.S.',
             'A Paris lawyer last year sued France\'s Seita SA on behalf of two cancer-stricken smokers.',
             'Japan Tobacco Inc. faces a suit from five smokers who accuse the government-owned company of hooking them on an addictive product.'
         ],
-        lexer.sentences('Another ex-Golden Stater, Paul Stankowski from Oxnard, is contending for a berth on the U.S. Ryder Cup team after winning his first PGA Tour event last year and staying within three strokes of the lead through three rounds of last month\'s U.S. Open. H.J. Heinz Company said it completed the sale of its Ore-Ida frozen-food business catering to the service industry to McCain Foods Ltd. for about $500 million. ' + 
+        lexer.sentences('Another ex-Golden Stater, Paul Stankowski from Oxnard, is contending for a berth on the U.S. Ryder Cup team after winning his first PGA Tour event last year and staying within three strokes of the lead through three rounds of last month\'s U.S. Open. H.J. Heinz Company said it completed the sale of its Ore-Ida frozen-food business catering to the service industry to McCain Foods Ltd. for about $500 million. ' +
                 'It\'s the first group action of its kind in Britain and one of only a handful of lawsuits against tobacco companies outside the U.S. A Paris lawyer last year sued France\'s Seita SA on behalf of two cancer-stricken smokers. Japan Tobacco Inc. faces a suit from five smokers who accuse the government-owned company of hooking them on an addictive product.'));
     test.done();
 };
@@ -65,4 +65,18 @@ exports['Hi there Dr. Joe, the price is 4.59 for N.A.S.A. Ph.Ds. I hope that\'s 
         'Bye'
     ], lexer.sentences('Hi there Dr. Joe, the price is 4.59 for N.A.S.A. Ph.Ds. I hope that\'s fine, etc. and you can attend Feb. 8th. Bye'))
     test.done();
-}
+};
+
+// Sentences composed of emoticons only should be merged with the
+// previous one if exists
+exports['It\'s good! 😋'] = function(test){
+    test.deepEqual([['It', '\'s', 'good', '!', '😋']],
+                    lexer.advanced('It\'s good! 😋').sentences);
+    test.done();
+};
+
+exports['It\'s good! 😋 :))))'] = function(test){
+    test.deepEqual([['It', '\'s', 'good', '!', '😋', ':))))']],
+                    lexer.advanced('It\'s good! 😋 :))))').sentences);
+    test.done();
+};

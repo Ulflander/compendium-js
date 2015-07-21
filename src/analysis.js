@@ -13,23 +13,19 @@
         return ;
     };
 
-    analyser.applyPOS = function(s, language) {
+    analyser.applyPOS = function(s, tokens, language) {
         var i,
             l,
             pos,
-            lexed,
             token;
 
-        // Get lexed sentence
-        lexed = compendium.lexer.tokens(s.raw, language);
-
         // Get part of speech
-        pos = compendium.tag(lexed, language);
+        pos = compendium.tag(tokens, language);
 
         s.tags = pos.tags;
         s.stats.confidence = pos.confidence;
-        for (i = 0, l = lexed.length; i < l; i ++) {
-            s.tokens.push(factory.token(lexed[i], pos.norms[i], pos.tags[i]));
+        for (i = 0, l = tokens.length; i < l; i ++) {
+            s.tokens.push(factory.token(tokens[i], pos.norms[i], pos.tags[i]));
         }
         s.length = l;
         return s;
@@ -42,10 +38,12 @@
      * @param  {Array} sentences  Matrix of tokens per sentences
      * @return {Array}            An array of analysis object, one for each sentence
      */
-    analyser.analyse = function(sentences, language) {
+    analyser.analyse = function(raw, language) {
         var res = [],
             i,
-            l = sentences.length,
+            lexed,
+            sentences,
+            l,
             d,
             s,
             pos,
@@ -53,15 +51,20 @@
             context,
             m;
 
+
+        // If provided a string, let's decode and lex it into sentences before analysis
+        lexed = lexer.advanced(compendium.decode(raw), language);
+        sentences = lexed.sentences;
+
         // For each sentence
-        for (i = 0; i < l; i ++) {
+        for (i = 0, l = sentences.length; i < l; i ++) {
             d = Date.now();
 
             // Convert to object
-            s = factory.sentence(sentences[i], language);
+            s = factory.sentence(lexed.raws[i], language);
 
             // Apply POS to sentence object
-            analyser.applyPOS(s, language);
+            analyser.applyPOS(s, sentences[i], language);
 
             // Generate statistics
             compendium.stat(s);
@@ -103,15 +106,6 @@
      */
     compendium.analyse = function(o, language) {
         var result = null;
-
-        // If provided a string, let's decode and lex it into sentences before analysis
-        if (typeof o === 'string') {
-            o = compendium.lex(compendium.decode(o), language, true);
-        }
-
-        if (!iA(o)) {
-            throw new Error('Compendium requires a string or an array of strings as argument.');
-        }
 
         language = language || 'en';
         if (SUPPORTED_LANGUAGES.indexOf(language) === -1) {
