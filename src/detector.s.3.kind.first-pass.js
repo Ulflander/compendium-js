@@ -55,7 +55,7 @@
             // Requires VB governor + no final `.`
             if (last.pos !== '.' && tag.indexOf('VB') === 0) {
                 // check for "do i do" or "are you going"
-                 if (sentence.tags[governor + 1] === 'PRP' && (sentence.tags[governor + 2] || '').indexOf('VB') === 0) {
+                if (sentence.tags[governor + 1] === 'PRP' && (sentence.tags[governor + 2] || '').indexOf('VB') === 0) {
                     types.push(T_INTERROGATIVE);
                 } if (governor > 1 && sentence.tags[governor - 1] === 'PRP' && sentence.tags[governor - 2].indexOf('VB') === 0) {
                     types.push(T_INTERROGATIVE);
