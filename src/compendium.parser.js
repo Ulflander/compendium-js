@@ -180,6 +180,7 @@
                     type: parseInt(line[2], 10),
                     c1: line[3],
                     c2: line[4],
+                    c3: line[5],
                 });
             }
             cpd.rules = result;

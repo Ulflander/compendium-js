@@ -22,6 +22,7 @@
         WDNEXTWD = 121,
         PREV1OR2OR3TAG = 13,
         SURROUNDTAG = 14,
+        SURROUNDTAGWD = 141,
         NEXTWD = 15,
         NEXT1OR2TAG = 16,
         PREV2TAG = 17,
@@ -160,6 +161,11 @@
                 }
             } else if (type === SURROUNDTAG) {
                 if (tags[index - 1] === rule.c1 && tags[index + 1] === rule.c2) {
+                    tags[index] = rule.to;
+                    return;
+                }
+            } else if (type === SURROUNDTAGWD) {
+                if (token === rule.c1 && tags[index - 1] === rule.c2 && tags[index + 1] === rule.c3) {
                     tags[index] = rule.to;
                     return;
                 }

@@ -6,6 +6,11 @@ var compendium = require('../dist/compendium.minimal.js');
 // and in some case verified (and, rarely, fixed) using this other, purely machine learning based tagger:
 // http://nlpdotnet.com/services/Tagger.aspx
 //
+exports['Negative numbers such as -12 are numbers too'] = function(test) {
+    test.deepEqual(['JJ', 'NNS', 'JJ', 'IN', 'CD', 'VBP', 'NNS', 'RB'], compendium.analyse('Negative numbers such as -12 are numbers too')[0].tags);
+    test.done();
+};
+
 exports['None of the money was missing'] = function(test) {
     test.deepEqual(['NN', 'IN', 'DT', 'NN', 'VBD', 'VBG'], compendium.analyse('None of the money was missing')[0].tags);
     test.done();

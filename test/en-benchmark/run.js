@@ -195,18 +195,18 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            if (i == 0 && cpd_pos.tokens[i].norm === 'that') {
+            if (i > 0 && cpd_pos.tokens[i].norm === 'like') {
                 if (DIFFS.hasOwnProperty(tk)) {
                     DIFFS[tk].c += 1;
                     DIFFS[tk].is += ' ' + tags[i];
                     DIFFS[tk].should_be += ' ' + penn_pos[i];
-                    DIFFS[tk].context += ' | ' + /*cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' +*/ penn_pos[i] + ';' + penn_pos[i+1] + ',' + cpd_pos.tokens[i+1].raw;
+                    DIFFS[tk].context += ' | ' + cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1] + ',' + cpd_pos.tokens[i+1].raw;
                  } else {
                     DIFFS[tk] = {
                         c: 1,
                         is: tags[i],
                         should_be: penn_pos[i],
-                        context: /*cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' +*/ penn_pos[i] + ';' + penn_pos[i+1] + ',' + cpd_pos.tokens[i+1].raw
+                        context: cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1] + ',' + cpd_pos.tokens[i+1].raw
                     };
                 }
             }
