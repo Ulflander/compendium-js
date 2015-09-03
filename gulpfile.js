@@ -66,6 +66,10 @@ function lexicon(level) {
 
 
     for (i = 0, l = lex.length; i < l; i += 1) {
+        if (!lex[i]) {
+            continue;
+        }
+
         line = lex[i].split(' ');
         token = line[0].trim();
         idx = sts.indexOf(token);
@@ -170,7 +174,9 @@ function lexicon(level) {
             mini.push(lex[i]);
         } else if (level > 0) {
             skipped += 1;
-        } else {
+        // Full mode
+        // filter NNP, NNPS, NNS
+        } else if (line[1] !== 'NNP' && line[1] !== 'NNS' && line[1] !== 'NNPS') {
             maxi.push(lex[i]);
         }
 

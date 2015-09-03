@@ -2916,3 +2916,7 @@ ttyl 0
 tyvm 2
 wywh 2
 xoxo 2
+gah -1
+yuck -2
+ew -1
+eww -2

@@ -46,7 +46,7 @@
 
             for (i in regexps) {
                 if (regexps.hasOwnProperty(i)) {
-                    re = new RegExp(regexps[i], 'gi');
+                    re = new RegExp(regexps[i], 'g');
                     while ((curr = re.exec(restr)) !== null) {
                         l = curr[0].length;
                         spotted[curr.index] = {
@@ -64,7 +64,10 @@
     for (i = 0; i < l * 2; i += 2) {
         emot = cpd.emots[i / 2];
         r_emots['em_' + i] = '\\s(' + regexpEscape(emot) + '+)[^a-z]';
-        r_emots['em_' + (i + 1)] = '[a-z0-9](' + regexpEscape(emot) + '+)[^a-z]';
+        //console.log(emot, emot.match(/^[a-zA-Z]/))
+        if (!emot.match(/^[a-zA-Z]/)) {
+            r_emots['em_' + (i + 1)] = '[a-zA-Z](' + regexpEscape(emot) + '+)[^a-z]';
+        }
     }
 
 
@@ -72,12 +75,12 @@
 
         // Entities regexps
         regexps: {
-            email: '\\s([^\\s]+@[^\\s]+\.[a-z]+)',
-            composite: '\\s([a-z]&[a-z])',
-            username: '\\s(@[a-z0-9_]+)',
-            html_char: '\\s(&[a-z0-9]{2,4};)',
-            hashtag: '\\s(#[a-z0-9_]+)',
-            url: '\\s((https?|ftp):\/\/[\-a-z0-9+&@#\/%\?=~_|!:,\.;]*[\-a-z0-9+&@#\/%=~_|])',
+            email: '\\s([^\\s]+@[^\\s]+(\\.[^\\s\\)\\]]+){1,})',
+            composite: '\\s([a-zA-Z]&[a-zA-Z])',
+            username: '\\s(@[a-zA-Z0-9_]+)',
+            html_char: '\\s(&[a-zA-Z0-9]{2,4};)',
+            hashtag: '\\s(#[a-zA-Z0-9_]+)',
+            url: '\\s((https?|ftp):\\/\\/[\\-a-z0-9+&@#\\/%\\?=~_|!:,\\.;]*[\\-a-z0-9+&@#\\/%=~_|])',
             ip: '\\s(([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\.([01]?\\d\\d?|2[0-4]\\d|25[0-5]))\\s',
             // Political affiliation, english only
             pl: '\\s([rd]-([a-z]+\\.{0,1})+)'
@@ -301,7 +304,6 @@
             };
         },
 
-        // Parse a string into arrays of tokens in an array of sentences.
         /**
          * Parse a string into a matrix of tokens per sentences.
          *
