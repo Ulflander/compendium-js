@@ -178,6 +178,8 @@ function lexicon(level) {
         // filter NNP, NNPS, NNS
         } else if (line[1] !== 'NNP' && line[1] !== 'NNS' && line[1] !== 'NNPS') {
             maxi.push(lex[i]);
+        } else {
+            skipped += 1;
         }
 
     }

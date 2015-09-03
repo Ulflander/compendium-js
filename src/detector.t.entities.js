@@ -39,9 +39,12 @@
 
                     if (norm[1][l - 1] === '.') {
                         i = cpd.abbrs.indexOf(norm[1].slice(0, l-1));
-                        if (i > -1) {
-                            norm[1] = cpd.abbrs_rplt[i];
-                        }
+                    } else {
+                        i = cpd.abbrs.indexOf(norm[1]);
+                    }
+
+                    if (i > -1) {
+                        norm[1] = cpd.abbrs_rplt[i];
                     }
                     token.norm = entity.meta.party + ', ' + norm[1];
                 }
