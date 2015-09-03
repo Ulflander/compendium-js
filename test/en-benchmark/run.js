@@ -118,10 +118,19 @@ Result history:
     > Multiple char reduction ("gooooood" to "good" or "noooooo" to "no"), roman numerals,
     improved NER, new Brill's rules for "have" and "like" edge cases.
 
+- September 4:
+    Minimal:    92.71% exact tags, 618/2480 exact sentences, 1.73ms av. per sentence
+    Full:       94.11% exact tags, 791/2394 exact sentences, 2.00ms av. per sentence
+
+    > By running PoS tests on full mode, a lot of tests were failing. As it is important
+    to be more compliant to strict tests than to the Penn Treebank (that is only an
+    indicator), the issues have been fixed for the unit tests, leading to a decrease
+    of the performance in full mode: -0.4%.
+
 */
 
 var data = require("./penn_treebank").data,
-    compendium = require('../../build/compendium.js'),
+    compendium = require('../../build/compendium.minimal.js'),
     toPoSArray = function(arr) {
         var res = [], i, l = arr.length;
         for (i = 0; i < l; i += 1) {

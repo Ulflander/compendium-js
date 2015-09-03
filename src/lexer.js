@@ -64,7 +64,6 @@
     for (i = 0; i < l * 2; i += 2) {
         emot = cpd.emots[i / 2];
         r_emots['em_' + i] = '\\s(' + regexpEscape(emot) + '+)[^a-z]';
-        //console.log(emot, emot.match(/^[a-zA-Z]/))
         if (!emot.match(/^[a-zA-Z]/)) {
             r_emots['em_' + (i + 1)] = '[a-zA-Z](' + regexpEscape(emot) + '+)[^a-z]';
         }

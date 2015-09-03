@@ -90,6 +90,7 @@
             // Reapply sentiment if base form has a score
             for (i = 0, l = cpd.verbs.length; i < l; i ++, s = 0) {
                 item = cpd.verbs[i];
+                cpd.infinitives.push(item);
 
                 tmp = inflector.conjugate(item, 'VBZ');
                 if (!tmp) {
@@ -139,6 +140,7 @@
                     s = result[item].sentiment;
                 }
                 m = item[0];
+                cpd.infinitives.push(m);
 
                 for (j = 0; j < 5; j ++) {
                     item[j].split('/').map(function(o) {
@@ -169,11 +171,18 @@
             raw = raw.split('\t');
             var line,
                 result = [],
+                secondRun,
                 i,
                 l = raw.length;
 
             for (i = 0; i < l; i ++) {
                 line = raw[i].split(' ');
+                if (line[line.length - 1] === '+') {
+                    line.splice(line.length - 1, 1);
+                    secondRun = true;
+                } else {
+                    secondRun = false;
+                }
                 result.push({
                     from: line[0],
                     to: line[1],
@@ -181,6 +190,7 @@
                     c1: line[3],
                     c2: line[4],
                     c3: line[5],
+                    secondRun: secondRun
                 });
             }
             cpd.rules = result;

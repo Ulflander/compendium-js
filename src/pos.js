@@ -61,9 +61,9 @@
     extend(pos, {
 
 
-        applyRule: function(rule, token, tag, index, tokens, tags) {
-            if (rule.from !== tag) {
-                return 0;
+        applyRule: function(rule, token, tag, index, tokens, tags, run) {
+            if (rule.from !== tag || (rule.secondRun && run === 0)) {
+                return;
             }
             var type = rule.type,
                 tmp,
@@ -219,22 +219,25 @@
                 }
             }
 
-            return 0;
+            return;
         },
 
         // Apply all rules on given token/tag combo
-        applyRules: function(token, index, tokens, tags) {
+        applyRules: function(token, index, tokens, tags, run) {
             var i;
             for (i = 0; i < rulesLength; i ++) {
-                pos.applyRule(rules[i], token, tags[index], index, tokens, tags);
+                pos.applyRule(rules[i], token, tags[index], index, tokens, tags, run);
             }
         },
 
-        // Apply all rules on given arrays of tokens and tags
+        // Apply all rules twice on given arrays of tokens and tags
         apply: function(tokens, tags) {
-            var i, l = tokens.length;
-            for (i = 0; i < l; i ++) {
-                this.applyRules(tokens[i], i, tokens, tags);
+            var i, l = tokens.length, j = 0;
+            while (j < 2) {
+                for (i = 0; i < l; i ++) {
+                    this.applyRules(tokens[i], i, tokens, tags, j);
+                }
+                j ++;
             }
             return tags;
         },
@@ -427,7 +430,7 @@
                     }
 
                     // First position infinitive verb
-                    if (tag === 'NN' && cpd.verbs.indexOf(lower) > -1) {
+                    if ((tag === 'NN' || tag === 'VB') && cpd.infinitives.indexOf(lower) > -1) {
                         tags[i] = 'VB';
                         confidence ++;
                         continue;
@@ -464,7 +467,7 @@
                 }
 
                 // Check if word could be an infinitive verb
-                if (cpd.verbs.indexOf(lower) > -1 && (previous === 'TO')) {
+                if (previous === 'TO' && cpd.infinitives.indexOf(lower) > -1) {
                     tag = 'VB';
                 }
 

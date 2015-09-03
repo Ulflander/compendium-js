@@ -14,6 +14,10 @@
         // Irregular verbs
         irregular: '@@iverbs'.split('\t').map(function(o){return o.split(' ')}),
 
+        // Irregular infinitives
+        // Populated in compendium.parser.js using `verbs` array and `irregular` matrix
+        infinitives: [],
+
         // Common exceptions to the words ending with "ing"
         // but that are not the gerund of a verb
         ing_excpt: [
