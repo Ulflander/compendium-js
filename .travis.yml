@@ -3,6 +3,7 @@ node_js:
   - "0.12"
   - "0.11"
 notifications:
+  slack: botagency:DQXn13sXSAyU9tOGAPms7L9d
   webhooks:
     urls:
       - https://webhooks.gitter.im/e/cf69b46ae03c21dabce2

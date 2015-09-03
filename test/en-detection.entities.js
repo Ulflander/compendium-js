@@ -10,14 +10,31 @@ exports['My invalid IP is 2222.22.22.999'] = function(test) {
 
 exports['My invalid IP is 222.22.22.199'] = function(test) {
     var analysis = compendium.analyse('My invalid IP is 222.22.22.199');
-    
+
     test.notEqual(analysis[0].tokens[4].attr.entity, -1);
+    test.done();
+};
+
+exports['My email is example@example.com'] = function(test) {
+    var analysis = compendium.analyse('My email is example@example.com');
+
+    test.notEqual(analysis[0].tokens[3].attr.entity, -1);
+    test.equal(analysis[0].entities[0].norm, 'example@example.com');
+    test.equal(analysis[0].entities[0].type, 'email');
+    test.done();
+};
+
+exports['My email is example@example'] = function(test) {
+    var analysis = compendium.analyse('My email is example@example');
+
+    test.equal(analysis[0].tokens[3].attr.entity, -1);
+    test.equal(analysis[0].entities[0], undefined);
     test.done();
 };
 
 exports['Jean-Claud Van Damme or Steven Segal'] = function(test) {
     var analysis = compendium.analyse('Jean-Claud Van Damme or Steven Segal');
-    
+
     test.notEqual(analysis[0].tokens[0].attr.entity, -1);
     test.equals(analysis[0].tokens[3].attr.entity, -1);
     test.notEqual(analysis[0].tokens[4].attr.entity, -1);
@@ -26,7 +43,7 @@ exports['Jean-Claud Van Damme or Steven Segal'] = function(test) {
 };
 exports['Jean Van Damme or Steven Segal'] = function(test) {
     var analysis = compendium.analyse('Jean Van Damme or Steven Segal');
-    
+
     test.notEqual(analysis[0].tokens[0].attr.entity, -1);
     test.equals(analysis[0].tokens[3].attr.entity, -1);
     test.notEqual(analysis[0].tokens[4].attr.entity, -1);
