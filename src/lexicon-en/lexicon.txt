@@ -31113,7 +31113,6 @@ Shouldering VBG
 Shoup NNP
 Shoupe NNP
 Shout VB
-Show NNP NN VB
 ShowBiz NNP
 Showa NNP
 Showalter NNP

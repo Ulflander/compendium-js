@@ -415,6 +415,8 @@
                     continue;
                 }
 
+
+
                 token = sentence[i];
                 lower = token.toLowerCase();
                 tl = token.length;
@@ -508,7 +510,7 @@
                 } else if (inNNP && ((tag === 'CD' && token.match(/^[IVXLCDM]+$/g)) || token === 'I')) {
                     tag = 'NNP';
                 } else {
-                    inNNP = false;
+                    inNNP = tag === 'NNP' || tag === 'NNPS';
                 }
 
                 // Use inflector to detect plural nouns
@@ -529,9 +531,11 @@
                 previous = tags[i - 1] || '';
                 if (token.match(/ed$/g)) {
                     if (tag === 'JJ' && (previous === 'VBZ' || previous === 'VBP') && tags[i + 1] === 'TO') {
-                        tags[i] = 'VBN';
+                        tag = 'VBN';
                     }
                 }
+
+                tags[i] = tag;
             }
             return {
                 tags: tags,

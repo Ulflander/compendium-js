@@ -10,6 +10,7 @@ of deviation from Penn Treebank is quite subjective, as Compendium may be good w
 
 - Too much money is at stake for program traders to give up. - give/VB up/IN where it should be give/VB up/RP
 - Currently, ShareData has about 4.1 million common shares outstanding. Currently/NNP where it should be Currently/RB
+- ...to the Cray-3 development which... Cray-3/CD where it should be Cray-3/
 
 I still don't know where these errors (if it's proved they are) come from, as I don't have access to raw
 original version of the dataset.
@@ -119,13 +120,13 @@ Result history:
     improved NER, new Brill's rules for "have" and "like" edge cases.
 
 - September 4:
-    Minimal:    92.71% exact tags, 618/2480 exact sentences, 1.73ms av. per sentence
-    Full:       94.11% exact tags, 791/2394 exact sentences, 2.00ms av. per sentence
+    Minimal:    92.69% exact tags, 626/2481 exact sentences, 1.73ms av. per sentence
+    Full:       94.29% exact tags, 846/2478 exact sentences, 2.00ms av. per sentence
 
     > By running PoS tests on full mode, a lot of tests were failing. As it is important
     to be more compliant to strict tests than to the Penn Treebank (that is only an
     indicator), the issues have been fixed for the unit tests, leading to a decrease
-    of the performance in full mode: -0.4%.
+    of the performance in full mode: -0.25% and -0.03% in minimal mode.
 
 */
 
@@ -153,7 +154,7 @@ var data = require("./penn_treebank").data,
         return txt.trim().replace(/(\s+)/g, ' ');
     },
 
-    DIFFS = {};
+    errors = {};
 
 // Counters
 var cTotal = 0;
@@ -204,18 +205,18 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            if (i > 0 && cpd_pos.tokens[i].norm === 'like') {
-                if (DIFFS.hasOwnProperty(tk)) {
-                    DIFFS[tk].c += 1;
-                    DIFFS[tk].is += ' ' + tags[i];
-                    DIFFS[tk].should_be += ' ' + penn_pos[i];
-                    DIFFS[tk].context += ' | ' + cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1] + ',' + cpd_pos.tokens[i+1].raw;
+            if (i > 2 && i < m - 2) {
+                tk = tags[i] + ">" + penn_pos[i];
+                var contextExample = cpd_pos.tokens[i - 2].raw + ' ' + cpd_pos.tokens[i - 1].raw + ' ' + cpd_pos.tokens[i].raw + ' ' + cpd_pos.tokens[i + 1].raw + ' ' + cpd_pos.tokens[i + 2].raw;
+                if (errors.hasOwnProperty(tk)) {
+                    errors[tk].c += 1;
+                    if (errors[tk].context.length < 100 || Math.random() < 0.1) {
+                        errors[tk].context += ' | ' + contextExample;
+                    }
                  } else {
-                    DIFFS[tk] = {
+                    errors[tk] = {
                         c: 1,
-                        is: tags[i],
-                        should_be: penn_pos[i],
-                        context: cpd_pos.tokens[i-1].raw + '/' + penn_pos[i-1] + ';' + penn_pos[i] + ';' + penn_pos[i+1] + ',' + cpd_pos.tokens[i+1].raw
+                        context: contextExample
                     };
                 }
             }
@@ -229,37 +230,31 @@ for (var k in data) {
     if (failed) {
         cFailed += 1;
         failures.tags += 1;
-        // console.log(text)
-        // console.log(poslog1 + '\n' + poslog2)
     } else {
         cSuccess += 1;
     }
 }
 
-// Put diffs in an array
-var diffs_arr = [];
-for (k in DIFFS) {
-
-    diffs_arr.push({
+// Put errors in an array
+var errors_arr = [];
+for (k in errors) {
+    errors_arr.push({
         key: k,
-        score: DIFFS[k].c,
-        is: DIFFS[k].is,
-        should_be: DIFFS[k].should_be,
-        context: DIFFS[k].context
+        score: errors[k].c,
+        context: errors[k].context
     });
-
 }
 // Order by score
-diffs_arr.sort(function(a, b) {
+errors_arr.sort(function(a, b) {
     return b.score - a.score;
 });
 
+// Display five more common errors
 for (i = 0; i < 5; i += 1) {
-    if (!!diffs_arr[i]) {
-        console.log(diffs_arr[i]);
+    if (!!errors_arr[i]) {
+        console.log(errors_arr[i]);
     }
 }
-
 
 // Final
 console.log('Tags recognized: ', (cSuccessTags * 100 / cTotalTags) + '% on ', cTotal - failures.len ,' sentences (', cSuccess , ' fully good)');

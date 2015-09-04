@@ -175,13 +175,9 @@ function lexicon(level) {
         } else if (level > 0) {
             skipped += 1;
         // Full mode
-        // filter NNP, NNPS, NNS
-        } else if (line[1] !== 'NNP' && line[1] !== 'NNS' && line[1] !== 'NNPS') {
-            maxi.push(lex[i]);
         } else {
-            skipped += 1;
+            maxi.push(lex[i]);
         }
-
     }
     for (j = 0, m = sentiments.length; j < m; j += 1) {
         if (sts[j] !== '--') {

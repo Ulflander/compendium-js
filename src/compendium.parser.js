@@ -96,8 +96,10 @@
                 if (!tmp) {
                     continue;
                 }
-
                 if (result.hasOwnProperty(item)) {
+                    if (result[item].pos === 'NN') {
+                        result[item].pos = 'VB';
+                    }
                     s = result[item].sentiment;
                 }
 

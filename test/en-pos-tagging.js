@@ -11,6 +11,17 @@
     // and in some case verified (and, rarely, fixed) using this other, purely machine learning based tagger:
     // http://nlpdotnet.com/services/Tagger.aspx
     //
+
+    exports[pkg.mode + ' mode  - That was a reform instituted after the Great Crash of 1929.'] = function(test) {
+        test.deepEqual(['DT', 'VBD', 'DT', 'NN', 'VBN', 'IN', 'DT', 'NNP', 'NNP', 'IN', 'CD', '.'], compendium.analyse('That was a reform instituted after the Great Crash of 1929.')[0].tags);
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - I don\'t love Compendium.'] = function(test) {
+        test.deepEqual(['PRP', 'VBP', 'RB', 'VB', 'NNP', '.'], compendium.analyse('I don\'t love Compendium.')[0].tags);
+        test.done();
+    };
+
     exports[pkg.mode + ' mode  - Negative numbers such as -12 are numbers too'] = function(test) {
         test.deepEqual(['JJ', 'NNS', 'JJ', 'IN', 'CD', 'VBP', 'NNS', 'RB'], compendium.analyse('Negative numbers such as -12 are numbers too')[0].tags);
         test.done();
@@ -293,8 +304,8 @@
     };
 
 
-    exports[pkg.mode + ' mode  - Mark Johns Jr., (sen. Al.)'] = function(test) {
-        var analysis = compendium.analyse('Mark Johns Jr., (sen. Al.)');
+    exports[pkg.mode + ' mode  - Mark Johns Jr., (sen. Ala.)'] = function(test) {
+        var analysis = compendium.analyse('Mark Johns Jr., (sen. Ala.)');
         test.deepEqual([analysis[0].tags], [('NNP NNP NNP , ( NN NNP )').split(' ')]);
         test.done();
     };
