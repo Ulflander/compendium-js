@@ -19,6 +19,9 @@ VB NN 2 JJR
 VB NN 2 JJ
 VB NN 2 NN
 VB NN 2 IN
+VB NN 2 SYM
+VB NN 2 VBD
+VB NN 2 VBN
 NN VBG 2 PRP
 VBD VBN 21 be
 JJR RBR 3 JJ
@@ -138,7 +141,7 @@ VBN NNP 12 united NNP
 WRB RB 12 when PRP
 RBR JJR 81 year earlier
 RBR JJR 81 years earlier
-NN VB 17 NN TO
+NN VB 14 TO VBZ
 VBG NN 2 JJR
 CD NN 8 DT one
 CD PRP 12 one VBZ
@@ -237,3 +240,4 @@ NN JJ 6 last
 NN JJ 6 high
 NN JJ 6 low
 NN JJ 6 middle
+VBN JJ 6 sorry

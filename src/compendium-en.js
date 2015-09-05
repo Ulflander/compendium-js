@@ -301,6 +301,7 @@
 
         // Negation marks
         neg: {
+            zero: 'CD',
             without: 'IN',
             except: 'IN',
             absent: 'JJ',

@@ -138,10 +138,13 @@
             // Prepopulate lexion with irregular verbs
             for (i = 0, l = cpd.irregular.length; i < l; i ++, s = 0) {
                 item = cpd.irregular[i];
-                if (result.hasOwnProperty(item)) {
-                    s = result[item].sentiment;
-                }
                 m = item[0];
+                if (result.hasOwnProperty(m)) {
+                    s = result[m].sentiment;
+                    if (result[m].pos !== 'VB') {
+                        result[m].pos = 'VB';
+                    }
+                }
                 cpd.infinitives.push(m);
 
                 for (j = 0; j < 5; j ++) {

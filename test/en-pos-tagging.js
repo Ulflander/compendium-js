@@ -12,11 +12,26 @@
     // http://nlpdotnet.com/services/Tagger.aspx
     //
 
+    exports[pkg.mode + ' mode  - We feel sorry for having caused trouble to society.'] = function(test) {
+        test.deepEqual(['PRP', 'VBP', 'JJ', 'IN', 'VBG', 'VBN', 'NN', 'TO', 'NN', '.'], compendium.analyse('We feel sorry for having caused trouble to society.')[0].tags);
+        test.done();
+    };
+
     exports[pkg.mode + ' mode  - That was a reform instituted after the Great Crash of 1929.'] = function(test) {
         test.deepEqual(['DT', 'VBD', 'DT', 'NN', 'VBN', 'IN', 'DT', 'NNP', 'NNP', 'IN', 'CD', '.'], compendium.analyse('That was a reform instituted after the Great Crash of 1929.')[0].tags);
         test.done();
     };
 
+    exports[pkg.mode + ' mode  - These events took place 35 years ago.'] = function(test) {
+        // @todo: penn treebank says `ago` is IN, stanford says `RB` in context `32 years ago`. Who is right?
+        test.deepEqual(['DT', 'NNS', 'VBD', 'NN', 'CD', 'NNS', 'IN', '.'], compendium.analyse('These events took place 35 years ago.')[0].tags);
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - This loan is at a 35% interest.'] = function(test) {
+        test.deepEqual(['DT', 'NN', 'VBZ', 'IN', 'DT', 'CD', 'SYM', 'NN', '.'], compendium.analyse('This loan is at a 35% interest.')[0].tags);
+        test.done();
+    };
     exports[pkg.mode + ' mode  - I don\'t love Compendium.'] = function(test) {
         test.deepEqual(['PRP', 'VBP', 'RB', 'VB', 'NNP', '.'], compendium.analyse('I don\'t love Compendium.')[0].tags);
         test.done();
