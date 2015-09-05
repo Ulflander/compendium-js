@@ -22,7 +22,7 @@
             // if more than 10% foreign words and a somewhat low confidence
             ((stats.p_foreign >= 10 && stats.confidence < 0.5) ||
             // or if very low confidence
-            stats.confidence <= 0.2)) {
+            stats.confidence <= 0.35)) {
             // then is foreign
             types.push(T_FOREIGN);
         }

@@ -297,7 +297,7 @@
 
                 if (!!tag && tag !== '-') {
                     tagObject.tag = tag;
-                    tagObject.confidence = 0.80;
+                    tagObject.confidence = 0.75;
                     return tagObject;
                 }
             }
@@ -310,7 +310,7 @@
                     tag = compendium.lexicon[tmp];
 
                     tagObject.tag = tag;
-                    tagObject.confidence = 0.7;
+                    tagObject.confidence = 0.8;
                     return tagObject;
                 }
             }
@@ -322,7 +322,7 @@
 
                 if (!!tag) {
                     tagObject.tag = tag;
-                    tagObject.confidence = 0.5;
+                    tagObject.confidence = 0.6;
                     return tagObject;
                 }
             }

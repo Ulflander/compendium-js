@@ -12,6 +12,11 @@
     // http://nlpdotnet.com/services/Tagger.aspx
     //
 
+    exports[pkg.mode + ' mode  - Hi'] = function(test) {
+        test.deepEqual(['UH'], compendium.analyse('Hi')[0].tags);
+        test.done();
+    };
+
     exports[pkg.mode + ' mode  - I would go buy a computer.'] = function(test) {
         test.deepEqual(['PRP', 'MD', 'VB', 'VB', 'DT', 'NN', '.'], compendium.analyse('I would go buy a computer.')[0].tags);
         test.done();
