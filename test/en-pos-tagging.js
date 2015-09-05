@@ -17,6 +17,12 @@
         test.done();
     };
 
+    // Checking unstreak mode with synonyms
+    exports[pkg.mode + ' mode  - Hiiiiiiiiii'] = function(test) {
+        test.deepEqual(['UH'], compendium.analyse('Hiiiiiiiiii')[0].tags);
+        test.done();
+    };
+
     exports[pkg.mode + ' mode  - I would go buy a computer.'] = function(test) {
         test.deepEqual(['PRP', 'MD', 'VB', 'VB', 'DT', 'NN', '.'], compendium.analyse('I would go buy a computer.')[0].tags);
         test.done();

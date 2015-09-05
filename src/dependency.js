@@ -12,12 +12,12 @@
  * - All other tokens must have a master
  * - A token can have one and only one master
  * - If no master is found for a token, then its master is the governor
- * 
+ *
  * Inspired by [Syntex (fr)](http://slideplayer.fr/slide/1150457/).
  *
  */
 !function() {
-        
+
     var governors = [
             // First ranked governors
             ['VBZ', 'VBP', 'VBD', 'VBG'],
@@ -32,7 +32,7 @@
         ],
 
         default_type = 'unknown',
-        
+
         // Left to right rules
         left2right = [
             ['NNP', 'NNP', 'compound'],
@@ -95,7 +95,7 @@
         /**
          * Expand the dependencies using existing ones.
          *
-         * For example: `the quick brown fox`. We know from the initial rules that 
+         * For example: `the quick brown fox`. We know from the initial rules that
          * `fox` is a master of `brown`.
          *
          * Then on the first left to right pass:
@@ -103,21 +103,21 @@
          *   any master so we pass this token
          * - we consider relationship of `quick` to `brown`
          * - `brown` has a master (that is `fox`). We select it and check
-         *   if a rule apply to `quick/JJ` and `fox/NN`. Indeed the rule exist (it was 
-         *   the same that allowed to connect `brown` to `fox`), so we now know that 
+         *   if a rule apply to `quick/JJ` and `fox/NN`. Indeed the rule exist (it was
+         *   the same that allowed to connect `brown` to `fox`), so we now know that
          *   `quick` is also a dependency of `fox`.
-         *   
+         *
          * Then this pass ends. The function will return `true` (changes have been applied),
          * so we know we must call it again.
          *
          * On the second pass:
          * - we consider relationship of `the` to `quick` - `quick` doesn't have
          *   any master so we pass this token
-         * 
-         * 
+         *
+         *
          * @memberOf compendium.dependencies
          * @param  {Sentence} sentence Sentence object
-         * @return {Boolean} Value `true` if some changes have been applied, false 
+         * @return {Boolean} Value `true` if some changes have been applied, false
          * otherwise
          */
         expand: function(sentence, diff) {
@@ -140,7 +140,7 @@
                 next = sentence.tokens[i + diff];
 
                 // If master already set
-                if (token.deps.master === next.deps.master || 
+                if (token.deps.master === next.deps.master ||
                     // or next master not set
                     typeof next.deps.master !== 'number') {
                     // we skip
@@ -256,7 +256,7 @@
                         token.deps.master = i + 1;
                         token.deps.type = left2right[j][2] || default_type;
                         break;
-                    } 
+                    }
                 }
             }
 
@@ -330,16 +330,16 @@
                 sentence.governor = governor;
                 sentence.tokens[governor].deps.governor = true;
             }
-            
+
             // Fourth pass, right to left reconnection, skipping
             // governed tokens
             this.reconnect(sentence);
 
             // Last pass, any token that has no master
-            // gets the governor as its master (i.e. any 
+            // gets the governor as its master (i.e. any
             // dependency issue should be solved BEFORE here)
-            // 
-            // This pass also creates the `dependencies` array 
+            //
+            // This pass also creates the `dependencies` array
             // for each token and collect subjects/objects...
             for (i = 0; i < l; i ++) {
                 token = sentence.tokens[i];
@@ -363,7 +363,7 @@
 
         /**
          * This function creates relationships over existing one, from right to left.
-         * 
+         *
          * @memberOf compendium.dependencies
          * @param  {Sentence} sentence Sentence object
          */
@@ -386,7 +386,7 @@
 
                 // Here is the trick
                 // we go backward the tokens
-                // until we find one that is not governed 
+                // until we find one that is not governed
                 // by the current one
                 k = i;
                 master = i;

@@ -294,25 +294,4 @@
 
         test.done();
     };
-
-
-
-    // exports[pkg.mode + ' mode  - I, too, am horribly allergic to bullets'] = function(test) {
-    //     var analysis = compendium.analyse('I, too, am horribly allergic to bullets')[0];
-
-    //     test.equal(analysis.governor, 4, 'Sentence governor should be `am`');
-    //     test.equal(analysis.tokens[4].deps.master, null, '`am` should be governor');
-    //     test.equal(analysis.tokens[4].deps.governor, true, '`am` should be governor');
-
-    //     test.equal(analysis.tokens[0].deps.master, 4, '`I` should have `am` as master');
-    //     test.equal(analysis.tokens[0].deps.type, 'subj', '`I` should be subject of `am`');
-
-    //     test.equal(analysis.tokens[2].deps.master, 0, '`too` should have `I` as master');
-
-    //     test.equal(analysis.tokens[5].deps.master, 6, '`horribly` should have `allergic` as master');
-    //     test.equal(analysis.tokens[6].deps.master, 8, '`allergic` should have `bullets` as master');
-    //     test.equal(analysis.tokens[7].deps.master, 8, '`to` should have `bullets` as master');
-
-    //     test.done();
-    // };
 })

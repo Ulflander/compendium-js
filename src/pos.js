@@ -322,7 +322,7 @@
 
                 if (!!tag) {
                     tagObject.tag = tag;
-                    tagObject.confidence = 0.6;
+                    tagObject.confidence = 1;
                     return tagObject;
                 }
             }

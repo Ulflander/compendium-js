@@ -1,7 +1,5 @@
-[![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) [![npm version](https://badge.fury.io/js/compendium-js.svg)](http://badge.fury.io/js/compendium-js)
+# Compendium [![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) [![npm version](https://badge.fury.io/js/compendium-js.svg)](http://badge.fury.io/js/compendium-js)
 [![Project chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ulflander/compendium-js)
-
-# Compendium
 
 English NLP for Node.js and the browser.
 
@@ -9,14 +7,14 @@ English NLP for Node.js and the browser.
 
 ##### Summary
 
-- [Client-side install](#client-side-install)
 - [Node.js install](#nodejs-install)
+- [Client-side install](#client-side-install)
 - [How to use](#api)
+- [Processing overview](#processing-overview)
 - [PoS tags](#part-of-speech-tags-definition)
 - Wiki
-  - [Changelog](https://github.com/Ulflander/compendium-js/wiki/Changelog)
-  - [Milestones](https://github.com/Ulflander/compendium-js/wiki/Milestones)
-  - [Analysis process](https://github.com/Ulflander/compendium-js/wiki/Analysis-process)
+    - [Changelog](https://github.com/Ulflander/compendium-js/wiki/Changelog)
+    - [Milestones](https://github.com/Ulflander/compendium-js/wiki/Milestones)
 
 ## Client-side install
 
@@ -110,6 +108,101 @@ will return an array like this one:
        ] } ]
 
 
+## Processing overview
+
+1. [Decoding](#decoding)
+2. [Lexer](#lexer)
+3. [Cleaner](#cleaner)
+4. [Part-of-speech tagging](#part-of-speech-tagging)
+5. [Dependency parsing](#dependency-parsing)
+6. [Detectors](#detectors)
+
+See also:
+
+- [Lexicons](#lexicons)
+
+#### Decoding
+
+Handles decoding of HTML entities (e.g. `&amp;` to `&`), and normalization of some abbreviations that involve breakpoints chars (e.g. `w/` to `with`).
+
+#### Lexer
+
+No good part-of-speech tagging is possible without a good [lexer](http://en.wikipedia.org/wiki/Lexical_analysis). A lot of efforts has been put into the Compendium's lexer, so it provides the right tokens to be processed. Currently the lexer is a combination of four passes:
+
+- A first pass splits the text into sentences
+- A second one applies some regular expressions to extract specific parts of the sentences (URLs, emails, emoticons...)
+- The third pass is a char by char parser that splits tokens in a sentence, relying on [Punycode.js](https://github.com/bestiejs/punycode.js/) to properly handle emojis
+- The final pass consolidates tokens such as acronyms, abbreviations, contractions..., and handles a few exceptions
+
+#### Cleaner
+
+This very little piece runs after the lexer, and is in charge to normalize a few other slangs (e.g. `gr8` to `great`).
+
+#### Part-of-speech tagging
+
+Tagging is performed using a [Brill tagger](http://en.wikipedia.org/wiki/Eric_Brill) (i.e. a base lexicon and a set of rules), with the addition of some inflection-based rules.
+
+It's been inspired by the following projects that are worth being checked out:
+- Eric Brill tagger: latest implementation published under MIT license is available for download on the Plymouth University website [at this link (direct download)](http://www.tech.plym.ac.uk/soc/staff/guidbugm/software/RULE_BASED_TAGGER_V.1.14.tar.Z).
+- [Mark Watson's FastTag Java library](https://github.com/mark-watson/fasttag_v2), a very simple implementation of the Brill's tagger.
+- [NLP Compromise](https://github.com/spencermountain/nlp_compromise), another great JS NLP toolkit, with an interesting inflection-based approach
+
+PoS tagging is tested a set of unit tests generated with the [Stanford PoS tagger](http://nlp.stanford.edu:8080/parser/index.jsp), double checked with common sense and [another](http://nlpdotnet.com/services/Tagger.aspx) machine-learning oriented tagger, and is then evaluated using the [Penn Treebank](http://www.cis.upenn.edu/~treebank/) dataset.
+
+In September 2014, Compendium PoS tagging score on Penn Treebank was 92.76% tags recognized for the browser version, and 94.31% for the Node.js version.
+
+#### Dependency parsing
+
+**Warning**: the following process has been proved hardly extensible, and isn't powerful enough given the amount of code already. It's being replaced in v1.0 by another one currently in development [September 5th, 2015].
+
+Dependency parsing module. Still experimental, and requires a lot of additional rules, but promising.
+
+Inspired in some extent by Syntex from Didier Bourigault [ref. (fr)](http://slideplayer.fr/slide/1150457/).
+
+Constraint based. Constraints are:
+
+- The governor is the head of the sentence (it doesnt have a master)
+- When possible, the governor is the first conjugated verb of the sentence
+- All other tokens must have a master
+- A token can have one and only one master
+- A master can have one or many dependencies
+- If no master is found for a token, then its master is the governor
+
+Parsing is done through several passes:
+
+1. First pass define direct dependencies from left to right
+2. Second pass define direct dependencies from right to left
+3. Third pass consolidate linked indirect dependencies using existing masters
+4. Final pass consolidate unlinked indirect dependencies
+
+#### Detectors
+
+Starting from here, some detectors handle further analysis of the text. They're in charge to add some metadata to the analysis, such as the sentiment score and label.
+
+These detectors can work at three different levels:
+
+- the token level
+- the sentence level
+- the text (global) level
+
+Token level detectors add attributes to each token (sentiment and emphasis scores, normalized token...).
+
+Sentence level detectors work accross many tokens (negation detection, entity recognition, sentiment analysis...).
+
+Global level detectors (there are none yet) are supposed to provide a global analysis of the whole text: topics, global sentiment labelling...
+
+## Lexicons
+
+The full lexicon for Node.js is based on the lexicon from Mark Watson's FastTag (around 90 000 terms, itself being imported from the Penn Treebank).
+
+The minimal lexicon for the browser contains only a few thousands terms extracted from the full lexicon, and filtered using:
+
+- the list of the 10000 most common English words, [an extract](https://github.com/first20hours/google-10000-english) from the [Google's Trillion Word Corpus](http://storage.googleapis.com/books/ngrams/books/datasetsv2.html)
+- the list of scored sentiments words
+- Compendium suffixes detector
+- Compendium embedded knowledge
+
+
 ## Part-of-Speech tags definition
 
 Here is the list of Part-of-Speech tags used by Compendium. See at the bottom newly introduced tags.
@@ -160,7 +253,6 @@ Here is the list of Part-of-Speech tags used by Compendium. See at the bottom ne
 
 Compendium also includes the following new tag:
 
-    CR Currency sign            $,€,£
     EM Emoticon                 :) :(
 
 ## Development
