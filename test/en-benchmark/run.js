@@ -128,6 +128,12 @@ Result history:
     indicator), the issues have been fixed for the unit tests, leading to a decrease
     of the performance in full mode: -0.25% and -0.03% in minimal mode.
 
+- September 5:
+    Minimal:    92.76% exact tags, 627/2481 exact sentences, 1.73ms av. per sentence
+    Full:       94.31% exact tags, 851/2478 exact sentences, 2.00ms av. per sentence
+
+    > New rules and rules reordering slightly improves tagging.
+
 */
 
 var data = require("./penn_treebank").data,
@@ -205,8 +211,8 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            if (i > 2 && i < m - 2) {
-                tk = tags[i] + ">" + penn_pos[i];
+            if (i > 2 && i < m - 2 && penn_pos[i] === 'NNS') {
+                tk = penn_pos[i - 2] + ':' + penn_pos[i - 1] + ':' + tags[i] + '>' + penn_pos[i] + ':' + penn_pos[i + 1];
                 var contextExample = cpd_pos.tokens[i - 2].raw + ' ' + cpd_pos.tokens[i - 1].raw + ' ' + cpd_pos.tokens[i].raw + ' ' + cpd_pos.tokens[i + 1].raw + ' ' + cpd_pos.tokens[i + 2].raw;
                 if (errors.hasOwnProperty(tk)) {
                     errors[tk].c += 1;
@@ -250,11 +256,11 @@ errors_arr.sort(function(a, b) {
 });
 
 // Display five more common errors
-for (i = 0; i < 5; i += 1) {
-    if (!!errors_arr[i]) {
-        console.log(errors_arr[i]);
-    }
-}
+// for (i = 0; i < 5; i += 1) {
+//     if (!!errors_arr[i]) {
+//         console.log(errors_arr[i]);
+//     }
+// }
 
 // Final
 console.log('Tags recognized: ', (cSuccessTags * 100 / cTotalTags) + '% on ', cTotal - failures.len ,' sentences (', cSuccess , ' fully good)');

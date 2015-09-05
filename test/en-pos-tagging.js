@@ -12,6 +12,11 @@
     // http://nlpdotnet.com/services/Tagger.aspx
     //
 
+    exports[pkg.mode + ' mode  - I would go buy a computer.'] = function(test) {
+        test.deepEqual(['PRP', 'MD', 'VB', 'VB', 'DT', 'NN', '.'], compendium.analyse('I would go buy a computer.')[0].tags);
+        test.done();
+    };
+
     exports[pkg.mode + ' mode  - We feel sorry for having caused trouble to society.'] = function(test) {
         test.deepEqual(['PRP', 'VBP', 'JJ', 'IN', 'VBG', 'VBN', 'NN', 'TO', 'NN', '.'], compendium.analyse('We feel sorry for having caused trouble to society.')[0].tags);
         test.done();

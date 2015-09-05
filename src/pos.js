@@ -27,6 +27,7 @@
         NEXT1OR2TAG = 16,
         PREV2TAG = 17,
         NEXT2TAG = 171,
+        PREV2TAGNEXTTAG = 172,
         NEXT1OR2WD = 18,
         PREV2WD = 19,
         RBIGRAM = 20,
@@ -182,6 +183,11 @@
                 }
             } else if (type === PREV2TAG) {
                 if (tags[index - 2] === rule.c1 && tags[index - 1] === rule.c2) {
+                    tags[index] = rule.to;
+                    return;
+                }
+            } else if (type === PREV2TAGNEXTTAG) {
+                if (tags[index - 2] === rule.c1 && tags[index - 1] === rule.c2 && tags[index + 1] === rule.c3) {
                     tags[index] = rule.to;
                     return;
                 }
