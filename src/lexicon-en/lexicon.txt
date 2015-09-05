@@ -70587,7 +70587,7 @@ oink UH
 ointment NN
 oiticica NN
 ok UH
-okay JJ RB VB UH
+okay UH
 oks VBZ
 ol JJ NN UH
 old JJ

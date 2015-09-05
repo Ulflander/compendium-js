@@ -366,5 +366,4 @@ gulp.task('default', ['build'], function() {
     gulp.watch(['src/*.js'], ['build', 'test']);
     gulp.watch(['test/*.js'], ['test']);
     gulp.watch('src/lexicon-en/*.txt', ['full_lexicon', 'minimal_lexicon']);
-    gulp.watch('src/lexicon-en/*.txt', ['full_lexicon', 'minimal_lexicon']);
 });
