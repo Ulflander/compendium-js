@@ -149,7 +149,8 @@ function lexicon(level) {
             }
 
             // This is the default pos tag, no need
-            if (level > 0 && line[1].indexOf('NN') === 0) {
+            // ONLY if not blocked term
+            if (level > 0 && line[1].indexOf('NN') === 0 && line[1].indexOf('-') === -1) {
                 skipped += 1;
                 continue;
             }

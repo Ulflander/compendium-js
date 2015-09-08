@@ -9,6 +9,8 @@
         analyser = {},
         detectors = {},
         dependencies = {},
+        // dependency parsing v2
+        parser = {},
         inflector = {},
         pos = {},
         iA = Array.isArray,
@@ -37,6 +39,7 @@
     compendium.inflector = inflector;
     compendium.compendium = cpd;
     compendium.lexer = lexer;
+    compendium.parser = parser;
     compendium.factory = factory;
     compendium.pos = pos;
     compendium.config = config;

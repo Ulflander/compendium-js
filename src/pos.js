@@ -43,13 +43,21 @@
         complexFloat = new RegExp('^-?[0-9]+([\\' + cpd.thousandChar + '][0-9]+){1,}(\\' + cpd.floatChar + '[0-9]+)$'),
 
         removeRepetitiveChars = function(token) {
-            var str = token.replace(/(.)\1{2,}/g, "$1$1");
+            var str = token.replace(/(.)\1{2,}/g, "$1$1"), s;
             if (compendium.lexicon.hasOwnProperty(str)) {
                 return str;
+            }
+            s = compendium.synonym(str);
+            if (s !== str) {
+                return s;
             }
             str = token.replace(/(.)\1{1,}/g, "$1");
             if (compendium.lexicon.hasOwnProperty(str)) {
                 return str;
+            }
+            s = compendium.synonym(str);
+            if (s !== str) {
+                return s;
             }
 
             return null;
@@ -237,11 +245,13 @@
         },
 
         // Apply all rules twice on given arrays of tokens and tags
-        apply: function(tokens, tags) {
+        apply: function(tokens, tags, blocked) {
             var i, l = tokens.length, j = 0;
             while (j < 2) {
                 for (i = 0; i < l; i ++) {
-                    this.applyRules(tokens[i], i, tokens, tags, j);
+                    if (blocked[i] !== true) {
+                        this.applyRules(tokens[i], i, tokens, tags, j);
+                    }
                 }
                 j ++;
             }
@@ -274,6 +284,7 @@
                 for (j = 0, tl = emots.length; j < tl; j ++) {
                     if (token.indexOf(emots[j]) === 0) {
                         tagObject.tag = 'EM';
+                        tagObject.blocked = true;
                         tagObject.confidence = 1;
                         return tagObject;
                     }
@@ -285,24 +296,26 @@
 
             if (!!tag && tag !== '-') {
                 tagObject.tag = tag;
+                tagObject.blocked = tag.blocked;
                 tagObject.confidence = 1;
                 return tagObject;
             }
 
             lower = token.toLowerCase();
 
-            // If none, try with lower cased
-            if (typeof token === 'string' && token.match(/[A-Z]/g)) {
-                tag = compendium.lexicon[lower];
+            // Test synonyms
+            tmp = compendium.synonym(lower);
+            if (tmp !== lower) {
+                tag = compendium.lexicon[tmp];
 
-                if (!!tag && tag !== '-') {
+                if (!!tag) {
                     tagObject.tag = tag;
-                    tagObject.confidence = 0.75;
+                    tagObject.confidence = 1;
                     return tagObject;
                 }
             }
 
-            // Test multichar
+            // Test chars streak
             if (lower.match(/(\w)\1+/g)) {
                 tmp = removeRepetitiveChars(lower);
                 if (!!tmp) {
@@ -315,14 +328,13 @@
                 }
             }
 
-            // Test synonyms
-            tmp = compendium.synonym(lower);
-            if (tmp !== lower) {
-                tag = compendium.lexicon[tmp];
+            // If none, try with lower cased
+            if (typeof token === 'string' && token.match(/[A-Z]/g)) {
+                tag = compendium.lexicon[lower];
 
-                if (!!tag) {
+                if (!!tag && tag !== '-') {
                     tagObject.tag = tag;
-                    tagObject.confidence = 1;
+                    tagObject.confidence = 0.75;
                     return tagObject;
                 }
             }
@@ -359,6 +371,7 @@
         // 3. Apply Brill's conditions from `rules.txt`
         tag: function(sentence) {
             var tags = [],
+                blocked = [],
                 norms = [],
                 token,
                 tag,
@@ -372,9 +385,10 @@
                 inNNP = false,
                 confidence = 0,
 
-                append = function(tag, c) {
+                append = function(tag, c, b) {
                     tag = typeof tag === 'object' ? tag.pos : tag;
                     tags.push(tag === '-' ? 'NN' : tag);
+                    blocked.push(typeof b === 'boolean' ? b : false);
                     confidence += c;
                 };
 
@@ -386,13 +400,13 @@
 
                 // Symbols
                 if (token.match(/^[%\+\-\/@]$/g)) {
-                    append('SYM', 1);
+                    append('SYM', 1, true);
                     continue;
                 }
 
                 // Punc signs
                 if (token.match(/^(\?|\!|\.){1,}$/g)) {
-                    append('.', 1);
+                    append('.', 1, true);
                     continue;
                 }
 
@@ -403,13 +417,13 @@
                     token.match(/^([0-9]{2}|[0-9]{4})s$/g) ||
                     //range
                     token.match(/^[0-9]{2,4}-[0-9]{2,4}$/g)) {
-                    append('CD', 1);
+                    append('CD', 1, true);
                     continue;
                 }
 
 
                 tmp = pos.getTag(sentence[i]);
-                append(tmp.tag, tmp.confidence);
+                append(tmp.tag, tmp.confidence, tmp.blocked);
                 norms[i] = tmp.norm;
             }
 
@@ -464,6 +478,8 @@
                 }
 
                 // in(g) gerund inference with missing 'g'
+                // - 0.002% on Penn Treebank, but VERY useful for
+                // casual language
                 if (tl > 4 && lower.lastIndexOf('in') === tl - 2 && tag === 'NN' &&
                     (i === 0 || !token.match(/^[A-Z][a-z]+/g)) &&
                     previous !== 'NN' && previous !== 'JJ' && previous !== 'DT' && previous !== 'VBG') {
@@ -475,6 +491,7 @@
                 }
 
                 // Check if word could be an infinitive verb
+                // + 0.18% on Penn Treebank
                 if (previous === 'TO' && cpd.infinitives.indexOf(lower) > -1) {
                     tag = 'VB';
                 }
@@ -528,7 +545,7 @@
             }
 
             // Finally apply Brill's rules
-            pos.apply(sentence, tags);
+            pos.apply(sentence, tags, blocked);
 
             // Last round of manual transformational rules
             for (i = 0; i < l; i ++) {

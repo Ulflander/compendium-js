@@ -11,6 +11,8 @@
                 arr = lexicon.split('\t'),
                 i, j,
                 l,
+                lastIndex,
+                blocked,
                 tmp,
                 pt, // PoS tag
                 s, // score
@@ -26,8 +28,17 @@
             // Parses lexicon
             for (i = 0, l = arr.length; i < l; i ++) {
                 item = arr[i].split(' ');
+                blocked = false;
+
                 m = item.length - 1;
-                pt = m > 0 ? item[1].trim() : '',
+                pt = m > 0 ? item[1].trim() : '';
+
+                lastIndex = pt.length - 1;
+                if (lastIndex > 0 && pt[lastIndex] === '-') {
+                    blocked = true;
+                    pt = pt.slice(0, lastIndex);
+                }
+
                 s = 0;
                 c = null;
 
@@ -46,7 +57,8 @@
                 result[item[0]] = {
                     pos: pt === '-' ? 'NN' : pt,
                     sentiment: s,
-                    condition: c
+                    condition: c,
+                    blocked: blocked
                 };
             }
 
@@ -100,6 +112,7 @@
                     if (result[item].pos === 'NN') {
                         result[item].pos = 'VB';
                     }
+                    blocked = result[item].blocked;
                     s = result[item].sentiment;
                 }
 
@@ -107,7 +120,8 @@
                     pos: 'VBZ',
                     sentiment: s,
                     condition: null,
-                    infinitive: item
+                    infinitive: item,
+                    blocked: blocked
                 };
 
                 tmp = inflector.conjugate(item, 'VBN');

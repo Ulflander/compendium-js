@@ -119,7 +119,7 @@ Result history:
     > Multiple char reduction ("gooooood" to "good" or "noooooo" to "no"), roman numerals,
     improved NER, new Brill's rules for "have" and "like" edge cases.
 
-- September 4:
+- September 4th:
     Minimal:    92.69% exact tags, 626/2481 exact sentences, 1.73ms av. per sentence
     Full:       94.29% exact tags, 846/2478 exact sentences, 2.00ms av. per sentence
 
@@ -128,11 +128,18 @@ Result history:
     indicator), the issues have been fixed for the unit tests, leading to a decrease
     of the performance in full mode: -0.25% and -0.03% in minimal mode.
 
-- September 5:
+- September 5th:
     Minimal:    92.76% exact tags, 627/2481 exact sentences, 1.73ms av. per sentence
     Full:       94.31% exact tags, 851/2478 exact sentences, 2.00ms av. per sentence
 
     > New rules and rules reordering slightly improves tagging.
+
+- September 8th:
+    Minimal:    92.81% exact tags, 630/2481 exact sentences, 1.73ms av. per sentence
+    Full:       94.41% exact tags, 865/2478 exact sentences, 1.75ms av. per sentence
+
+    > New rules, blocked tokens, and rules reordering slightly improves tagging.
+    Reached 92.8% in minimal mode, first time!
 
 */
 
@@ -174,6 +181,7 @@ var failures = {
 };
 var cTotalTags = 0;
 var cSuccessTags = 0;
+var tokensPos = {};
 
 for (var k in data) {
     cTotal += 1;
@@ -202,6 +210,12 @@ for (var k in data) {
         var tk = cpd_pos.tokens[i].raw;
         cTotalTags += 1;
 
+        if (!tokensPos.hasOwnProperty(tk)) {
+            tokensPos[tk] = [penn_pos[i]];
+        } else if (tokensPos[tk].indexOf(penn_pos[i]) === -1) {
+            tokensPos[tk].push(penn_pos[i]);
+        }
+
         // Exceptions where difference between penn / compendium is
         // accepted (different tagging style)
         if ((tags[i] === '$' && penn_pos[i] === 'CD') ||
@@ -211,18 +225,21 @@ for (var k in data) {
         if (penn_pos[i] !== tags[i]) {
             failed = true;
 
-            if (i > 2 && i < m - 2 && penn_pos[i] === 'NNS') {
-                tk = penn_pos[i - 2] + ':' + penn_pos[i - 1] + ':' + tags[i] + '>' + penn_pos[i] + ':' + penn_pos[i + 1];
+            if (i > 2 && i < m - 2) {
+                tk = cpd_pos.tokens[i].raw + ':' + tags[i] + '>' + penn_pos[i];
                 var contextExample = cpd_pos.tokens[i - 2].raw + ' ' + cpd_pos.tokens[i - 1].raw + ' ' + cpd_pos.tokens[i].raw + ' ' + cpd_pos.tokens[i + 1].raw + ' ' + cpd_pos.tokens[i + 2].raw;
                 if (errors.hasOwnProperty(tk)) {
                     errors[tk].c += 1;
                     if (errors[tk].context.length < 100 || Math.random() < 0.1) {
                         errors[tk].context += ' | ' + contextExample;
+                        errors[tk].should_be += ' | ' + penn_pos[i];
                     }
                  } else {
                     errors[tk] = {
+                        token: cpd_pos.tokens[i].raw,
                         c: 1,
-                        context: contextExample
+                        context: contextExample,
+                        should_be: penn_pos[i]
                     };
                 }
             }
@@ -244,11 +261,15 @@ for (var k in data) {
 // Put errors in an array
 var errors_arr = [];
 for (k in errors) {
-    errors_arr.push({
-        key: k,
-        score: errors[k].c,
-        context: errors[k].context
-    });
+    if (tokensPos[errors[k].token].length === 1) {
+        errors_arr.push({
+            tags: tokensPos[errors[k].token],
+            key: k,
+            score: errors[k].c,
+            context: errors[k].context,
+            should_be: errors[k].should_be,
+        });
+    }
 }
 // Order by score
 errors_arr.sort(function(a, b) {
@@ -256,11 +277,11 @@ errors_arr.sort(function(a, b) {
 });
 
 // Display five more common errors
-// for (i = 0; i < 5; i += 1) {
-//     if (!!errors_arr[i]) {
-//         console.log(errors_arr[i]);
-//     }
-// }
+for (i = 0; i < 30; i += 1) {
+    if (!!errors_arr[i]) {
+        console.log(errors_arr[i]);
+    }
+}
 
 // Final
 console.log('Tags recognized: ', (cSuccessTags * 100 / cTotalTags) + '% on ', cTotal - failures.len ,' sentences (', cSuccess , ' fully good)');

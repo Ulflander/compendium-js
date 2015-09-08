@@ -79,6 +79,7 @@
                     subjects: [],
                     objects: []
                 },
+                root: null,
                 tokens: [],
                 tags: []
             };
@@ -136,7 +137,8 @@
             return {
                 tag: tag || 'NN',
                 norm: norm,
-                confidence: confidence || 0
+                confidence: confidence || 0,
+                blocked: false
             }
         }
     });

@@ -41761,7 +41761,7 @@ bays NNS
 bazaar NN
 bazaars NNS
 bd NNS
-be VB VBN VBP
+be VB- VBN VBP
 be-that VB
 be-thonged JJ
 be... :
@@ -80392,7 +80392,7 @@ secrecy NN
 secret JJ NN
 secretarial JJ
 secretaries NNS
-secretary NN
+secretary NN-
 secretary-general NN JJ
 secretary-treasurer NN
 secreted VBN
@@ -82951,8 +82951,8 @@ someplace RB NN
 somersault NN
 somersaulting JJ NN
 somersaults NNS
-somethin NN
-something NN
+somethin NN-
+something NN-
 something... :
 sometime RB JJ
 sometimes RB
@@ -83048,7 +83048,7 @@ sorriest JJS
 sorrow NN
 sorrowful JJ
 sorrows NNS
-sorry JJ RB UH
+sorry JJ- RB UH
 sort NN RB VB VBP
 sorted VBN VBD
 sortie NN
@@ -92500,7 +92500,7 @@ yelp NN
 yelped VBD
 yelping VBG
 yelps NNS
-yen NNS NN
+yen NN
 yen-bond JJ
 yen-denominated JJ
 yen-support JJ
