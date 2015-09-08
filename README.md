@@ -1,9 +1,11 @@
-# Compendium [![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) [![npm version](https://badge.fury.io/js/compendium-js.svg)](http://badge.fury.io/js/compendium-js)
-[![Project chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ulflander/compendium-js)
+# Compendium
 
 English NLP for Node.js and the browser.
 
 35k gzipped, Part-of-Speech tagging (92% on Penn treebank), entity recognition, sentiment analysis and more, MIT licensed.
+
+[![Build Status](https://travis-ci.org/Ulflander/compendium-js.svg?branch=master)](https://travis-ci.org/Ulflander/compendium-js) [![npm version](https://badge.fury.io/js/compendium-js.svg)](http://badge.fury.io/js/compendium-js)
+[![Project chat](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Ulflander/compendium-js)
 
 ##### Summary
 
@@ -149,7 +151,7 @@ It's been inspired by the following projects that are worth being checked out:
 
 PoS tagging is tested a set of unit tests generated with the [Stanford PoS tagger](http://nlp.stanford.edu:8080/parser/index.jsp), double checked with common sense and [another](http://nlpdotnet.com/services/Tagger.aspx) machine-learning oriented tagger, and is then evaluated using the [Penn Treebank](http://www.cis.upenn.edu/~treebank/) dataset.
 
-In September 2014, Compendium PoS tagging score on Penn Treebank was 92.76% tags recognized for the browser version, and 94.31% for the Node.js version.
+In September 2015, Compendium PoS tagging score on Penn Treebank was 92.76% tags recognized for the browser version, and 94.31% for the Node.js version.
 
 #### Dependency parsing
 
