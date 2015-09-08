@@ -48,7 +48,6 @@
                     }
                     token.norm = entity.meta.party + ', ' + norm[1];
                 }
-
             }
         }
     });

@@ -461,7 +461,8 @@
         test.equal(root.right[0].right[0].right[0].raw, 'S&P 500 dividends', 'S&P raw');
 
         test.done()
-    }
+    };
+
     exports[pkg.mode + ' mode  - don\'t do it!'] = function(test) {
         var analysis = compendium.analyse('don\'t do it!')[0],
             root = analysis.root;

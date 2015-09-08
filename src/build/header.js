@@ -21,7 +21,8 @@
                 amplitude_threshold: 0.3,
                 polite_threshold: 0.2,
                 dirty_threshold: 0.3
-            }
+            },
+            parser: ['v1', 'v2']
         },
 
         // Various types

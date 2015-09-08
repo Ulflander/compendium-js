@@ -80,10 +80,14 @@
             detectors.apply('s', true, s, i, res, context);
 
             // Create dependency tree
-            // @TODO: to be removed
-            dependencies.parse(s);
-            // Dependency parsing v2
-            parser.parse(s);
+            if (config.parser.indexOf('v1') > -1) {
+                dependencies.parse(s);
+            }
+
+            if (config.parser.indexOf('v1') > -1) {
+                // Dependency parsing v2
+                parser.parse(s);
+            }
 
             // Apply token level detection
             for (j = 0, m = s.tokens.length; j < m; j ++) {
