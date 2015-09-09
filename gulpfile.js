@@ -196,6 +196,30 @@ function lexicon(level) {
     }
 };
 
+var h,
+    f,
+    l,
+    s,
+    sy,
+    na,
+    v,
+    iv,
+    r;
+
+function refreshEnCoreFiles () {
+    h = fs.readFileSync('src/build/header.js')
+    f = fs.readFileSync('src/build/footer.js')
+    l = fs.readFileSync('build/en/lexicon-full.txt').toString().split('\\').join('\\\\')
+    s = fs.readFileSync('src/dictionaries/en/suffixes.txt').toString().split('\n').join('\t')
+    sy = fs.readFileSync('src/dictionaries/en/synonyms.txt').toString().split('\n').join('\t')
+    na = fs.readFileSync('src/dictionaries/en/nationalities.txt').toString().split('\n').join(' ')
+    v = fs.readFileSync('src/dictionaries/en/regular-verbs.txt').toString().split('\n').join(' ')
+    iv = fs.readFileSync('src/dictionaries/en/irregular-verbs.txt').toString().split('\n').join('\t')
+    r = fs.readFileSync('src/dictionaries/en/rules.txt').toString().split('\n').join('\t');
+}
+
+refreshEnCoreFiles();
+
 gulp.task('init', function() {
     fs.mkdirSync('./build');
     fs.mkdirSync('./build/en');
@@ -203,17 +227,11 @@ gulp.task('init', function() {
 });
 
 // Build english version
-gulp.task('build_full', function() {
-    var h = fs.readFileSync('src/build/header.js'),
-        f = fs.readFileSync('src/build/footer.js'),
-        l = fs.readFileSync('build/en/lexicon-full.txt').toString().split('\\').join('\\\\'),
-        s = fs.readFileSync('src/dictionaries/en/suffixes.txt').toString().split('\n').join('\t'),
-        sy = fs.readFileSync('src/dictionaries/en/synonyms.txt').toString().split('\n').join('\t'),
-        na = fs.readFileSync('src/dictionaries/en/nationalities.txt').toString().split('\n').join(' '),
-        v = fs.readFileSync('src/dictionaries/en/regular-verbs.txt').toString().split('\n').join(' '),
-        iv = fs.readFileSync('src/dictionaries/en/irregular-verbs.txt').toString().split('\n').join('\t'),
-        r = fs.readFileSync('src/dictionaries/en/rules.txt').toString().split('\n').join('\t');
+gulp.task('refreshEnCoreFiles', function() {
+    refreshEnCoreFiles();
+});
 
+gulp.task('build_full', function() {
     return gulp.src([
                 'src/*.js',
                 '!src/compendium-fr.js',
@@ -236,16 +254,6 @@ gulp.task('build_full', function() {
 
 // Minimal english version
 gulp.task('build_minimal', function() {
-    var h = fs.readFileSync('src/build/header.js'),
-        f = fs.readFileSync('src/build/footer.js'),
-        l = fs.readFileSync('build/en/lexicon-minimal.txt').toString().split('\\').join('\\\\'),
-        s = fs.readFileSync('src/dictionaries/en/suffixes.txt').toString().split('\n').join('\t'),
-        sy = fs.readFileSync('src/dictionaries/en/synonyms.txt').toString().split('\n').join('\t'),
-        na = fs.readFileSync('src/dictionaries/en/nationalities.txt').toString().split('\n').join(' '),
-        v = fs.readFileSync('src/dictionaries/en/regular-verbs.txt').toString().split('\n').join(' '),
-        iv = fs.readFileSync('src/dictionaries/en/irregular-verbs.txt').toString().split('\n').join('\t'),
-        r = fs.readFileSync('src/dictionaries/en/rules.txt').toString().split('\n').join('\t');
-
     return gulp.src([
                 'src/*.js',
                 '!src/compendium-fr.js',
@@ -361,8 +369,8 @@ gulp.task('minimal_lexicon', function(cb) {
 });
 
 gulp.task('default', ['build'], function() {
-    gulp.watch(['src/dictionaries/en/*.txt'], ['build_en', 'test']);
-    gulp.watch(['src/dictionaries/fr/*.txt'], ['build_fr', 'test']);
+    gulp.watch(['src/dictionaries/en/*.txt'], ['refreshEnCoreFiles', 'build_en', 'test']);
+    gulp.watch(['src/dictionaries/fr/*.txt'], ['refreshEnCoreFiles', 'build_fr', 'test']);
     gulp.watch(['src/*.js'], ['build', 'test']);
     gulp.watch(['src/*.js'], ['build', 'test']);
     gulp.watch(['test/*.js'], ['test']);

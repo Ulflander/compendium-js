@@ -14,20 +14,20 @@
          */
         parse: function(sentence) {
             var tags = sentence.tags,
-                tree = createNode('ROOT'),
-                i, k, l = sentence.length,
-                stop = 0;
+                i, l = sentence.length,
+                incr = 0,
+                nodes = [];
 
-            var nodes = [];
             // First create a node for every token
-            // of the sentence
+            // of the sentence.
             for (i = 0; i < l; i += 1) {
-                nodes[i] = createNode(tags[i], i, i);
+                nodes.push(createNode(tags[i], i, i));
             }
 
             // First we create the chunks to assign
             // a partial structure of the sentence.
             // In Compendium, chunks are one node.
+            //
             //
             // The following will aggregate the nodes
             // that match the chunks signatures.
@@ -37,17 +37,36 @@
             // that didn't match any chunk.
             buildChunks(nodes);
 
+            // While building chunks, some nodes may have
+            // ended as NPT (Temporary NP) or as VPT
+            // (Temporary VP). Revert that back to NP and VP.
+            nodes.forEach(function(node) {
+                if (node.type === 'NPT') {
+                    node.type = 'NP';
+                } else if (node.type === 'VPT') {
+                    node.type = 'VP';
+                }
+            });
+
+            // From there we add a first layer of
+            // recursion by building the fragments.
+            buildFragments(nodes);
+
             // We now run the parser that
-            // build the relationships until
+            // build the full relationships tree until
             // we have only one node (parsing successful)
             // or we reach the recursion limit.
             //
             // The parser will populate the left and right
             // properties of each node with all their subnodes.
             // It should remain only one node, that is the ROOT.
-            while (stop < 10 && nodes.length > 1) {
-                buildRelationships(nodes, stop);
-                stop += 1;
+            //
+            // Each time parser run, we'll also attempt to find
+            // the sub clauses
+            while (incr < 10 && nodes.length > 1) {
+                buildRelationships(nodes, incr);
+                findSbar(nodes);
+                incr += 1;
             }
 
             // At last we repair the parsing for a few
@@ -59,7 +78,7 @@
             sentence.root = nodes[0];
             sentence.root.label = 'ROOT';
             if (nodes.length > 1) {
-                // console.log('Failed parsing: ' + sentence.raw, nodes);
+                 console.log('Failed parsing: ' + sentence.raw, nodes);
             }
         },
 
@@ -70,38 +89,64 @@
     });
 
     var chunks = [
-        ['NP', ['NNP', 'CD', 'NNS']],
-        ['NP', ['DT', 'PRP$', 'JJ', 'JJS', '$', 'CD', '$', 'NN', 'NNS']],
-        ['NP', ['DT', 'PRP$', 'JJ', 'JJS', '$', 'CD', '$', 'NNP', 'NNPS']],
-        ['VP', ['MD', 'VBP', 'VB']],
-        ['VP', ['MD', 'VBD']],
-        ['VP', ['VBZ', 'VBG']],
-        ['NP', ['NNP', 'NNPS']],
-        ['ADV', ['RB', 'RB']],
-        ['ADJP', ['RB', 'JJ']],
-        ['PP', 'IN'],
-        ['PRT', 'RP'],
-        ['NP', 'PRP'],
-        ['NP', 'NNP'],
-        ['NP', 'NNPS'],
-        ['NP', 'NN'],
-        ['NP', 'DT'],
-        ['ADJ', 'JJ'],
-        ['NP', 'NNS'],
-        ['VAUX', ['VB', 'RB']],
-        ['VAUX', ['VBP', 'RB']],
-        ['VP', 'VBZ'],
-        ['VP', 'VBP'],
-        ['VP', 'VBD'],
-        ['ADV', 'WRB'],
-        ['ADV', 'RB'],
-        ['PUNCT', '.'],
-        ['PUNCT', ','],
-        ['SP', ['PP', 'NP']],
+        // [ CHUNK_TYPE, [TAGS IN ORDER], STRICT_CHUNK, STRICT_CHUNK_SILENT_MERGE_WITH ]
+        ['VPT',     ['RB', 'VBN'], true],
+        ['MARK',    ['TO', 'VB'], true],
+        ['NPT',     ['DT', 'JJ'], true],
+        ['NP',      ['NNP', 'CD', 'NNS']],
+        ['NP',      ['DT', 'PRP$', 'JJ', 'JJS', '$', 'CD', '$', 'NN', 'NNS']],
+        ['NP',      ['DT', 'PRP$', 'JJ', 'JJS', '$', 'CD', '$', 'NNP', 'NNPS']],
+        ['NPT',     ['DT', 'RB'], true],
+        ['VP',      ['MD', 'VBP', 'VB']],
+        ['VP',      ['MD', 'VBD']],
+        ['VPT',     ['VBN', 'VPT'], true],
+        ['VP',      ['VBZ', 'VPT'], true],
+        ['VP',      ['VBZ', 'VBG']],
+        ['VP',      ['VBP', 'VBG']],
+        ['VP',      ['VBZ', 'VBN']],
+        ['NP',      ['NNP', 'NNPS']],
+        ['ADJP',    ['RB', 'JJ'], true, ['NP', 'NPT']],
+        ['NPT',     ['RB', 'DT'], true, ['NP', 'NPT']],
+        ['NP',      ['DT', 'NP']],
+        ['ADV',     ['RB', 'RB']],
+        ['PP',      'IN'],
+        ['PRT',     'RP'],
+        ['NP',      'PRP'],
+        ['NP',      'NNP'],
+        ['NP',      'NNPS'],
+        ['NP',      'NN'],
+        ['UH',      ['UH', 'UH']],
+        ['NP',      'DT'],
+        ['ADJ',     'JJ'],
+        ['NP',      'NNS'],
+        ['NPT',     ['NPT', 'JJ'], true, ['NPT']],
+        ['NPT',     ['NPT', ','], true, ['NPT']],
+        ['NPT',     ['NPT', 'CC'], true, ['NPT']],
+        ['NPT',     ['NPT', 'NPT'], true],
+        ['NP',      ['NPT', 'NP'], true, ['NP']],
+        ['VAUX',    ['VB', 'RB']],
+        ['VAUX',    ['VBP', 'RB']],
+        ['VP',      ['VAUX', 'VBG']],
+        ['VP',      'VBZ'],
+        ['VP',      'VBP'],
+        ['VP',      'VBD'],
+        ['ADV',     'WRB'],
+        ['ADV',     'RB'],
+        ['PUNCT',   '.'],
+        ['PUNCT',   ','],
+        ['SP',      ['PP', 'NP']],
     ];
 
     var relationships = [
+        ['NP', 'SBAR', 0, 'XCOMP'],
+        ['VP', 'SBAR', 0, 'XCOMP'],
         ['NP', 'VP', 1, 'NSUBJ'],
+        ['WP', 'VP', 1, 'ATTR'],
+        ['VP', 'MARK', 0, 'XCOMP'],
+        ['NP', 'CC', 0, 'CC'],
+        ['CC', 'NP', 0, 'CONJ'],
+        ['CC', 'VP', 1, 'CC', 2],
+        ['NP', 'NP', 0, 'CONJ'],
         ['VP', 'NP', 0, 'DOBJ'],
         ['VB', 'NP', 0, 'DOBJ'],
         ['PP', 'NP', 0, 'POBJ'],
@@ -113,8 +158,13 @@
         ['VB', 'ADV', 0, 'ADVMOD'],
         ['ADV', 'PP', 0, 'PREP'],
         ['PP', 'VP', 1, 'PREP'],
+        ['UH', 'NP', 1, 'INTJ'],
+        ['UH', 'VP', 1, 'INTJ'],
+        ['UH', 'SBAR', 1, 'INTJ'],
         ['VP', 'ADJ', 0, 'ACOMP'],
         ['VB', 'ADJ', 0, 'ACOMP'],
+        ['VP', 'ADJP', 0, 'ACOMP', 2],
+        ['ADJP', 'NP', 1, 'ADVMOD', 2],
         ['VB', 'VP', 1, 'AUX'],
         ['VAUX', 'VP', 1, 'AUX'],
         ['VAUX', 'VB', 1, 'AUX'],
@@ -125,9 +175,11 @@
         ['ADV', 'VP', 1, 'ADVMOD', 2],
         ['ADV', 'VB', 1, 'ADVMOD', 2],
         ['ADV', 'ADV', 1, 'ADVMOD', 2],
+        ['UH', 'ADV', 0, 'ADVMOD', 2],
+        ['ADV', 'NP', 1, 'ADVMOD', 2],
     ];
 
-    function buildChunk(chunkId, chunkTags, nodes) {
+    function buildChunk(chunkId, chunkTags, chunkStrict, silentMergeWith, nodes) {
         var left,
             right,
             leftNode,
@@ -141,10 +193,25 @@
             if (!isUnique) {
                 rightNode = nodes[l + 1];
                 left = chunkTags.indexOf(leftNode.type);
-                right = chunkTags.indexOf(rightNode.tags[0]);
-
+                right = chunkTags.indexOf(chunkId === chunkTags[1] ? rightNode.type : rightNode.tags[0]);
                 if (left > -1 && right > -1 && left <= right) {
-                    leftNode.type = chunkId;
+                    // Strict chunk: requires left and right to be different
+                    // and requires leftNode tags to not have left chunk tag
+                    // and same for right node
+                    if (chunkStrict) {
+                        if (left === right && (rightNode.tags.indexOf(chunkTags[1]) === -1 || leftNode.tags.indexOf(chunkTags[0]) === -1)) {
+                            continue;
+                        }
+                    }
+
+                    // in some cases we want to merge silently
+                    // with right node, i.e. keep the type of
+                    // the right node
+                    if (!!silentMergeWith && silentMergeWith.indexOf(rightNode.type) > -1) {
+                        leftNode.type = rightNode.type;
+                    } else {
+                        leftNode.type = chunkId;
+                    }
                     leftNode.to = rightNode.to;
                     leftNode.tags = leftNode.tags.concat(rightNode.tags);
                     nodes.splice(l + 1, 1);
@@ -159,7 +226,7 @@
     function buildChunks(nodes) {
         var i, l = chunks.length;
         for (i = 0; i < l; i += 1) {
-            buildChunk(chunks[i][0], chunks[i][1], nodes);
+            buildChunk(chunks[i][0], chunks[i][1], chunks[i][2], chunks[i][3], nodes);
         }
     }
 
@@ -185,7 +252,7 @@
     }
 
     function buildRelationships(nodes, run) {
-        var i, l, last = -1, res, leftNode, rightNode;
+        var l, res, leftNode, rightNode;
         for(l = nodes.length - 2; l >= 0; l -= 1) {
             leftNode = nodes[l];
             rightNode = nodes[l + 1];
@@ -197,7 +264,7 @@
                 rightNode.label = res[1];
 
             } else if (res[0] === 1) {
-                if (res[1] === 'NSUBJ' && findByIs('NSUBJ', rightNode.left)) {
+                if (res[1] === 'NSUBJ' && findByRelationship('NSUBJ', rightNode.left)) {
                     continue;
                 }
                 rightNode.left.push(leftNode);
@@ -208,6 +275,62 @@
     }
 
 
+    function findSbar(nodes) {
+        var l = nodes.length - 1, node, newNode;
+        for(; l >= 1; l -= 1) {
+            node = nodes[l];
+            if (node.type === 'VP' && findByRelationship('NSUBJ', node.left)) {
+                newNode = createNode('SBAR');
+                newNode.right.push(node);
+                node.label = 'ROOT';
+                nodes[l] = newNode;
+            }
+        }
+    }
+
+    function buildFragments(nodes) {
+        var i = 0,
+        l = nodes.length,
+            node,
+            newNode,
+            currFrag = null,
+            recursionControl = 0,
+            hasRecursion = false;
+
+        for (; i < l; i += 1) {
+            node = nodes[i];
+            if (!node) {
+                break;
+            }
+
+            // Enter a fragment
+            if (node.type === '(') {
+                // A fragment is already open,
+                if (currFrag !== null) {
+                    hasRecursion = true;
+                    recursionControl += 1;
+                } else {
+                    currFrag = i;
+                }
+            } else
+            // Out of a fragment
+            if (node.type === ')' && currFrag !== null) {
+                // Closing recursive fragment
+                if (recursionControl > 0) {
+                    recursionControl -= 1;
+                } else {
+                    newNode = createNode('FRAG');
+                    newNode.right = nodes.splice(currFrag + 1, i - currFrag - 1);
+                    i -= i - currFrag;
+                    l -= i - currFrag;
+                    nodes[i] = newNode;
+                    nodes.splice(i + 1, 1);
+                    currFrag = null;
+                }
+            }
+        }
+    }
+
     function repair(nodes, tags, sentence) {
         // If VP root,
         // no subject,
@@ -216,8 +339,8 @@
         var tmpRoot = nodes[0],
             l = nodes.length;
 
-        if (tmpRoot.type === 'VP' && !findByIs('NSUBJ', tmpRoot.left) && !findByIs('NSUBJ', tmpRoot.right)) {
-            var res = findByIs('DOBJ', nodes[0].right);
+        if (tmpRoot.type === 'VP' && !findByRelationship('NSUBJ', tmpRoot.left) && !findByRelationship('NSUBJ', tmpRoot.right)) {
+            var res = findByRelationship('DOBJ', nodes[0].right);
             if (!!res) {
                 res.label = 'NSUBJ';
             }
@@ -270,9 +393,9 @@
         return null;
     }
 
-    function findByIs(is, nodes) {
+    function findByRelationship(relationship, nodes) {
         for (var i = 0, l = nodes.length; i < l; i += 1) {
-            if (nodes[i].label === is) {
+            if (nodes[i].label === relationship) {
                 return nodes[i];
             }
         }
@@ -289,8 +412,7 @@
             to: to,
             raw: null,
             norm: null,
-            type: type,
-            is: null,
+            type: type
         }
     };
 

@@ -1,8 +1,9 @@
 !function(){
 
     var not_words = ['#', 'SYM', 'CR', 'EM'];
- 
 
+    // This module shall work for
+    // various latin languages.
     compendium.stat = function(sentence) {
         var i,
             token,
