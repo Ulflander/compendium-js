@@ -36,7 +36,8 @@
                     continue;
                 }
 
-                // TODO: refactor
+                // TODO: refactor handling of corner case (don't, can\'t...)/MD RB
+
                 // Special en tokens, should be handled more elegantly
                 if (tok === 'cant') {
                     // Default case: add token

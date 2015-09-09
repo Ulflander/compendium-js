@@ -28,5 +28,8 @@
   "directories": {
     "example": "example",
     "test": "test"
+  },
+  "dependencies": {
+    "gulp-todo": "^3.3.0"
   }
 }

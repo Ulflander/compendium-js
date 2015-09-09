@@ -3,6 +3,7 @@ var gulp = require('gulp'),
     nodeunit = require('gulp-nodeunit'),
     concat = require('gulp-concat'),
     insert = require('gulp-insert'),
+    todo = require('gulp-todo'),
     uglify = require('gulp-uglify'),
     replace = require('gulp-replace');
 
@@ -224,6 +225,15 @@ gulp.task('init', function() {
     fs.mkdirSync('./build');
     fs.mkdirSync('./build/en');
     fs.mkdirSync('./build/fr');
+});
+
+gulp.task('todo', function() {
+    gulp.src([
+        'src/*.js',
+        'src/**/*.js',
+    ])
+    .pipe(todo())
+    .pipe(gulp.dest('./'));
 });
 
 // Build english version

@@ -10,6 +10,8 @@
 // Release 2 (substantially revised) by Christopher McKenzie, Aug 2009
 // Release 3 as part as Compendium (again revised, mainly readability & perf) by 'Ulflander', April 2015
 
+
+// @TODO: Evaluate usefulness (not used in Compendiuam as of Sept. 2015) and remove if useless
 !function(){
     var step2list = {
             'ational' : 'ate',

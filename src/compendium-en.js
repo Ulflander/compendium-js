@@ -29,9 +29,6 @@
             'nothing'
         ],
 
-        // All verbs ending
-        ing_test: [],
-
         // Adverbs
         emphasis: [
             'totally',
@@ -233,6 +230,7 @@
         abbrs_rplt: [],
 
         //proper nouns with exclamation marks
+        // @TODO: rename field + implement NNP for the following tokens + ! - those are multilingual
         exclamations: [
             'yahoo',
             'joomla',

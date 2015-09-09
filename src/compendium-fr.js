@@ -16,13 +16,8 @@
         // Populated in compendium.parser.js using `verbs` array and `irregular` matrix
         infinitives: [],
 
-        // Common exceptions to the words ending with "ing"
-        // but that are not the gerund of a verb
-        ing_excpt: [
-        ],
-
-        // All verbs ending
-        ing_test: [],
+        // Not used in french
+        ing_excpt: [],
 
         // Adverbs
         emphasis: [
