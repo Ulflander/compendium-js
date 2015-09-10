@@ -1,7 +1,10 @@
 
-
-// @TODO: need to build inflectors on a per language basis
-!function() {
+/**
+ * English inflector:
+ * - singularization/pluralization
+ * - conjugation
+ */
+(function() {
 
     /*
         The following singularization/pluralization regexp rules have
@@ -370,6 +373,7 @@
                 return item['infinitive'];
             }
 
+            // @TODO: is english specific!
             if (vb === 'are' || vb === 'am' || vb === '\'s') {
                 return 'be';
             }
@@ -381,4 +385,4 @@
     });
     compendium.inflector = inflector;
 
-}();
+}());

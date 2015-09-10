@@ -102,6 +102,9 @@
             // Reapply sentiment if base form has a score
             for (i = 0, l = cpd.verbs.length; i < l; i ++, s = 0) {
                 item = cpd.verbs[i];
+                if (!item) {
+                    continue;
+                }
                 cpd.infinitives.push(item);
 
                 tmp = inflector.conjugate(item, 'VBZ');
@@ -149,10 +152,13 @@
                 }
             }
 
-            // Prepopulate lexion with irregular verbs
+            // Prepopulate lexicon with irregular verbs
             for (i = 0, l = cpd.irregular.length; i < l; i ++, s = 0) {
                 item = cpd.irregular[i];
                 m = item[0];
+                if (!m) {
+                    continue;
+                }
                 if (result.hasOwnProperty(m)) {
                     s = result[m].sentiment;
                     if (result[m].pos !== 'VB') {

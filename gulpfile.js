@@ -10,7 +10,7 @@ var gulp = require('gulp'),
 // Build french lexicon - to be implemented, dummy method for functional
 // bilingual build process
 function lexicon_fr(level) {
-    var lex = fs.readFileSync('src/lexicon-fr/lexicon.txt').toString();
+    var lex = fs.readFileSync('src/dictionaries/fr/lexicon.txt').toString();
 
     fs.writeFileSync('build/fr/lexicon-full.txt', lex);
     fs.writeFileSync('build/fr/lexicon-minimal.txt', lex);
@@ -18,8 +18,8 @@ function lexicon_fr(level) {
 // Build english lexicon
 function lexicon(level) {
 
-    var lex = fs.readFileSync('src/lexicon-en/lexicon.txt').toString(),
-        sentiments = fs.readFileSync('src/lexicon-en/sentiments.txt').toString(),
+    var lex = fs.readFileSync('src/dictionaries/en/lexicon.txt').toString(),
+        sentiments = fs.readFileSync('src/dictionaries/en/sentiments.txt').toString(),
         // Use next compendium to filter lexicon
         compendium = require('./'),
         i,
@@ -39,7 +39,7 @@ function lexicon(level) {
         m;
 
     if (level === 2) {
-        crosscheck = fs.readFileSync('src/lexicon-en/google-10000.txt').toString().split('\n');
+        crosscheck = fs.readFileSync('src/dictionaries/en/google-10000.txt').toString().split('\n');
     }
 
     for (i in compendium.compendium) {
@@ -236,16 +236,15 @@ gulp.task('todo', function() {
     .pipe(gulp.dest('./'));
 });
 
-// Build english version
 gulp.task('refreshEnCoreFiles', function() {
     refreshEnCoreFiles();
 });
 
+// Build english version
 gulp.task('build_full', function() {
     return gulp.src([
+                'src/en/*.js',
                 'src/*.js',
-                '!src/compendium-fr.js',
-                '!src/lexer.postprocessor-fr.js',
             ])
             .pipe(concat('compendium.js'))
             .pipe(insert.prepend(h))
@@ -265,9 +264,8 @@ gulp.task('build_full', function() {
 // Minimal english version
 gulp.task('build_minimal', function() {
     return gulp.src([
+                'src/en/*.js',
                 'src/*.js',
-                '!src/compendium-fr.js',
-                '!src/lexer.postprocessor-fr.js',
             ])
             .pipe(concat('compendium.minimal.js'))
             .pipe(insert.prepend(h))
@@ -297,9 +295,8 @@ gulp.task('build_full_fr', function() {
         r = '';
 
     return gulp.src([
+                'src/fr/*.js',
                 'src/*.js',
-                '!src/compendium-en.js',
-                '!src/lexer.postprocessor-en.js'
             ])
             .pipe(concat('compendium-fr.js'))
             .pipe(insert.prepend(h))
@@ -321,17 +318,16 @@ gulp.task('build_minimal_fr', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
         l = fs.readFileSync('build/fr/lexicon-minimal.txt').toString().split('\\').join('\\\\'),
-        s = fs.readFileSync('src/dictionaries/en/suffixes.txt').toString().split('\n').join('\t'),
-        sy = fs.readFileSync('src/dictionaries/en/synonyms.txt').toString().split('\n').join('\t'),
-        na = fs.readFileSync('src/dictionaries/en/nationalities.txt').toString().split('\n').join(' '),
-        v = fs.readFileSync('src/dictionaries/en/regular-verbs.txt').toString().split('\n').join(' '),
-        iv = fs.readFileSync('src/dictionaries/en/irregular-verbs.txt').toString().split('\n').join('\t'),
-        r = fs.readFileSync('src/dictionaries/en/rules.txt').toString().split('\n').join('\t');
+        s = '',
+        sy = '',
+        na = '',
+        v = '',
+        iv = '',
+        r = '';
 
     return gulp.src([
+                'src/fr/*.js',
                 'src/*.js',
-                '!src/compendium-en.js',
-                '!src/lexer.postprocessor-en.js'
             ])
             .pipe(concat('compendium-fr.minimal.js'))
             .pipe(insert.prepend(h))
@@ -379,10 +375,39 @@ gulp.task('minimal_lexicon', function(cb) {
 });
 
 gulp.task('default', ['build'], function() {
-    gulp.watch(['src/dictionaries/en/*.txt'], ['refreshEnCoreFiles', 'build_en', 'test']);
-    gulp.watch(['src/dictionaries/fr/*.txt'], ['refreshEnCoreFiles', 'build_fr', 'test']);
-    gulp.watch(['src/*.js'], ['build', 'test']);
-    gulp.watch(['src/*.js'], ['build', 'test']);
+    gulp.watch([
+        'src/dictionaries/en/*.txt',
+        '!src/dictionaries/en/sentiments.txt',
+        '!src/dictionaries/en/google-10000.txt',
+        '!src/dictionaries/en/lexicon.txt',
+    ], ['refreshEnCoreFiles', 'build_en', 'test']);
+
+    gulp.watch([
+        'src/dictionaries/fr/*.txt',
+        '!src/dictionaries/fr/lexicon.txt'
+    ], ['build_fr', 'test']);
+
+    gulp.watch([
+        'src/*.js'
+    ], ['build', 'test']);
+
+    gulp.watch([
+        'src/en/*.js'
+    ], ['build_en', 'test']);
+
+    gulp.watch([
+        'src/en/*.js'
+    ], ['build_fr', 'test']);
+
     gulp.watch(['test/*.js'], ['test']);
-    gulp.watch('src/lexicon-en/*.txt', ['full_lexicon', 'minimal_lexicon']);
+
+    gulp.watch([
+        'src/dictionaries/en/lexicon.txt',
+        'src/dictionaries/en/sentiments.txt',
+        'src/dictionaries/en/google-10000.txt',
+    ], ['full_lexicon', 'minimal_lexicon']);
+
+    gulp.watch([
+        'src/dictionaries/fr/lexicon.txt'
+    ], ['fr_lexicon']);
 });

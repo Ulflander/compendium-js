@@ -1,5 +1,5 @@
 !function() {
-    
+
     var unescapes = {
             // Borrowed from https://github.com/mathiasbynens/he/blob/master/src/he.js for
             // the HTML entities, and smartquotes from GitHub issue
@@ -20,6 +20,7 @@
             '`': /&#x60/gi,
 
             // Damn generation-y and millenials, damn impoliteness
+            // @TODO: handle english specifics, decoder shall be multilingual
             'shit': /(s\&\^t|sh\*t)/gi,
             'fuck': /(f\*ck)/gi,
             'just kidding': 'j/k',
@@ -29,7 +30,7 @@
         };
 
     /**
-     * Decode a string: replace some HTML entities (such as `&amp;` to `&`) and some 
+     * Decode a string: replace some HTML entities (such as `&amp;` to `&`) and some
      * slangs that include some punctuation chars (such as `w/` to `with`). This function
      * is called by the analyser **before** tokenization.
      *
