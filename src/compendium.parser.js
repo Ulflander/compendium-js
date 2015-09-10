@@ -259,13 +259,13 @@
             cpd.abbrs_rplt = rplt;
         },
 
-        nationalities = function(raw) {
+        demonyms = function(raw) {
             var i, l, res = {};
             raw = raw.split(' ');
             for (i = 0, l = raw.length; i < l; i ++) {
                 res[raw[i]] = 'JJ';
             }
-            cpd.nationalities = res;
+            cpd.demonyms = res;
         },
 
         synonyms = function(raw) {
@@ -282,6 +282,6 @@
     abbrs(cpd.abbrs);
     dirty(cpd.dirty);
     synonyms(cpd.synonyms);
-    nationalities(cpd.nationalities);
+    demonyms(cpd.demonyms);
     compendium.lexicon = parse("@@lexicon");
 }();

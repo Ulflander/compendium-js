@@ -108,7 +108,7 @@
                 // Proper noun inference
                 if (tag === 'NN' ||
                     tag === 'VB' ||
-                    (tag === 'JJ' && cpd.nationalities.hasOwnProperty(lower) === false)) {
+                    (tag === 'JJ' && cpd.demonyms.hasOwnProperty(lower) === false)) {
 
 
                     // All uppercased or an acronym, probably NNP

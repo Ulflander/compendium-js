@@ -295,7 +295,7 @@
             trillion: 1e12
         },
 
-        nationalities: '@@nationalities',
+        demonyms: '@@demonyms',
 
         // Negation marks
         neg: {

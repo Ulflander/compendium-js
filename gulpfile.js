@@ -213,7 +213,7 @@ function refreshEnCoreFiles () {
     l = fs.readFileSync('build/en/lexicon-full.txt').toString().split('\\').join('\\\\')
     s = fs.readFileSync('src/dictionaries/en/suffixes.txt').toString().split('\n').join('\t')
     sy = fs.readFileSync('src/dictionaries/en/synonyms.txt').toString().split('\n').join('\t')
-    na = fs.readFileSync('src/dictionaries/en/nationalities.txt').toString().split('\n').join(' ')
+    na = fs.readFileSync('src/dictionaries/en/demonyms.txt').toString().split('\n').join(' ')
     v = fs.readFileSync('src/dictionaries/en/regular-verbs.txt').toString().split('\n').join(' ')
     iv = fs.readFileSync('src/dictionaries/en/irregular-verbs.txt').toString().split('\n').join('\t')
     r = fs.readFileSync('src/dictionaries/en/rules.txt').toString().split('\n').join('\t');
@@ -252,7 +252,7 @@ gulp.task('build_full', function() {
             .pipe(replace('@@lexicon', l))
             .pipe(replace('@@suffixes', s))
             .pipe(replace('@@synonyms', sy))
-            .pipe(replace('@@nationalities', na))
+            .pipe(replace('@@demonyms', na))
             .pipe(replace('@@verbs', v))
             .pipe(replace('@@iverbs', iv))
             .pipe(replace('@@rules', r))
@@ -274,7 +274,7 @@ gulp.task('build_minimal', function() {
             .pipe(replace('@@lexicon', l))
             .pipe(replace('@@suffixes', s))
             .pipe(replace('@@synonyms', sy))
-            .pipe(replace('@@nationalities', na))
+            .pipe(replace('@@demonyms', na))
             .pipe(replace('@@rules', r))
             .pipe(replace('@@verbs', v))
             .pipe(replace('@@iverbs', iv))
@@ -305,7 +305,7 @@ gulp.task('build_full_fr', function() {
             .pipe(replace('@@lexicon', l))
             .pipe(replace('@@suffixes', s))
             .pipe(replace('@@synonyms', sy))
-            .pipe(replace('@@nationalities', na))
+            .pipe(replace('@@demonyms', na))
             .pipe(replace('@@verbs', v))
             .pipe(replace('@@iverbs', iv))
             .pipe(replace('@@rules', r))
@@ -336,7 +336,7 @@ gulp.task('build_minimal_fr', function() {
             .pipe(replace('@@lexicon', l))
             .pipe(replace('@@suffixes', s))
             .pipe(replace('@@synonyms', sy))
-            .pipe(replace('@@nationalities', na))
+            .pipe(replace('@@demonyms', na))
             .pipe(replace('@@rules', r))
             .pipe(replace('@@verbs', v))
             .pipe(replace('@@iverbs', iv))
@@ -437,6 +437,10 @@ gulp.task('default', ['build'], function() {
     gulp.watch([
         'src/en/*.js'
     ], ['build_en', 'test_en']);
+
+    gulp.watch([
+        'src/fr/*.js'
+    ], ['build_fr', 'test_fr']);
 
     gulp.watch(['test/multilingual.js'], ['test_no_build']);
     gulp.watch(['test/en/*.js'], ['test_en_no_build']);
