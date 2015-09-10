@@ -3,7 +3,8 @@
 
     // Prepare namespace
     // Global shortcuts
-    var cpd = {},
+    var u = 'UNKNOWN',
+        cpd = {},
         lexer = {},
         factory = {},
         analyser = {},
@@ -15,8 +16,13 @@
         pos = {
             specifics: {
                 beforeBrill: function() {},
-
                 afterBrill: function() {},
+                getComposedWordTag: null,
+                DEFAULT_TAG: u,
+                EMOT_TAG: u,
+                SYM_TAG: u,
+                NUM_TAG: u,
+                PUNC_TAG: u
             }
         },
         iA = Array.isArray,

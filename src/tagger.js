@@ -282,7 +282,7 @@
                 tag = null;
                 for (j = 0, tl = emots.length; j < tl; j ++) {
                     if (token.indexOf(emots[j]) === 0) {
-                        tagObject.tag = 'EM';
+                        tagObject.tag = specifics.EMOT_TAG;
                         tagObject.blocked = true;
                         tagObject.confidence = 1;
                         tagObject.reason = 'emoticon';
@@ -354,16 +354,9 @@
 
             // If no tag, check composed words
             if (token.indexOf('-') > -1) {
-                // If capitalized, likely NNP
-                if (token.match(/^[A-Z]/g)) {
-                    tagObject.tag = 'NNP';
-                // Composed words are very often adjectives
-                } else {
-                    tagObject.tag = 'JJ';
+                if (typeof specifics.getComposedWordTag === 'function') {
+                    return specifics.getComposedWordTag(token, tagObject);
                 }
-                tagObject.reason = 'composed word';
-                tagObject.confidence /= 2;
-                return tagObject;
             }
 
             // We default to NN if still no tag
@@ -389,7 +382,7 @@
                 append = function(tag, c, b, reason) {
                     tag = typeof tag === 'object' ? tag.pos : tag;
                     reasons.push(tag + '/' + reason);
-                    tags.push(tag === '-' ? 'NN' : tag);
+                    tags.push(tag === '-' ? specifics.DEFAULT_TAG : tag);
                     blocked.push(typeof b === 'boolean' ? b : false);
                     confidence += c;
                 };
@@ -402,13 +395,13 @@
 
                 // Symbols
                 if (token.match(/^[%\+\-\/@]$/g)) {
-                    append('SYM', 1, true);
+                    append(specifics.SYM_TAG, 1, true);
                     continue;
                 }
 
                 // Punc signs
                 if (token.match(/^(\?|\!|\.){1,}$/g)) {
-                    append('.', 1, true);
+                    append(specifics.PUNC_TAG, 1, true);
                     continue;
                 }
 
@@ -419,7 +412,7 @@
                     token.match(/^([0-9]{2}|[0-9]{4})s$/g) ||
                     //range
                     token.match(/^[0-9]{2,4}-[0-9]{2,4}$/g)) {
-                    append('CD', 1, true);
+                    append(specifics.NUM_TAG, 1, true);
                     continue;
                 }
 
