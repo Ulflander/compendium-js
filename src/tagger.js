@@ -359,15 +359,16 @@
                 }
             }
 
-            // We default to NN if still no tag
+            // We default to specifics.DEFAULT_TAG tag if still no tag
             return tagObject;
         },
 
         // Tag a tokenized sentence.
         // Apply three passes:
-        // 1. Guess a tag based on lexicon + prefixes (see `suffixes.txt`)
-        // 2. Manual tranformation rules
-        // 3. Apply Brill's conditions from `rules.txt`
+        // 1. Guess a tag based on lexicon + suffixes (see `suffixes.txt`)
+        // 2. Manual tranformation rules pass 1 (specific to language)
+        // 3. Apply Brill's conditions from `/src/dictionaries/[en|fr]/rules.txt`
+        // 4. Manual tranformation rules pass 2 (specific to language)
         tag: function(sentence) {
             var tags = [],
                 blocked = [],

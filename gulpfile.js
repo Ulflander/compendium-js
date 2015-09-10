@@ -346,14 +346,55 @@ gulp.task('build_minimal_fr', function() {
 });
 
 
-gulp.task('test', ['build_minimal'], function() {
-    return gulp.src('test/*.js')
+gulp.task('test_en_no_build', function() {
+    return gulp.src([
+            'test/en/*.js',
+            'test/multilingual.js'
+        ])
         .pipe(nodeunit({
             reporterOptions: {
                 output: 'test'
             }
         }));
 });
+gulp.task('test_en', ['build_minimal', 'build_full'], function() {
+    return gulp.src([
+            'test/en/*.js',
+            'test/multilingual.js'
+        ])
+        .pipe(nodeunit({
+            reporterOptions: {
+                output: 'test'
+            }
+        }));
+});
+
+gulp.task('test_fr_no_build', function() {
+    return gulp.src([
+            'test/fr/*.js',
+            'test/multilingual.js'
+        ])
+        .pipe(nodeunit({
+            reporterOptions: {
+                output: 'test'
+            }
+        }));
+});
+
+gulp.task('test_fr', ['build_minimal_fr', 'build_full_fr'], function() {
+    return gulp.src([
+            'test/fr/*.js',
+            'test/multilingual.js'
+        ])
+        .pipe(nodeunit({
+            reporterOptions: {
+                output: 'test'
+            }
+        }));
+});
+
+gulp.task('test', ['test_en', 'test_fr']);
+gulp.task('test_no_build', ['test_en_no_build', 'test_fr_no_build']);
 
 gulp.task('build', ['build_minimal', 'build_full', 'build_minimal_fr', 'build_full_fr']);
 gulp.task('build_en', ['build_minimal', 'build_full']);
@@ -381,26 +422,25 @@ gulp.task('default', ['build'], function() {
         '!src/dictionaries/en/sentiments.txt',
         '!src/dictionaries/en/google-10000.txt',
         '!src/dictionaries/en/lexicon.txt',
-    ], ['refreshEnCoreFiles', 'build_en', 'test']);
+    ], ['refreshEnCoreFiles', 'build_en', 'test_en']);
 
     gulp.watch([
         'src/dictionaries/fr/*.txt',
         '!src/dictionaries/fr/lexicon.txt'
-    ], ['build_fr', 'test']);
+    ], ['build_fr', 'test_fr']);
 
     gulp.watch([
-        'src/*.js'
+        'src/*.js',
+        'src/build/*.js'
     ], ['build', 'test']);
 
     gulp.watch([
         'src/en/*.js'
-    ], ['build_en', 'test']);
+    ], ['build_en', 'test_en']);
 
-    gulp.watch([
-        'src/en/*.js'
-    ], ['build_fr', 'test']);
-
-    gulp.watch(['test/*.js'], ['test']);
+    gulp.watch(['test/multilingual.js'], ['test_no_build']);
+    gulp.watch(['test/en/*.js'], ['test_en_no_build']);
+    gulp.watch(['test/fr/*.js'], ['test_fr_no_build']);
 
     gulp.watch([
         'src/dictionaries/en/lexicon.txt',
