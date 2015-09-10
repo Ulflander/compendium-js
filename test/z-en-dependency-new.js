@@ -967,7 +967,7 @@
         test.equal(root.raw, '', 'Sentence root should be a fragment');
         test.equal(root.type, 'FRAG', 'Sentence root should be types `FRAG`');
 
-        test.equal(root.right[0].type, 'NP', 'y type');
+        test.equal(root.right[0].type, 'UH', 'y type');
         test.equal(root.right[0].raw, 'y', 'y raw');
 
         test.equal(root.right[1].label, 'PUNCT', '! relationship label');

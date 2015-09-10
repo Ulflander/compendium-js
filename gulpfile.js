@@ -263,6 +263,7 @@ gulp.task('build_full', function() {
 
 // Minimal english version
 gulp.task('build_minimal', function() {
+    var l = fs.readFileSync('build/en/lexicon-minimal.txt').toString().split('\\').join('\\\\')
     return gulp.src([
                 'src/en/*.js',
                 'src/*.js',

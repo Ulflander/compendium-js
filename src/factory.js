@@ -138,7 +138,8 @@
                 tag: tag || 'NN',
                 norm: norm,
                 confidence: confidence || 0,
-                blocked: false
+                blocked: false,
+                reason: 'unknown'
             }
         }
     });

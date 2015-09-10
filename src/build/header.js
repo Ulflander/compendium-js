@@ -12,7 +12,13 @@
         // dependency parsing v2
         parser = {},
         inflector = {},
-        pos = {},
+        pos = {
+            specifics: {
+                beforeBrill: function() {},
+
+                afterBrill: function() {},
+            }
+        },
         iA = Array.isArray,
         config = {
             profile: {

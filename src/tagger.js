@@ -1,7 +1,7 @@
 !function() {
 
 
-    var isPlural = compendium.inflector.isPlural,
+    var specifics = pos.specifics,
 
         // Brill's conditions
         STARTWORD = 0,
@@ -61,14 +61,13 @@
             }
 
             return null;
-        },
-
-        matchPotentialProperNoun = function(token) {
-            return token.match(/^[A-Z][a-z\.]+$/g) || token.match(/^[A-Z]+[0-9]+$/g) || token.match(/^[A-Z][a-z]+[A-Z][a-z]+$/g);
         };
 
     extend(pos, {
 
+        matchPotentialProperNoun: function(token) {
+            return token.match(/^[A-Z][a-z\.]+$/g) || token.match(/^[A-Z]+[0-9]+$/g) || token.match(/^[A-Z][a-z]+[A-Z][a-z]+$/g);
+        },
 
         applyRule: function(rule, token, tag, index, tokens, tags, run) {
             if (rule.from !== tag || (rule.secondRun && run === 0)) {
@@ -286,6 +285,7 @@
                         tagObject.tag = 'EM';
                         tagObject.blocked = true;
                         tagObject.confidence = 1;
+                        tagObject.reason = 'emoticon';
                         return tagObject;
                     }
                 }
@@ -298,6 +298,7 @@
                 tagObject.tag = tag;
                 tagObject.blocked = tag.blocked;
                 tagObject.confidence = 1;
+                tagObject.reason = 'lexicon';
                 return tagObject;
             }
 
@@ -311,6 +312,7 @@
                 if (!!tag) {
                     tagObject.tag = tag;
                     tagObject.confidence = 1;
+                    tagObject.reason = 'synonym of lexicon term';
                     return tagObject;
                 }
             }
@@ -324,6 +326,7 @@
 
                     tagObject.tag = tag;
                     tagObject.confidence = 0.8;
+                    tagObject.reason = 'char streak';
                     return tagObject;
                 }
             }
@@ -335,6 +338,7 @@
                 if (!!tag && tag !== '-') {
                     tagObject.tag = tag;
                     tagObject.confidence = 0.75;
+                    tagObject.reason = 'lexicon lowercased';
                     return tagObject;
                 }
             }
@@ -344,6 +348,7 @@
             if (!!tag) {
                 tagObject.tag = tag;
                 tagObject.confidence = 0.25;
+                tagObject.reason = 'suffix';
                 return tagObject;
             }
 
@@ -356,6 +361,7 @@
                 } else {
                     tagObject.tag = 'JJ';
                 }
+                tagObject.reason = 'composed word';
                 tagObject.confidence /= 2;
                 return tagObject;
             }
@@ -373,27 +379,23 @@
             var tags = [],
                 blocked = [],
                 norms = [],
+                reasons = [],
                 token,
-                tag,
                 i,
-                j,
                 l = sentence.length,
-                tl,
-                lower,
                 tmp,
-                previous,
-                inNNP = false,
                 confidence = 0,
 
-                append = function(tag, c, b) {
+                append = function(tag, c, b, reason) {
                     tag = typeof tag === 'object' ? tag.pos : tag;
+                    reasons.push(tag + '/' + reason);
                     tags.push(tag === '-' ? 'NN' : tag);
                     blocked.push(typeof b === 'boolean' ? b : false);
                     confidence += c;
                 };
 
-            // Basic tagging based on lexicon and
-            // suffixes
+            // Basic tagging based on lexicon and suffixes
+            // This is multilingual
             for (i = 0; i < l; i ++) {
                 token = sentence[i];
                 norms[i] = token;
@@ -423,143 +425,19 @@
 
 
                 tmp = pos.getTag(sentence[i]);
-                append(tmp.tag, tmp.confidence, tmp.blocked);
+                append(tmp.tag, tmp.confidence, tmp.blocked, tmp.reason);
                 norms[i] = tmp.norm;
             }
 
-            // Manual transformational rules
-            for (i = 0; i < l; i ++) {
-                tag = tags[i];
-
-                if (tag === 'SYM' || tag === '.') {
-                    continue;
-                }
-
-
-
-                token = sentence[i];
-                lower = token.toLowerCase();
-                tl = token.length;
-                previous = (i === 0 ? '' : tags[i - 1]);
-
-                // First position rules
-                if (i === 0) {
-                    // Special case extracted form penn treebank testin
-                    if (lower === 'that') {
-                        tags[i] = 'DT';
-                        confidence ++;
-                        continue;
-                    }
-
-                    // First position infinitive verb
-                    if ((tag === 'NN' || tag === 'VB') && cpd.infinitives.indexOf(lower) > -1) {
-                        tags[i] = 'VB';
-                        confidence ++;
-                        continue;
-                    }
-                }
-
-                // Convert a noun to a past participle if token ends with 'ed'
-                if (tl > 3 && token.match(/[^e]ed$/gi) &&
-                    (tag.indexOf('N') === 0) &&
-                    (i === 0 || !token.match(/^[A-Z][a-z]+/g))) {
-                    tags[i] = 'VBN';
-                    continue;
-                }
-
-                // Convert a common noun to a present participle verb (i.e., a gerund)
-                if (tl > 4 && token.lastIndexOf('ing') === tl - 3 &&
-                    cpd.ing_excpt.indexOf(lower) === -1 &&
-                    (tag.indexOf('N') === 0 || tag === 'MD') &&
-                    (i === 0 || !token.match(/^[A-Z][a-z]+/g)) &&
-                    previous !== 'NN' && previous !== 'JJ' && previous !== 'DT' && previous !== 'VBG') {
-                    tags[i] = 'VBG';
-                    continue;
-                }
-
-                // in(g) gerund inference with missing 'g'
-                // - 0.002% on Penn Treebank, but VERY useful for
-                // casual language
-                if (tl > 4 && lower.lastIndexOf('in') === tl - 2 && tag === 'NN' &&
-                    (i === 0 || !token.match(/^[A-Z][a-z]+/g)) &&
-                    previous !== 'NN' && previous !== 'JJ' && previous !== 'DT' && previous !== 'VBG') {
-                    tmp = lexicon[lower + 'g'];
-                    if (!!tmp && tmp.pos === 'VBG') {
-                        tags[i] = 'VBG';
-                        continue;
-                    }
-                }
-
-                // Check if word could be an infinitive verb
-                // + 0.18% on Penn Treebank
-                if (previous === 'TO' && cpd.infinitives.indexOf(lower) > -1) {
-                    tag = 'VB';
-                }
-
-                // Roman numerals, except for I (handled by some brill rules)
-                if (previous !== 'DT' && token.match(/^[IVXLCDM]+$/g) && token !== 'I') {
-                    tag = 'CD';
-                }
-
-                // Proper noun inference
-                if (tag === 'NN' ||
-                    tag === 'VB' ||
-                    (tag === 'JJ' && cpd.nationalities.hasOwnProperty(lower) === false)) {
-
-
-                    // All uppercased or an acronym, probably NNP
-                    if (token.match(/^[A-Z]+$/g) || token.match(/^([a-z]{1}\.)+/gi)) {
-                        tag = 'NNP';
-                        inNNP = true;
-                    // Capitalized words. First token is skipped for this test
-                    } else if (i > 0 && matchPotentialProperNoun(token)) {
-                        tag = 'NNP';
-                        inNNP = true;
-
-                        // First token handled here, avoiding most false positives
-                        // of first word of sentence, that is capitalized.
-                        // Put in other words, an initial NN or JJ is converted into NNP
-                        // only if second word is also an NNP.
-                        tmp = sentence[i - 1];
-                        if (i === 1 && (previous === 'NN' || previous === 'NNS' || previous === 'JJ' || previous === 'VB') &&
-                            matchPotentialProperNoun(tmp)) {
-                            tags[i - 1] = 'NNP';
-                        }
-                    } else {
-                        inNNP = false;
-                    }
-
-                // Add Roman numeral to proper nouns if we're currently in an NNP
-                } else if (inNNP && ((tag === 'CD' && token.match(/^[IVXLCDM]+$/g)) || token === 'I')) {
-                    tag = 'NNP';
-                } else {
-                    inNNP = tag === 'NNP' || tag === 'NNPS';
-                }
-
-                // Use inflector to detect plural nouns
-                if (tag === 'NN' && isPlural(token)) {
-                    tag = 'NNS';
-                }
-
-                tags[i] = tag;
-            }
+            specifics.beforeBrill(sentence, tags);
 
             // Finally apply Brill's rules
             pos.apply(sentence, tags, blocked);
 
             // Last round of manual transformational rules
-            for (i = 0; i < l; i ++) {
-                token = sentence[i];
-                tag = tags[i];
-                previous = tags[i - 1] || '';
-                if (token.match(/ed$/g)) {
-                    if (tag === 'JJ' && (previous === 'VBZ' || previous === 'VBP') && tags[i + 1] === 'TO') {
-                        tag = 'VBN';
-                    }
-                }
+            // Language specific
+            specifics.afterBrill(sentence, tags);
 
-                tags[i] = tag;
-            }
             return {
                 tags: tags,
                 norms: norms,

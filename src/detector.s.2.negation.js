@@ -2,6 +2,7 @@
 
     var negations = Object.keys(cpd.neg).concat(Object.keys(cpd.refusal)),
         counterNegationTokens = Object.keys(cpd.neg_neg),
+        // @TODO: those counter negation bigrams are language specific, but negation detector should be multilingual
         counterNegationBigrams = [
             ['but', 'to']
         ];

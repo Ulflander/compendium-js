@@ -20,7 +20,7 @@
             '`': /&#x60/gi,
 
             // Damn generation-y and millenials, damn impoliteness
-            // @TODO: handle english specifics, decoder shall be multilingual
+            // @TODO: handle english specifics in another way, decoder shall be multilingual
             'shit': /(s\&\^t|sh\*t)/gi,
             'fuck': /(f\*ck)/gi,
             'just kidding': 'j/k',
