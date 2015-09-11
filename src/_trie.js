@@ -28,12 +28,10 @@
 
     Trie.prototype.get = function(token) {
         var node = this.root,
-            letter,
             i, l = token.length;
 
         for (i = 0; i < l; i += 1) {
-            letter = token[i];
-            if (!(node = node[letter])) {
+            if (!(node = node[token[i]])) {
                 break;
             }
         }
