@@ -5,6 +5,8 @@
 !function() {
     extend(cpd, {
 
+        decode: [],
+
         // Regular verbs
         // Conjugated and expanded in compendium.parser.js
         verbs: '@@verbs'.split(' '),

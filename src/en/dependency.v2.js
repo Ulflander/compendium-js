@@ -77,9 +77,9 @@
             //tmp, should only have one master in all cases
             sentence.root = nodes[0];
             sentence.root.label = 'ROOT';
-            if (nodes.length > 1 && typeof window !== 'undefined') {
-                 console.log('Failed parsing: ' + sentence.raw, nodes);
-            }
+            // if (nodes.length > 1 && typeof window !== 'undefined') {
+            //     console.log('Failed parsing: ' + sentence.raw, nodes);
+            // }
         },
 
         connect: function(analysis) {

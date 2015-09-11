@@ -7,6 +7,18 @@
 !function() {
     extend(cpd, {
 
+        // Regexps used in decoder to replace in
+        // the given string some particular patterns
+        decode: [
+            // Damn generation-y and millenials, damn impoliteness
+            ['shit', /(s\&\^t|sh\*t)/gi],
+            ['fuck', /(f\*ck)/gi],
+            ['just kidding', 'j/k'],
+            ['without', /w\/[to]/g],
+            ['with', 'w/'],
+            [' out of ', /\soutta\s/gi]
+        ],
+
         // Regular verbs
         // Conjugated and expanded in compendium.parser.js
         verbs: '@@verbs'.split(' '),
