@@ -349,7 +349,7 @@ gulp.task('build_minimal_fr', function() {
 gulp.task('test_en_no_build', function() {
     return gulp.src([
             'test/en/*.js',
-            'test/multilingual.js'
+            'test/multilingual/*.js'
         ])
         .pipe(nodeunit({
             reporterOptions: {
@@ -360,7 +360,7 @@ gulp.task('test_en_no_build', function() {
 gulp.task('test_en', ['build_minimal', 'build_full'], function() {
     return gulp.src([
             'test/en/*.js',
-            'test/multilingual.js'
+            'test/multilingual/*.js'
         ])
         .pipe(nodeunit({
             reporterOptions: {
@@ -372,7 +372,7 @@ gulp.task('test_en', ['build_minimal', 'build_full'], function() {
 gulp.task('test_fr_no_build', function() {
     return gulp.src([
             'test/fr/*.js',
-            'test/multilingual.js'
+            'test/multilingual/*.js'
         ])
         .pipe(nodeunit({
             reporterOptions: {
@@ -384,7 +384,7 @@ gulp.task('test_fr_no_build', function() {
 gulp.task('test_fr', ['build_minimal_fr', 'build_full_fr'], function() {
     return gulp.src([
             'test/fr/*.js',
-            'test/multilingual.js'
+            'test/multilingual/*.js'
         ])
         .pipe(nodeunit({
             reporterOptions: {
@@ -442,7 +442,7 @@ gulp.task('default', ['build'], function() {
         'src/fr/*.js'
     ], ['build_fr', 'test_fr']);
 
-    gulp.watch(['test/multilingual.js'], ['test_no_build']);
+    gulp.watch(['test/multilingual/*.js'], ['test_no_build']);
     gulp.watch(['test/en/*.js'], ['test_en_no_build']);
     gulp.watch(['test/fr/*.js'], ['test_fr_no_build']);
 
