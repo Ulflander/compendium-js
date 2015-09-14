@@ -77,7 +77,7 @@
             //tmp, should only have one master in all cases
             sentence.root = nodes[0];
             sentence.root.label = 'ROOT';
-            // if (nodes.length > 1 && typeof window !== 'undefined') {
+            // if (nodes.length > 1) {
             //     console.log('Failed parsing: ' + sentence.raw, nodes);
             // }
         },
@@ -141,6 +141,7 @@
         ['NP', 'SBAR', 0, 'XCOMP'],
         ['VP', 'SBAR', 0, 'XCOMP'],
         ['NP', 'VP', 1, 'NSUBJ'],
+        ['NP', 'VB', 1, 'NSUBJ'],
         ['WP', 'VP', 1, 'ATTR'],
         ['VP', 'MARK', 0, 'XCOMP'],
         ['NP', 'CC', 0, 'CC'],
@@ -154,6 +155,7 @@
         ['VP', 'PP', 0, 'PREP'],
         ['VB', 'PP', 0, 'PREP'],
         ['VP', 'VP', 0, 'CCOMP'],
+        ['VB', 'VB', 0, 'CCOMP'],
         ['VP', 'ADV', 0, 'ADVMOD'],
         ['VB', 'ADV', 0, 'ADVMOD'],
         ['ADV', 'PP', 0, 'PREP'],
@@ -176,7 +178,9 @@
         ['ADV', 'VB', 1, 'ADVMOD', 2],
         ['ADV', 'ADV', 1, 'ADVMOD', 2],
         ['UH', 'ADV', 0, 'ADVMOD', 2],
+        ['NP', 'WDT', 0, 'DOBJ', 2],
         ['ADV', 'NP', 1, 'ADVMOD', 2],
+        ['ADV', 'UH', 1, 'ADVMOD', 2],
     ];
 
     function buildChunk(chunkId, chunkTags, chunkStrict, silentMergeWith, nodes) {

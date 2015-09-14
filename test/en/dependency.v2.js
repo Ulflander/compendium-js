@@ -490,6 +490,21 @@
         test.done();
     };
 
+    exports[pkg.mode + ' mode  - well yup'] = function(test) {
+        var analysis = compendium.analyse('well yup')[0],
+            root = analysis.root;
+
+        test.equal(root.label, 'ROOT', 'Root is root');
+        test.equal(root.raw, 'yup', 'Sentence root should be `yup`');
+        test.equal(root.type, 'UH', 'Sentence root should be types `UH`');
+
+        test.equal(root.left[0].label, 'ADVMOD', 'well relationship label');
+        test.equal(root.left[0].type, 'ADV', 'well type');
+        test.equal(root.left[0].raw, 'well', 'well raw');
+
+        test.done();
+    };
+
     exports[pkg.mode + ' mode  - hell no'] = function(test) {
         var analysis = compendium.analyse('hell no')[0],
             root = analysis.root;
@@ -956,6 +971,63 @@
 
         test.done();
     };
+
+
+    exports[pkg.mode + ' mode  - roger that!'] = function(test) {
+        var analysis = compendium.analyse('roger that!')[0],
+            root = analysis.root;
+
+        test.equal(root.label, 'ROOT', 'Root is root');
+        test.equal(root.raw, 'roger', 'Sentence root should be `roger`');
+        test.equal(root.type, 'NP', 'Sentence root should be types `NP`');
+
+        test.equal(root.right[0].label, 'DOBJ', 'that relationship label');
+        test.equal(root.right[0].type, 'WDT', 'that type');
+        test.equal(root.right[0].raw, 'that', 'that raw');
+
+        test.equal(root.right[1].label, 'PUNCT', '! relationship label');
+        test.equal(root.right[1].type, 'PUNCT', '! type');
+        test.equal(root.right[1].raw, '!', '! raw');
+
+        test.done();
+    };
+
+
+    exports[pkg.mode + ' mode  - let\'s go!'] = function(test) {
+        var analysis = compendium.analyse('let\'s go!')[0],
+            root = analysis.root;
+
+        test.equal(root.label, 'ROOT', 'Root is root');
+        test.equal(root.raw, 'let', 'Sentence root should be `let`');
+        test.equal(root.type, 'VB', 'Sentence root should be types `VB`');
+
+        test.equal(root.right[0].label, 'CCOMP', 'go relationship label');
+        test.equal(root.right[0].type, 'VB', 'go type');
+        test.equal(root.right[0].raw, 'go', 'go raw');
+
+        test.equal(root.right[0].left[0].label, 'NSUBJ', 'us relationship label');
+        test.equal(root.right[0].left[0].type, 'NP', 'us type');
+        test.equal(root.right[0].left[0].raw, '\'s', '\'s raw');
+
+        test.equal(root.right[1].label, 'PUNCT', '! relationship label');
+        test.equal(root.right[1].type, 'PUNCT', '! type');
+        test.equal(root.right[1].raw, '!', '! raw');
+
+        test.done();
+    };
+
+
+    // exports[pkg.mode + ' mode  - can you go please'] = function(test) {
+    //     var analysis = compendium.analyse('can you go please')[0],
+    //         root = analysis.root;
+
+    //     test.equal(root.label, 'ROOT', 'Root is root');
+    //     test.equal(root.raw, 'go', 'Sentence root should be `go`');
+    //     test.equal(root.type, 'VB', 'Sentence root should be types `VB`');
+
+
+    //     test.done();
+    // };
 
 
     exports[pkg.mode + ' mode  - (y)!'] = function(test) {

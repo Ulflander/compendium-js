@@ -606,7 +606,7 @@
 
     exports[pkg.mode + ' mode  - let\'s go'] = function(test) {
         var expected = [
-                ('VB POS VB').split(' ')
+                ('VB PRP VB').split(' ')
             ],
             analysis = compendium.analyse('let\'s go'),
             actual = [analysis[0].tags];

@@ -12,6 +12,7 @@
             types = sentence.profile.types,
             first = sentence.tokens[0],
             last = sentence.tokens[l - 1],
+            tmp,
             tag,
             deps,
             i, m;
@@ -54,8 +55,9 @@
             // Loop onto governor dependencies
             // Requires VB governor + no final `.`
             if (last.pos !== '.' && tag.indexOf('VB') === 0) {
+                tmp = (sentence.tags[governor + 2] || '');
                 // check for "do i do" or "are you going"
-                if (sentence.tags[governor + 1] === 'PRP' && (sentence.tags[governor + 2] || '').indexOf('VB') === 0) {
+                if (sentence.tags[governor + 1] === 'PRP' && tmp.indexOf('VB') === 0 && tmp !== 'VB') {
                     types.push(T_INTERROGATIVE);
                 } if (governor > 1 && sentence.tags[governor - 1] === 'PRP' && sentence.tags[governor - 2].indexOf('VB') === 0) {
                     types.push(T_INTERROGATIVE);
