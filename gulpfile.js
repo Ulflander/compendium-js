@@ -219,7 +219,7 @@ function refreshEnCoreFiles () {
     r = fs.readFileSync('src/dictionaries/en/rules.txt').toString().split('\n').join('\t');
 }
 
-refreshEnCoreFiles();
+
 
 gulp.task('init', function() {
     fs.mkdirSync('./build');
