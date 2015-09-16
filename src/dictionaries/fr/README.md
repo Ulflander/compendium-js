@@ -1,7 +1,7 @@
 ## Lexicon 
 
 The lexicon used has been found on http://www.lexique.org/
-
+Here is the manuel http://www.lexique.org/outils/Manuel_Lexique.htm#_Toc78013446
 
 ## Part-of-Speech tags definition
 
