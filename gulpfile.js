@@ -5,16 +5,12 @@ var gulp = require('gulp'),
     insert = require('gulp-insert'),
     todo = require('gulp-todo'),
     uglify = require('gulp-uglify'),
-    replace = require('gulp-replace');
+    replace = require('gulp-replace'),
 
-// Build french lexicon - to be implemented, dummy method for functional
-// bilingual build process
-function lexicon_fr(level) {
-    var lex = fs.readFileSync('src/dictionaries/fr/lexicon.txt').toString();
+    // French lexicon builder
+    lexiconFrCompiler = require(__dirname + '/src/build/lexicon-fr.js');
 
-    fs.writeFileSync('build/fr/lexicon-full.txt', lex);
-    fs.writeFileSync('build/fr/lexicon-minimal.txt', lex);
-}
+
 // Build english lexicon
 function lexicon(level) {
 
@@ -287,7 +283,6 @@ gulp.task('build_minimal', function() {
 gulp.task('build_full_fr', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
-        l = fs.readFileSync('build/fr/lexicon-full.txt').toString().split('\\').join('\\\\'),
         s = '',
         sy = '',
         na = '',
@@ -302,7 +297,7 @@ gulp.task('build_full_fr', function() {
             .pipe(concat('compendium-fr.js'))
             .pipe(insert.prepend(h))
             .pipe(insert.append(f))
-            .pipe(replace('@@lexicon', l))
+            .pipe(replace('@@lexicon', lexiconFrCompiler.getFullCompiled()))
             .pipe(replace('@@suffixes', s))
             .pipe(replace('@@synonyms', sy))
             .pipe(replace('@@demonyms', na))
@@ -314,11 +309,10 @@ gulp.task('build_full_fr', function() {
             .pipe(gulp.dest('dist/'));
 });
 
-// Minimal english version
+// Minimal french version
 gulp.task('build_minimal_fr', function() {
     var h = fs.readFileSync('src/build/header.js'),
         f = fs.readFileSync('src/build/footer.js'),
-        l = fs.readFileSync('build/fr/lexicon-minimal.txt').toString().split('\\').join('\\\\'),
         s = '',
         sy = '',
         na = '',
@@ -333,7 +327,7 @@ gulp.task('build_minimal_fr', function() {
             .pipe(concat('compendium-fr.minimal.js'))
             .pipe(insert.prepend(h))
             .pipe(insert.append(f))
-            .pipe(replace('@@lexicon', l))
+            .pipe(replace('@@lexicon', lexiconFrCompiler.getMinimalCompiled()))
             .pipe(replace('@@suffixes', s))
             .pipe(replace('@@synonyms', sy))
             .pipe(replace('@@demonyms', na))
@@ -402,7 +396,7 @@ gulp.task('build_fr', ['build_minimal_fr', 'build_full_fr']);
 gulp.task('lexicon', ['minimal_lexicon', 'full_lexicon', 'fr_lexicon']);
 
 gulp.task('fr_lexicon', function(cb) {
-    lexicon_fr(0);
+    lexiconFrCompiler.compile(true);
     cb();
 });
 
