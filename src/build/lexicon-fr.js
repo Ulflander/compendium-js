@@ -17,23 +17,38 @@ var sourcePath = __dirname + '/../dictionaries/fr/',
     fs = require('fs');
 
 function _refreshSources () {
-    full = fs.readFileSync(sourcePath + fullName).toString()
+    full = _filter(fs.readFileSync(sourcePath + fullName).toString()
         .split('\\').join('\\\\')
         .split('\t').join(' ')
-        .split('\n');
+        .split('\n'));
 
-    minimal = fs.readFileSync(sourcePath + minimalName).toString()
+    minimal = _filter(fs.readFileSync(sourcePath + minimalName).toString()
         .split('\\').join('\\\\')
         .split('\t').join(' ')
-        .split('\n');
+        .split('\n'));
 };
 
+// keep only most frequent words
+function _filter(a) {
+    var i = 1, l = a.length, line, index = {}, res = [];
+
+    for (; i < l; i += 1) {
+        line = a[i].split(' ');
+        if (!index.hasOwnProperty(line[0])) {
+            index[line[0]] = 1;
+            res.push(a[i]);
+        }
+    }
+
+    return res;
+}
+
 function _compileFull() {
-    fullCompiled = full.splice(1).join('\t');
+    fullCompiled = full.slice(1).join('\t');
 }
 
 function _compileMinimal() {
-    minimalCompiled = minimal.splice(1).join('\t');
+    minimalCompiled = minimal.slice(1).join('\t');
 }
 
 _refreshSources();
