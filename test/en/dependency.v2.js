@@ -1162,15 +1162,38 @@
     };
 
 
+    exports[pkg.mode + ' mode  - how do you do'] = function(test) {
+        var analysis = compendium.analyse('how do you do')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+
+        test.equal(root.label, 'ROOT', 'Root is root');
+        test.equal(root.raw, 'do', 'Sentence root should be do');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
+
+        test.equal(root.left[0].label, 'ADVMOD', 'how relationship label');
+        test.equal(root.left[0].type, 'ADV', 'how type');
+        test.equal(root.left[0].raw, 'how', 'how raw');
+
+        test.equal(root.left[1].label, 'AUX', 'do relationship label');
+        test.equal(root.left[1].type, 'VB', 'do type');
+        test.equal(root.left[1].raw, 'do', 'do raw');
+
+        test.equal(root.left[2].label, 'NSUBJ', 'you relationship label');
+        test.equal(root.left[2].type, 'NP', 'you type');
+        test.equal(root.left[2].raw, 'you', 'you raw');
+
+        test.done();
+    };
+
     exports[pkg.mode + ' mode  - you\'re awesome, that\'s what I mean :)'] = function(test) {
         var analysis = compendium.analyse('you\'re awesome, that\'s what I mean :)')[0],
             root = analysis.root;
 
         test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
 
-        test.equal(root.left[0].label, 'V   AUX', 'ah relationship label');
-        test.equal(root.left[0].type, 'UH', 'ah type');
-        test.equal(root.left[0].raw, 'ah', 'ah raw');
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, '\'re', 'Sentence root should be are');

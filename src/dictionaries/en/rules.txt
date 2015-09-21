@@ -241,3 +241,4 @@ NN JJ 6 low
 NN JJ 6 middle
 POS PRP 81 let \'s
 VBP VB 19 let \'s
+VB UH 8 VBP please

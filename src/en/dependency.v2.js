@@ -81,7 +81,7 @@
 
             // @todo: to be handled in a better way
             if (!sentence.parsed) {
-                //console.log('Failed parsing: ' + sentence.raw, nodes);
+                console.log('Failed parsing: ' + sentence.raw, nodes);
             }
         },
 
@@ -130,6 +130,7 @@
         ['VAUX',    ['VB', 'RB']],
         ['VAUX',    ['VBP', 'RB']],
         ['VP',      ['VAUX', 'VBG']],
+        ['VAUX',    'MD'],
         ['VP',      'VBZ'],
         ['VP',      'VBP'],
         ['VP',      'VBD'],
@@ -150,7 +151,6 @@
         ['VP', 'MARK', 0, 'XCOMP'],
         ['NP', 'CC', 0, 'CC'],
         ['CC', 'NP', 0, 'CONJ'],
-        ['CC', 'VP', 1, 'CC', 2],
         ['NP', 'NP', 0, 'CONJ'],
         ['VP', 'NP', 0, 'DOBJ'],
         ['VB', 'NP', 0, 'DOBJ'],
@@ -169,21 +169,25 @@
         ['UH', 'SBAR', 1, 'INTJ'],
         ['VP', 'ADJ', 0, 'ACOMP'],
         ['VB', 'ADJ', 0, 'ACOMP'],
-        ['VP', 'ADJP', 0, 'ACOMP', 2],
-        ['ADJP', 'NP', 1, 'ADVMOD', 2],
         ['VB', 'VP', 1, 'AUX'],
         ['VAUX', 'VP', 1, 'AUX'],
         ['VAUX', 'VB', 1, 'AUX'],
+        ['VP', 'UH', 0, 'INTJ'],
+        ['ADV/WRB', 'VP', 1, 'ADVMOD', 0],
         ['VP', 'PUNCT', 0, 'PUNCT', 1],
         ['VB', 'PUNCT', 0, 'PUNCT', 1],
         ['PUNCT', 'VP', 1, 'PUNCT', 1],
         ['PUNCT', 'VB', 1, 'PUNCT', 1],
+        ['CC', 'VP', 1, 'CC', 2],
+        ['VP', 'ADJP', 0, 'ACOMP', 2],
+        ['ADJP', 'NP', 1, 'ADVMOD', 2],
         ['ADV', 'VP', 1, 'ADVMOD', 2],
         ['ADV', 'VB', 1, 'ADVMOD', 2],
         ['ADV', 'ADV', 1, 'ADVMOD', 2],
         ['UH', 'ADV', 0, 'ADVMOD', 2],
         ['NP', 'WDT', 0, 'DOBJ', 2],
         ['ADV', 'NP', 1, 'ADVMOD', 2],
+        ['ADV', 'UH', 1, 'ADVMOD', 2],
         ['ADV', 'UH', 1, 'ADVMOD', 2],
     ];
 
@@ -238,11 +242,17 @@
         }
     }
 
-    function testNodes(leftType, rightType, run) {
-        var i, l = relationships.length, left, right;
+    function testNodes(leftNode, rightNode, run) {
+        var i, l = relationships.length, left, right, tag, index;
         for (i = 0; i < l; i += 1) {
             left = relationships[i][0];
             right = relationships[i][1];
+            index = left.indexOf('/');
+            tag = null;
+            if (index > -1) {
+                tag = left.slice(index + 1);
+                left = left.slice(0, index);
+            }
 
             // Dont tests some of the rules before being at given
             // Kind of repair before repair
@@ -252,7 +262,7 @@
 
             // If match, send back the direction of the
             // relationship and its label.
-            if (left === leftType && right === rightType) {
+            if (left === leftNode.type && right === rightNode.type && (tag === null || tag === leftNode.tags[0])) {
                 return [relationships[i][2], relationships[i][3]];
             }
         }
@@ -264,7 +274,7 @@
         for(l = nodes.length - 2; l >= 0; l -= 1) {
             leftNode = nodes[l];
             rightNode = nodes[l + 1];
-            res = testNodes(leftNode.type, rightNode.type, run);
+            res = testNodes(leftNode, rightNode, run);
 
             if (res[0] === 0) {
                 leftNode.right.push(rightNode);

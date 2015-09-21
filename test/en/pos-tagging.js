@@ -12,6 +12,11 @@
     // http://nlpdotnet.com/services/Tagger.aspx
     //
 
+    exports[pkg.mode + ' mode  - can you go please'] = function(test) {
+        test.deepEqual(['MD', 'PRP', 'VBP', 'UH'], compendium.analyse('can you go please')[0].tags);
+        test.done();
+    };
+
     exports[pkg.mode + ' mode  - this could be something'] = function(test) {
         test.deepEqual(['DT', 'MD', 'VB', 'NN'], compendium.analyse('this could be something')[0].tags);
         test.done();
