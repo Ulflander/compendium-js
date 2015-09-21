@@ -11,12 +11,12 @@
     //
 
     exports[pkg.mode + ' mode  - C\'est quelque chose'] = function(test) {
-        test.deepEqual(['PRO:DEM', 'VER', 'PRO:IND', 'NOM'], compendium.analyse('C\'est quelque chose')[0].tags);
+        test.deepEqual(['PRO:dem', 'VER', 'ADJ:ind', 'NOM'], compendium.analyse('C\'est quelque chose')[0].tags);
         test.done();
     };
 
     exports[pkg.mode + ' mode  - Je devrais aller acheter un ordinateur'] = function(test) {
-        test.deepEqual(['PRO:PER', 'VER:cond', 'VER:infi', 'VER:infi', 'DET:ART', 'NOM'], compendium.analyse('Je devrais aller acheter un ordinateur')[0].tags);
+        test.deepEqual(['PRO:per', 'VER', 'VER', 'VER', 'ART:ind', 'NOM'], compendium.analyse('Je devrais aller acheter un ordinateur')[0].tags);
         test.done();
     };
 
