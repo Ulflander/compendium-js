@@ -5,8 +5,13 @@
 
 var sourcePath = __dirname + '/../dictionaries/fr/',
 
+    outputPath = __dirname + '/../../build/fr/',
+
     fullName = 'lexicon.txt',
     minimalName = 'lexicon_10000.txt',
+
+    outputFullName = 'lexion-full.txt',
+    outputMinimalName = 'lexion-minimal.txt',
 
     full,
     minimal,
@@ -44,11 +49,13 @@ function _filter(a) {
 }
 
 function _compileFull() {
-    fullCompiled = full.slice(1).join('\t');
+    fullCompiled = full.join('\t');
+    fs.writeFileSync(outputPath + outputFullName, fullCompiled);
 }
 
 function _compileMinimal() {
-    minimalCompiled = minimal.slice(1).join('\t');
+    minimalCompiled = minimal.join('\t');
+    fs.writeFileSync(outputPath + outputMinimalName, minimalCompiled);
 }
 
 _refreshSources();
