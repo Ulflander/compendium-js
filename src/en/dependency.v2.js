@@ -81,7 +81,7 @@
 
             // @todo: to be handled in a better way
             if (!sentence.parsed) {
-                console.log('Failed parsing: ' + sentence.raw, nodes);
+                //console.log('Failed parsing: ' + sentence.raw, nodes);
             }
         },
 
