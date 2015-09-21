@@ -17,11 +17,14 @@
             root = analysis.root;
 
         test.equal(analysis.hasOwnProperty('root'), true, 'Parsing sentence property should exist');
+        test.equal(analysis.hasOwnProperty('parsed'), true, '"Parsed" sentence property should exist');
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
 
         // test tree
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'jumps', 'Sentence root should be `jumps`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'is');
         test.equal(root.left[0].type, 'NP', 'type');
@@ -42,9 +45,11 @@
         var analysis = compendium.analyse('do you know Eliza?')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'know', 'Sentence root should be `know`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[1].label, 'NSUBJ', 'Subject relationship label');
         test.equal(root.left[1].type, 'NP', 'Subject type');
@@ -69,9 +74,11 @@
         var analysis = compendium.analyse('don\'t you know Eliza?')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'know', 'Sentence root should be `know`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[1].label, 'NSUBJ', 'Subject relationship label');
         test.equal(root.left[1].type, 'NP', 'Subject type');
@@ -96,9 +103,11 @@
         var analysis = compendium.analyse('go')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'go', 'Sentence root should be `go`');
-        test.equal(root.type, 'VB', 'Sentence root should be types `VB`');
+        test.equal(root.type, 'VB', 'Sentence root should be typed `VB`');
         test.done();
     };
 
@@ -106,9 +115,11 @@
         var analysis = compendium.analyse('Why are you happy?')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'are', 'Sentence root should be `are`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VB`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VB`');
 
         test.equal(root.left[0].label, 'ADVMOD', 'Advmod relationship label');
         test.equal(root.left[0].type, 'ADV', 'Adv type');
@@ -129,9 +140,11 @@
         var analysis = compendium.analyse('well why')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'why', 'Sentence root should be `why`');
-        test.equal(root.type, 'ADV', 'Sentence root should be types `ADV`');
+        test.equal(root.type, 'ADV', 'Sentence root should be typed `ADV`');
 
         test.equal(root.left[0].label, 'ADVMOD', 'Advmod relationship label');
         test.equal(root.left[0].type, 'ADV', 'Adv type');
@@ -146,9 +159,11 @@
         var analysis = compendium.analyse('do a thing')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'do', 'Sentence root should be `do`');
-        test.equal(root.type, 'VB', 'Sentence root should be types `VB`');
+        test.equal(root.type, 'VB', 'Sentence root should be typed `VB`');
 
         test.equal(root.right[0].label, 'DOBJ', 'Dobj relationship label');
         test.equal(root.right[0].type, 'NP', 'NP type');
@@ -160,9 +175,11 @@
         var analysis = compendium.analyse('this is a thing')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is', 'Sentence root should be `is`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'Nsubj relationship label');
         test.equal(root.left[0].type, 'NP', 'NP type');
@@ -178,9 +195,11 @@
         var analysis = compendium.analyse('this was a thing')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'was', 'Sentence root should be `was`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'Nsubj relationship label');
         test.equal(root.left[0].type, 'NP', 'NP type');
@@ -196,9 +215,11 @@
         var analysis = compendium.analyse('this will be a thing')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'will be', 'Sentence root should be `will be`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'Nsubj relationship label');
         test.equal(root.left[0].type, 'NP', 'NP type');
@@ -215,9 +236,11 @@
         var analysis = compendium.analyse('this could be a thing')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'could be', 'Sentence root should be `could be`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'Nsubj relationship label');
         test.equal(root.left[0].type, 'NP', 'NP type');
@@ -234,9 +257,11 @@
         var analysis = compendium.analyse('this should be something')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'should be', 'Sentence root should be `should be`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'Nsubj relationship label');
         test.equal(root.left[0].type, 'NP', 'NP type');
@@ -252,9 +277,11 @@
         var analysis = compendium.analyse('I would die now')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'would die', 'Sentence root should be `would die`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'Nsubj relationship label');
         test.equal(root.left[0].type, 'NP', 'NP type');
@@ -273,9 +300,11 @@
         var analysis = compendium.analyse('When in Rome, do as the Romans.')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'do', 'Sentence root should be `do`');
-        test.equal(root.type, 'VB', 'Sentence root should be types `VB`');
+        test.equal(root.type, 'VB', 'Sentence root should be typed `VB`');
 
         test.equal(root.left[0].label, 'ADVMOD', 'when relationship label');
         test.equal(root.left[0].type, 'ADV', 'when type');
@@ -312,9 +341,11 @@
         var analysis = compendium.analyse('I don\'t want.')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'want', 'Sentence root should be `want`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'I relationship label');
         test.equal(root.left[0].type, 'NP', 'I type');
@@ -333,9 +364,11 @@
         var analysis = compendium.analyse('I respectfully disagree.')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'disagree', 'Sentence root should be `disagree`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'I relationship label');
         test.equal(root.left[0].type, 'NP', 'I type');
@@ -354,9 +387,11 @@
         var analysis = compendium.analyse('I love you')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'love', 'Sentence root should be `love`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'I relationship label');
         test.equal(root.left[0].type, 'NP', 'I type');
@@ -372,9 +407,11 @@
         var analysis = compendium.analyse('yes?')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'yes', 'Sentence root should be `yes`');
-        test.equal(root.type, 'UH', 'Sentence root should be types `UH`');
+        test.equal(root.type, 'UH', 'Sentence root should be typed `UH`');
 
         test.equal(root.right[0].label, 'PUNCT', '? relationship label');
         test.equal(root.right[0].type, 'PUNCT', '? type');
@@ -387,9 +424,11 @@
         var analysis = compendium.analyse('I love you so much it\'s insane')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'love', 'Sentence root should be `love`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'I relationship label');
         test.equal(root.left[0].type, 'NP', 'I type');
@@ -426,10 +465,12 @@
         var analysis = compendium.analyse('PaineWebber Inc., for instance, is forecasting growth in S&P 500 dividends!')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is forecasting', 'Sentence root should be `is forecasting`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
 
         test.equal(root.left[0].label, 'NSUBJ', 'PaineWebber Inc. relationship label');
@@ -471,10 +512,12 @@
         var analysis = compendium.analyse('don\'t do it!')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'do', 'Sentence root should be `do`');
-        test.equal(root.type, 'VB', 'Sentence root should be types `VB`');
+        test.equal(root.type, 'VB', 'Sentence root should be typed `VB`');
 
         test.equal(root.left[0].label, 'AUX', 'don\'t relationship label');
         test.equal(root.left[0].type, 'VAUX', 'dont type');
@@ -494,9 +537,11 @@
         var analysis = compendium.analyse('well yup')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'yup', 'Sentence root should be `yup`');
-        test.equal(root.type, 'UH', 'Sentence root should be types `UH`');
+        test.equal(root.type, 'UH', 'Sentence root should be typed `UH`');
 
         test.equal(root.left[0].label, 'ADVMOD', 'well relationship label');
         test.equal(root.left[0].type, 'ADV', 'well type');
@@ -509,10 +554,12 @@
         var analysis = compendium.analyse('hell no')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'hell', 'Sentence root should be `hell`');
-        test.equal(root.type, 'UH', 'Sentence root should be types `UH`');
+        test.equal(root.type, 'UH', 'Sentence root should be typed `UH`');
 
         test.equal(root.right[0].label, 'ADVMOD', 'no relationship label');
         test.equal(root.right[0].type, 'ADV', 'no type');
@@ -525,10 +572,12 @@
         var analysis = compendium.analyse('what is the weather and the time')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is', 'Sentence root should be `is`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'ATTR', 'what relationship label');
         test.equal(root.left[0].type, 'WP', 'what type');
@@ -553,10 +602,12 @@
         var analysis = compendium.analyse('who is Xav the magician')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is', 'Sentence root should be `is`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'ATTR', 'who relationship label');
         test.equal(root.left[0].type, 'WP', 'who type');
@@ -578,10 +629,12 @@
         var analysis = compendium.analyse('do something')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'do', 'Sentence root should be `do`');
-        test.equal(root.type, 'VB', 'Sentence root should be types `VB`');
+        test.equal(root.type, 'VB', 'Sentence root should be typed `VB`');
 
         test.equal(root.right[0].label, 'DOBJ', 'something relationship label');
         test.equal(root.right[0].type, 'NP', 'something type');
@@ -595,9 +648,11 @@
             root = analysis.root;
 
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'looks', 'Sentence root should be `looks`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'She relationship label');
         test.equal(root.left[0].type, 'NP', 'She type');
@@ -615,10 +670,12 @@
         var analysis = compendium.analyse('She looks very very beautiful')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'looks', 'Sentence root should be `looks`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'She relationship label');
         test.equal(root.left[0].type, 'NP', 'She type');
@@ -636,10 +693,12 @@
         var analysis = compendium.analyse('I changed my mind')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'changed', 'Sentence root should be `changed`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'I relationship label');
         test.equal(root.left[0].type, 'NP', 'I type');
@@ -657,10 +716,12 @@
         var analysis = compendium.analyse('Genetically modified food')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'Genetically modified food', 'Sentence root should be `Genetically modified food`');
-        test.equal(root.type, 'NP', 'Sentence root should be types `NP`');
+        test.equal(root.type, 'NP', 'Sentence root should be typed `NP`');
 
         test.done();
     };
@@ -669,10 +730,12 @@
         var analysis = compendium.analyse('where is the trick')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is', 'Sentence root should be `is`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'ADVMOD', 'where relationship label');
         test.equal(root.left[0].type, 'ADV', 'where type');
@@ -688,10 +751,12 @@
         var analysis = compendium.analyse('but where is the trick')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is', 'Sentence root should be `is`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'CC', 'but relationship label');
         test.equal(root.left[0].type, 'CC', 'but type');
@@ -711,10 +776,12 @@
         var analysis = compendium.analyse('this is quite a good day')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is', 'Sentence root should be `is`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'This relationship label');
         test.equal(root.left[0].type, 'NP', 'This type');
@@ -731,10 +798,12 @@
         var analysis = compendium.analyse('this is a really good day')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is', 'Sentence root should be `is`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'This relationship label');
         test.equal(root.left[0].type, 'NP', 'This type');
@@ -752,10 +821,12 @@
         var analysis = compendium.analyse('this is a really really good day')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is', 'Sentence root should be `is`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'This relationship label');
         test.equal(root.left[0].type, 'NP', 'This type');
@@ -774,10 +845,12 @@
         var analysis = compendium.analyse('this is a good and awesome day')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is', 'Sentence root should be `is`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'This relationship label');
         test.equal(root.left[0].type, 'NP', 'This type');
@@ -796,10 +869,12 @@
         var analysis = compendium.analyse('this is a really good, freaking awesome day')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'is', 'Sentence root should be `is`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'This relationship label');
         test.equal(root.left[0].type, 'NP', 'This type');
@@ -816,10 +891,12 @@
         var analysis = compendium.analyse('I\'m doing well')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, '\'m doing', 'Sentence root should be `\'m doing`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'I relationship label');
         test.equal(root.left[0].type, 'NP', 'I type');
@@ -837,10 +914,12 @@
         var analysis = compendium.analyse('I\'m seriously doing well')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, '\'m seriously doing', 'Sentence root should be `\'m seriously doing`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'I relationship label');
         test.equal(root.left[0].type, 'NP', 'I type');
@@ -858,10 +937,12 @@
         var analysis = compendium.analyse('The car has been sold')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'has been sold', 'Sentence root should be `has been sold`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'The car relationship label');
         test.equal(root.left[0].type, 'NP', 'The car type');
@@ -874,10 +955,12 @@
         var analysis = compendium.analyse('The car has been quickly sold')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'has been quickly sold', 'Sentence root should be `has been sold`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'The car relationship label');
         test.equal(root.left[0].type, 'NP', 'The car type');
@@ -890,10 +973,12 @@
         var analysis = compendium.analyse('The car John wanted to buy has been quickly sold')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'has been quickly sold', 'Sentence root should be `has been sold`');
-        test.equal(root.type, 'VP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'NSUBJ', 'The car relationship label');
         test.equal(root.left[0].type, 'NP', 'The car type');
@@ -923,10 +1008,12 @@
         var analysis = compendium.analyse('no way!')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'way', 'Sentence root should be `way`');
-        test.equal(root.type, 'NP', 'Sentence root should be types `VP`');
+        test.equal(root.type, 'NP', 'Sentence root should be typed `VP`');
 
         test.equal(root.left[0].label, 'ADVMOD', 'no relationship label');
         test.equal(root.left[0].type, 'ADV', 'no type');
@@ -939,10 +1026,12 @@
         var analysis = compendium.analyse('ah ok!')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'ok', 'Sentence root should be `ok`');
-        test.equal(root.type, 'NP', 'Sentence root should be types `NP`');
+        test.equal(root.type, 'NP', 'Sentence root should be typed `NP`');
 
         test.equal(root.left[0].label, 'INTJ', 'ah relationship label');
         test.equal(root.left[0].type, 'UH', 'ah type');
@@ -960,10 +1049,12 @@
         var analysis = compendium.analyse('ah ah!')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'ah ah', 'Sentence root should be `ah`');
-        test.equal(root.type, 'UH', 'Sentence root should be types `UH`');
+        test.equal(root.type, 'UH', 'Sentence root should be typed `UH`');
 
         test.equal(root.right[0].label, 'PUNCT', '! relationship label');
         test.equal(root.right[0].type, 'PUNCT', '! type');
@@ -977,9 +1068,11 @@
         var analysis = compendium.analyse('roger that!')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'roger', 'Sentence root should be `roger`');
-        test.equal(root.type, 'NP', 'Sentence root should be types `NP`');
+        test.equal(root.type, 'NP', 'Sentence root should be typed `NP`');
 
         test.equal(root.right[0].label, 'DOBJ', 'that relationship label');
         test.equal(root.right[0].type, 'WDT', 'that type');
@@ -997,9 +1090,11 @@
         var analysis = compendium.analyse('let\'s go!')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, 'let', 'Sentence root should be `let`');
-        test.equal(root.type, 'VB', 'Sentence root should be types `VB`');
+        test.equal(root.type, 'VB', 'Sentence root should be typed `VB`');
 
         test.equal(root.right[0].label, 'CCOMP', 'go relationship label');
         test.equal(root.right[0].type, 'VB', 'go type');
@@ -1023,7 +1118,7 @@
 
     //     test.equal(root.label, 'ROOT', 'Root is root');
     //     test.equal(root.raw, 'go', 'Sentence root should be `go`');
-    //     test.equal(root.type, 'VB', 'Sentence root should be types `VB`');
+    //     test.equal(root.type, 'VB', 'Sentence root should be typed `VB`');
 
 
     //     test.done();
@@ -1034,10 +1129,12 @@
         var analysis = compendium.analyse('(y)!')[0],
             root = analysis.root;
 
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
 
         test.equal(root.label, 'ROOT', 'Root is root');
         test.equal(root.raw, '', 'Sentence root should be a fragment');
-        test.equal(root.type, 'FRAG', 'Sentence root should be types `FRAG`');
+        test.equal(root.type, 'FRAG', 'Sentence root should be typed `FRAG`');
 
         test.equal(root.right[0].type, 'UH', 'y type');
         test.equal(root.right[0].raw, 'y', 'y raw');
@@ -1048,6 +1145,42 @@
 
         test.done();
     };
+
+
+    exports[pkg.mode + ' mode  - can you go please'] = function(test) {
+        var analysis = compendium.analyse('can you go please')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.equal(root.label, 'ROOT', 'Root is root');
+        test.equal(root.raw, 'go', 'Sentence root should be go');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
+
+
+        test.done();
+    };
+
+
+    exports[pkg.mode + ' mode  - you\'re awesome, that\'s what I mean :)'] = function(test) {
+        var analysis = compendium.analyse('you\'re awesome, that\'s what I mean :)')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.equal(root.left[0].label, 'V   AUX', 'ah relationship label');
+        test.equal(root.left[0].type, 'UH', 'ah type');
+        test.equal(root.left[0].raw, 'ah', 'ah raw');
+
+        test.equal(root.label, 'ROOT', 'Root is root');
+        test.equal(root.raw, '\'re', 'Sentence root should be are');
+        test.equal(root.type, 'VP', 'Sentence root should be typed `VP`');
+
+        test.done();
+    };
+
+
+
 
 
 });

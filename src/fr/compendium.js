@@ -14,12 +14,9 @@
         // Irregular verbs
         irregular: '@@iverbs'.split('\t').map(function(o){return o.split(' ')}),
 
-        // Irregular infinitives
+        // Irregular and regular infinitives
         // Populated in compendium.parser.js using `verbs` array and `irregular` matrix
         infinitives: [],
-
-        // Not used in french
-        ing_excpt: [],
 
         // Adverbs
         emphasis: [],

@@ -77,9 +77,12 @@
             //tmp, should only have one master in all cases
             sentence.root = nodes[0];
             sentence.root.label = 'ROOT';
-            // if (nodes.length > 1) {
-            //     console.log('Failed parsing: ' + sentence.raw, nodes);
-            // }
+            sentence.parsed = (nodes.length === 1);
+
+            // @todo: to be handled in a better way
+            if (!sentence.parsed) {
+                console.log('Failed parsing: ' + sentence.raw, nodes);
+            }
         },
 
         connect: function(analysis) {
@@ -134,6 +137,7 @@
         ['ADV',     'RB'],
         ['PUNCT',   '.'],
         ['PUNCT',   ','],
+        ['PUNCT',   'EM'],
         ['SP',      ['PP', 'NP']],
     ];
 

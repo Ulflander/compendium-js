@@ -207,7 +207,9 @@ The minimal lexicon for the browser contains only a few thousands terms extracte
 
 ## Part-of-Speech tags definition
 
-Here is the list of Part-of-Speech tags used by Compendium. See at the bottom newly introduced tags.
+Here is the list of Part-of-Speech tags used by Compendium.
+
+### English
 
     , Comma                     ,
     : Mid-sent punct.           : ;
@@ -256,6 +258,34 @@ Here is the list of Part-of-Speech tags used by Compendium. See at the bottom ne
 Compendium also includes the following new tag:
 
     EM Emoticon                 :) :(
+
+### French
+
+    ADJ Adjectif                    joli
+    ADJ:dem Adjectif démonstratif   cet
+    ADJ:ind Adjectif indéfini       aucun
+    ADJ:int Adjectif interrogatif   combien
+    ADJ:num Adjectif numéral        deux
+    ADJ:pos Adjectif possessif      mon
+    ADV Adverbe                     courageusement
+    ART:def Article défini          le
+    ART:inf Article indéfini        un
+    AUX Auxiliaire                  suis ("Je suis venu")
+    CON Conjonction                 mais
+    EM Emoticon                     :)
+    LIA Liaison euphonique          l'
+    NOM Nom commun                  carotte
+    NAM Nom propre                  Paul
+    ONO Onomatopée                  ah
+    PRE Préposition                 sur
+    PRO:dem Pronom démonstratif     celui-là
+    PRO:ind Pronom indéfini         personne
+    PRO:int Pronom interrogatif     qui
+    PRO:per Pronom personnel        je
+    PRO:pos Pronom possessif        mien
+    PRO:rel Pronom relatif          que
+    VER Verbe                       manger
+    PONC Ponctuation                , ! ? .
 
 ## Development
 

@@ -82,7 +82,8 @@
                 root: null,
                 tokens: [],
                 tags: [],
-                parsers: []
+                parsers: [],
+                parsed: false
             };
         },
         token: function(raw, norm, pos) {
