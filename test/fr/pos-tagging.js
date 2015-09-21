@@ -10,6 +10,15 @@
     // via http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
     //
 
+    exports[pkg.mode + ' mode  - C\'est quelque chose'] = function(test) {
+        test.deepEqual(['PRO:dem', 'VER', 'ADJ:ind', 'NOM'], compendium.analyse('C\'est quelque chose')[0].tags);
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - Je devrais aller acheter un ordinateur'] = function(test) {
+        test.deepEqual(['PRO:per', 'VER', 'VER', 'VER', 'ART:ind', 'NOM'], compendium.analyse('Je devrais aller acheter un ordinateur')[0].tags);
+        test.done();
+    };
 
     exports[pkg.mode + ' mode  - Bonjour'] = function(test) {
         test.deepEqual('NOM'.split(' '), compendium.analyse('Bonjour')[0].tags);
@@ -21,16 +30,6 @@
         test.deepEqual('ADV PRO:dem VER:pres PONC'.split(' '), compendium.analyse('Comment ça va?')[0].tags);
         test.done();
     };
-
-    // exports[pkg.mode + ' mode  - C\'est quelque chose'] = function(test) {
-    //     test.deepEqual('PRO:dem VER:pres PRO:ind NOM'.split(' '), compendium.analyse('C\'est quelque chose')[0].tags);
-    //     test.done();
-    // };
-
-    // exports[pkg.mode + ' mode  - Je devrais aller acheter un ordinateur'] = function(test) {
-    //     test.deepEqual('PRO:per VER:cond VER:infi VER:infi DET:ART NOM'.split(' '), compendium.analyse('Je devrais aller acheter un ordinateur')[0].tags);
-    //     test.done();
-    // };
 
 
 });
