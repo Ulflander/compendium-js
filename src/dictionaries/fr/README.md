@@ -1,11 +1,16 @@
-## Lexicon 
+## Lexicon
 
 The lexicon used has been found on http://www.lexique.org/
 Here is the manuel http://www.lexique.org/outils/Manuel_Lexique.htm#_Toc78013446
 
+## Test generation
+
+Tests have been built with tree tagger from http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
+
+
 ## Part-of-Speech tags definition
 
-Here is the list of Part-of-Speech tags used by Compendium in French. 
+Here is the list of Part-of-Speech tags used by Compendium in French.
 See at the bottom newly introduced tags.
 
 ADJ						Adjectif
