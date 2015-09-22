@@ -238,6 +238,7 @@ gulp.task('refreshEnCoreFiles', function() {
 
 // Build english version
 gulp.task('build_full', function() {
+    refreshEnCoreFiles();
     return gulp.src([
                 'src/en/*.js',
                 'src/*.js',
@@ -259,7 +260,8 @@ gulp.task('build_full', function() {
 
 // Minimal english version
 gulp.task('build_minimal', function() {
-    var l = fs.readFileSync('build/en/lexicon-minimal.txt').toString().split('\\').join('\\\\')
+    var l = fs.readFileSync('build/en/lexicon-minimal.txt').toString().split('\\').join('\\\\');
+    refreshEnCoreFiles();
     return gulp.src([
                 'src/en/*.js',
                 'src/*.js',

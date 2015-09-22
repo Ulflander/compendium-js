@@ -10,8 +10,8 @@ var sourcePath = __dirname + '/../dictionaries/fr/',
     fullName = 'lexicon.txt',
     minimalName = 'lexicon_10000.txt',
 
-    outputFullName = 'lexion-full.txt',
-    outputMinimalName = 'lexion-minimal.txt',
+    outputFullName = 'lexicon-full.txt',
+    outputMinimalName = 'lexicon-minimal.txt',
 
     full,
     minimal,
