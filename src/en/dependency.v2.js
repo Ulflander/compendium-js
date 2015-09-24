@@ -81,7 +81,7 @@
 
             // @todo: to be handled in a better way
             if (!sentence.parsed) {
-                //console.log('Failed parsing: ' + sentence.raw, nodes);
+                console.log('Failed parsing: ' + sentence.raw, nodes);
             }
         },
 
@@ -94,19 +94,20 @@
     var chunks = [
         // [ CHUNK_TYPE, [TAGS IN ORDER], STRICT_CHUNK, STRICT_CHUNK_SILENT_MERGE_WITH ]
         ['VPT',     ['RB', 'VBN'], true],
-        ['MARK',    ['TO', 'VB'], true],
+        ['MARK',    ['TO', 'VB', 'RP'], true],
         ['NPT',     ['DT', 'JJ'], true],
         ['NP',      ['NNP', 'CD', 'NNS']],
         ['NP',      ['DT', 'PRP$', 'JJ', 'JJS', '$', 'CD', '$', 'NN', 'NNS']],
         ['NP',      ['DT', 'PRP$', 'JJ', 'JJS', '$', 'CD', '$', 'NNP', 'NNPS']],
+        ['NP',      ['CD', 'NNS', 'JJ']],
         ['NPT',     ['DT', 'RB'], true],
-        ['VP',      ['MD', 'VBP', 'VB']],
-        ['VP',      ['MD', 'VBD']],
+        ['VP',      ['MD', 'VBP', 'VB', 'RP']],
+        ['VP',      ['MD', 'VBD', 'RP']],
         ['VPT',     ['VBN', 'VPT'], true],
         ['VP',      ['VBZ', 'VPT'], true],
-        ['VP',      ['VBZ', 'VBG']],
-        ['VP',      ['VBP', 'VBG']],
-        ['VP',      ['VBZ', 'VBN']],
+        ['VP',      ['VBZ', 'VBG', 'RP']],
+        ['VP',      ['VBP', 'VBG', 'RP']],
+        ['VP',      ['VBZ', 'VBN', 'RP']],
         ['NP',      ['NNP', 'NNPS']],
         ['ADJP',    ['RB', 'JJ'], true, ['NP', 'NPT']],
         ['NPT',     ['RB', 'DT'], true, ['NP', 'NPT']],
@@ -128,18 +129,21 @@
         ['NPT',     ['NPT', 'NPT'], true],
         ['NP',      ['NPT', 'NP'], true, ['NP']],
         ['VAUX',    ['VB', 'RB']],
-        ['VAUX',    ['VBP', 'RB']],
-        ['VP',      ['VAUX', 'VBG']],
+        ['VAUX',    ['VBP', 'RB'], false, null, ['VBP', 'VB']],
+        ['VP',      ['VBP', 'RB', 'VBG'], true],
         ['VAUX',    'MD'],
         ['VP',      'VBZ'],
         ['VP',      'VBP'],
         ['VP',      'VBD'],
+        ['VP',      'VBG'],
         ['ADV',     'WRB'],
         ['ADV',     'RB'],
         ['PUNCT',   '.'],
         ['PUNCT',   ','],
         ['PUNCT',   'EM'],
+        ['PUNCT',   'SYM'],
         ['SP',      ['PP', 'NP']],
+        ['NP',      'CD']
     ];
 
     var relationships = [
@@ -149,6 +153,7 @@
         ['NP', 'VB', 1, 'NSUBJ'],
         ['WP', 'VP', 1, 'ATTR'],
         ['VP', 'MARK', 0, 'XCOMP'],
+        ['VAUX', 'MARK', 1, 'AUX'],
         ['NP', 'CC', 0, 'CC'],
         ['CC', 'NP', 0, 'CONJ'],
         ['NP', 'NP', 0, 'CONJ'],
@@ -166,6 +171,7 @@
         ['PP', 'VP', 1, 'PREP'],
         ['UH', 'NP', 1, 'INTJ'],
         ['UH', 'VP', 1, 'INTJ'],
+        ['UH', 'VB', 1, 'INTJ'],
         ['UH', 'SBAR', 1, 'INTJ'],
         ['VP', 'ADJ', 0, 'ACOMP'],
         ['VB', 'ADJ', 0, 'ACOMP'],
@@ -173,7 +179,10 @@
         ['VAUX', 'VP', 1, 'AUX'],
         ['VAUX', 'VB', 1, 'AUX'],
         ['VP', 'UH', 0, 'INTJ'],
+        ['POS', 'NP', 0, 'COMPOUND'],
+        ['NP', 'POS', 0, 'POSS'],
         ['ADV/WRB', 'VP', 1, 'ADVMOD', 0],
+        ['VB', 'UH', 0, 'INTJ', 1],
         ['VP', 'PUNCT', 0, 'PUNCT', 1],
         ['VB', 'PUNCT', 0, 'PUNCT', 1],
         ['PUNCT', 'VP', 1, 'PUNCT', 1],
@@ -184,23 +193,31 @@
         ['ADV', 'VP', 1, 'ADVMOD', 2],
         ['ADV', 'VB', 1, 'ADVMOD', 2],
         ['ADV', 'ADV', 1, 'ADVMOD', 2],
+        ['VBG', 'ADV', 0, 'ADVMOD', 2],
         ['UH', 'ADV', 0, 'ADVMOD', 2],
         ['NP', 'WDT', 0, 'DOBJ', 2],
+        ['NP', 'MARK', 1, 'NSUBJ', 2],
         ['ADV', 'NP', 1, 'ADVMOD', 2],
         ['ADV', 'UH', 1, 'ADVMOD', 2],
         ['ADV', 'UH', 1, 'ADVMOD', 2],
+        ['WP$', 'NP', 1, 'ADVMOD', 2],
+        ['WP', 'NP', 1, 'ADVMOD', 2],
+        ['NP', 'PUNCT', 0, 'PUNCT', 2],
+        ['PUNCT', 'NP', 1, 'PUNCT', 2],
     ];
 
-    function buildChunk(chunkId, chunkTags, chunkStrict, silentMergeWith, nodes) {
+    function buildChunk(chunkId, chunkTags, chunkStrict, silentMergeWith, followedBy, nodes) {
         var left,
             right,
             leftNode,
             rightNode,
+            rightNextNode,
             isUnique = typeof chunkTags === 'string',
             l = nodes.length - (isUnique ? 1 : 2);
 
         for(l; l >= 0; l -= 1) {
             leftNode = nodes[l];
+
 
             if (!isUnique) {
                 rightNode = nodes[l + 1];
@@ -216,6 +233,14 @@
                         }
                     }
 
+                    rightNextNode = nodes[l + 2];
+
+                    // Check previous node and skip if followedBy
+                    // contains it
+                    if (followedBy && (!rightNextNode || followedBy.indexOf(rightNextNode.tags[0]) === -1)) {
+                        continue;
+                    }
+
                     // in some cases we want to merge silently
                     // with right node, i.e. keep the type of
                     // the right node
@@ -229,6 +254,7 @@
                     nodes.splice(l + 1, 1);
                 }
 
+
             } else if (chunkTags === leftNode.type) {
                 leftNode.type = chunkId;
             }
@@ -238,8 +264,9 @@
     function buildChunks(nodes) {
         var i, l = chunks.length;
         for (i = 0; i < l; i += 1) {
-            buildChunk(chunks[i][0], chunks[i][1], chunks[i][2], chunks[i][3], nodes);
+            buildChunk(chunks[i][0], chunks[i][1], chunks[i][2], chunks[i][3],  chunks[i][4], nodes);
         }
+        //console.log(nodes)
     }
 
     function testNodes(leftNode, rightNode, run) {

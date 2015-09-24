@@ -1188,6 +1188,109 @@
         test.done();
     };
 
+    exports[pkg.mode + ' mode  - i will give up'] = function(test) {
+        var analysis = compendium.analyse('i will give up')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - I gonna give up'] = function(test) {
+        var analysis = compendium.analyse('I gonna give up')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - whose one'] = function(test) {
+        var analysis = compendium.analyse('whose one')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+
+
+    exports[pkg.mode + ' mode  - what the fuck'] = function(test) {
+        var analysis = compendium.analyse('what the fuck')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - Yes please'] = function(test) {
+        var analysis = compendium.analyse('Yes please')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+
+
+
+    exports[pkg.mode + ' mode  - Fuck yeah'] = function(test) {
+        var analysis = compendium.analyse('Fuck yeah')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+
+
+    exports[pkg.mode + ' mode  - Feeling kind of low...'] = function(test) {
+        var analysis = compendium.analyse('Feeling kind of low...')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+
+
+    exports[pkg.mode + ' mode  - do i do well'] = function(test) {
+        var analysis = compendium.analyse('do i do well')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - do you want really'] = function(test) {
+        var analysis = compendium.analyse('do you want really')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - jQuery UI 1.6 Book Review - http://cfbloggers.org/?c=30631'] = function(test) {
+        var analysis = compendium.analyse('jQuery UI 1.6 Book Review - http://cfbloggers.org/?c=30631')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+    exports[pkg.mode + ' mode  - NVIDIA Names Stanford\'s Bill Dally Chief Scientist, VP Of Research http://bit.ly/Fvvg9'] = function(test) {
+        var analysis = compendium.analyse('NVIDIA Names Stanford\'s Bill Dally Chief Scientist, VP Of Research http://bit.ly/Fvvg9')[0],
+            root = analysis.root;
+
+        test.strictEqual(analysis.parsed, true, 'Parsing should be successful');
+
+        test.done();
+    };
+
     exports[pkg.mode + ' mode  - you\'re awesome, that\'s what I mean :)'] = function(test) {
         var analysis = compendium.analyse('you\'re awesome, that\'s what I mean :)')[0],
             root = analysis.root;
