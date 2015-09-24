@@ -4,7 +4,7 @@
   "description": "Natural Language Processing in the browser: Tokenization, Part-of-Speech tagging and more.",
   "main": "dist/compendium.js",
   "scripts": {
-    "test": "nodeunit test/en/*.js test/fr/*.js test/multilingual/*.js"
+    "test": "nodeunit test/en/*.js test/fr/*.js test/multilingual/*.js test/common/*.js"
   },
   "repository": {
     "type": "git",
