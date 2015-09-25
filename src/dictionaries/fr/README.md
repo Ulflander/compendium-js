@@ -36,5 +36,5 @@ PRO:pos					Pronom possessif
 PRO:rel					Pronom relatif
 VER						Verbe
 VER:cond				Verbe conditionnel
-VER:infi				Verbe infinitif
+VER:inf				Verbe infinitif
 
