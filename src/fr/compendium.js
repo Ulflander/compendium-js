@@ -27,12 +27,12 @@
         // added in `abbrs_rplt` when lexicon is parsed (see lexicon.js).
         abbrs: [
           //abbrs for streets
-          'ave' : 'avenue',
-          'blvd', 'boulevard',
+          'ave',      'avenue',
+          'blvd',     'boulevard',
           //abbrs for gender
-          'm'  : 'monsieur',
-          'mme': 'madame',
-          'mlle': 'madamoiselle',
+          'm',        'monsieur',
+          'mme',      'madame',
+          'mlle',     'madamoiselle'
 
         ],
 
@@ -87,17 +87,17 @@
             quatorze: 14,
             quinze: 15,
             seize: 16,
-            dix-sept: 17,
-            dix-huit: 18,
-            dix-neuf: 19,
+            'dix-sept': 17,
+            'dix-huit': 18,
+            'dix-neuf': 19,
             vingt: 20,
             trente: 30,
             quarante: 40,
             cinquante: 50,
             soixante: 60,
-            soixante-dix: 70,
-            quatre-vingts: 80,
-            quatre-vingts dix: 90,
+            'soixante-dix': 70,
+            'quatre-vingts': 80,
+            'quatre-vingts dix': 90,
             cent: 100,
             mille: 1e3,
             million: 1e6,
@@ -168,6 +168,7 @@
             novembre: 'NOM',
             decembre: 'NOM'
         },
+
         days: {
             lundi: 'NOM',
             mardi: 'NOM',
