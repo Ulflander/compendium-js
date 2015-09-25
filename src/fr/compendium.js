@@ -26,6 +26,14 @@
         // Replacements are extracted from this array and
         // added in `abbrs_rplt` when lexicon is parsed (see lexicon.js).
         abbrs: [
+          //abbrs for streets
+          'ave' : 'avenue',
+          'blvd', 'boulevard',
+          //abbrs for gender
+          'm'  : 'monsieur',
+          'mme': 'madame',
+          'mlle': 'madamoiselle',
+
         ],
 
         synonyms: '@@synonyms',
@@ -63,40 +71,38 @@
         // (PoS tag `CD`)
         numbers: {
             zero: 0,
-            one: 1,
-            two: 2,
-            three: 3,
-            four: 4,
-            five: 5,
+            un: 1,
+            deux: 2,
+            trois: 3,
+            quatre: 4,
+            cinq: 5,
             six: 6,
-            seven: 7,
-            eight: 8,
-            nine: 9,
-            ten: 10,
-            eleven: 11,
-            twelve: 12,
-            thirteen: 13,
-            fourteen: 14,
-            fifteen: 15,
-            sixteen: 16,
-            seventeen: 17,
-            eighteen: 18,
-            nineteen: 19,
-            ninteen: 19,
-            twenty: 20,
-            thirty: 30,
-            forty: 40,
-            fourty: 40,
-            fifty: 50,
-            sixty: 60,
-            seventy: 70,
-            eighty: 80,
-            ninety: 90,
-            hundred: 100,
-            thousand: 1e3,
+            sept: 7,
+            huit: 8,
+            neuf: 9,
+            dix: 10,
+            onze: 11,
+            douze: 12,
+            treize: 13,
+            quatorze: 14,
+            quinze: 15,
+            seize: 16,
+            dix-sept: 17,
+            dix-huit: 18,
+            dix-neuf: 19,
+            vingt: 20,
+            trente: 30,
+            quarante: 40,
+            cinquante: 50,
+            soixante: 60,
+            soixante-dix: 70,
+            quatre-vingts: 80,
+            quatre-vingts dix: 90,
+            cent: 100,
+            mille: 1e3,
             million: 1e6,
-            billion: 1e9,
-            trillion: 1e12
+            milliard: 1e9,
+            billion: 1e12
         },
 
         demonyms: '@@demonyms',
@@ -115,6 +121,17 @@
 
         // Approval keyword
         approval: {
+            oui: 'UH',
+            yes : 'UH',
+            ok: 'NN',
+            'd\'accord': 'VBN',
+            agree: 'VBP',
+            affirmatif: 'JJ',
+            approuvé: 'VBN',
+            sûr: 'JJ',
+            'en-effet': 'RB',
+            vrai: 'ADJ',
+            //alright: 'JJ'
         },
 
         approval_verbs: [
@@ -138,11 +155,39 @@
 
         // For date recognition
         months: {
+            janvier: 'NOM',
+            février: 'NOM',
+            mars: 'NOM',
+            avril: 'NOM',
+            mai: 'NOM',
+            juin: 'NOM',
+            juillet: 'NOM',
+            août: 'NOM',
+            septembre: 'NOM',
+            octobre: 'NOM',
+            novembre: 'NOM',
+            decembre: 'NOM'
         },
         days: {
+            lundi: 'NOM',
+            mardi: 'NOM',
+            mercredi: 'NOM',
+            jeudi: 'NOM',
+            vendredi: 'NOM',
+            samedi: 'NOM',
+            dimanche: 'NOM'
         },
 
         indicators: {
+            premier: 'ADJ:num',
+            second: 'ADJ:num',
+            deuxième: 'ADJ:num',
+            troisième: 'ADJ:num',
+            dernier: 'ADJ:num',
+            précédent: 'ADJ:num',
+            suivant: 'ADJ:num',
+            dernier: 'ADJ:num'
+            //earliest: 'JJ'
         },
 
         // Profiling
