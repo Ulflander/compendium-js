@@ -41,11 +41,38 @@ function _filter(a) {
         line = a[i].split(' ');
         if (!index.hasOwnProperty(line[0])) {
             index[line[0]] = 1;
-            res.push(a[i]);
+            res.push(_adapt(a[i]));
         }
     }
 
     return res;
+}
+
+// adapt lines to fit needs
+function _adapt(a) {
+    var line = a.split(' '), t, first, attr;
+
+    //concatenate 4_cgram and 11_infover for verbs
+    //line 11_infover contains
+    //mode:temp:pers
+    //in some cases, it can be composed of several mode:temp:pers;mode:temp:pers
+    //We only keep in the lexicon the two first instance of mode and temp
+
+    if(line[1] == 'VER'){
+      attr = [];
+      all = line[2].split(';');
+      first = all[0].split(':');
+      //save mode
+      attr.push(first[0]);
+      //save temp
+      attr.push(first[1])
+      line[1]+=':'+attr.join(':');
+    }
+    //remove 11_infover
+    line[2] = line[3];
+    line.pop();
+
+    return line.join(' ');
 }
 
 function _compileFull() {
@@ -58,9 +85,6 @@ function _compileMinimal() {
     fs.writeFileSync(outputPath + outputMinimalName, minimalCompiled);
 }
 
-_refreshSources();
-_compileMinimal();
-_compileFull();
 
 exports.compile = function(refreshSources) {
     if (!!refreshSources) {
@@ -78,3 +102,7 @@ exports.getFullCompiled = function() {
 exports.getMinimalCompiled = function() {
     return minimalCompiled;
 };
+
+_refreshSources()
+_compileFull()
+_compileMinimal()
