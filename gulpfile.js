@@ -218,9 +218,16 @@ function refreshEnCoreFiles () {
 
 
 gulp.task('init', function() {
-    fs.mkdirSync('./build');
-    fs.mkdirSync('./build/en');
-    fs.mkdirSync('./build/fr');
+  var f = ['./build', './build/fr', './build/en'],
+      i,
+      n;
+
+  for(var i in f){
+    n = f[i];
+    if( !fs.existsSync(n) ){
+      fs.mkdirSync(n);
+    }
+  }
 });
 
 gulp.task('todo', function() {
@@ -237,7 +244,7 @@ gulp.task('refreshEnCoreFiles', function() {
 });
 
 // Build english version
-gulp.task('build_full', function() {
+gulp.task('build_full_en', function() {
     refreshEnCoreFiles();
     return gulp.src([
                 'src/en/*.js',
@@ -259,7 +266,7 @@ gulp.task('build_full', function() {
 });
 
 // Minimal english version
-gulp.task('build_minimal', function() {
+gulp.task('build_minimal_en', function() {
     var l = fs.readFileSync('build/en/lexicon-minimal.txt').toString().split('\\').join('\\\\');
     refreshEnCoreFiles();
     return gulp.src([
@@ -354,7 +361,7 @@ gulp.task('test_en_no_build', function() {
             }
         }));
 });
-gulp.task('test_en', ['build_minimal', 'build_full'], function() {
+gulp.task('test_en', ['build_minimal_en', 'build_full_en'], function() {
     return gulp.src([
             'test/en/*.js',
             'test/multilingual/*.js',
@@ -396,27 +403,27 @@ gulp.task('test_fr', ['build_minimal_fr', 'build_full_fr'], function() {
 gulp.task('test', ['test_en', 'test_fr']);
 gulp.task('test_no_build', ['test_en_no_build', 'test_fr_no_build']);
 
-gulp.task('build', ['build_minimal', 'build_full', 'build_minimal_fr', 'build_full_fr']);
-gulp.task('build_en', ['build_minimal', 'build_full']);
+gulp.task('build', ['build_minimal_en', 'build_full_en', 'build_minimal_fr', 'build_full_fr']);
+gulp.task('build_en', ['build_minimal_en', 'build_full_en']);
 gulp.task('build_fr', ['build_minimal_fr', 'build_full_fr']);
-gulp.task('lexicon', ['minimal_lexicon', 'full_lexicon', 'fr_lexicon']);
+gulp.task('lexicon', ['minimal_lexicon_en', 'full_lexicon_en', 'lexicon_fr']);
 
-gulp.task('fr_lexicon', function(cb) {
+gulp.task('lexicon_fr', function(cb) {
     lexiconFrCompiler.compile(true);
     cb();
 });
 
-gulp.task('full_lexicon', function(cb) {
+gulp.task('full_lexicon_en', function(cb) {
     lexicon(0);
     cb();
 });
 
-gulp.task('minimal_lexicon', function(cb) {
+gulp.task('minimal_lexicon_en', function(cb) {
     lexicon(2);
     cb();
 });
 
-gulp.task('default', ['build'], function() {
+gulp.task('default', ['init', 'lexicon','build'], function() {
     gulp.watch([
         'src/dictionaries/en/*.txt',
         '!src/dictionaries/en/sentiments.txt',
@@ -450,9 +457,9 @@ gulp.task('default', ['build'], function() {
         'src/dictionaries/en/lexicon.txt',
         'src/dictionaries/en/sentiments.txt',
         'src/dictionaries/en/google-10000.txt',
-    ], ['full_lexicon', 'minimal_lexicon']);
+    ], ['full_lexicon_en', 'minimal_lexicon_en']);
 
     gulp.watch([
         'src/dictionaries/fr/lexicon.txt'
-    ], ['fr_lexicon']);
+    ], ['lexicon_fr']);
 });
