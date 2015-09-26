@@ -11,7 +11,7 @@
     //
 
     exports[pkg.mode + ' mode  - C\'est quelque chose'] = function(test) {
-        test.deepEqual(['PRO:dem', 'VER:ind:pres', 'ADJ:ind', 'NOM'], compendium.analyse('C\'est quelque chose')[0].tags);
+        test.deepEqual(['PRO:dem', 'VER:ind:pre', 'ADJ:ind', 'NOM'], compendium.analyse('C\'est quelque chose')[0].tags);
         test.done();
     };
 
@@ -27,7 +27,7 @@
 
 
     exports[pkg.mode + ' mode  - Comment ça va?'] = function(test) {
-        test.deepEqual('ADV PRO:dem VER:ind:pres PONC'.split(' '), compendium.analyse('Comment ça va?')[0].tags);
+        test.deepEqual('ADV PRO:dem VER:ind:pre PONC'.split(' '), compendium.analyse('Comment ça va?')[0].tags);
         test.done();
     };
 
