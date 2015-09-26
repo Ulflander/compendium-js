@@ -2,6 +2,9 @@
 
 function _gp_usage() {
     echo "Compendium dev push/pull tool"
+    echo ""
+    echo "./gp.sh push      Resync dist files, pull origin changes, push local changes"
+    echo "./gp.sh pull      Resync dist files, pull origin changes"
 }
 
 function _gp_resync() {
@@ -34,6 +37,7 @@ case "$1" in
     ;;
     push)
         _require_clean_git
+        _gp_pull
         _gp_push
     ;;
     *)
