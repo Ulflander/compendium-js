@@ -12,6 +12,7 @@
                 i, j,
                 l,
                 lastIndex,
+                lastItem,
                 blocked,
                 tmp,
                 pt, // PoS tag
@@ -34,6 +35,8 @@
                 pt = m > 0 ? item[1].trim() : '';
 
                 lastIndex = pt.length - 1;
+                // @TODO: alert; the '-' token is used in fr lexicon to skip
+                // some data, make this multilingual!
                 if (lastIndex > 0 && pt[lastIndex] === '-') {
                     blocked = true;
                     pt = pt.slice(0, lastIndex);
@@ -42,14 +45,20 @@
                 s = 0;
                 c = null;
 
+                lastItem = item[m];
+
                 // Sentiment score with PoS tag condition
-                if (item[m].match(/^[A-Z]{2,}\/[0-9\-]+$/g)) {
-                    c = item[m].split('/')[0];
-                    s = item[m].split('/')[1];
-                // Simple score
-                } else if (item[m].match(/^[0-9\-]+$/g) || item[m].match(/^\-{0,1}[0-4]\.[0-9]$/g)) {
-                    s = item[m].indexOf('.') > 0 ? parseFloat(item[m]) : parseInt(item[m], 10);
+                if (lastItem.match(/^[A-Z]{2,}\/[0-9\-]+$/g)) {
+                    c = lastItem.split('/')[0];
+                    s = lastItem.split('/')[1];
+                // Simple int score
+                } else if (lastItem.match(/^\-{0,1}[0-4]$/g)) {
+                    s = parseInt(lastItem, 10);
+                // Simple float score
+                } else if (lastItem.match(/^\-{0,1}[0-4]\.[0-9]+$/g)) {
+                    s = parseFloat(lastItem);
                 }
+
                 if (pt === 'EM' && compendium.punycode.ucs2.decode(item[0]).length > 1) {
                     emots.push(item[0]);
                 }
