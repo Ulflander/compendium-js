@@ -186,9 +186,7 @@
             troisième: 'ADJ:num',
             dernier: 'ADJ:num',
             précédent: 'ADJ:num',
-            suivant: 'ADJ:num',
-            dernier: 'ADJ:num'
-            //earliest: 'JJ'
+            suivant: 'ADJ:num'
         },
 
         // Profiling
