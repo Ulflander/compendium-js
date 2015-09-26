@@ -9,6 +9,7 @@ var sourcePath = __dirname + '/../dictionaries/fr/',
 
     fullName = 'lexicon.txt',
     minimalName = 'lexicon_10000.txt',
+    manualName = 'lexicon_manual.txt',
 
     outputFullName = 'lexicon-full.txt',
     outputMinimalName = 'lexicon-minimal.txt',
@@ -25,20 +26,33 @@ function _refreshSources () {
     full = _filter(fs.readFileSync(sourcePath + fullName).toString()
         .split('\\').join('\\\\')
         .split('\t').join(' ')
-        .split('\n'));
+        .split('\n'), 1);
 
     minimal = _filter(fs.readFileSync(sourcePath + minimalName).toString()
         .split('\\').join('\\\\')
         .split('\t').join(' ')
-        .split('\n'));
+        .split('\n'), 1);
+
+    var common = _filter(fs.readFileSync(sourcePath + manualName).toString()
+        .split('\\').join('\\\\')
+        .split('\t').join(' ')
+        .split('\n'), 0);
+
+    full = full.concat(common);
+    minimal = minimal.concat(common);
 };
 
 // keep only most frequent words
-function _filter(a) {
-    var i = 1, l = a.length, line, index = {}, res = [];
+function _filter(a, startIndex) {
+    var i = startIndex, l = a.length, line, index = {}, res = [];
 
     for (; i < l; i += 1) {
         line = a[i].split(' ');
+
+        if (line.length < 2) {
+            continue;
+        }
+
         if (!index.hasOwnProperty(line[0])) {
             index[line[0]] = 1;
             res.push(_adapt(a[i]));

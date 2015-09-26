@@ -19,6 +19,9 @@
         //test.ok(Array.isArray(compendium.compendium.verbs), 'Verbs should be an array');
         //test.ok(typeof compendium.compendium.demonyms === 'object', 'Demonyms should be an object');
         //test.ok(Array.isArray(compendium.compendium.synonyms[0]), 'Synonyms entries should be arrays');
+
+        // Test that manual/common lexicon
+        test.ok(compendium.lexicon.hasOwnProperty('c\''), 'Fr lexicon should contain manual lexicon terms')
         test.done();
     };
 });
