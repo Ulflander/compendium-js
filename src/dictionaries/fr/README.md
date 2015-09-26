@@ -36,5 +36,7 @@ PRO:pos					Pronom possessif
 PRO:rel					Pronom relatif
 VER						Verbe
 VER:cond				Verbe conditionnel
-VER:inf				Verbe infinitif
+VER:inf				    Verbe infinitif
+PONC Ponctuation        , ! ? .
+EM Emoticon             :)
 
