@@ -1,7 +1,7 @@
 !function() {
 
     // Punctuation PoS tags
-    var puncs = [',', '.', ':', '"', '(', ')'];
+    var puncs = [',', ':', '"', '(', ')'].concat([pos.specifics.PUNC_TAG]);
 
     // Factory for analysis objects
     extend(factory, {
