@@ -10,17 +10,30 @@ var sourcePath = __dirname + '/../dictionaries/fr/',
     fullName = 'lexicon.txt',
     minimalName = 'lexicon_10000.txt',
     manualName = 'lexicon_manual.txt',
+    sentimentsName = 'sentiments.txt',
 
     outputFullName = 'lexicon-full.txt',
     outputMinimalName = 'lexicon-minimal.txt',
 
     full,
     minimal,
+    sentiments,
 
     fullCompiled,
     minimalCompiled,
 
     fs = require('fs');
+
+function _addSentimentScores(a) {
+    var i = 0, l = a.length, token;
+    for (; i < l; i += 1) {
+        token = a[i].split(' ')[0];
+        if (sentiments.hasOwnProperty(token)) {
+            a[i] += ' ' + sentiments[token];
+        }
+    }
+    return a;
+};
 
 function _refreshSources () {
     full = _filter(fs.readFileSync(sourcePath + fullName).toString()
@@ -33,13 +46,24 @@ function _refreshSources () {
         .split('\t').join(' ')
         .split('\n'), 1);
 
+    var sentimentsArray = fs.readFileSync(sourcePath + sentimentsName).toString()
+        .split('\n')
+        .map(function(v) {
+            return v.split(' ');
+        });
+
+    sentiments = {};
+    sentimentsArray.forEach(function(v) {
+        sentiments[v[0]] = v[1];
+    })
+
     var common = _filter(fs.readFileSync(sourcePath + manualName).toString()
         .split('\\').join('\\\\')
         .split('\t').join(' ')
         .split('\n'), 0);
 
-    full = full.concat(common);
-    minimal = minimal.concat(common);
+    full = _addSentimentScores(full.concat(common));
+    minimal = _addSentimentScores(minimal.concat(common));
 };
 
 // keep only most frequent words
