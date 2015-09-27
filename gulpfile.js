@@ -270,7 +270,7 @@ gulp.task('default', ['init', 'lexicon','build'], function() {
         'src/dictionaries/en/lexicon.txt',
         'src/dictionaries/en/sentiments.txt',
         'src/dictionaries/en/google-10000.txt',
-    ], ['full_lexicon_en', 'minimal_lexicon_en']);
+    ], ['lexicon_en']);
 
     gulp.watch([
         'src/dictionaries/fr/lexicon.txt'
