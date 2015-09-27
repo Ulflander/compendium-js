@@ -10,6 +10,20 @@
     // via http://www.cis.uni-muenchen.de/~schmid/tools/TreeTagger/
     //
 
+    exports[pkg.mode + ' mode  - :)'] = function(test) {
+        test.deepEqual(['EM'], compendium.analyse(':)')[0].tags);
+        test.done();
+    };
+    exports[pkg.mode + ' mode  - :)))'] = function(test) {
+        test.deepEqual(['EM'], compendium.analyse(':)))')[0].tags);
+        test.done();
+    };
+    exports[pkg.mode + ' mode  - 😋'] = function(test) {
+        test.deepEqual(['EM'], compendium.analyse('😋')[0].tags);
+        test.done();
+    };
+
+
     exports[pkg.mode + ' mode  - C\'est quelque chose'] = function(test) {
         test.deepEqual(['PRO:dem', 'VER:ind:pre', 'ADJ:ind', 'NOM'], compendium.analyse('C\'est quelque chose')[0].tags);
         test.done();
