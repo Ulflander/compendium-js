@@ -1,5 +1,6 @@
 
 var sourcePath = __dirname + '/../dictionaries/en/',
+    commonsSourcePath = __dirname + '/../dictionaries/commons/',
 
     outputPath = __dirname + '/../../build/en/',
 
@@ -24,8 +25,11 @@ var sourcePath = __dirname + '/../dictionaries/en/',
 function _refreshSources() {
     var j, m;
 
-    full = fs.readFileSync(sourcePath + fullName).toString().split('\n')
-    sentiments = fs.readFileSync(sourcePath + sentimentsName).toString().split('\n');
+    var commons = fs.readFileSync(commonsSourcePath + fullName).toString().split('\n');
+    var commonsSentiments = fs.readFileSync(commonsSourcePath + sentimentsName).toString().split('\n');
+
+    full = fs.readFileSync(sourcePath + fullName).toString().split('\n').concat(commons);
+    sentiments = fs.readFileSync(sourcePath + sentimentsName).toString().split('\n').concat(commonsSentiments);
 
     for (j = 0, m = sentiments.length; j < m; j += 1) {
         sentiments[j] = sentiments[j].split(' ');

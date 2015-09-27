@@ -4,6 +4,7 @@
  */
 
 var sourcePath = __dirname + '/../dictionaries/fr/',
+    commonsSourcePath = __dirname + '/../dictionaries/commons/',
 
     outputPath = __dirname + '/../../build/fr/',
 
@@ -38,18 +39,22 @@ function _addSentimentScores(a) {
 };
 
 function _refreshSources () {
+    var commons = fs.readFileSync(commonsSourcePath + fullName).toString().split('\n');
+    var commonsSentiments = fs.readFileSync(commonsSourcePath + sentimentsName).toString().split('\n');
+
     full = _filter(fs.readFileSync(sourcePath + fullName).toString()
         .split('\\').join('\\\\')
         .split('\t').join(' ')
-        .split('\n'), 1);
+        .split('\n'), 1).concat(commons);
 
     minimal = _filter(fs.readFileSync(sourcePath + minimalName).toString()
         .split('\\').join('\\\\')
         .split('\t').join(' ')
-        .split('\n'), 1);
+        .split('\n'), 1).concat(commons);
 
     var sentimentsArray = fs.readFileSync(sourcePath + sentimentsName).toString()
         .split('\n')
+        .concat(commonsSentiments)
         .map(function(v) {
             return v.split(' ');
         });
