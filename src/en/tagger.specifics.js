@@ -9,6 +9,8 @@
         PUNC_TAG: '.',
         SYM_TAG: 'SYM',
         NUM_TAG: 'CD',
+        ADVERB_TAG: 'RB',
+        ADJECTIVE_TAG: 'JJ',
         getComposedWordTag: function(token, tagObject) {
             // If capitalized, likely NNP
             if (token.match(/^[A-Z]/g)) {

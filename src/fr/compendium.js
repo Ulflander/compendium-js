@@ -19,7 +19,11 @@
         infinitives: [],
 
         // Adverbs
-        emphasis: [],
+        emphasis: [
+            'vraiment',
+            'carrément',
+            'réellement',
+        ],
 
         // Odd entries are abbreviations, even entries are replacement.
         // Potentially ambiguous abbrvs have no replacement.
@@ -40,7 +44,8 @@
 
         // Abbreviation replacements
         // (populated by parser)
-        abbrs_rplt: [],
+        abbrs_rplt: [
+        ],
 
         //proper nouns with exclamation marks
         exclamations: [

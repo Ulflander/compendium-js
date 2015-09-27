@@ -7,7 +7,9 @@
         EMOT_TAG: 'EM',
         PUNC_TAG: 'PONC',
         SYM_TAG: 'SYM',
-        NUM_TAG: 'CD'
+        NUM_TAG: 'CD',
+        ADVERB_TAG: 'ADV',
+        ADJECTIVE_TAG: 'ADJ',
       })
 
 }());
