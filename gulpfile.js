@@ -8,190 +8,8 @@ var gulp = require('gulp'),
     replace = require('gulp-replace'),
 
     // French lexicon builder
-    lexiconFrCompiler = require(__dirname + '/src/build/lexicon-fr.js');
-
-
-// Build english lexicon
-function lexicon(level) {
-
-    var lex = fs.readFileSync('src/dictionaries/en/lexicon.txt').toString(),
-        sentiments = fs.readFileSync('src/dictionaries/en/sentiments.txt').toString(),
-        // Use next compendium to filter lexicon
-        compendium = require('./'),
-        i,
-        l,
-        j,
-        mini = [],
-        maxi = [],
-        sts = [],
-        idx,
-        line,
-        token,
-        found,
-        skipped = 0,
-        crosscheck,
-        irregularVerbs = compendium.compendium.irregular,
-        compendiumTokens = [],
-        m;
-
-    if (level === 2) {
-        crosscheck = fs.readFileSync('src/dictionaries/en/google-10000.txt').toString().split('\n');
-    }
-
-    for (i in compendium.compendium) {
-        if (compendium.compendium.hasOwnProperty(i) && !Array.isArray(compendium.compendium[i]) && typeof compendium.compendium[i] === 'object') {
-            for (j in compendium.compendium[i]) {
-                if (compendium.compendium[i].hasOwnProperty(j)) {
-                    compendiumTokens.push(j);
-                }
-            }
-        }
-    }
-
-
-    lex = lex.split('\n');
-    sentiments = sentiments.split('\n');
-
-    for (j = 0, m = sentiments.length; j < m; j += 1) {
-        sentiments[j] = sentiments[j].split(' ');
-        if (sts.indexOf(sentiments[j][0]) === -1) {
-            sts.push(sentiments[j][0]);
-        } else {
-            sts.push('--');
-        }
-    }
-
-
-    for (i = 0, l = lex.length; i < l; i += 1) {
-        if (!lex[i]) {
-            continue;
-        }
-
-        line = lex[i].split(' ');
-        token = line[0].trim();
-        idx = sts.indexOf(token);
-
-
-        // If no sentiment, and already contained in compendium, skip it
-        if (compendiumTokens.indexOf(token) > -1 && (idx === -1 || sts[idx] === '--')) {
-            skipped += 1;
-            continue;
-        }
-
-        sts[idx] = '--';
-        lex[i] = token + ' ' + (line[1] || 'NN');
-
-        // If token has a sentiment score, add it
-        if (idx > -1) {
-
-            // If is plural
-            if (line[1] === 'NNS') {
-                skipped += 1;
-                continue;
-            }
-
-            lex[i] += ' ' + sentiments[idx][1];
-
-        // otherwise check for minimal mode skipped tokens
-        } else {
-
-            // Skip tokens with uppercased chars in minimal mode
-            if (level > 0 && token.match(/[A-Z]/g)) {
-                skipped += 1;
-                continue;
-            }
-
-            // Is a verb in compendium
-            if (level > 0 && line[1] === 'VB') {
-
-                // Regular verb
-                if (compendium.compendium.verbs.indexOf(token) > -1) {
-                    skipped += 1;
-                    continue;
-                }
-            }
-
-            // All kind of verbs
-            if (level > 0 && line[1].indexOf('VB') > -1) {
-
-                // Irregular verbs
-                for (found = false, j = 0, m = irregularVerbs.length; j < m; j += 1) {
-                    if (irregularVerbs[j].indexOf(token) > -1) {
-                        found = true;
-                        break;
-                    }
-                }
-                if (!!found) {
-                    skipped += 1;
-                    continue;
-                }
-
-                if (line[1] === 'VBZ' || line[1] === 'VBZ' || line[1] === 'VBD' || line[1] === 'VBG') {
-                    //console.log('skipped', token)
-                    skipped += 1;
-                    continue;
-                }
-            }
-
-            // Taken in account by a rule
-            if (level > 0 && token.length > 3 && token.slice(token.length - 2) === 'ed' && line[1] === 'VBN') {
-                skipped += 1;
-                continue;
-            }
-
-            // Taken in account by a rule
-            if (level > 0 && token.length > 3 && token.slice(token.length - 3) === 'ing' && line[1] === 'VBG') {
-                skipped += 1;
-                continue;
-            }
-
-            // This is the default pos tag, no need
-            // ONLY if not blocked term
-            if (level > 0 && line[1].indexOf('NN') === 0 && line[1].indexOf('-') === -1) {
-                skipped += 1;
-                continue;
-            }
-
-            // Taken in account by suffixes
-            // no need either
-            if (level > 0 && compendium.pos.testSuffixes(token) === line[1]) {
-                skipped += 1;
-                continue;
-            }
-
-            // Minimal mode: we crosscheck with the 10000 most commons english words
-            // and all the nouns
-            if (level === 2 && token.match(/[a-z]/g) && token.indexOf('\'') === -1 && crosscheck.indexOf(token) === -1) {
-                skipped += 1;
-                continue;
-            }
-        }
-
-        // Minimal mode: we expunge tokens with uppercase letters
-        if (level > 0 && token.toLowerCase() === token && (token.indexOf('-') === -1 || line[1] === 'EM')) {
-            mini.push(lex[i]);
-        } else if (level > 0) {
-            skipped += 1;
-        // Full mode
-        } else {
-            maxi.push(lex[i]);
-        }
-    }
-    for (j = 0, m = sentiments.length; j < m; j += 1) {
-        if (sts[j] !== '--') {
-            maxi.push(sentiments[j][0] + ' - ' + sentiments[j][1]);
-            mini.push(sentiments[j][0] + ' - ' + sentiments[j][1]);
-        }
-    }
-
-    if (level === 0) {
-        console.log('Full lexicon contains ' + maxi.length + ' terms, skipped ' + skipped + ' tokens, ' + compendiumTokens.length +' being in compendium.compendium.');
-        fs.writeFileSync('build/en/lexicon-full.txt', maxi.join('\t'));
-    } else {
-        console.log('Mini lexicon contains ' + mini.length + ' terms, skipped ' + skipped + ' tokens, ' + compendiumTokens.length +' being in compendium.compendium.');
-        fs.writeFileSync('build/en/lexicon-minimal.txt', mini.join('\t'));
-    }
-};
+    lexiconFrCompiler = require(__dirname + '/src/build/lexicon-fr.js'),
+    lexiconEnCompiler = require(__dirname + '/src/build/lexicon-en.js');
 
 var h,
     f,
@@ -206,7 +24,7 @@ var h,
 function refreshEnCoreFiles () {
     h = fs.readFileSync('src/build/header.js')
     f = fs.readFileSync('src/build/footer.js')
-    l = fs.readFileSync('build/en/lexicon-full.txt').toString().split('\\').join('\\\\')
+    l = lexiconEnCompiler.getFullCompiled();
     s = fs.readFileSync('src/dictionaries/en/suffixes.txt').toString().split('\n').join('\t')
     sy = fs.readFileSync('src/dictionaries/en/synonyms.txt').toString().split('\n').join('\t')
     na = fs.readFileSync('src/dictionaries/en/demonyms.txt').toString().split('\n').join(' ')
@@ -267,7 +85,6 @@ gulp.task('build_full_en', function() {
 
 // Minimal english version
 gulp.task('build_minimal_en', function() {
-    var l = fs.readFileSync('build/en/lexicon-minimal.txt').toString().split('\\').join('\\\\');
     refreshEnCoreFiles();
     return gulp.src([
                 'src/en/*.js',
@@ -276,7 +93,7 @@ gulp.task('build_minimal_en', function() {
             .pipe(concat('compendium.minimal.js'))
             .pipe(insert.prepend(h))
             .pipe(insert.append(f))
-            .pipe(replace('@@lexicon', l))
+            .pipe(replace('@@lexicon', lexiconEnCompiler.getMinimalCompiled()))
             .pipe(replace('@@suffixes', s))
             .pipe(replace('@@synonyms', sy))
             .pipe(replace('@@demonyms', na))
@@ -406,22 +223,18 @@ gulp.task('test_no_build', ['test_en_no_build', 'test_fr_no_build']);
 gulp.task('build', ['build_minimal_en', 'build_full_en', 'build_minimal_fr', 'build_full_fr']);
 gulp.task('build_en', ['build_minimal_en', 'build_full_en']);
 gulp.task('build_fr', ['build_minimal_fr', 'build_full_fr']);
-gulp.task('lexicon', ['minimal_lexicon_en', 'full_lexicon_en', 'lexicon_fr']);
+gulp.task('lexicon', ['lexicon_en', 'lexicon_fr']);
 
 gulp.task('lexicon_fr', function(cb) {
     lexiconFrCompiler.compile(true);
     cb();
 });
 
-gulp.task('full_lexicon_en', function(cb) {
-    lexicon(0);
+gulp.task('lexicon_en', function(cb) {
+    lexiconEnCompiler.compile(true);
     cb();
 });
 
-gulp.task('minimal_lexicon_en', function(cb) {
-    lexicon(2);
-    cb();
-});
 
 gulp.task('default', ['init', 'lexicon','build'], function() {
     gulp.watch([
