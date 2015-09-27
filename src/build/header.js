@@ -8,7 +8,9 @@
         lexer = {},
         factory = {},
         analyser = {},
-        detectors = {},
+        detectors = {
+            specifics: {}
+        },
         dependencies = {},
         // dependency parsing v2
         parser = {},

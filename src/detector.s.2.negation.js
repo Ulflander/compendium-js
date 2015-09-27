@@ -2,10 +2,8 @@
 
     var negations = Object.keys(cpd.neg).concat(Object.keys(cpd.refusal)),
         counterNegationTokens = Object.keys(cpd.neg_neg),
-        // @TODO: those counter negation bigrams are language specific, but negation detector should be multilingual
-        counterNegationBigrams = [
-            ['but', 'to']
-        ];
+        specifics = detectors.specifics,
+        counterNegationBigrams = cpd.counter_neg_bigrams || [];
 
     // Negation detection
     detectors.after('s', function(sentence, index, sentences) {
@@ -28,9 +26,11 @@
             } else if (negations.indexOf(token.norm) > -1) {
                 if (!negated) {
                     previous = sentence.tokens[i - 1];
-                    if (token.pos === 'RB' && previous && (previous.attr.is_verb || previous.pos === 'MD')) {
-                        previous.profile.negated = true;
+
+                    if (specifics.hasOwnProperty('negatePreviousToken')) {
+                        specifics.negatePreviousToken(token, previous);
                     }
+
                     n ++;
                     negated = true;
                 } else {

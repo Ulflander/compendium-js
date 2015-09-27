@@ -339,6 +339,10 @@
             exclusively: 'RB'
         },
 
+        counter_neg_bigrams: [
+            ['but', 'to']
+        ],
+
         // Refusal keywords, also use as negation marks
         refusal: {
             not: 'RB',
