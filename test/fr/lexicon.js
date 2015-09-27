@@ -21,6 +21,7 @@
         //test.ok(Array.isArray(compendium.compendium.synonyms[0]), 'Synonyms entries should be arrays');
         test.ok(compendium.lexicon.content && compendium.lexicon.content.sentiment > 0, 'Lexicon items should have sentiment scores');
         test.ok(compendium.lexicon.suis && compendium.lexicon.suis.sentiment === 0, 'Lexicon items should have sentiment scores');
+        test.ok(compendium.lexicon.vraiment && compendium.lexicon.vraiment.sentiment === 0, 'FR lexicon adverbs should have sentiment score 0');
         // Test that manual/common lexicon
         test.ok(compendium.lexicon.hasOwnProperty('c\''), 'Fr lexicon should contain manual lexicon terms')
         test.done();

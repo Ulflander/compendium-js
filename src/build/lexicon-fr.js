@@ -25,10 +25,12 @@ var sourcePath = __dirname + '/../dictionaries/fr/',
     fs = require('fs');
 
 function _addSentimentScores(a) {
-    var i = 0, l = a.length, token;
+    var i = 0, l = a.length, token, pos;
     for (; i < l; i += 1) {
         token = a[i].split(' ')[0];
-        if (sentiments.hasOwnProperty(token)) {
+        pos = a[i].split(' ')[1];
+        // Exclude adverbs (pas, vraiment...)
+        if (pos !== 'ADV' && sentiments.hasOwnProperty(token)) {
             a[i] += ' ' + sentiments[token];
         }
     }
