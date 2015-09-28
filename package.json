@@ -2,7 +2,7 @@
   "name": "compendium-js",
   "version": "0.0.25",
   "description": "Natural Language Processing in the browser: Tokenization, Part-of-Speech tagging and more.",
-  "main": "dist/compendium.js",
+  "main": "dist/node-entrypoint.js",
   "scripts": {
     "test": "nodeunit test/en/*.js test/fr/*.js test/multilingual/*.js test/common/*.js"
   },

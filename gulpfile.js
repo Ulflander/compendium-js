@@ -225,6 +225,11 @@ gulp.task('build_en', ['build_minimal_en', 'build_full_en']);
 gulp.task('build_fr', ['build_minimal_fr', 'build_full_fr']);
 gulp.task('lexicon', ['lexicon_en', 'lexicon_fr']);
 
+gulp.task('node_entrypoint', function() {
+    return gulp.src('src/build/node-entrypoint.js')
+        .pipe(gulp.dest('dist/'))
+})
+
 gulp.task('lexicon_fr', function(cb) {
     lexiconFrCompiler.compile(true);
     cb();
@@ -253,7 +258,7 @@ gulp.task('default', ['init', 'lexicon','build'], function() {
     gulp.watch([
         'src/*.js',
         'src/build/*.js'
-    ], ['build', 'test']);
+    ], ['node_entrypoint', 'build', 'test']);
 
     gulp.watch([
         'src/en/*.js'
@@ -264,6 +269,7 @@ gulp.task('default', ['init', 'lexicon','build'], function() {
     ], ['build_fr', 'test_fr']);
 
     gulp.watch(['test/multilingual/*.js'], ['test_no_build']);
+    gulp.watch(['test/common/*.js'], ['test_no_build']);
     gulp.watch(['test/en/*.js'], ['test_en_no_build']);
     gulp.watch(['test/fr/*.js'], ['test_fr_no_build']);
 

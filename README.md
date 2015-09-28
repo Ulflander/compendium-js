@@ -49,7 +49,7 @@ Call the `compendium.analyse` function with a string as parameter, and get a com
 
 ##### Step 2: enjoy
 
-    var compendium = require('compendium-js');
+    var compendium = require('compendium-js').get('en');
 
     console.log(compendium.analyse('Hello world :)'));
 
