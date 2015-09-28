@@ -24,6 +24,32 @@
     };
 
 
+    exports[pkg.mode + ' mode  - pas possible'] = function(test) {
+        test.deepEqual(['ADV', 'ADJ'], compendium.analyse('pas possible')[0].tags);
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - deux pas'] = function(test) {
+        test.deepEqual(['CD', 'NOM'], compendium.analyse('deux pas')[0].tags);
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - un pas'] = function(test) {
+        test.deepEqual(['ART:ind', 'NOM'], compendium.analyse('un pas')[0].tags);
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - le pas'] = function(test) {
+        test.deepEqual(['ART:def', 'NOM'], compendium.analyse('le pas')[0].tags);
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - ce pas'] = function(test) {
+        test.deepEqual(['PRO:dem', 'NOM'], compendium.analyse('ce pas')[0].tags);
+        test.done();
+    };
+
+
     exports[pkg.mode + ' mode  - C\'est quelque chose'] = function(test) {
         test.deepEqual(['PRO:dem', 'VER:ind:pre', 'ADJ:ind', 'NOM'], compendium.analyse('C\'est quelque chose')[0].tags);
         test.done();
