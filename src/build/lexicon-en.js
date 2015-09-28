@@ -48,7 +48,7 @@ function _compile() {
     fullCompiled = [];
 
     var // Use next compendium to filter lexicon
-        compendium = require(__dirname + '/../../'),
+        compendium = require(__dirname + '/../../').get('en'),
         i,
         l,
         j,
