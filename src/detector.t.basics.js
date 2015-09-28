@@ -1,6 +1,4 @@
-!function() {
-
-    var lexicon = compendium.lexicon;
+(function() {
 
     // This detector runs on each token
     // and set basic properties (acronyms...)
@@ -95,4 +93,4 @@
         token.profile.emphasis = emphasis;
         token.norm = norm;
     });
-}();
+}());
