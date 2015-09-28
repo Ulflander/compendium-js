@@ -76,6 +76,7 @@
             var type = rule.type,
                 tmp,
                 tmp2;
+
             // Start word rule is case sensitive
             if (type === STARTWORD) {
                 if (index === 0 && token === rule.c1) {
@@ -85,8 +86,9 @@
                 return;
             }
 
-
             token = token.toLowerCase();
+
+            // @TODO: turn this to a switch statement
             if (type === PREVTAG) {
                 if (index > 0 && tags[index - 1] === rule.c1) {
                     tags[index] = rule.to;

@@ -144,7 +144,7 @@ Result history:
 */
 
 var data = require("./penn_treebank").data,
-    compendium = require('../../build/compendium.minimal.js'),
+    compendium = require('../../build/compendium.js'),
     toPoSArray = function(arr) {
         var res = [], i, l = arr.length;
         for (i = 0; i < l; i += 1) {

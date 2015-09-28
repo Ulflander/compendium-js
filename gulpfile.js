@@ -246,7 +246,8 @@ gulp.task('default', ['init', 'lexicon','build'], function() {
 
     gulp.watch([
         'src/dictionaries/fr/*.txt',
-        '!src/dictionaries/fr/lexicon.txt'
+        '!src/dictionaries/fr/lexicon.txt',
+        '!src/dictionaries/fr/sentiments.txt'
     ], ['build_fr', 'test_fr']);
 
     gulp.watch([
@@ -273,6 +274,7 @@ gulp.task('default', ['init', 'lexicon','build'], function() {
     ], ['lexicon_en']);
 
     gulp.watch([
-        'src/dictionaries/fr/lexicon.txt'
+        'src/dictionaries/fr/lexicon.txt',
+        'src/dictionaries/fr/sentiments.txt',
     ], ['lexicon_fr']);
 });

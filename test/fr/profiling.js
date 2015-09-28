@@ -22,7 +22,7 @@
     };
 
     exports[pkg.mode + ' mode  - Je suis pas content'] = function(test){
-        test.equal(compendium.analyse('Je suis pas content')[0].profile.label, 'negative');
+        test.notEqual(compendium.analyse('Je suis pas content')[0].profile.label, 'positive');
         test.done();
     };
 

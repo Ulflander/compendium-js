@@ -114,6 +114,7 @@
 
         // Negation marks
         neg: {
+            'pas': 'ADV'
         },
 
         // Counter negation marks
@@ -122,7 +123,6 @@
 
         // Refusal keywords, also use as negation marks
         refusal: {
-            'pas': 'ADV'
         },
 
         // Approval keyword

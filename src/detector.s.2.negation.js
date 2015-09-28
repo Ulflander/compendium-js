@@ -1,9 +1,24 @@
 !function() {
 
-    var negations = Object.keys(cpd.neg).concat(Object.keys(cpd.refusal)),
-        counterNegationTokens = Object.keys(cpd.neg_neg),
+    var counterNegationTokens = Object.keys(cpd.neg_neg),
         specifics = detectors.specifics,
-        counterNegationBigrams = cpd.counter_neg_bigrams || [];
+        counterNegationBigrams = cpd.counter_neg_bigrams || [],
+        _isNegationToken = function(norm, tag) {
+            var k;
+            for (k in cpd.neg) {
+                if (cpd.neg.hasOwnProperty(k) && norm === k && cpd.neg[k] === tag) {
+                    return true;
+                }
+            }
+            for (k in cpd.refusal) {
+                if (cpd.refusal.hasOwnProperty(k) && norm === k && cpd.refusal[k] === tag) {
+                    return true;
+                }
+            }
+            return false;
+        };
+
+
 
     // Negation detection
     detectors.after('s', function(sentence, index, sentences) {
@@ -23,7 +38,7 @@
             if (token.profile.breakpoint || token.attr.is_punc) {
                 ll = 0;
                 negated = false;
-            } else if (negations.indexOf(token.norm) > -1) {
+            } else if (_isNegationToken(token.norm, token.pos)) {
                 if (!negated) {
                     previous = sentence.tokens[i - 1];
 
