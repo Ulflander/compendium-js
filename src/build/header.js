@@ -15,6 +15,8 @@
         // dependency parsing v2
         parser = {},
         inflector = {},
+        lexicon = {},
+        multiwords_lexicon = {},
         pos = {
             specifics: {
                 beforeBrill: function() {},
@@ -55,6 +57,8 @@
     compendium.compendium = cpd;
     compendium.lexer = lexer;
     compendium.parser = parser;
+    compendium.lexicon = lexicon;
+    compendium.multiwords_lexicon = multiwords_lexicon;
     compendium.factory = factory;
     compendium.pos = pos;
     compendium.config = config;

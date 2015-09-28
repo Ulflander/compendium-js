@@ -33,7 +33,6 @@
         RBIGRAM = 20,
         PREV1OR2WD = 21,
 
-        lexicon = compendium.lexicon,
         emots = cpd.emots,
         rules = cpd.rules,
         rulesLength = rules.length,
@@ -44,7 +43,7 @@
 
         removeRepetitiveChars = function(token) {
             var str = token.replace(/(.)\1{2,}/g, "$1$1"), s;
-            if (compendium.lexicon.hasOwnProperty(str)) {
+            if (lexicon.hasOwnProperty(str)) {
                 return str;
             }
             s = compendium.synonym(str);
@@ -52,7 +51,7 @@
                 return s;
             }
             str = token.replace(/(.)\1{1,}/g, "$1");
-            if (compendium.lexicon.hasOwnProperty(str)) {
+            if (lexicon.hasOwnProperty(str)) {
                 return str;
             }
             s = compendium.synonym(str);
@@ -294,7 +293,7 @@
             }
 
             // Attempt to get pos in a case sensitive way
-            tag = compendium.lexicon[token];
+            tag = lexicon[token];
 
             if (!!tag && tag !== '-') {
                 tagObject.tag = tag;
@@ -309,7 +308,7 @@
             // Test synonyms
             tmp = compendium.synonym(lower);
             if (tmp !== lower) {
-                tag = compendium.lexicon[tmp];
+                tag = lexicon[tmp];
 
                 if (!!tag) {
                     tagObject.tag = tag;
@@ -324,7 +323,7 @@
                 tmp = removeRepetitiveChars(lower);
                 if (!!tmp) {
                     tagObject.norm = tmp;
-                    tag = compendium.lexicon[tmp];
+                    tag = lexicon[tmp];
 
                     tagObject.tag = tag;
                     tagObject.confidence = 0.8;
@@ -335,7 +334,7 @@
 
             // If none, try with lower cased
             if (typeof token === 'string' && token.match(/[A-Z]/g)) {
-                tag = compendium.lexicon[lower];
+                tag = lexicon[lower];
 
                 if (!!tag && tag !== '-') {
                     tagObject.tag = tag;
@@ -365,6 +364,30 @@
             return tagObject;
         },
 
+        testNgram: function(ngram, sentence, index) {
+            var i, l = ngram.tokens.length;
+            for (i = 1; i < l; i += 1) {
+                index += 1;
+                if (sentence[index].toLowerCase() !== ngram.tokens[i]) {
+                    return false;
+                }
+            }
+            return true;
+        },
+        testNgrams: function(token, sentence, index) {
+            var foundNgrams, i, l, ngram;
+            if (multiwords_lexicon.hasOwnProperty(token)) {
+                foundNgrams = multiwords_lexicon[token];
+                for (i = 0, l = foundNgrams.length; i < l; i += 1) {
+                    ngram = foundNgrams[i];
+                    if (pos.testNgram(ngram, sentence, index)) {
+                        return ngram;
+                    }
+                }
+            }
+            return null;
+        },
+
         // Tag a tokenized sentence.
         // Apply three passes:
         // 1. Guess a tag based on lexicon + suffixes (see `suffixes.txt`)
@@ -381,6 +404,15 @@
                 l = sentence.length,
                 tmp,
                 confidence = 0,
+                ngram,
+
+                appendAll = function(tokens, tags, c, b, reason) {
+                    tags.forEach(function(tag, index) {
+                        append(tag, c, b, reason);
+                        norms.push(tokens[index]);
+                    });
+
+                },
 
                 append = function(tag, c, b, reason) {
                     tag = typeof tag === 'object' ? tag.pos : tag;
@@ -394,17 +426,19 @@
             // This is multilingual
             for (i = 0; i < l; i ++) {
                 token = sentence[i];
-                norms[i] = token;
+
 
                 // Symbols
                 if (token.match(/^[%\+\-\/@]$/g)) {
                     append(specifics.SYM_TAG, 1, true);
+                    norms[i] = token;
                     continue;
                 }
 
                 // Punc signs
                 if (token.match(/^(\?|\!|\.){1,}$/g)) {
                     append(specifics.PUNC_TAG, 1, true);
+                    norms[i] = token;
                     continue;
                 }
 
@@ -416,6 +450,15 @@
                     //range
                     token.match(/^[0-9]{2,4}-[0-9]{2,4}$/g)) {
                     append(specifics.NUM_TAG, 1, true);
+                    norms[i] = token;
+                    continue;
+                }
+
+                // Test ngrams
+                ngram = pos.testNgrams(token, sentence, i);
+                if (ngram !== null) {
+                    appendAll(ngram.tokens, ngram.pos, 1, ngram.blocked, 'Is ngram');
+                    i += ngram.tokens.length - 1;
                     continue;
                 }
 
@@ -425,14 +468,14 @@
                 norms[i] = tmp.norm;
             }
 
-            specifics.beforeBrill(sentence, tags);
+            specifics.beforeBrill(sentence, tags, blocked);
 
             // Finally apply Brill's rules
             pos.apply(sentence, tags, blocked);
 
             // Last round of manual transformational rules
             // Language specific
-            specifics.afterBrill(sentence, tags);
+            specifics.afterBrill(sentence, tags, blocked);
 
             return {
                 tags: tags,

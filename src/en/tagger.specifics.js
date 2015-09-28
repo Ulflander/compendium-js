@@ -24,9 +24,8 @@
             return tagObject;
 
         },
-        beforeBrill: function(sentence, tags) {
+        beforeBrill: function(sentence, tags, blocked) {
             var token,
-                lexicon = compendium.lexicon,
                 tag,
                 i,
                 l = sentence.length,
@@ -41,7 +40,7 @@
             for (i = 0; i < l; i ++) {
                 tag = tags[i];
 
-                if (tag === 'SYM' || tag === '.') {
+                if (blocked[i] || tag === 'SYM' || tag === '.') {
                     continue;
                 }
 
@@ -150,9 +149,12 @@
                 tags[i] = tag;
             }
         },
-        afterBrill: function(sentence, tags) {
+        afterBrill: function(sentence, tags, blocked) {
             var i, l = tags.length, token, tag, previous;
             for (i = 0; i < l; i ++) {
+                if (blocked[i]) {
+                    continue;
+                }
                 token = sentence[i];
                 tag = tags[i];
                 previous = tags[i - 1] || '';
