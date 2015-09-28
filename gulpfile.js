@@ -114,7 +114,7 @@ gulp.task('build_full_fr', function() {
         na = '',
         v = '',
         iv = '',
-        r = '';
+        r = fs.readFileSync('src/dictionaries/fr/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src([
                 'src/fr/*.js',
@@ -144,7 +144,7 @@ gulp.task('build_minimal_fr', function() {
         na = '',
         v = '',
         iv = '',
-        r = '';
+        r = fs.readFileSync('src/dictionaries/fr/rules.txt').toString().split('\n').join('\t');
 
     return gulp.src([
                 'src/fr/*.js',
