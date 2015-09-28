@@ -368,7 +368,7 @@
          */
         infinitive: function(vb) {
             // Find in lexicon
-            var item = compendium.lexicon[vb];
+            var item = lexicon[vb];
             if (!!item && item.hasOwnProperty('infinitive')) {
                 return item['infinitive'];
             }
