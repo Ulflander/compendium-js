@@ -241,7 +241,7 @@ gulp.task('lexicon_en', function(cb) {
 });
 
 
-gulp.task('default', ['init', 'lexicon','build'], function() {
+gulp.task('default', ['init', 'lexicon', 'build'], function() {
     gulp.watch([
         'src/dictionaries/en/*.txt',
         '!src/dictionaries/en/sentiments.txt',
