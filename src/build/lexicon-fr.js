@@ -151,7 +151,6 @@ function _compile(a, startIndex) {
       res.push(line_compiled.join(' '));
     }
 
-    console.log("found "+ver_found+ " verbs and reduced "+ ver_compiled+" verbs");
     return res;
 }
 
