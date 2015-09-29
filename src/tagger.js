@@ -376,8 +376,8 @@
         },
         testNgrams: function(token, sentence, index) {
             var foundNgrams, i, l, ngram;
-            if (multiwords_lexicon.hasOwnProperty(token)) {
-                foundNgrams = multiwords_lexicon[token];
+            if (ngrams.hasOwnProperty(token)) {
+                foundNgrams = ngrams[token];
                 for (i = 0, l = foundNgrams.length; i < l; i += 1) {
                     ngram = foundNgrams[i];
                     if (pos.testNgram(ngram, sentence, index)) {

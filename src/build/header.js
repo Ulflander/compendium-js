@@ -16,7 +16,7 @@
         parser = {},
         inflector = {},
         lexicon = {},
-        multiwords_lexicon = {},
+        ngrams = {},
         pos = {
             specifics: {
                 beforeBrill: function() {},
@@ -58,7 +58,7 @@
     compendium.lexer = lexer;
     compendium.parser = parser;
     compendium.lexicon = lexicon;
-    compendium.multiwords_lexicon = multiwords_lexicon;
+    compendium.ngrams = ngrams;
     compendium.factory = factory;
     compendium.pos = pos;
     compendium.config = config;

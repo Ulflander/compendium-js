@@ -5,8 +5,8 @@
 (function() {
 
     var registerNgram = function(ngram, pos, sentiment, condition, blocked) {
-            if (!multiwords_lexicon.hasOwnProperty(ngram[0])) {
-                multiwords_lexicon[ngram[0]] = [];
+            if (!ngrams.hasOwnProperty(ngram[0])) {
+                ngrams[ngram[0]] = [];
             }
             var posArray;
             if (typeof pos === 'string') {
@@ -17,7 +17,7 @@
             } else {
                 posArray = pos;
             }
-            multiwords_lexicon[ngram[0]].push({
+            ngrams[ngram[0]].push({
                 blocked: true,
                 pos: posArray,
                 sentiment: sentiment || 0,
