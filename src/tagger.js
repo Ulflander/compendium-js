@@ -366,6 +366,9 @@
 
         testNgram: function(ngram, sentence, index) {
             var i, l = ngram.tokens.length;
+            if (index + l > sentence.length) {
+                return false;
+            }
             for (i = 1; i < l; i += 1) {
                 index += 1;
                 if (sentence[index].toLowerCase() !== ngram.tokens[i]) {
