@@ -8,17 +8,17 @@ var sourcePath = __dirname + '/../dictionaries/fr/',
 
     outputPath = __dirname + '/../../build/fr/',
 
-    fullName = 'lexicon.txt',
-    minimalName = 'lexicon_10000.txt',
+    lexiconName = 'lexicon.txt',
     manualName = 'lexicon_manual.txt',
     sentimentsName = 'sentiments.txt',
 
     outputFullName = 'lexicon-full.txt',
     outputMinimalName = 'lexicon-minimal.txt',
 
-    full,
-    minimal,
+    lexicon,
     sentiments,
+    lexicon_commons,
+    lexicon_manual,
 
     fullCompiled,
     minimalCompiled,
@@ -39,18 +39,16 @@ function _addSentimentScores(a) {
 };
 
 function _refreshSources () {
-    var commons = fs.readFileSync(commonsSourcePath + fullName).toString().split('\n');
+    var commons = fs.readFileSync(commonsSourcePath + lexiconName).toString().split('\n');
     var commonsSentiments = fs.readFileSync(commonsSourcePath + sentimentsName).toString().split('\n');
 
-    full = _filter(fs.readFileSync(sourcePath + fullName).toString()
+    lexicon = _filter(fs.readFileSync(sourcePath + lexiconName).toString()
         .split('\\').join('\\\\')
         .split('\t').join(' ')
-        .split('\n'), 1).concat(commons);
+        .split('\n'), 1);
 
-    minimal = _filter(fs.readFileSync(sourcePath + minimalName).toString()
-        .split('\\').join('\\\\')
-        .split('\t').join(' ')
-        .split('\n'), 1).concat(commons);
+    lexicon_commons = commons;
+    lexicon = _compile(lexicon, 0);
 
     var sentimentsArray = fs.readFileSync(sourcePath + sentimentsName).toString()
         .split('\n')
@@ -64,13 +62,15 @@ function _refreshSources () {
         sentiments[v[0]] = v[1];
     })
 
-    var common = _filter(fs.readFileSync(sourcePath + manualName).toString()
+    var manual = _filter(fs.readFileSync(sourcePath + manualName).toString()
         .split('\\').join('\\\\')
         .split('\t').join(' ')
         .split('\n'), 0);
 
-    full = _addSentimentScores(full.concat(common));
-    minimal = _addSentimentScores(minimal.concat(common));
+    lexicon = _addSentimentScores(lexicon);
+    lexicon_manual = _addSentimentScores(manual);
+    lexicon_commons = _addSentimentScores(lexicon_commons);
+
 };
 
 // keep only most frequent words
@@ -86,47 +86,88 @@ function _filter(a, startIndex) {
 
         if (!index.hasOwnProperty(line[0])) {
             index[line[0]] = 1;
-            res.push(_adapt(a[i]));
+            res.push(a[i]);
         }
     }
 
     return res;
 }
 
+
 // adapt lines to fit needs
-function _adapt(a) {
-    var line = a.split(' '), t, first, attr;
+function _compile(a, startIndex) {
+    var i = startIndex, l=a.length, line, line_compiled = [], res = [], infover, ver_found=0, ver_compiled=0;
 
-    //concatenate 4_cgram and 11_infover for verbs
-    //line 11_infover contains
-    //mode:temp:pers
-    //in some cases, it can be composed of several mode:temp:pers;mode:temp:pers
-    //We only keep in the lexicon the two first instance of mode and temp
+    for (; i < l; i += 1) {
+      line = a[i].split(' ');
 
-    if(line[1] == 'VER'){
-      attr = [];
-      all = line[2].split(';');
-      first = all[0].split(':');
-      //save mode
-      attr.push(first[0]);
-      //save temp
-      attr.push(first[1])
-      line[1]+=':'+attr.join(':');
+      //compile 11_infover
+      infover = line[10];
+      if(!!infover && infover != '-') {
+
+          //if infover contains multiple forms of mod:tmp:pers
+          if(infover.split(';').length>1){
+
+              //inf > ind:pres
+              if(infover.match(/inf/)){
+                infover = 'inf'
+              }
+
+              //ind:pres > imp:pres
+              else if(infover.match(/ind:pres?/)){
+                infover = 'ind:pre'
+                ver_compiled += 1;
+              }
+
+              //ind:imp > cnd:pres
+              else if(infover.match(/imp:pre/)){
+                infover = 'ind:imp'
+                ver_compiled += 1;
+              }
+
+              //take the first one
+              else {
+                infover = infover.split(';')[0];
+                ver_compiled += 1;
+              }
+          }
+
+          //store only mod and tmp
+          if(infover.split(':').length>2){
+            infover = infover.split(':').slice(0,2).join(':');
+          }
+
+          ver_found+=1;
+          line[3]+= ':'+infover;
+      }
+      line_compiled=[];
+      // add 1_ortho
+      line_compiled.push(line[0])
+      // add 4_cgram
+      line_compiled.push(line[3])
+      // add 5_genre
+      line_compiled.push(line[4])
+
+      res.push(line_compiled.join(' '));
     }
-    //remove 11_infover
-    line[2] = line[3];
-    line.pop();
 
-    return line.join(' ');
+    console.log("found "+ver_found+ " verbs and reduced "+ ver_compiled+" verbs");
+    return res;
 }
 
 function _compileFull() {
-    fullCompiled = full.join('\t');
+    fullCompiled = lexicon
+      .concat(lexicon_commons)
+      .concat(lexicon_manual)
+      .join('\t');
     fs.writeFileSync(outputPath + outputFullName, fullCompiled);
 }
 
 function _compileMinimal() {
-    minimalCompiled = minimal.join('\t');
+    minimalCompiled = lexicon.slice(0,1000)
+      .concat(lexicon_commons)
+      .concat(lexicon_manual)
+      .join('\t');
     fs.writeFileSync(outputPath + outputMinimalName, minimalCompiled);
 }
 

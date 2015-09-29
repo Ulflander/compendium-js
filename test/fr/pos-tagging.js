@@ -56,7 +56,7 @@
     };
 
     exports[pkg.mode + ' mode  - Je devrais aller acheter un ordinateur'] = function(test) {
-        test.deepEqual(['PRO:per', 'VER:cnd:pre', 'VER:inf:', 'VER:inf:', 'ART:ind', 'NOM'], compendium.analyse('Je devrais aller acheter un ordinateur')[0].tags);
+        test.deepEqual(['PRO:per', 'VER:cnd:pre', 'VER:inf', 'VER:inf', 'ART:ind', 'NOM'], compendium.analyse('Je devrais aller acheter un ordinateur')[0].tags);
         test.done();
     };
 
