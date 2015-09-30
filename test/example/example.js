@@ -156,7 +156,6 @@
     };
 
     function analyseRandom() {
-      debugger;
         var samples = examples[selected_lang];
         var t = samples[Math.floor(Math.random() * (samples.length))];
         input.value = t;
@@ -200,8 +199,7 @@
 
 
 
-    input.focus();
-    input.setSelectionRange(0, input.value.length);
+
 
     var showMessage = function(lang){
         $('.lg .message').text("Language "+lang+" has been selected").show().delay(3000).fadeOut(1000);;
@@ -214,6 +212,8 @@
 
 
     renderAnalyse();
+    input.focus();
+    input.setSelectionRange(0, input.value.length);
 
 
 
