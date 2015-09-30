@@ -1,0 +1,6 @@
+ADV NOM 8 PRO:dem pas
+ADV NOM 8 ART:def pas
+ADV NOM 8 ART:ind pas
+ADV NOM 8 ADJ:ind pas
+ADV NOM 8 CD pas
+CD ART:ind 12 un NOM

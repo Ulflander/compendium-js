@@ -2,16 +2,51 @@
 
 // Parses the lexicon and augment it using compendium
 // Also prepare various fields of compendium: parse brill's rules, suffixes...
-!function() {
-    var inflector = compendium.inflector,
+(function() {
+
+    var registerNgram = function(ngram, pos, sentiment, condition, blocked) {
+            if (!ngrams.hasOwnProperty(ngram[0])) {
+                ngrams[ngram[0]] = [];
+            }
+            var posArray;
+            if (typeof pos === 'string') {
+                posArray = [];
+                ngram.forEach(function(v) {
+                    posArray.push(pos);
+                })
+            } else {
+                posArray = pos;
+            }
+            ngrams[ngram[0]].push({
+                blocked: true,
+                pos: posArray,
+                sentiment: sentiment || 0,
+                condition: condition,
+                tokens: ngram
+            });
+        },
+
+        register = function(token, pos, sentiment, condition, blocked) {
+            if (token.indexOf(' ') > -1) {
+                registerNgram(token.toLowerCase().split(' '), pos, sentiment, condition, blocked);
+            } else {
+                lexicon[token] = {
+                    pos: pos,
+                    sentiment: sentiment,
+                    condition: condition,
+                    blocked: blocked || false
+                };
+            }
+        },
 
         // Parses a Next lexicon
-        parse = function(lexicon) {
+        parse = function(rawLexicon) {
             var d = Date.now(),
-                arr = lexicon.split('\t'),
+                arr = rawLexicon.split('\t'),
                 i, j,
                 l,
                 lastIndex,
+                lastItem,
                 blocked,
                 tmp,
                 pt, // PoS tag
@@ -23,7 +58,8 @@
 
                 // We also keep track of emoticons
                 emots = [],
-                item;
+                item,
+                token;
 
             // Parses lexicon
             for (i = 0, l = arr.length; i < l; i ++) {
@@ -32,34 +68,39 @@
 
                 m = item.length - 1;
                 pt = m > 0 ? item[1].trim() : '';
+                pt = (pt === '-' ? pos.specifics.DEFAULT_TAG : pt);
 
                 lastIndex = pt.length - 1;
+                // @TODO: alert; the '-' token is used in fr lexicon to skip
+                // some data, make this multilingual!
                 if (lastIndex > 0 && pt[lastIndex] === '-') {
                     blocked = true;
                     pt = pt.slice(0, lastIndex);
                 }
 
+                token = item[0];
                 s = 0;
                 c = null;
 
+                lastItem = item[m];
+
                 // Sentiment score with PoS tag condition
-                if (item[m].match(/^[A-Z]{2,}\/[0-9\-]+$/g)) {
-                    c = item[m].split('/')[0];
-                    s = item[m].split('/')[1];
-                // Simple score
-                } else if (item[m].match(/^[0-9\-]+$/g) || item[m].match(/^\-{0,1}[0-4]\.[0-9]$/g)) {
-                    s = item[m].indexOf('.') > 0 ? parseFloat(item[m]) : parseInt(item[m], 10);
-                }
-                if (pt === 'EM' && compendium.punycode.ucs2.decode(item[0]).length > 1) {
-                    emots.push(item[0]);
+                if (lastItem.match(/^[A-Z]{2,}\/[0-9\-]+$/g)) {
+                    c = lastItem.split('/')[0];
+                    s = lastItem.split('/')[1];
+                // Simple int score
+                } else if (lastItem.match(/^\-{0,1}[0-4]$/g)) {
+                    s = parseInt(lastItem, 10);
+                // Simple float score
+                } else if (lastItem.match(/^\-{0,1}[0-4]\.[0-9]+$/g)) {
+                    s = parseFloat(lastItem);
                 }
 
-                result[item[0]] = {
-                    pos: pt === '-' ? 'NN' : pt,
-                    sentiment: s,
-                    condition: c,
-                    blocked: blocked
-                };
+                if (pt === 'EM' && compendium.punycode.ucs2.decode(token).length > 1) {
+                    emots.push(token);
+                }
+
+                register(token, pt, s, c, blocked);
             }
 
             // Loop over compendium content
@@ -75,17 +116,17 @@
                             s = 0;
                             // {'word': 'PoS_TAG'}
                             if (typeof item[l] === 'string') {
-                                if (result.hasOwnProperty(l)) {
-                                    s = result[l].sentiment;
+                                if (lexicon.hasOwnProperty(l)) {
+                                    s = lexicon[l].sentiment;
                                 }
-                                result[l] = {
+                                lexicon[l] = {
                                     pos: item[l],
                                     sentiment: s,
                                     condition: null
                                 };
                             // {'word': 0}
                             } else if (typeof item[l] === 'number') {
-                                result[l] = {
+                                lexicon[l] = {
                                     pos: 'CD',
                                     sentiment: s,
                                     value: item[l],
@@ -102,21 +143,24 @@
             // Reapply sentiment if base form has a score
             for (i = 0, l = cpd.verbs.length; i < l; i ++, s = 0) {
                 item = cpd.verbs[i];
+                if (!item) {
+                    continue;
+                }
                 cpd.infinitives.push(item);
 
                 tmp = inflector.conjugate(item, 'VBZ');
                 if (!tmp) {
                     continue;
                 }
-                if (result.hasOwnProperty(item)) {
-                    if (result[item].pos === 'NN') {
-                        result[item].pos = 'VB';
+                if (lexicon.hasOwnProperty(item)) {
+                    if (lexicon[item].pos === 'NN') {
+                        lexicon[item].pos = 'VB';
                     }
-                    blocked = result[item].blocked;
-                    s = result[item].sentiment;
+                    blocked = lexicon[item].blocked;
+                    s = lexicon[item].sentiment;
                 }
 
-                result[tmp] = {
+                lexicon[tmp] = {
                     pos: 'VBZ',
                     sentiment: s,
                     condition: null,
@@ -125,54 +169,57 @@
                 };
 
                 tmp = inflector.conjugate(item, 'VBN');
-                if (!result.hasOwnProperty(tmp)) {
-                    result[tmp] = {
+                if (!lexicon.hasOwnProperty(tmp)) {
+                    lexicon[tmp] = {
                         pos: 'VBN',
                         sentiment: s,
                         condition: null,
                         infinitive: item
                     };
                 } else {
-                    result[tmp].infinitive = item;
+                    lexicon[tmp].infinitive = item;
                 }
 
                 tmp = inflector.conjugate(item, 'VBG');
-                if (!result.hasOwnProperty(tmp)) {
-                    result[tmp] = {
+                if (!lexicon.hasOwnProperty(tmp)) {
+                    lexicon[tmp] = {
                         pos: 'VBG',
                         sentiment: s,
                         condition: null,
                         infinitive: item
                     };
                 } else {
-                    result[tmp].infinitive = item;
+                    lexicon[tmp].infinitive = item;
                 }
             }
 
-            // Prepopulate lexion with irregular verbs
+            // Prepopulate lexicon with irregular verbs
             for (i = 0, l = cpd.irregular.length; i < l; i ++, s = 0) {
                 item = cpd.irregular[i];
                 m = item[0];
-                if (result.hasOwnProperty(m)) {
-                    s = result[m].sentiment;
-                    if (result[m].pos !== 'VB') {
-                        result[m].pos = 'VB';
+                if (!m) {
+                    continue;
+                }
+                if (lexicon.hasOwnProperty(m)) {
+                    s = lexicon[m].sentiment;
+                    if (lexicon[m].pos !== 'VB') {
+                        lexicon[m].pos = 'VB';
                     }
                 }
                 cpd.infinitives.push(m);
 
                 for (j = 0; j < 5; j ++) {
                     item[j].split('/').map(function(o) {
-                        if (!result.hasOwnProperty(o)) {
-                            result[o] = {
+                        if (!lexicon.hasOwnProperty(o)) {
+                            lexicon[o] = {
                                 pos: j === 0 ? 'VB' : j === 1 ? 'VBD' : j === 2 ? 'VBN' : j === 3 ? 'VBZ' : 'VBG',
                                 sentiment: s,
                                 condition: null,
                                 infinitive: m
                             }
-                        } else if (!result[o].infinitive) {
-                            result[o].infinitive = m;
-                            result[o].sentiment = s;
+                        } else if (!lexicon[o].infinitive) {
+                            lexicon[o].infinitive = m;
+                            lexicon[o].sentiment = s;
                         }
                     });
                 }
@@ -181,8 +228,6 @@
 
             // Register emoticons in compendium for further use by lexer
             cpd.emots = emots;
-
-            return result;
         },
 
         // Parses Brill's condition
@@ -253,13 +298,13 @@
             cpd.abbrs_rplt = rplt;
         },
 
-        nationalities = function(raw) {
+        demonyms = function(raw) {
             var i, l, res = {};
             raw = raw.split(' ');
             for (i = 0, l = raw.length; i < l; i ++) {
                 res[raw[i]] = 'JJ';
             }
-            cpd.nationalities = res;
+            cpd.demonyms = res;
         },
 
         synonyms = function(raw) {
@@ -276,6 +321,12 @@
     abbrs(cpd.abbrs);
     dirty(cpd.dirty);
     synonyms(cpd.synonyms);
-    nationalities(cpd.nationalities);
-    compendium.lexicon = parse("@@lexicon");
-}();
+    demonyms(cpd.demonyms);
+
+
+    extend(compendium, {
+        register: register
+    });
+    parse("@@lexicon");
+
+}());

@@ -12,9 +12,19 @@
             <h1>Compendium</h1>
             <h3>English NLP for Node.js and the browser</h3>
 
+            <div class="lg">
+              <p>Choose your langage : </p>
+              <div class="btn-group" role="group" aria-label="...">
+                <button type="button" class="btn btn-default active" data-lang="en">EN</button>
+                <button type="button" class="btn btn-default" data-lang="fr">FR</button>
+              </div>
+              <span class='message'></span>
+            </div>
+
             <p>Type/paste any text below, or click the button:
                 <button class="btn btn-info" id="pos-demo-random">Random text</button>
             </p>
+
         </div>
         <div>
             <textarea class="form-control" rows="3" id="pos-demo-input">I &lt;3 Compendium!</textarea>
@@ -40,9 +50,13 @@
             </ul>
         </div>
     </div>
-    <script type="text/javascript" src="../../build/compendium.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+
+    <script type="text/javascript" src="../../build/compendium.minimal.js"></script>
     <script type="text/javascript" src="example.js"></script>
     <script type="text/javascript" src="all-examples.js"></script>
+
     <script>
       (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
       (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),

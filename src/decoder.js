@@ -1,5 +1,5 @@
 !function() {
-    
+
     var unescapes = {
             // Borrowed from https://github.com/mathiasbynens/he/blob/master/src/he.js for
             // the HTML entities, and smartquotes from GitHub issue
@@ -17,19 +17,17 @@
             // to break out of (un)quoted attribute values or HTML comments.
             // See http://html5sec.org/#102, http://html5sec.org/#108, and
             // http://html5sec.org/#133.
-            '`': /&#x60/gi,
+            '`': /&#x60/gi
+        }, d = cpd.decode, i = 0, l = d.length;
 
-            // Damn generation-y and millenials, damn impoliteness
-            'shit': /(s\&\^t|sh\*t)/gi,
-            'fuck': /(f\*ck)/gi,
-            'just kidding': 'j/k',
-            'without': /w\/[to]/g,
-            'with': 'w/',
-            ' out of ': /\soutta\s/gi
-        };
+    for (; i < l; i += 1) {
+        unescapes[d[i][0]] = d[i][1];
+    }
+
+
 
     /**
-     * Decode a string: replace some HTML entities (such as `&amp;` to `&`) and some 
+     * Decode a string: replace some HTML entities (such as `&amp;` to `&`) and some
      * slangs that include some punctuation chars (such as `w/` to `with`). This function
      * is called by the analyser **before** tokenization.
      *

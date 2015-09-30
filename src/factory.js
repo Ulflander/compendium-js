@@ -1,7 +1,7 @@
 !function() {
 
     // Punctuation PoS tags
-    var puncs = [',', '.', ':', '"', '(', ')'];
+    var puncs = [',', ':', '"', '(', ')'].concat([pos.specifics.PUNC_TAG]);
 
     // Factory for analysis objects
     extend(factory, {
@@ -81,7 +81,9 @@
                 },
                 root: null,
                 tokens: [],
-                tags: []
+                tags: [],
+                parsers: [],
+                parsed: false
             };
         },
         token: function(raw, norm, pos) {
@@ -90,6 +92,7 @@
 
             norm = norm.toLowerCase();
 
+            // @TODO: Move tense detection into some detector or the like
             if (pos === 'VBD' || pos === 'VBN') {
                 tense = 'past';
             } else if (pos === 'VBG') {
@@ -117,10 +120,12 @@
                     is_verb: verb,
                     tense: tense,
                     infinitive: null,
+                    // @TODO: Move noun detection into some detector
                     is_noun: pos.indexOf('NN') === 0,
                     plural: null,
                     singular: null,
                     entity: -1,
+                    // @TODO: Move pun detection into some detector
                     is_punc: puncs.indexOf(pos) > -1
                 },
                 deps: {
@@ -135,10 +140,11 @@
         // Internal, used by PoS tagger to represent a tag probability
         tag: function(tag, confidence, norm) {
             return {
-                tag: tag || 'NN',
+                tag: tag || pos.specifics.DEFAULT_TAG,
                 norm: norm,
                 confidence: confidence || 0,
-                blocked: false
+                blocked: false,
+                reason: 'unknown'
             }
         }
     });

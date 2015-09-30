@@ -3,16 +3,32 @@
 
     // Prepare namespace
     // Global shortcuts
-    var cpd = {},
+    var u = 'UNKNOWN',
+        cpd = {},
         lexer = {},
         factory = {},
         analyser = {},
-        detectors = {},
+        detectors = {
+            specifics: {}
+        },
         dependencies = {},
         // dependency parsing v2
         parser = {},
         inflector = {},
-        pos = {},
+        lexicon = {},
+        ngrams = {},
+        pos = {
+            specifics: {
+                beforeBrill: function() {},
+                afterBrill: function() {},
+                getComposedWordTag: null,
+                DEFAULT_TAG: u,
+                EMOT_TAG: u,
+                SYM_TAG: u,
+                NUM_TAG: u,
+                PUNC_TAG: u
+            }
+        },
         iA = Array.isArray,
         config = {
             profile: {
@@ -41,6 +57,8 @@
     compendium.compendium = cpd;
     compendium.lexer = lexer;
     compendium.parser = parser;
+    compendium.lexicon = lexicon;
+    compendium.ngrams = ngrams;
     compendium.factory = factory;
     compendium.pos = pos;
     compendium.config = config;

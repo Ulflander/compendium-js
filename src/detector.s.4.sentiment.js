@@ -4,6 +4,8 @@
         polite = cpd.polite,
         emphasis_adverbs = cpd.emphasis,
 
+        specifics = pos.specifics,
+
         future_modals = ['wo', '\'ll', 'will'],
 
         // Recursive function that takes all the dependencies scores and
@@ -113,7 +115,8 @@
             // Check if token is a local emphasis
             // Note: local emphasis is NOT used by the final sentence sentiment score,
             // but only to compute the score of individuals tokens.
-            if (pos === 'JJS' || (pos === 'RB' && emphasis_adverbs.indexOf(norm) > -1)) {
+            // @TODO: this detector should be multilingual, use JJS through pos.specifics
+            if (pos === 'JJS' || (pos === specifics.ADVERB_TAG && emphasis_adverbs.indexOf(norm) > -1)) {
                 if (profile.negated) {
                     local_emphasis += 2;
                 } else {
@@ -137,6 +140,7 @@
             profile.emphasis *= 1 + (local_emphasis / 10);
 
             // Update local emphasis
+            // @TODO: ['DT', 'POS', 'IN'] is language specific, should be handled differently
             if (local_emphasis > 0 && ['DT', 'POS', 'IN'].indexOf(pos) === -1) {
                 local_emphasis --;
             }
