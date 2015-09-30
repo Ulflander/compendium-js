@@ -29,6 +29,16 @@ function _require_clean_git() {
     fi
 }
 
+function _cp_dist_to_public(){
+    cp -r dist public/dist
+}
+
+function _gp_push_gh_pages(){
+    git add public/dist
+    git commit public -m 'update public folder'
+    git subtree push --prefix public origin gh-pages
+}
+
 case "$1" in
     pull)
         _require_clean_git
@@ -39,6 +49,10 @@ case "$1" in
         _require_clean_git
         _gp_pull
         _gp_push
+    ;;
+    deploy)
+        _cp_dist_to_public
+        _gp_push_gh_pages
     ;;
     *)
         _gp_usage
