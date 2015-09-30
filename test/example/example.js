@@ -184,7 +184,7 @@
     });
 
     var prev;
-    input.addEventListener('keyup', function() {console.log('ici')
+    input.addEventListener('keyup', function() {
         var v = input.value;
         if (!v || v === prev) {return;}
         buildHtml(analyse(v), document.querySelector('#pos-demo-result'));
