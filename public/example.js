@@ -162,7 +162,7 @@
         buildHtml(analyse(t), document.querySelector('#pos-demo-result'));
     };
 
-    function loadCompendium(lang,mode){
+    function loadCompendiumScript(lang,mode){
       var compendiumSource = './dist/compendium-{{lang}}.minimal.js';
       if (lang == "en"){
         compendiumSource = './dist/compendium.minimal.js';
@@ -194,7 +194,8 @@
     languages.click(function(){
       $(this).addClass("active").siblings().removeClass("active");
       selected_lang=$(this).data("lang");
-      loadCompendium($(this).data("lang"),"selected");
+      initMessage();
+      loadCompendiumScript($(this).data("lang"),"selected");
     });
 
 
@@ -210,7 +211,11 @@
       buildHtml(analyse(input.value), document.querySelector('#pos-demo-result'));
     }
 
+    var initMessage = function(){
+      $("#pos-demo-input").text(examples[selected_lang][0]);
+    }
 
+    initMessage();
     renderAnalyse();
     input.focus();
     input.setSelectionRange(0, input.value.length);
