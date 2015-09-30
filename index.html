@@ -1,0 +1,58 @@
+<html>
+<head>
+    <title>Compendium - Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href='http://fonts.googleapis.com/css?family=Lato:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="example.css">
+</head>
+<body>
+    <div class="container">
+        <div>
+            <h1>Compendium</h1>
+            <h3>English NLP for Node.js and the browser</h3>
+
+            <p>Type/paste any text below, or click the button:
+                <button class="btn btn-info" id="pos-demo-random">Random text</button>
+            </p>
+        </div>
+        <div>
+            <textarea class="form-control" rows="3" id="pos-demo-input">I &lt;3 Compendium!</textarea>
+            <div id="pos-demo">
+                <div id="pos-demo-result">
+                </div>
+                <div>Total time: <span id="time"></span> milliseconds</div>
+            </div>
+        </div>
+        <div>
+            <h3>Feedback</h3>
+            <p>Want to help improve Compendium? <a href="https://github.com/Ulflander/compendium-js/issues">Open an issue</a> on GitHub or <a href="https://twitter.com/xavlaumonier">reach me</a> on Twitter.</p>
+        </div>
+        <div>
+            <h3>Credits</h3>
+            <p><a href="https://github.com/Ulflander/compendium-js">Compendium</a> is a MIT licensed lib by
+                <a href="http://laumonier.co/">Ulflander</a>.</p>
+            <p>Random example texts available on this page are from the following corpuses:</p>
+            <ul>
+                <li><a href="http://help.sentiment140.com/for-students">Sentiment140 tweet corpus</a></li>
+                <li><a href="http://www.cis.upenn.edu/~treebank/">Penn treebank</a> dataset</li>
+                <li><a href="http://www.dt.fee.unicamp.br/~tiago/smsspamcollection/">SMS Spam collection</a></li>
+            </ul>
+        </div>
+    </div>
+    <script type="text/javascript" src="./dist/compendium-fr.minimal.js"></script>
+    <script type="text/javascript" src="example.js"></script>
+    <script type="text/javascript" src="all-examples.js"></script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','http://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-19713849-7', 'laumonier.co');
+      ga('send', 'pageview');
+
+    </script>
+    <a href="https://github.com/Ulflander/compendium-js"><img style="position: absolute; top: 0; right: 0; border: 0;" src="http://camo.githubusercontent.com/365986a132ccd6a44c23a9169022c0b5c890c387/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png"></a>
+</body>
+</html>

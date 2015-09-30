@@ -1,0 +1,136 @@
+
+body {
+    font-family: 'Lato', serif;
+}
+
+#pos-demo-input {
+    margin-bottom: 20px;
+}
+
+#pos-demo {
+    background: #fafafa;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    padding: 20px;
+    clear: both;
+}
+
+.bg-orange {
+    background: orange;
+    color: white;
+}
+
+.bg-red {
+    background: red;
+    color: white;
+}
+.bg-green {
+    background: green;
+    color: white;
+}
+
+.positive {
+    color: green;
+}
+
+.mixed {
+    color: orange;
+}
+
+.neutral {
+    color: #337ab7;
+}
+
+.negative {
+    color: red;
+}
+
+.is_entity {
+    font-weight: bold;
+}
+
+.entity-block {
+    position: relative;
+    background: #f2f2f2;
+    border-radius: 5px;
+    padding: 0 5px;
+    margin-right: 1px;
+    display: inline-block;
+}
+
+.types {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
+.types > span {
+    padding: 3px 10px;
+    border-radius: 2px;
+    margin-left: 5px;
+}
+
+.sentence {
+    position: relative;
+    display: block;
+    margin-bottom: 20px;
+    float: left;
+    width: 100%;
+    border-bottom: 1px solid #fff;
+}
+.sentence:after{
+    content: '';
+    clear: both;
+}
+
+.meta {
+    width: 70%;
+}
+
+.meta span {
+    margin-right: 15px;
+    font-size: 11px;
+}
+.meta span .bold {
+    font-weight: bold;
+}
+
+.token {
+    position: relative;
+    margin-right: 10px;
+    font-size: 21px;
+    min-width: 50px;
+    text-align: center;
+    padding-top: 20px;
+    margin-bottom: 20px;
+    display: inline-block;
+}
+.emphasized {
+    font-style: italic;
+}
+.token .pos {
+    position: absolute;
+    top: 50px;
+    right: 0;
+    font-size: 12px;
+}
+
+.token .entity {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    font-size: 10px;
+}
+
+.token .norm {
+    position: absolute;
+    top: 10px;
+    right: 0;
+    font-size: 10px;
+}
+
+.token .sentiment {
+    position: absolute;
+    top: 45px;
+    left: 0;
+    font-size: 10px;
+}
