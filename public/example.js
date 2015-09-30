@@ -4,6 +4,7 @@
         random = document.querySelector('#pos-demo-random'),
         languages = $(".btn-group > .btn"),
         lastTotal = 0,
+        timer,
         selected_lang = "en",
         round = function(f) {
             return parseInt(f * 100, 10) / 100;
@@ -187,7 +188,7 @@
     input.addEventListener('keyup', function() {
         var v = input.value;
         if (!v || v === prev) {return;}
-        buildHtml(analyse(v), document.querySelector('#pos-demo-result'));
+        renderAnalyse()
         prev = v;
     });
 
@@ -199,7 +200,13 @@
     });
 
 
-
+    var trackData = function(){
+      clearTimeout(timer);
+      timer = setTimeout(function(){
+        console.log("fire "+input.value)
+        ga('send', 'event', 'sentence', selected_lang, input.value);
+      }, 1000);
+    }
 
 
     var showMessage = function(lang){
@@ -209,6 +216,7 @@
 
     var renderAnalyse = function(){
       buildHtml(analyse(input.value), document.querySelector('#pos-demo-result'));
+      trackData();
     }
 
     var initMessage = function(){
