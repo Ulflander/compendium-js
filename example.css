@@ -98,7 +98,7 @@ body {
     position: relative;
     margin-right: 10px;
     font-size: 21px;
-    min-width: 50px;
+    min-width: 70px;
     text-align: center;
     padding-top: 20px;
     margin-bottom: 20px;
@@ -108,7 +108,7 @@ body {
     font-style: italic;
 }
 .token .pos {
-    position: absolute;
+    text-align: center;
     top: 50px;
     right: 0;
     font-size: 12px;
@@ -134,3 +134,16 @@ body {
     left: 0;
     font-size: 10px;
 }
+
+.lg, .lg p{
+  display:inline;
+}
+
+.lg div{
+  padding:10px;
+}
+
+.lg span{
+  padding: 10px;
+}
+
