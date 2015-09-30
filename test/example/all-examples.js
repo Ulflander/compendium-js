@@ -1,6 +1,6 @@
-var examples = [
-    
-    'When in Rome, do as the Romans.',
+var examples = {
+  "en" : [
+  'When in Rome, do as the Romans.',
     'The early bird catches the worm.',
     'If you can\'t beat \'em, join \'em.',
     'One man\'s trash is another man\'s treasure.',
@@ -192,5 +192,13 @@ var examples = [
     'The two professors said the Constitution authorizes the president to veto entire bills, not partial measures.',
     'Moreover, they said the first appropriations bill passed 200 years ago covered many different items, and there was no discussion of a line-item veto.',
     'La terminal norte es para los vuelos internacionales.',
-    'Je suis un garçon'
-];
+
+  ],
+  "fr":[
+    'Je suis un garçon',
+    'Albert je t\'aime'
+  ]
+
+}
+
+

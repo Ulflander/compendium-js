@@ -2,7 +2,9 @@
 
     var input = document.querySelector('#pos-demo-input'),
         random = document.querySelector('#pos-demo-random'),
+        languages = $(".btn-group > .btn"),
         lastTotal = 0,
+        selected_lang = "en",
         round = function(f) {
             return parseInt(f * 100, 10) / 100;
         },
@@ -154,16 +156,33 @@
     };
 
     function analyseRandom() {
-        var t = examples[Math.floor(Math.random() * (examples.length))];
+        var samples = examples[selected_lang];
+        var t = samples[Math.floor(Math.random() * (samples.length))];
         input.value = t;
         buildHtml(analyse(t), document.querySelector('#pos-demo-result'));
     };
 
-    buildHtml(analyse(input.value), document.querySelector('#pos-demo-result'));
+    function loadCompendium(lang,mode){
+      var compendiumSource = '../../build/compendium-{{lang}}.minimal.js';
+      if (lang == "en"){
+        compendiumSource = '../../build/compendium.minimal.js';
+      }
+      else{
+        compendiumSource=compendiumSource.replace('{{lang}}', lang);
+      }
+
+      $.getScript( compendiumSource, function( data, textStatus, jqxhr ) {
+          renderAnalyse()
+          showMessage(lang);
+      });
+
+    }
+
 
     random.addEventListener('click', function() {
         analyseRandom();
     });
+
     var prev;
     input.addEventListener('keyup', function() {
         var v = input.value;
@@ -172,7 +191,30 @@
         prev = v;
     });
 
+    languages.click(function(){
+      $(this).addClass("active").siblings().removeClass("active");
+      selected_lang=$(this).data("lang");
+      loadCompendium($(this).data("lang"),"selected");
+    });
+
+
+
+
+
+    var showMessage = function(lang){
+        $('.lg .message').text("Language "+lang+" has been selected").show().delay(3000).fadeOut(1000);;
+
+    };
+
+    var renderAnalyse = function(){
+      buildHtml(analyse(input.value), document.querySelector('#pos-demo-result'));
+    }
+
+
+    renderAnalyse();
     input.focus();
     input.setSelectionRange(0, input.value.length);
+
+
 
 }());
