@@ -30,7 +30,7 @@ function _require_clean_git() {
 }
 
 function _cp_dist_to_public(){
-    cp -r dist public/dist
+    cp -r dist public
 }
 
 function _gp_push_gh_pages(){
