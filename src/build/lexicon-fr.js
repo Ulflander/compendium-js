@@ -96,55 +96,16 @@ function _filter(a, startIndex) {
 
 // adapt lines to fit needs
 function _compile(a, startIndex) {
-    var i = startIndex, l=a.length, line, line_compiled = [], res = [], infover, ver_found=0, ver_compiled=0;
+    var i = startIndex, l=a.length, line, line_compiled = [], res = [];
 
     for (; i < l; i += 1) {
       line = a[i].split(' ');
 
-      //compile 11_infover
-      infover = line[10];
-      if(!!infover && infover != '-') {
-
-          //if infover contains multiple forms of mod:tmp:pers
-          if(infover.split(';').length>1){
-
-              //inf > ind:pres
-              if(infover.match(/inf/)){
-                infover = 'inf'
-              }
-
-              //ind:pres > imp:pres
-              else if(infover.match(/ind:pres?/)){
-                infover = 'ind:pre'
-                ver_compiled += 1;
-              }
-
-              //ind:imp > cnd:pres
-              else if(infover.match(/imp:pre/)){
-                infover = 'ind:imp'
-                ver_compiled += 1;
-              }
-
-              //take the first one
-              else {
-                infover = infover.split(';')[0];
-                ver_compiled += 1;
-              }
-          }
-
-          //store only mod and tmp
-          if(infover.split(':').length>2){
-            infover = infover.split(':').slice(0,2).join(':');
-          }
-
-          ver_found+=1;
-          line[3]+= ':'+infover;
-      }
       line_compiled=[];
       // add 1_ortho
       line_compiled.push(line[0])
       // add 4_cgram
-      line_compiled.push(line[3])
+      line_compiled.push(_compileCgram(line[3], line[10]))
       // add 5_genre
       line_compiled.push(line[4])
 
@@ -153,6 +114,57 @@ function _compile(a, startIndex) {
 
     return res;
 }
+
+function _compileCgram(cgram, infover){
+  var ver_found=0, ver_compiled=0;
+
+    if(cgram === "NOM"){
+      return "NC";
+    }
+
+   //compile 11_infover
+    if(!!infover && infover != '-') {
+
+        //if infover contains multiple forms of mod:tmp:pers
+        if(infover.split(';').length>1){
+
+            //inf > ind:pres
+            if(infover.match(/inf/)){
+              infover = 'inf'
+            }
+
+            //ind:pres > imp:pres
+            else if(infover.match(/ind:pres?/)){
+              infover = 'ind:pre'
+              ver_compiled += 1;
+            }
+
+            //ind:imp > cnd:pres
+            else if(infover.match(/imp:pre/)){
+              infover = 'ind:imp'
+              ver_compiled += 1;
+            }
+
+            //take the first one
+            else {
+              infover = infover.split(';')[0];
+              ver_compiled += 1;
+            }
+        }
+
+        //store only mod and tmp
+        if(infover.split(':').length>2){
+          infover = infover.split(':').slice(0,2).join(':');
+        }
+
+        ver_found+=1;
+        cgram+= ':'+infover;
+    }
+
+
+    return cgram;
+}
+
 
 function _compileFull() {
     fullCompiled = lexicon

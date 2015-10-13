@@ -25,7 +25,7 @@ ART:inf					Article indéfini
 AUX						Auxiliaire
 CON						Conjonction
 LIA						Liaison euphonique (l')
-NOM						Nom commun
+NC						Nom commun
 ONO						Onomatopée
 PRE						Préposition
 PRO:dem					Pronom démonstratif
