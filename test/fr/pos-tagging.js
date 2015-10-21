@@ -30,44 +30,63 @@
     };
 
     exports[pkg.mode + ' mode  - deux pas'] = function(test) {
-        test.deepEqual(['CD', 'NOM'], compendium.analyse('deux pas')[0].tags);
+        test.deepEqual(['CD', 'NC'], compendium.analyse('deux pas')[0].tags);
         test.done();
     };
 
     exports[pkg.mode + ' mode  - un pas'] = function(test) {
-        test.deepEqual(['ART:ind', 'NOM'], compendium.analyse('un pas')[0].tags);
+        test.deepEqual(['ART:ind', 'NC'], compendium.analyse('un pas')[0].tags);
         test.done();
     };
 
     exports[pkg.mode + ' mode  - le pas'] = function(test) {
-        test.deepEqual(['ART:def', 'NOM'], compendium.analyse('le pas')[0].tags);
+        test.deepEqual(['ART:def', 'NC'], compendium.analyse('le pas')[0].tags);
         test.done();
     };
 
     exports[pkg.mode + ' mode  - ce pas'] = function(test) {
-        test.deepEqual(['PRO:dem', 'NOM'], compendium.analyse('ce pas')[0].tags);
+        test.deepEqual(['PRO:dem', 'NC'], compendium.analyse('ce pas')[0].tags);
         test.done();
     };
 
 
     exports[pkg.mode + ' mode  - C\'est quelque chose'] = function(test) {
-        test.deepEqual(['PRO:dem', 'VER:ind:pre', 'ADJ:ind', 'NOM'], compendium.analyse('C\'est quelque chose')[0].tags);
+        test.deepEqual(['PRO:dem', 'VER:ind:pre', 'ADJ:ind', 'NC'], compendium.analyse('C\'est quelque chose')[0].tags);
         test.done();
     };
 
     exports[pkg.mode + ' mode  - Je devrais aller acheter un ordinateur'] = function(test) {
-        test.deepEqual(['PRO:per', 'VER:cnd:pre', 'VER:inf', 'VER:inf', 'ART:ind', 'NOM'], compendium.analyse('Je devrais aller acheter un ordinateur')[0].tags);
+        test.deepEqual(['PRO:per', 'VER:cnd:pre', 'VER:inf', 'VER:inf', 'ART:ind', 'NC'], compendium.analyse('Je devrais aller acheter un ordinateur')[0].tags);
         test.done();
     };
 
     exports[pkg.mode + ' mode  - Bonjour'] = function(test) {
-        test.deepEqual('NOM'.split(' '), compendium.analyse('Bonjour')[0].tags);
+        test.deepEqual('NC'.split(' '), compendium.analyse('Bonjour')[0].tags);
         test.done();
     };
 
 
     exports[pkg.mode + ' mode  - Comment ça va?'] = function(test) {
         test.deepEqual('ADV PRO:dem VER:ind:pre PONC'.split(' '), compendium.analyse('Comment ça va?')[0].tags);
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  - Il est dans le parti'] = function(test) {
+        test.deepEqual('PRO:per VER:ind:pre PRE ART:def NC'.split(' '), compendium.analyse('Il est dans le parti')[0].tags);
+        test.done();
+    };
+
+
+});
+
+//Test only for full lexicon
+[{mode: 'Full',    path: '../../dist/compendium-fr.js',}].forEach(function(pkg) {
+
+    var compendium = require(pkg.path);
+
+
+    exports[pkg.mode + ' mode  - Il a affirmé / test change.txt'] = function(test) {
+        test.deepEqual('PRO:per AUX:ind:pre VER:par:pas'.split(' '), compendium.analyse('Il a affirmé')[0].tags);
         test.done();
     };
 
