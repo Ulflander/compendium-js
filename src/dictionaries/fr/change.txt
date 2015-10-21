@@ -1,2 +1,2 @@
-acheter VER ind:pre:2p;inf; - acheter VER inf; -
-
+acheter VER:inf
+affirmé VER:par:pas

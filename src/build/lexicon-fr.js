@@ -9,6 +9,7 @@ var sourcePath = __dirname + '/../dictionaries/fr/',
     outputPath = __dirname + '/../../build/fr/',
 
     lexiconName = 'lexicon.txt',
+    lexiconChange = 'change.txt',
     manualName = 'lexicon_manual.txt',
     sentimentsName = 'sentiments.txt',
 
@@ -19,6 +20,7 @@ var sourcePath = __dirname + '/../dictionaries/fr/',
     sentiments,
     lexicon_commons,
     lexicon_manual,
+    change,
 
     fullCompiled,
     minimalCompiled,
@@ -47,6 +49,18 @@ function _refreshSources () {
         .split('\t').join(' ')
         .split('\n'), 1);
 
+    var changeArray = fs.readFileSync(sourcePath + lexiconChange).toString()
+        .split('\n')
+        .map(function(v){
+          return v.split(' ');
+        });
+
+    change = {};
+    changeArray.forEach(function(v) {
+      change[v[0]] = v[1];
+    })
+
+
     lexicon_commons = commons;
     lexicon = _compile(lexicon, 0);
 
@@ -66,6 +80,7 @@ function _refreshSources () {
         .split('\\').join('\\\\')
         .split('\t').join(' ')
         .split('\n'), 0);
+
 
     lexicon = _addSentimentScores(lexicon);
     lexicon_manual = _addSentimentScores(manual);
@@ -104,10 +119,15 @@ function _compile(a, startIndex) {
       line_compiled=[];
       // add 1_ortho
       line_compiled.push(line[0])
-      // add 4_cgram
+      // add 4_cgram and 11_infover
       line_compiled.push(_compileCgram(line[3], line[10]))
       // add 5_genre
       line_compiled.push(line[4])
+
+      // apply changes du to lexicon wrong tagging
+      if(change.hasOwnProperty(line[0])){
+        line_compiled[1] = change[line[0]];
+      }
 
       res.push(line_compiled.join(' '));
     }
