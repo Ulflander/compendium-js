@@ -161,28 +161,28 @@
 
         // For date recognition
         months: {
-            janvier: 'NOM',
-            février: 'NOM',
-            mars: 'NOM',
-            avril: 'NOM',
-            mai: 'NOM',
-            juin: 'NOM',
-            juillet: 'NOM',
-            août: 'NOM',
-            septembre: 'NOM',
-            octobre: 'NOM',
-            novembre: 'NOM',
-            decembre: 'NOM'
+            janvier: 'NC',
+            février: 'NC',
+            mars: 'NC',
+            avril: 'NC',
+            mai: 'NC',
+            juin: 'NC',
+            juillet: 'NC',
+            août: 'NC',
+            septembre: 'NC',
+            octobre: 'NC',
+            novembre: 'NC',
+            decembre: 'NC'
         },
 
         days: {
-            lundi: 'NOM',
-            mardi: 'NOM',
-            mercredi: 'NOM',
-            jeudi: 'NOM',
-            vendredi: 'NOM',
-            samedi: 'NOM',
-            dimanche: 'NOM'
+            lundi: 'NC',
+            mardi: 'NC',
+            mercredi: 'NC',
+            jeudi: 'NC',
+            vendredi: 'NC',
+            samedi: 'NC',
+            dimanche: 'NC'
         },
 
         indicators: {
