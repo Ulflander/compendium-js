@@ -274,8 +274,8 @@ Compendium also includes the following new tag:
     CON Conjonction                 mais
     EM Emoticon                     :)
     LIA Liaison euphonique          l'
-    NOM Nom commun                  carotte
-    NAM Nom propre                  Paul
+    NC Nom commun                   carotte
+    NP Nom propre                   Paul
     ONO Onomatopée                  ah
     PRE Préposition                 sur
     PRO:dem Pronom démonstratif     celui-là
