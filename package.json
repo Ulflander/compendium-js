@@ -29,5 +29,8 @@
   "directories": {
     "example": "example",
     "test": "test"
+  },
+  "dependencies": {
+    "express": "^4.13.3"
   }
 }

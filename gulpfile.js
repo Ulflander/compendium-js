@@ -7,9 +7,13 @@ var gulp = require('gulp'),
     uglify = require('gulp-uglify'),
     replace = require('gulp-replace'),
 
+    //server
+    server = require(__dirname + '/server.js'),
+
     // French lexicon builder
     lexiconFrCompiler = require(__dirname + '/src/build/lexicon-fr.js'),
     lexiconEnCompiler = require(__dirname + '/src/build/lexicon-en.js');
+
 
 var h,
     f,
@@ -240,6 +244,16 @@ gulp.task('lexicon_en', function(cb) {
     cb();
 });
 
+gulp.task('benchmark_fr',['build_minimal_fr', 'build_full_fr'], function() {
+    var corpusBuilder = require(__dirname + '/test/fr-benchmark/dict/build.js')
+    var benchmarkFrTester = require(__dirname + '/test/fr-benchmark/run.js');
+});
+
+
+
+gulp.task('server', function(){
+  server.run();
+});
 
 gulp.task('default', ['init', 'lexicon', 'build'], function() {
     gulp.watch([
