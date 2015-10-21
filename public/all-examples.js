@@ -1,7 +1,6 @@
 var examples = {
   "en" : [
-    'I <3 Compendium!',
-    'When in Rome, do as the Romans.',
+  'When in Rome, do as the Romans.',
     'The early bird catches the worm.',
     'If you can\'t beat \'em, join \'em.',
     'One man\'s trash is another man\'s treasure.',
@@ -196,7 +195,6 @@ var examples = {
 
   ],
   "fr":[
-    'Compendium je t\'<3',
     'Je suis un garçon',
     'Albert je t\'aime'
   ]

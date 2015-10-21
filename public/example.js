@@ -2,10 +2,10 @@
 
     var input = document.querySelector('#pos-demo-input'),
         random = document.querySelector('#pos-demo-random'),
-        languages = $(".btn-group > .btn"),
+        langages = $(".btn-group > .btn"),
         lastTotal = 0,
-        timer,
-        selected_lang = "en",
+        lang,
+        QueryString,
         round = function(f) {
             return parseInt(f * 100, 10) / 100;
         },
@@ -15,6 +15,22 @@
             lastTotal = Date.now() - n;
             return analysis;
         };
+
+
+    QueryString = (function(a) {
+          if (a == "") return {};
+          var b = {};
+          for (var i = 0; i < a.length; ++i)
+          {
+              var p=a[i].split('=');
+              if (p.length != 2) continue;
+              b[p[0]] = decodeURIComponent(p[1].replace(/\+/g, " "));
+          }
+          return b;
+        })(window.location.search.substr(1).split('&'));
+
+    lang = !!QueryString["l"]?QueryString["l"]: "en";
+
 
 
     function buildHtml(sentences, container) {
@@ -156,75 +172,86 @@
         return p;
     };
 
-    function analyseRandom() {
-        var samples = examples[selected_lang];
+    function getRandomSample() {
+        var samples = examples[lang];
         var t = samples[Math.floor(Math.random() * (samples.length))];
-        input.value = t;
-        buildHtml(analyse(t), document.querySelector('#pos-demo-result'));
+        return t;
     };
-
-    function loadCompendiumScript(lang,mode){
-      var compendiumSource = './dist/compendium-{{lang}}.minimal.js';
-      if (lang == "en"){
-        compendiumSource = './dist/compendium.minimal.js';
-      }
-      else{
-        compendiumSource=compendiumSource.replace('{{lang}}', lang);
-      }
-
-      $.getScript( compendiumSource, function( data, textStatus, jqxhr ) {
-          renderAnalyse()
-          showMessage(lang);
-      });
-
-    }
 
 
     random.addEventListener('click', function() {
-        analyseRandom();
+        input.value = getRandomSample();
+        renderAnalyse();
     });
 
     var prev;
     input.addEventListener('keyup', function() {
         var v = input.value;
         if (!v || v === prev) {return;}
-        renderAnalyse()
+        buildHtml(analyse(v), document.querySelector('#pos-demo-result'));
         prev = v;
     });
 
-    languages.click(function(){
-      $(this).addClass("active").siblings().removeClass("active");
-      selected_lang=$(this).data("lang");
-      initMessage();
-      loadCompendiumScript($(this).data("lang"),"selected");
+    langages.click(function(){
+      var url = window.location.pathname;
+      url+="?l="+$(this).data("lang");
+      window.location.replace(url);
     });
 
 
-    var trackData = function(){
-      clearTimeout(timer);
-      timer = setTimeout(function(){
-        console.log("fire "+input.value)
-        ga('send', 'event', 'sentence', selected_lang, input.value);
-      }, 1000);
+
+
+    var renderAnalyse = function(){
+      if(input.value === ""){
+        input.value = getRandomSample();
+      }
+      buildHtml(analyse(input.value), document.querySelector('#pos-demo-result'));
+    }
+    var renderLangageButton = function(){
+      var lang = getLangage();
+      $(".lang-"+lang).addClass("active").siblings().removeClass("active");
     }
 
+
+    var loadCompendium = function(lang, mode){
+      var dirName= "./dist"
+      if(document.location.search.match("debug=x")){
+          dirName = "../build"
+      }
+      var compendiumSource = dirName + '/compendium-{{lang}}.minimal.js';
+      if (lang === "en" || !lang){
+        compendiumSource = dirName + '/compendium.minimal.js';
+      }
+      else{
+        compendiumSource=compendiumSource.replace('{{lang}}', lang);
+      }
+
+       $.ajax({
+            crossDomain: true,
+            dataType: "script",
+            url: compendiumSource,
+            success: function(){
+              showMessage(lang);
+              renderAnalyse();
+            },
+            error: function(){
+                _fail(_slot);
+            }
+        })
+    }
 
     var showMessage = function(lang){
         $('.lg .message').text("Language "+lang+" has been selected").show().delay(3000).fadeOut(1000);;
 
     };
 
-    var renderAnalyse = function(){
-      buildHtml(analyse(input.value), document.querySelector('#pos-demo-result'));
-      trackData();
+    var getLangage = function(){
+        return lang;
     }
 
-    var initMessage = function(){
-      $("#pos-demo-input").text(examples[selected_lang][0]);
-    }
+    loadCompendium(lang);
 
-    initMessage();
-    renderAnalyse();
+    renderLangageButton();
     input.focus();
     input.setSelectionRange(0, input.value.length);
 
