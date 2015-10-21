@@ -1,3 +1,30 @@
+! !
+# #
+... ...
+$ $
+€ $
+£ $
+¥ $
+% NN JJ VB SYM
+% ... :
+% CHG NN
+& CC NNP SYM
+( (
+) )
+* SYM , :
++ SYM NN
+, ,
+- :
+. .
+/ NN JJ
+: :
+; ;
+< SYM
+= SYM
+> SYM NN
+? .
+@ IN SYM
+/ NN JJ
 😠 EM
 😧 EM
 😲 EM
@@ -72,9 +99,9 @@
 >=[ EM
 >=-( EM
 >=-[ EM
-\) EM
-\] EM
-\D EM
+\\) EM
+\\] EM
+\\D EM
 -\) EM
 -\] EM
 -\D EM

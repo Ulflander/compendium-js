@@ -1,34 +1,8 @@
-! !
-# #
-... ...
-$ $
-€ $
-£ $
-¥ $
-% NN JJ VB SYM
-%... :
-%CHG NN
-& CC NNP SYM
-( (
-) )
-* SYM , :
-+ SYM NN
-, ,
-- :
 Samuel NNP
 Yr. NN
 aminometha NN
 axis NN
-. .
-/ NN JJ
-: :
-; ;
-< SYM
-= SYM
 's VBZ
-> SYM NN
-? .
-@ IN SYM
 A DT NNP NNS PRP FW JJ LS NN NNPS VB
 A$ $
 A&E NNP
