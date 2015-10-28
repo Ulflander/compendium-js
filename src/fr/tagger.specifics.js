@@ -1,6 +1,22 @@
 (function() {
 
-    var isPlural = compendium.inflector.isPlural;
+    var isPlural = compendium.inflector.isPlural,
+
+    removeAccents = function(r){
+            r = r.replace(new RegExp(/\s/g),"");
+            r = r.replace(new RegExp(/[àáâãäå]/g),"a");
+            r = r.replace(new RegExp(/æ/g),"ae");
+            r = r.replace(new RegExp(/ç/g),"c");
+            r = r.replace(new RegExp(/[èéêë]/g),"e");
+            r = r.replace(new RegExp(/[ìíîï]/g),"i");
+            r = r.replace(new RegExp(/ñ/g),"n");
+            r = r.replace(new RegExp(/[òóôõö]/g),"o");
+            r = r.replace(new RegExp(/œ/g),"oe");
+            r = r.replace(new RegExp(/[ùúûü]/g),"u");
+            r = r.replace(new RegExp(/[ýÿ]/g),"y");
+            r = r.replace(new RegExp(/\W/g),"");
+            return r;
+        };
 
     extend(pos.specifics, {
         DEFAULT_TAG: 'NC',
@@ -17,6 +33,7 @@
                 l = sentence.length,
                 tl,
                 lower,
+                withoutAccent,
                 tmp,
                 previous,
                 inNP = false;
@@ -30,19 +47,20 @@
 
                 token = sentence[i];
                 lower = token.toLowerCase();
+                withoutAccent = removeAccents(token)
                 tl = token.length;
                 previous = (i === 0 ? '' : tags[i - 1]);
 
                 // Proper noun inference
                 if (tag === 'NC') {
 
-
                     // All uppercased or an acronym, probably NNP
                     if (token.match(/^[A-Z]+$/g) || token.match(/^([a-z]{1}\.)+/gi)) {
                         tag = 'NP';
                         inNP = true;
                     // Capitalized words. First token is skipped for this test
-                    } else if (i > 0 && pos.matchPotentialProperNoun(token)) {
+                    // remove accents in french to match Proper Nouns regexps
+                    } else if (i > 0 && pos.matchPotentialProperNoun( withoutAccent )) {
                         tag = 'NP';
                         inNP = true;
                         /*

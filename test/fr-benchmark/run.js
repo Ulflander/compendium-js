@@ -5,8 +5,10 @@ Run PoS test against nicolas hernandez french tree bank
 Result history:
 - October 20th: Full: 84.28%
 
-- October 27th: Full: 76.65%
+- October 27th: Full: 77.8%
 Reduce size of corpus to first 5000 entries
+Handle accents in proper nouns
+Handle participe passé detection
 
 
 
@@ -36,7 +38,47 @@ var data = require("./corpus.json"),
         return txt.trim().replace(/(\s+)/g, ' ');
     },
 
-    errors = {};
+    errors = {},
+
+    mapping = {
+      '^ADJ' : "ADJ",
+      '$' : "CD",
+      '$': 'CD',
+      'SYM': '%',
+      'SYM': 'NC',
+      'ADJ:dem' : 'ART',
+      'PRO:per' : "CLS",
+      "^ADJ" : "ADJ",
+      "^ART" : "ART",
+      ":pos$" : "ART",
+      "^VER:" : "V",
+      "^AUX:" : "VPR",
+      "^AUX:" : "V",
+      "^PRO:" : "PRO",
+      "^AUX:par:pas" : "VPP",
+      "^VER:par:pas" : "VPP",
+      "^AUX:par:pre" : "VPR",
+      "^VER:par:pre" : "VPR",
+      "^PRO:per" : "CLR",
+      ":" : "PONC",
+      ";" : "PONC",
+      "^CON$" : "CS",
+      "^AUX:sub:pre$" : "VS",
+      "ADV": "PREF",
+      "NP" : "NC",
+      "VER:sub:pre" : "VS"
+
+    },
+
+    shouldIgnore = function(tag, pen_poss){
+      for(k in mapping){
+        if(mapping.hasOwnProperty(k) && tag.match(k) && pen_poss===mapping[k]){
+          return true;
+        }
+      }
+    }
+
+
 
 // Counters
 var cTotal = 0;
@@ -91,24 +133,7 @@ for (var k in data) {
 
         // Exceptions where difference between penn / compendium is
         // accepted (different tagging style)
-        if ((tags[i] === '$' && penn_pos[i] === 'CD') ||
-            (tags[i] === 'SYM' && tk === '%') ||
-            (tags[i] === 'ADJ:dem' && penn_pos[i] === "ART") ||
-            (tags[i] === 'PRO:per' && penn_pos[i] === "CLS") ||
-            (tags[i].match(/^ADJ/) && penn_pos[i] === "ADJ") ||
-            (tags[i].match(/^ART/) && penn_pos[i] === "ART") ||
-            (tags[i].match(/:pos$/) && penn_pos[i] === "ART") ||
-            (tags[i].match(/^VER:/) && penn_pos[i] === "V") ||
-            (tags[i].match(/^AUX:/) && penn_pos[i] === "VPR") ||
-            (tags[i].match(/^AUX:/) && penn_pos[i] === "V") ||
-            (tags[i].match(/^PRO:/) && penn_pos[i] === "PRO") ||
-            (tags[i].match(/^AUX:par:pas/) && penn_pos[i] === "VPP") ||
-            (tags[i].match(/^VER:par:pas/) && penn_pos[i] === "VPP") ||
-            (tags[i].match(/^AUX:par:pres/) && penn_pos[i] === "VPR") ||
-            (tags[i].match(/^VER:par:pres/) && penn_pos[i] === "VPR") ||
-            (tags[i].match(/^PRO:per/) && penn_pos[i] === "CLR") ||
-            (tags[i].match(/:/) && penn_pos[i] === "PONC") ||
-            (tags[i].match(/;/) && penn_pos[i] === "PONC")
+        if (shouldIgnore(tags[i], penn_pos[i])
 
             // skip NP and NC debate
             //(tags[i] === "NP" && penn_pos[i] === "NC")
@@ -170,7 +195,7 @@ errors_arr.sort(function(a, b) {
 });
 
 // Display five more common errors
-for (i = 0; i < 20; i += 1) {
+for (i = 0; i < 50; i += 1) {
     if (!!errors_arr[i]) {
         console.log(errors_arr[i]);
     }

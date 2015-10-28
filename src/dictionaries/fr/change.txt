@@ -1,2 +1,5 @@
 acheter VER:inf
 affirmé VER:par:pas
+proposé VER:par:pas
+haut ADJ
+approuvé VPP

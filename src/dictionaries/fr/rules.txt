@@ -6,3 +6,8 @@ ADV NC 8 CD pas
 CD ART:ind 12 un NC
 VER:par:pas NC 2 ART:def
 NC ADV 12 PRE quant
+VER:ind:pre NC 1 ART:ind
+VER:ind:pas VER:par:pas 1 AUX:ind:pre
+VER:ind:pas VER:par:pas 1 AUX:ind:pas
+VER:ind:pas VER:par:pas 1 AUX:inf
+VER:ind:pas VER:par:pas 1 AUX:inf

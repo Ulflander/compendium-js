@@ -90,6 +90,17 @@
         test.done();
     };
 
+    exports[pkg.mode + ' mode  - Il a promis de fournir'] = function(test) {
+        test.deepEqual('PRO:per AUX:ind:pre VER:par:pas PRE VER:inf'.split(' '), compendium.analyse('Il a promis de fournir')[0].tags);
+        test.done();
+    };
+
+    exports[pkg.mode + ' mode  -il n\'a pas commis'] = function(test) {
+        test.deepEqual('PRO:per ADV AUX:ind:pre ADV VER:par:pas'.split(' '), compendium.analyse('il n\'a pas commis')[0].tags);
+        test.done();
+    };
+
+
 
 
 });
