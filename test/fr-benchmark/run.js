@@ -195,7 +195,7 @@ errors_arr.sort(function(a, b) {
 });
 
 // Display five more common errors
-for (i = 0; i < 50; i += 1) {
+for (i = 0; i < 20; i += 1) {
     if (!!errors_arr[i]) {
         console.log(errors_arr[i]);
     }

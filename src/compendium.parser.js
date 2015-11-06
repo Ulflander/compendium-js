@@ -81,7 +81,6 @@
                 token = item[0];
                 s = 0;
                 c = null;
-
                 lastItem = item[m];
 
                 // Sentiment score with PoS tag condition

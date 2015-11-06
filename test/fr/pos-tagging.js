@@ -76,6 +76,11 @@
         test.done();
     };
 
+    exports[pkg.mode + ' mode  - manifesté en vue du'] = function(test) {
+        test.deepEqual('VER:par:pas PRE NC ART:def'.split(' '), compendium.analyse('manifesté en vue du')[0].tags);
+        test.done();
+    };
+
 
 });
 

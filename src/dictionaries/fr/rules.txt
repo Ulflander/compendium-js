@@ -11,3 +11,4 @@ VER:ind:pas VER:par:pas 1 AUX:ind:pre
 VER:ind:pas VER:par:pas 1 AUX:ind:pas
 VER:ind:pas VER:par:pas 1 AUX:inf
 VER:ind:pas VER:par:pas 1 AUX:inf
+VER:par:pas NC 8 PRE vue
