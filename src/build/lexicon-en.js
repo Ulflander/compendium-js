@@ -220,9 +220,15 @@ exports.compile = function(refreshSources) {
 };
 
 exports.getFullCompiled = function() {
+    //TODO @Xav
+    // if I do not add _compile, lexicon is empty after task build_en
+    _compile();
     return fullCompiled;
 };
 
 exports.getMinimalCompiled = function() {
+    //TODO @Xav
+    // if I do not add _compile, lexicon is empty after task build_en
+    _compile();
     return minimalCompiled;
 };
