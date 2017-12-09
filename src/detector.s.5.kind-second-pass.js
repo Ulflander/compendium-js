@@ -9,7 +9,7 @@
     //
     // Uses sentiment detection in some specific cases,
     // thus why it runs after sentiment analysis detector.
-    detectors.after('s', function(sentence, index) {
+    detectors.after('s', 'type', function(sentence, index) {
         var token = sentence.tokens[0],
             token2,
             i, l,

@@ -38,7 +38,7 @@
      * @param  {Array} sentences  Matrix of tokens per sentences
      * @return {Array}            An array of analysis object, one for each sentence
      */
-    analyser.analyse = function(raw, language) {
+    analyser.analyse = function(raw, language, skipDetectors) {
         var res = [],
             i,
             lexed,
@@ -74,10 +74,10 @@
 
             // Apply token level detection before dep parsing
             for (j = 0, m = s.tokens.length; j < m; j ++) {
-                detectors.apply('t', true, s.tokens[j], j, s, context);
+                detectors.apply('t', true, skipDetectors, s.tokens[j], j, s, context);
             }
 
-            detectors.apply('s', true, s, i, res, context);
+            detectors.apply('s', true, skipDetectors, s, i, res, context);
 
             // Create dependency tree
             if (config.parser.indexOf('v1') > -1) {
@@ -91,12 +91,12 @@
 
             // Apply token level detection
             for (j = 0, m = s.tokens.length; j < m; j ++) {
-                detectors.apply('t', false, s.tokens[j], j, s, context);
+                detectors.apply('t', false, skipDetectors, s.tokens[j], j, s, context);
             }
 
             res.push(s);
 
-            detectors.apply('s', false, s, i, res, context);
+            detectors.apply('s', false, skipDetectors, s, i, res, context);
 
             s.time = Date.now() - d;
         }
@@ -111,7 +111,7 @@
      * @param {String} language Language of given text
      * @return {Array}    An array of analysis objects, one for each sentence of the given text
      */
-    compendium.analyse = function(o, language) {
+    compendium.analyse = function(o, language, skipDetectors) {
         var result = null;
 
         language = language || 'en';
@@ -119,8 +119,8 @@
             throw new Error('Compendium supports only the following languages: ' + SUPPORTED_LANGUAGES.join(', '));
         }
 
-        result = analyser.analyse(o, language);
-        detectors.apply('p', false, result);
+        result = analyser.analyse(o, language, skipDetectors);
+        detectors.apply('p', false, skipDetectors, result);
 
         return result;
     };

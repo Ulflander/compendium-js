@@ -7,7 +7,7 @@
         ];
 
     // Negation detection
-    detectors.after('s', function(sentence, index, sentences) {
+    detectors.after('s', 'negation', function(sentence, index, sentences) {
         var i, l = sentence.length,
             j, m = counterNegationBigrams.length,
             previous,

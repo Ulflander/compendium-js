@@ -13,7 +13,7 @@
 
     // Entity detection at the sentence level:
     // consolidate NNP and NNPS
-    detectors.before('s', function(sentence, index, sentences) {
+    detectors.before('s', 'entities', function(sentence, index, sentences) {
         var i, l = sentence.length,
             stats = sentence.stats,
             tag,

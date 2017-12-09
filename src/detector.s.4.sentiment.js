@@ -29,7 +29,7 @@
         };
 
     // Set profile
-    detectors.after('s', function(sentence, index, sentences) {
+    detectors.after('s', 'sentiment', function(sentence, index, sentences) {
         var i,
             l = sentence.length,
             profile,

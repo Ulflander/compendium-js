@@ -6,7 +6,7 @@
     // lexer should return the result of the detection along with the tokens
     // and this detector would just create entities objects and link them
     // to the tokens.
-    detectors.before('t', function(token, index, sentence) {
+    detectors.before('t', 'entities', function(token, index, sentence) {
         var regexps = compendium.lexer.regexps, k, entity,
             raw = ' ' + token.norm + ' ',
             norm,

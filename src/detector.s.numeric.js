@@ -85,7 +85,7 @@
     // This detector goes accross all numeric sections
     // defined by numeric token detector and attempt
     // to set the final value of the numeric section
-    detectors.before('s', function(sentence, index, sentences, context) {
+    detectors.before('s', 'numeric', function(sentence, index, sentences, context) {
         var sections = context.numericSections, i, l = sections.length, value;
         for (var i = 0; i < l; i += 1) {
             value = getSectionValue(sentence, sections[i]);

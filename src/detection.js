@@ -34,34 +34,62 @@
     };
 
     // Add a detector of given type
-    detectors.before = function (type, callback) {
+    detectors.before = function (type, id, callback) {
+        if (typeof id === 'function') {
+            callback = id;
+            id = null;
+        }
         if (before.hasOwnProperty(type)) {
-            before[type].push(callback);
+            before[type].push({
+                id: id,
+                cb: callback
+            });
         } else {
             console.warn('No detector with type ' + type);
         }
     };
-    detectors.add = function (type, callback) {
+
+    detectors.add = function (type, id, callback) {
+        if (typeof id === 'function') {
+            callback = id;
+            id = null;
+        }
+
         console.warn('compendium.detectors.add is a deprecated function - please use compendium.detectors.after');
         return detectors.after(type, callback);
     };
-    detectors.after = function (type, callback) {
+
+    detectors.after = function (type, id, callback) {
+        if (typeof id === 'function') {
+            callback = id;
+            id = null;
+        }
+
         if (after.hasOwnProperty(type)) {
-            after[type].push(callback);
+            after[type].push({
+                id: id,
+                cb: callback
+            });
         } else {
             console.warn('No detector with type ' + type);
         }
     };
 
     // Apply all detectors of given type on given arguments
-    detectors.apply = function (type, isBefore) {
+    detectors.apply = function (type, isBefore, ignore) {
         var i, l,
-            args = Array.prototype.slice.call(arguments).slice(2),
-            list = isBefore ? before : after;
+            args = Array.prototype.slice.call(arguments).slice(3),
+            list = isBefore ? before : after,
+            d;
+
+        ignore = ignore || [];
 
         if (list.hasOwnProperty(type)) {
             for (i = 0, l = list[type].length; i < l; i ++) {
-                list[type][i].apply(null, args);
+                d = list[type][i];
+                if (ignore.indexOf(d.id) === -1) {
+                    d.cb.apply(null, args);
+                }
             }
         }
     };

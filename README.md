@@ -109,6 +109,24 @@ will return an array like this one:
             //
        ] } ]
 
+### Skipping detectors
+
+From version 0.0.26, in order to speed up the analyse, one can use the skipDetectors argument of the analyse function to skip some specific detectors.
+
+Skippable detectors are the following:
+- `sentiment`: Sentiment analysis
+- `entities`: Entity extraction
+- `negation`: Negation detection
+- `type`: Type detection (declarative, interrogative...)
+- `numeric`: Numeric values extraction
+
+For example, the following call to analyse won't run the entity extraction detector, meaning that `Dr. Jekyll` won't appear in the `entities` section of the analysis result:
+
+    compendium.analyse('My name is Dr. Jekyll.', null, ['entities']);
+
+
+
+
 
 ## Processing overview
 

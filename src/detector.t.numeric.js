@@ -14,7 +14,7 @@
     // - 0: section start index
     // - 1: length of section
     // - 2: array of tokens references for all the section
-    detectors.before('t', function(token, index, sentence, context) {
+    detectors.before('t', 'numeric', function(token, index, sentence, context) {
         var pos = token.pos,
             sections = context.numericSections;
 

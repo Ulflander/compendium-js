@@ -5,7 +5,7 @@
     // First pass to detect the type of sentence
     // Types detected in this pass may be used by
     // sentiment analysis detector.
-    detectors.after('s', function(sentence, index) {
+    detectors.after('s', 'type', function(sentence, index) {
         var l = sentence.length,
             stats = sentence.stats,
             governor = sentence.governor,
