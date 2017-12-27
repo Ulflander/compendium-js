@@ -37,6 +37,15 @@
         test.done();
     };
 
+
+    exports[pkg.mode + ' mode  - You love me. But do you love her?? '] = function(test){
+        test.deepEqual(['You love me.',
+                        'But do you love her?'],
+
+            lexer.sentences('You love me. But do you love her?'));
+        test.done();
+    };
+
     exports[pkg.mode + ' mode  - I\'m Dr. Jekyll'] = function(test){
         test.deepEqual(['I\'m Dr. Jekyll'],
                         lexer.sentences('I\'m Dr. Jekyll'));

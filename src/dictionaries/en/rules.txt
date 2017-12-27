@@ -170,6 +170,7 @@ VB VBP 14 PRP PRP
 VB VBP 2 NNS
 VBP VB 51 to TO
 NNS NN 51 a DT
+WRB RB 51 and CC
 VBP VB 81 may have
 VBP MD 6 gon
 VBP VB 8 MD have
@@ -184,6 +185,14 @@ RB NNP 12 north NNP
 FW NNP 12 la NNP
 JJ NNP 12 american NNP
 VBN NNP 12 united NNP
+WRB RB 12 when NN
+WRB RB 12 when NNS
+WRB RB 12 when NNP
+WRB RB 12 when NNPS
+WRB RB 12 where NN
+WRB RB 12 where NNS
+WRB RB 12 where NNP
+WRB RB 12 where NNPS
 WRB RB 12 when PRP
 RBR JJR 81 year earlier
 RBR JJR 81 years earlier

@@ -141,10 +141,16 @@ Result history:
     > New rules, blocked tokens, and rules reordering slightly improves tagging.
     Reached 92.8% in minimal mode, first time!
 
+- December 27th, 2017:
+    Minimal:    92.85% exact tags, 637/2481 exact sentences
+    Full:       94.45% exact tags, 870/2478 exact sentences
+
+    > A few new rules and a fix for "me" not being considered an abbr.
+
 */
 
 var data = require("./penn_treebank").data,
-    compendium = require('../../build/compendium.minimal.js'),
+    compendium = require('../../build/compendium.js'),
     toPoSArray = function(arr) {
         var res = [], i, l = arr.length;
         for (i = 0; i < l; i += 1) {
