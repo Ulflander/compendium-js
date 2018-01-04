@@ -1,6 +1,6 @@
 # Compendium
 
-English NLP for Node.js and the browser.
+English NLP for Node.js and the browser. [Try it in your browser](http://ulflander.github.io/compendium-js/)!
 
 35k gzipped, Part-of-Speech tagging (92% on Penn treebank), entity recognition, sentiment analysis and more, MIT licensed.
 
