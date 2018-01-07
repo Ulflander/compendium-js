@@ -220,7 +220,11 @@
     }
 
     var initMessage = function(){
-      $("#pos-demo-input").text(examples[selected_lang][0]);
+        var text = window.location.search.substr(1) || null;
+        if (!!text && text.indexOf('text=') === 0) {
+            text = decodeURIComponent(text.substr(5).split('&')[0]);
+        }
+      $("#pos-demo-input").text(text || examples[selected_lang][0]);
     }
 
     initMessage();
