@@ -42,6 +42,8 @@
 
         complexFloat = new RegExp('^-?[0-9]+([\\' + cpd.thousandChar + '][0-9]+){1,}(\\' + cpd.floatChar + '[0-9]+)$'),
 
+        jsKeywords = ['constructor'],
+
         removeRepetitiveChars = function(token) {
             var str = token.replace(/(.)\1{2,}/g, "$1$1"), s;
             if (compendium.lexicon.hasOwnProperty(str)) {
@@ -292,7 +294,7 @@
             }
 
             // Attempt to get pos in a case sensitive way
-            tag = compendium.lexicon[token];
+            tag = compendium.lexicon[jsKeywords.indexOf(token) > -1 ? '_' + token : token];
 
             if (!!tag && tag !== '-') {
                 tagObject.tag = tag;

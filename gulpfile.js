@@ -4,7 +4,10 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     insert = require('gulp-insert'),
     uglify = require('gulp-uglify'),
-    replace = require('gulp-replace');
+    replace = require('gulp-replace'),
+
+
+    jsKeywords = ['constructor'];
 
 // Build french lexicon - to be implemented, dummy method for functional
 // bilingual build process
@@ -74,6 +77,9 @@ function lexicon(level) {
         token = line[0].trim();
         idx = sts.indexOf(token);
 
+        if (jsKeywords.indexOf(token) > -1) {
+            token = '_' + token;
+        }
 
         // If no sentiment, and already contained in compendium, skip it
         if (compendiumTokens.indexOf(token) > -1 && (idx === -1 || sts[idx] === '--')) {
