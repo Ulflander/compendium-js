@@ -121,7 +121,7 @@
                 if (s.match(abbrev_regexp) || s.match(/[ |\.][A-Za-z]\.?$/)) {
                     // If next token is not a letter
                     if (i < l - 1 && !arr[i + 1].match(/^[A-Za-z]\s/)) {
-                        console.log(s, arr[i + 1]);
+                        //console.log(s, arr[i + 1]);
                         arr[i + 1] = s + ' ' + arr[i + 1].trim();
                     } else {
                         sentences.push(s);
