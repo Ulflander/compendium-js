@@ -273,7 +273,7 @@ Here is the list of Part-of-Speech tags used by Compendium. See at the bottom ne
 
 Compendium also includes the following new tag:
 
-    EM Emoticon                 :) :(
+    EM Emoticon                 :) :( :/
 
 ## Development
 
