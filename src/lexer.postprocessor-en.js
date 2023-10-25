@@ -26,7 +26,7 @@
                 if (tok === '\'' && contractions.indexOf(next) > -1) {
                     // If t, check for 'n' in previous
                     if (next === 't' && previous.lastIndexOf('n') === previous.length - 1) {
-                        result[i - 1] = previous.slice(0, -1);
+                        result[result.length - 1] = previous.slice(0, -1);
                         result.push('n' + tok + next);
                         i += 1;
                     } else {

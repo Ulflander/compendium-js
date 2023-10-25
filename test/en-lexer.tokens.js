@@ -218,4 +218,26 @@
         test.done();
     };
 
+    // Test decoder through global analysis
+    exports[pkg.mode + ' mode  - [compendium.analysis] Her Great-Uncle Pulleyblank\'s minded to make her his heir, and she\'s prayed him to leave his money to her Uncle Jeremy, because he wants it and she don\'t!'] = function(test) {
+        for (var analysis = compendium.analyse('Her Great-Uncle Pulleyblank\'s minded to make her his heir, and she\'s prayed him to leave his money to her Uncle Jeremy, because he wants it and she don\'t!')[0], i = 0, res = []; i < analysis.length; i += 1) {
+            res.push(analysis.tokens[i].raw);
+        }
+        test.deepEqual([
+			'Her',   'Great-Uncle', 'Pulleyblank',
+			"'s",    'minded',      'to',
+			'make',  'her',         'his',
+			'heir',  ',',           'and',
+			'she',   "'s",          'prayed',
+			'him',   'to',          'leave',
+			'his',   'money',       'to',
+			'her',   'Uncle',       'Jeremy',
+			',',     'because',     'he',
+			'wants', 'it',          'and',
+			'she',   'do',          "n't",
+			'!'
+		], res);
+        test.done();
+    };
+
 });
